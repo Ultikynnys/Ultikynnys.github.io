@@ -401,7 +401,6 @@ input, select, textarea {
 			}
 
 			#main .item.intro {
-				background-color: #d64760;
 				background-image: url("images/logo.png");
 				display: -moz-flex;
 				display: -webkit-flex;
