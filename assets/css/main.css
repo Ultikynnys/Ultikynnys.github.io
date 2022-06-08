@@ -401,7 +401,7 @@ input, select, textarea {
 			}
 
 			#main .item.intro {
-				background-image: url("images/logo.png");
+				background-image: url("images/overlay.png");
 				display: -moz-flex;
 				display: -webkit-flex;
 				display: -ms-flex;
