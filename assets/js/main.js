@@ -1,83 +1,145 @@
 /*
-	Parallelism by HTML5 UP
+	Forty by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
 (function($) {
 
+	const template2 = document.createElement('template2');
+
+	template2.innerHTML = `
+	<div id="wrapper">
+		<header id="header" class="alt">
+		<a id="kek" href="index.html" class="logo"><strong>Ultikynnys | Ubeid Hussein</strong> <span>Portfolio</span></a>
+		</header>
+
+		<section id="contact">
+			<div class="inner">
+				<section class="split">
+					<section>
+						<div class="contact-method">
+							<span class="icon solid alt fa-envelope"></span>
+							<h3>Email</h3>
+							<a href="mailto:Hussein.Ubeid@outlook.com">Hussein.Ubeid@outlook.com</a>
+						</div>
+					</section>
+					<section>
+						<div class="contact-method">
+							<span class="icon solid alt fa-home"></span>
+							<h3>Location</h3>
+							<span>Somewhere in Finland :D</span>
+						</div>
+					</section>
+				</section>
+			</div>
+		</section>
+		<footer id="footer">
+		<div class="inner">
+			<ul class="icons">
+				<li><a href="https://twitter.com/ultikynnys" class="icon brands fa-twitter"><span class="label"></span></a></li>
+				<li><a href="https://www.instagram.com/ultikynnysreal/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="https://github.com/R60D" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+				<li><a href="https://www.linkedin.com/in/ubeid-hussein-31ba59204/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+			</ul>
+			<ul class="copyright">
+				<li>&copy; Ubeid Hussein</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
+			</ul>
+		</div>
+		</footer>
+	</div>
+
+	
+	`;
+
+document.body.appendChild(template2)
+
+
+
 	var	$window = $(window),
 		$body = $('body'),
 		$wrapper = $('#wrapper'),
-		$main = $('#main'),
-		settings = {
-
-			// Keyboard shortcuts.
-				keyboardShortcuts: {
-
-					// If true, enables scrolling via keyboard shortcuts.
-						enabled: true,
-
-					// Sets the distance to scroll when using the left/right arrow keys.
-						distance: 50
-
-				},
-
-			// Scroll wheel.
-				scrollWheel: {
-
-					// If true, enables scrolling via the scroll wheel.
-						enabled: true,
-
-					// Sets the scroll wheel factor. (Ideally) a value between 0 and 1 (lower = slower scroll, higher = faster scroll).
-						factor: 1
-
-				},
-
-			// Scroll zones.
-				scrollZones: {
-
-					// If true, enables scrolling via scroll zones on the left/right edges of the scren.
-						enabled: true,
-
-					// Sets the speed at which the page scrolls when a scroll zone is active (higher = faster scroll, lower = slower scroll).
-						speed: 15
-
-				}
-
-		};
+		$header = $('#header'),
+		$banner = $('#banner');
 
 	// Breakpoints.
 		breakpoints({
-			xlarge:  [ '1281px',  '1680px' ],
-			large:   [ '981px',   '1280px' ],
-			medium:  [ '737px',   '980px'  ],
-			small:   [ '481px',   '736px'  ],
-			xsmall:  [ null,      '480px'  ],
+			xlarge:    ['1281px',   '1680px'   ],
+			large:     ['981px',    '1280px'   ],
+			medium:    ['737px',    '980px'    ],
+			small:     ['481px',    '736px'    ],
+			xsmall:    ['361px',    '480px'    ],
+			xxsmall:   [null,       '360px'    ]
 		});
 
-	// Tweaks/fixes.
+	/**
+	 * Applies parallax scrolling to an element's background image.
+	 * @return {jQuery} jQuery object.
+	 */
+	$.fn._parallax = (browser.name == 'ie' || browser.name == 'edge' || browser.mobile) ? function() { return $(this) } : function(intensity) {
 
-		// Mobile: Revert to native scrolling.
-			if (browser.mobile) {
+		var	$window = $(window),
+			$this = $(this);
 
-				// Disable all scroll-assist features.
-					settings.keyboardShortcuts.enabled = false;
-					settings.scrollWheel.enabled = false;
-					settings.scrollZones.enabled = false;
+		if (this.length == 0 || intensity === 0)
+			return $this;
 
-				// Re-enable overflow on main.
-					$main.css('overflow-x', 'auto');
+		if (this.length > 1) {
 
-			}
+			for (var i=0; i < this.length; i++)
+				$(this[i])._parallax(intensity);
 
-		// IE: Fix min-height/flexbox.
-			if (browser.name == 'ie')
-				$wrapper.css('height', '100vh');
+			return $this;
 
-		// iOS: Compensate for address bar.
-			if (browser.os == 'ios')
-				$wrapper.css('min-height', 'calc(100vh - 30px)');
+		}
+
+		if (!intensity)
+			intensity = 0.25;
+
+		$this.each(function() {
+
+			var $t = $(this),
+				on, off;
+
+			on = function() {
+
+				$t.css('background-position', 'center 100%, center 100%, center 0px');
+
+				$window
+					.on('scroll._parallax', function() {
+
+						var pos = parseInt($window.scrollTop()) - parseInt($t.position().top);
+
+						$t.css('background-position', 'center ' + (pos * (-1 * intensity)) + 'px');
+
+					});
+
+			};
+
+			off = function() {
+
+				$t
+					.css('background-position', '');
+
+				$window
+					.off('scroll._parallax');
+
+			};
+
+			breakpoints.on('<=medium', off);
+			breakpoints.on('>medium', on);
+
+		});
+
+		$window
+			.off('load._parallax resize._parallax')
+			.on('load._parallax resize._parallax', function() {
+				$window.trigger('scroll');
+			});
+
+		return $(this);
+
+	};
 
 	// Play initial animations on page load.
 		$window.on('load', function() {
@@ -86,305 +148,238 @@
 			}, 100);
 		});
 
-	// Items.
-
-		// Assign a random "delay" class to each thumbnail item.
-			$('.item.thumb').each(function() {
-				$(this).addClass('delay-' + Math.floor((Math.random() * 6) + 1));
-			});
-
-		// IE: Fix thumbnail images.
-			if (browser.name == 'ie')
-				$('.item.thumb').each(function() {
-
-					var $this = $(this),
-						$img = $this.find('img');
-
-					$this
-						.css('background-image', 'url(' + $img.attr('src') + ')')
-						.css('background-size', 'cover')
-						.css('background-position', 'center');
-
-					$img
-						.css('opacity', '0');
-
-				});
-
-	// Poptrox.
-		$main.poptrox({
-			onPopupOpen: function() { $body.addClass('is-poptrox-visible'); },
-			onPopupClose: function() { $body.removeClass('is-poptrox-visible'); },
-			overlayColor: '#1a1f2c',
-			overlayOpacity: 0.75,
-			popupCloserText: '',
-			popupLoaderText: '',
-			selector: '.item.thumb a.image',
-			caption: function($a) {
-				return $a.prev('h2').html();
-			},
-			usePopupDefaultStyling: false,
-			usePopupCloser: false,
-			usePopupCaption: true,
-			usePopupNav: true,
-			windowMargin: 50
+	// Clear transitioning state on unload/hide.
+		$window.on('unload pagehide', function() {
+			window.setTimeout(function() {
+				$('.is-transitioning').removeClass('is-transitioning');
+			}, 250);
 		});
 
-		breakpoints.on('>small', function() {
-			$main[0]._poptrox.windowMargin = 50;
+	// Fix: Enable IE-only tweaks.
+		if (browser.name == 'ie' || browser.name == 'edge')
+			$body.addClass('is-ie');
+
+	// Scrolly.
+		$('.scrolly').scrolly({
+			offset: function() {
+				return $header.height() - 2;
+			}
 		});
 
-		breakpoints.on('<=small', function() {
-			$main[0]._poptrox.windowMargin = 0;
-		});
+	// Tiles.
+		var $tiles = $('.tiles > article');
 
-	// Keyboard shortcuts.
-		if (settings.keyboardShortcuts.enabled)
-			(function() {
+		$tiles.each(function() {
 
-				$window
+			var $this = $(this),
+				$image = $this.find('.image'), $img = $image.find('img'),
+				$link = $this.find('.link'),
+				x;
 
-					// Keypress event.
-						.on('keydown', function(event) {
+			// Image.
 
-							var scrolled = false;
+				// Set image.
+					$this.css('background-image', 'url(' + $img.attr('src') + ')');
 
-							if ($body.hasClass('is-poptrox-visible'))
-								return;
+				// Set position.
+					if (x = $img.data('position'))
+						$image.css('background-position', x);
 
-							switch (event.keyCode) {
+				// Hide original.
+					$image.hide();
 
-								// Left arrow.
-									case 37:
-										$main.scrollLeft($main.scrollLeft() - settings.keyboardShortcuts.distance);
-										scrolled = true;
-										break;
+			// Link.
+				if ($link.length > 0) {
 
-								// Right arrow.
-									case 39:
-										$main.scrollLeft($main.scrollLeft() + settings.keyboardShortcuts.distance);
-										scrolled = true;
-										break;
+					$x = $link.clone()
+						.text('')
+						.addClass('primary')
+						.appendTo($this);
 
-								// Page Up.
-									case 33:
-										$main.scrollLeft($main.scrollLeft() - $window.width() + 100);
-										scrolled = true;
-										break;
+					$link = $link.add($x);
 
-								// Page Down, Space.
-									case 34:
-									case 32:
-										$main.scrollLeft($main.scrollLeft() + $window.width() - 100);
-										scrolled = true;
-										break;
+					$link.on('click', function(event) {
 
-								// Home.
-									case 36:
-										$main.scrollLeft(0);
-										scrolled = true;
-										break;
-
-								// End.
-									case 35:
-										$main.scrollLeft($main.width());
-										scrolled = true;
-										break;
-
-							}
-
-							// Scrolled?
-								if (scrolled) {
-
-									// Prevent default.
-										event.preventDefault();
-										event.stopPropagation();
-
-									// Stop link scroll.
-										$main.stop();
-
-								}
-
-						});
-
-			})();
-
-	// Scroll wheel.
-		if (settings.scrollWheel.enabled)
-			(function() {
-
-				// Based on code by @miorel + @pieterv of Facebook (thanks guys :)
-				// github.com/facebook/fixed-data-table/blob/master/src/vendor_upstream/dom/normalizeWheel.js
-					var normalizeWheel = function(event) {
-
-						var	pixelStep = 10,
-							lineHeight = 40,
-							pageHeight = 800,
-							sX = 0,
-							sY = 0,
-							pX = 0,
-							pY = 0;
-
-						// Legacy.
-							if ('detail' in event)
-								sY = event.detail;
-							else if ('wheelDelta' in event)
-								sY = event.wheelDelta / -120;
-							else if ('wheelDeltaY' in event)
-								sY = event.wheelDeltaY / -120;
-
-							if ('wheelDeltaX' in event)
-								sX = event.wheelDeltaX / -120;
-
-						// Side scrolling on FF with DOMMouseScroll.
-							if ('axis' in event
-							&&	event.axis === event.HORIZONTAL_AXIS) {
-								sX = sY;
-								sY = 0;
-							}
-
-						// Calculate.
-							pX = sX * pixelStep;
-							pY = sY * pixelStep;
-
-							if ('deltaY' in event)
-								pY = event.deltaY;
-
-							if ('deltaX' in event)
-								pX = event.deltaX;
-
-							if ((pX || pY)
-							&&	event.deltaMode) {
-
-								if (event.deltaMode == 1) {
-									pX *= lineHeight;
-									pY *= lineHeight;
-								}
-								else {
-									pX *= pageHeight;
-									pY *= pageHeight;
-								}
-
-							}
-
-						// Fallback if spin cannot be determined.
-							if (pX && !sX)
-								sX = (pX < 1) ? -1 : 1;
-
-							if (pY && !sY)
-								sY = (pY < 1) ? -1 : 1;
-
-						// Return.
-							return {
-								spinX: sX,
-								spinY: sY,
-								pixelX: pX,
-								pixelY: pY
-							};
-
-					};
-
-				// Wheel event.
-					$body.on('wheel', function(event) {
-
-						// Disable on <=small.
-							if (breakpoints.active('<=small'))
-								return;
+						var href = $link.attr('href');
 
 						// Prevent default.
-							event.preventDefault();
 							event.stopPropagation();
+							event.preventDefault();
 
-						// Stop link scroll.
-							$main.stop();
+						// Target blank?
+							if ($link.attr('target') == '_blank') {
 
-						// Calculate delta, direction.
-							var	n = normalizeWheel(event.originalEvent),
-								x = (n.pixelX != 0 ? n.pixelX : n.pixelY),
-								delta = Math.min(Math.abs(x), 150) * settings.scrollWheel.factor,
-								direction = x > 0 ? 1 : -1;
+								// Open in new tab.
+									window.open(href);
 
-						// Scroll page.
-							$main.scrollLeft($main.scrollLeft() + (delta * direction));
+							}
 
-					});
+						// Otherwise ...
+							else {
 
-			})();
+								// Start transitioning.
+									$this.addClass('is-transitioning');
+									$wrapper.addClass('is-transitioning');
 
-	// Scroll zones.
-		if (settings.scrollZones.enabled)
-			(function() {
+								// Redirect.
+									window.setTimeout(function() {
+										location.href = href;
+									}, 500);
 
-				var	$left = $('<div class="scrollZone left"></div>'),
-					$right = $('<div class="scrollZone right"></div>'),
-					$zones = $left.add($right),
-					paused = false,
-					intervalId = null,
-					direction,
-					activate = function(d) {
-
-						// Disable on <=small.
-							if (breakpoints.active('<=small'))
-								return;
-
-						// Paused? Bail.
-							if (paused)
-								return;
-
-						// Stop link scroll.
-							$main.stop();
-
-						// Set direction.
-							direction = d;
-
-						// Initialize interval.
-							clearInterval(intervalId);
-
-							intervalId = setInterval(function() {
-								$main.scrollLeft($main.scrollLeft() + (settings.scrollZones.speed * direction));
-							}, 25);
-
-					},
-					deactivate = function() {
-
-						// Unpause.
-							paused = false;
-
-						// Clear interval.
-							clearInterval(intervalId);
-
-					};
-
-				$zones
-					.appendTo($wrapper)
-					.on('mouseleave mousedown', function(event) {
-						deactivate();
-					});
-
-				$left
-					.css('left', '0')
-					.on('mouseenter', function(event) {
-						activate(-1);
-					});
-
-				$right
-					.css('right', '0')
-					.on('mouseenter', function(event) {
-						activate(1);
-					});
-
-				$body
-					.on('---pauseScrollZone', function(event) {
-
-						// Pause.
-							paused = true;
-
-						// Unpause after delay.
-							setTimeout(function() {
-								paused = false;
-							}, 500);
+							}
 
 					});
 
-			})();
+				}
+
+		});
+
+	// Header.
+		if ($banner.length > 0
+		&&	$header.hasClass('alt')) {
+
+			$window.on('resize', function() {
+				$window.trigger('scroll');
+			});
+
+			$window.on('load', function() {
+
+				$banner.scrollex({
+					bottom:		$header.height() + 10,
+					terminate:	function() { $header.removeClass('alt'); },
+					enter:		function() { $header.addClass('alt'); },
+					leave:		function() { $header.removeClass('alt'); $header.addClass('reveal'); }
+				});
+
+				window.setTimeout(function() {
+					$window.triggerHandler('scroll');
+				}, 100);
+
+			});
+
+		}
+
+	// Banner.
+		$banner.each(function() {
+
+			var $this = $(this),
+				$image = $this.find('.image'), $img = $image.find('img');
+
+			// Parallax.
+				$this._parallax(0.275);
+
+			// Image.
+				if ($image.length > 0) {
+
+					// Set image.
+						$this.css('background-image', 'url(' + $img.attr('src') + ')');
+
+					// Hide original.
+						$image.hide();
+
+				}
+
+		});
+
+	// Menu.
+		var $menu = $('#menu'),
+			$menuInner;
+
+		$menu.wrapInner('<div class="inner"></div>');
+		$menuInner = $menu.children('.inner');
+		$menu._locked = false;
+
+		$menu._lock = function() {
+
+			if ($menu._locked)
+				return false;
+
+			$menu._locked = true;
+
+			window.setTimeout(function() {
+				$menu._locked = false;
+			}, 350);
+
+			return true;
+
+		};
+
+		$menu._show = function() {
+
+			if ($menu._lock())
+				$body.addClass('is-menu-visible');
+
+		};
+
+		$menu._hide = function() {
+
+			if ($menu._lock())
+				$body.removeClass('is-menu-visible');
+
+		};
+
+		$menu._toggle = function() {
+
+			if ($menu._lock())
+				$body.toggleClass('is-menu-visible');
+
+		};
+
+		$menuInner
+			.on('click', function(event) {
+				event.stopPropagation();
+			})
+			.on('click', 'a', function(event) {
+
+				var href = $(this).attr('href');
+
+				event.preventDefault();
+				event.stopPropagation();
+
+				// Hide.
+					$menu._hide();
+
+				// Redirect.
+					window.setTimeout(function() {
+						window.location.href = href;
+					}, 250);
+
+			});
+
+		$menu
+			.appendTo($body)
+			.on('click', function(event) {
+
+				event.stopPropagation();
+				event.preventDefault();
+
+				$body.removeClass('is-menu-visible');
+
+			})
+			.append('<a class="close" href="#menu">Close</a>');
+
+		$body
+			.on('click', 'a[href="#menu"]', function(event) {
+
+				event.stopPropagation();
+				event.preventDefault();
+
+				// Toggle.
+					$menu._toggle();
+
+			})
+			.on('click', function(event) {
+
+				// Hide.
+					$menu._hide();
+
+			})
+			.on('keydown', function(event) {
+
+				// Hide on escape.
+					if (event.keyCode == 27)
+						$menu._hide();
+
+			});
 
 })(jQuery);
