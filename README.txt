@@ -1,1 +1,1 @@
-https://ultikynnys.github.io/UltiBake/
+https://ultikynnys.github.io
