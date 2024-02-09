@@ -33,6 +33,10 @@ body {
 	line-height: 1;
 }
 
+.right-align {
+	text-align: right;
+}
+
 ol, ul {
 	list-style: none;
 }
@@ -2782,6 +2786,7 @@ input, select, textarea {
 				top: 0;
 				width: 100%;
 				z-index: 4;
+				text-decoration: none;
 			}
 
 			.tiles article:before {
@@ -3093,10 +3098,7 @@ input, select, textarea {
 	}
 
 	#header {
-		display: -moz-flex;
-		display: -webkit-flex;
-		display: -ms-flex;
-		display: flex;
+
 		background-color: #2a2f4a;
 		box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.15);
 		cursor: default;
@@ -3111,6 +3113,7 @@ input, select, textarea {
 		top: 0;
 		width: 100%;
 		z-index: 10000;
+		
 	}
 
 		#header .logo {
@@ -3120,6 +3123,8 @@ input, select, textarea {
 			height: inherit;
 			line-height: inherit;
 			padding: 0 1.5em;
+			
+			
 		}
 
 			#header .logo strong {
@@ -3133,6 +3138,10 @@ input, select, textarea {
 				line-height: 1.65em;
 				margin-right: 0.325em;
 				padding: 0 0.125em 0 0.375em;
+				
+				
+				
+				
 			}
 
 			#header .logo:hover strong {
@@ -3144,6 +3153,7 @@ input, select, textarea {
 			}
 
 		#header nav {
+			
 			display: -moz-flex;
 			display: -webkit-flex;
 			display: -ms-flex;
@@ -3170,6 +3180,7 @@ input, select, textarea {
 				position: relative;
 				vertical-align: middle;
 			}
+
 
 				#header nav a:last-child {
 					padding-right: 1.5em;
@@ -3223,47 +3234,6 @@ input, select, textarea {
 			animation: reveal-header 0.35s ease;
 		}
 
-		#header.alt {
-			-moz-transition: opacity 2.5s ease;
-			-webkit-transition: opacity 2.5s ease;
-			-ms-transition: opacity 2.5s ease;
-			transition: opacity 2.5s ease;
-			-moz-transition-delay: 0.75s;
-			-webkit-transition-delay: 0.75s;
-			-ms-transition-delay: 0.75s;
-			transition-delay: 0.75s;
-			-moz-animation: none;
-			-webkit-animation: none;
-			-ms-animation: none;
-			animation: none;
-			background-color: transparent;
-			box-shadow: none;
-			position: absolute;
-		}
-
-			#header.alt.style1 .logo strong {
-				color: #6fc3df;
-			}
-
-			#header.alt.style2 .logo strong {
-				color: #8d82c4;
-			}
-
-			#header.alt.style3 .logo strong {
-				color: #ec8d81;
-			}
-
-			#header.alt.style4 .logo strong {
-				color: #e7b788;
-			}
-
-			#header.alt.style5 .logo strong {
-				color: #8ea9e8;
-			}
-
-			#header.alt.style6 .logo strong {
-				color: #87c5a4;
-			}
 
 		body.is-preload #header.alt {
 			opacity: 0;
@@ -3355,6 +3325,48 @@ input, select, textarea {
 				}
 
 		}
+
+		
+		@media screen and (max-width: 2600px) {
+			.logo, header {
+				font-size: 100%; /* Adjust as needed */
+			}
+		}
+		@media screen and (max-width: 600px) {
+			.logo, header {
+				font-size: 50%; /* Adjust as needed */
+			}
+		}
+	
+		@media screen and (max-width: 420px) {
+			.logo, header {
+				font-size: 50%; /* Adjust as needed */
+			}
+		}
+	
+		@media screen and (max-width: 380px) {
+			.logo, header {
+				font-size: 40%; /* Adjust as needed */
+			}
+		}
+
+		#header {
+			text-align: center;
+			white-space: nowrap;
+			flex-shrink: 1;
+			justify-content: space-between; 
+			display: inline-block;
+		}
+
+		#header>p {
+			padding-right:  1.5em;
+			flex-shrink: 1;
+			white-space: nowrap;
+			display: inline-block;
+			justify-content: space-between; 
+		}
+
+
 
 /* Banner */
 
@@ -3933,3 +3945,4 @@ input, select, textarea {
 			opacity: 1;
 			visibility: visible;
 		}
+	
