@@ -2349,12 +2349,12 @@ input, select, textarea {
 	ul.icons {
 		cursor: default;
 		list-style: none;
-		padding-left: 0;
+		padding-left: 2em;
 	}
 
 		ul.icons li {
 			display: inline-block;
-			padding: 0 1em 0 0;
+			padding: 1em 1em 0 0;
 		}
 
 			ul.icons li:last-child {
@@ -3705,7 +3705,7 @@ input, select, textarea {
 	#footer .copyright {
 		font-size: 0.8em;
 		list-style: none;
-		padding-left: 0;
+		padding-left: 1.5em;
 	}
 
 		#footer .copyright li {
