@@ -2909,7 +2909,7 @@ input, select, textarea {
 
         .spotlights section {
             text-align: left;
-            width: 80%;
+            width: 75%;
             max-width: 600px;
             padding: 20px;
             box-sizing: border-box;
@@ -2918,20 +2918,9 @@ input, select, textarea {
         .spotlights iframe,img{
 			margin-top: 5%;
             width: 100%;
-            height: 50vw;
+            height: 40vw;
         }
 
-        @media (max-width: 768px) {
-            .spotlights section {
-                width: 90%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .spotlights section {
-                width: 95%;
-            }
-        }
 
 
 /* Header */
