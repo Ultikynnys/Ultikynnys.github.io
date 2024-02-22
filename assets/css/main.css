@@ -2920,6 +2920,15 @@ input, select, textarea {
             width: 100%;
             height: 40vw;
         }
+		@media screen and (max-width: 736px) {
+
+			.spotlights iframe,img{
+				margin-top: 5%;
+				width: 100%;
+				height: 50vw;
+			}
+		}
+
 
 
 
