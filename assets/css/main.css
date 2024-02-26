@@ -2912,20 +2912,20 @@ input, select, textarea {
             width: 75%;
             max-width: 600px;
             padding: 20px;
+			
             box-sizing: border-box;
         }
 
         .spotlights iframe,img{
-			margin-top: 5%;
-            width: 100%;
-            height: 40vw;
+			padding-right: 0%;
+            width: 1280px;
+            height: 720px;
         }
 		@media screen and (max-width: 736px) {
 
 			.spotlights iframe,img{
-				margin-top: 5%;
-				width: 100%;
-				height: 50vw;
+				width: 75vh;
+				height: 50vh;
 			}
 		}
 
