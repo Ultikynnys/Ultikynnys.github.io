@@ -9,17 +9,38 @@
 	const template2 = document.createElement('template2');
 
 	template2.innerHTML = `
-	
+
+
+    <style>
+        .container {
+            text-align: center;
+            margin: 5px;
+        }
+        .title {
+            margin-bottom: 10px;
+        }
+        .links {
+            display: flex;
+            justify-content: center;
+			margin-top: 10px;
+            gap: 25px;
+        }
+        .links a {
+        }
+    </style>
 
 		<header id="header" class="alt">
 		
-		<a id="kek" href="index.html" class="logo"><strong>Ultikynnys | Ubeid Hussein</strong> <span>Portfolio</span></a>
-		<p class="title"><a href="3d.html" class="link">3D Stuff</a></p>
-		<p class="title"><a href="tools.html" class="link">Tools | Products</a></p>
-		<p class="title"><a href="games.html" class="link">Games</a></p>
-		<p class="title"><a href="videos.html" class="link">Videos</a></p>
-
 		
+	<div class="container">
+    <a id="kek" href="index.html" class="logo"><strong>Ultikynnys | Ubeid Hussein</strong> <span>Portfolio</span></a>
+    <div class="links">
+        <p class="title"><a href="3d.html" class="link">3D Stuff</a></p>
+        <p class="title"><a href="tools.html" class="link">Tools | Products</a></p>
+        <p class="title"><a href="games.html" class="link">Games</a></p>
+        <p class="title"><a href="videos.html" class="link">Videos</a></p>
+    </div>
+	</div>
 
 		</header>
 

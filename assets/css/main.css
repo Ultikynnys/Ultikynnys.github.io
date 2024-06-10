@@ -789,6 +789,10 @@ input, select, textarea {
 
 		@media screen and (max-width: 1280px) {
 
+			p.title{
+				font-size: 24px;
+			}
+
 			.row {
 				display: flex;
 				flex-wrap: wrap;
@@ -1284,7 +1288,7 @@ input, select, textarea {
 		@media screen and (max-width: 769px) {
 
 			p.title{
-				font-size: 6px;
+				font-size: 12px;
 			}
 			.row {
 				display: flex;
@@ -3248,9 +3252,9 @@ input, select, textarea {
 		box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.15);
 		cursor: default;
 		font-weight: 600;
-		height: 3.25em;
+		height: 8.25em;
 		left: 0;
-		letter-spacing: 0.25em;
+		letter-spacing: .25em;
 		line-height: 3.25em;
 		margin: 0;
 		position: fixed;
@@ -3273,6 +3277,7 @@ input, select, textarea {
 		}
 
 			#header .logo strong {
+				font-size: large;
 				-moz-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 				-webkit-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 				-ms-transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -3411,8 +3416,8 @@ input, select, textarea {
 		@media screen and (max-width: 736px) {
 
 			#header {
-				height: 2.75em;
-				line-height: 2.75em;
+				height: 10.75em;
+				line-height: 1.75em;
 			}
 
 				#header .logo {
