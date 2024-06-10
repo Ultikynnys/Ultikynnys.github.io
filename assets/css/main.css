@@ -1779,8 +1779,9 @@ input, select, textarea {
 		}
 		@media screen and (max-width: 390px) {
 
-			p.title{
+			p.title,iframe{
 				font-size: 6px;
+				width:"300";
 			}
 
 			.row {
@@ -3177,14 +3178,14 @@ input, select, textarea {
 
         .spotlights iframe,img{
 			padding-right: 0%;
-            width: 1280px;
-            height: 720px;
+            width: 80vw;
+            height: 70vh;
         }
 		@media screen and (max-width: 736px) {
 
 			.spotlights iframe,img{
-				width: 75vh;
-				height: 50vh;
+				width: 80vw;
+				height: 25vh;
 			}
 		}
 
