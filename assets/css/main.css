@@ -1034,7 +1034,7 @@ input, select, textarea {
 
 		@media screen and (max-width: 980px) {
 
-			p{
+			p.title{
 				font-size: 12px;
 			}
 
@@ -1283,7 +1283,7 @@ input, select, textarea {
 
 		@media screen and (max-width: 769px) {
 
-			p{
+			p.title{
 				font-size: 6px;
 			}
 			.row {
@@ -1531,7 +1531,7 @@ input, select, textarea {
 
 		@media screen and (max-width: 480px) {
 
-			p{
+			p.title{
 				font-size: 7px;
 			}
 
@@ -1779,7 +1779,7 @@ input, select, textarea {
 		}
 		@media screen and (max-width: 390px) {
 
-			p{
+			p.title{
 				font-size: 6px;
 			}
 

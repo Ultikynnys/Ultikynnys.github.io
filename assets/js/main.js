@@ -14,10 +14,10 @@
 		<header id="header" class="alt">
 		
 		<a id="kek" href="index.html" class="logo"><strong>Ultikynnys | Ubeid Hussein</strong> <span>Portfolio</span></a>
-		<p><a href="3d.html" class="link">3D Stuff</a></p>
-		<p><a href="tools.html" class="link">Tools | Products</a></p>
-		<p><a href="games.html" class="link">Games</a></p>
-		<p><a href="videos.html" class="link">Videos</a></p>
+		<p class="title"><a href="3d.html" class="link">3D Stuff</a></p>
+		<p class="title"><a href="tools.html" class="link">Tools | Products</a></p>
+		<p class="title"><a href="games.html" class="link">Games</a></p>
+		<p class="title"><a href="videos.html" class="link">Videos</a></p>
 
 		
 
