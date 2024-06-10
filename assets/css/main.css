@@ -2614,6 +2614,7 @@ input, select, textarea {
 		cursor: default;
 		list-style: none;
 		padding-left: 2em;
+		padding-top: 2em;
 	}
 
 		ul.icons li {
@@ -3156,7 +3157,7 @@ input, select, textarea {
 /* Contact Method */
 
 	.contact-method {
-		margin: 0 0 2em 0;
+		margin: 2em 2em 2em 2em;
 		padding-left: 3.25em;
 		position: relative;
 	}
