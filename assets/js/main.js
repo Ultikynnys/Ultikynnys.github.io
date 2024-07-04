@@ -71,7 +71,7 @@
 				<li><a href="https://www.instagram.com/ultikynnysreal/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 				<li><a href="https://github.com/R60D" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 				<li><a href="https://www.linkedin.com/in/ubeid-hussein-31ba59204/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-				<li><a href="printfriendly.pdf" class="icon solid fa-envelope-open-text"><span class="label">LinkedIn</span></a></li>
+				<li><a href="resume.pdf" class="icon solid fa-envelope-open-text"><span class="label">LinkedIn</span></a></li>
 			</ul>
 			<ul class="copyright">
 				<li>&copy; Ubeid Hussein</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
