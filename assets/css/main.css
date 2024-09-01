@@ -3181,10 +3181,16 @@ input, select, textarea {
             box-sizing: border-box;
         }
 
-        .spotlights iframe,img{
+        .spotlights img{
 			padding-right: 0%;
             width: 40vw;
             height: auto;
+        }
+
+		.spotlights iframe{
+			padding-right: 0%;
+            width: 40vw;
+            height: 40vh;
         }
 		@media screen and (max-width: 736px) {
 
