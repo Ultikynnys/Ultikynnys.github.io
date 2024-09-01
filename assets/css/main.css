@@ -3183,8 +3183,8 @@ input, select, textarea {
 
         .spotlights iframe,img{
 			padding-right: 0%;
-            width: 80vw;
-            height: 70vh;
+            width: 40vw;
+            height: auto;
         }
 		@media screen and (max-width: 736px) {
 
