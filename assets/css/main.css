@@ -1536,7 +1536,8 @@ input, select, textarea {
 		@media screen and (max-width: 480px) {
 
 			p.title{
-				font-size: 7px;
+				margin-top: 12px;
+				font-size: 12px;
 			}
 
 			.row {
@@ -1784,7 +1785,8 @@ input, select, textarea {
 		@media screen and (max-width: 390px) {
 
 			p.title,iframe{
-				font-size: 6px;
+				margin-top: 3px;
+				font-size: 10px;
 				width:"300";
 			}
 
@@ -3640,6 +3642,7 @@ input, select, textarea {
 			height: 75vh;
 			min-height: 30em;
 			max-height: 50em;
+			margin-top: 10em;
 		}
 
 			#banner.major.alt {
@@ -3702,10 +3705,10 @@ input, select, textarea {
 				margin-bottom: -2.75em;
 				max-height: none;
 				min-height: 0;
-				top: -2.75em;
+				top: -4.75em;
 			}
 
-				#banner h1 {
+				#banner h1,h2 {
 					font-size: 2em;
 				}
 
@@ -3722,6 +3725,7 @@ input, select, textarea {
 					height: auto;
 					min-height: 0;
 					max-height: none;
+					margin-top: 0px;
 				}
 
 		}
