@@ -1782,6 +1782,10 @@ input, select, textarea {
 						}
 
 		}
+		iframe{
+			width: 50vh;
+			height: auto;
+		}
 		@media screen and (max-width: 390px) {
 
 			p.title,iframe{
@@ -3959,6 +3963,11 @@ input, select, textarea {
 		}
 
 /* Menu */
+
+iframe{
+	width: 50vh;
+	height: 50vh;
+}
 
 	#menu {
 		-moz-transition: -moz-transform 0.35s ease, opacity 0.35s ease, visibility 0.35s;
