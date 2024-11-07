@@ -4,6 +4,18 @@
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
+
+document.addEventListener("click", function(event) {
+  if (event.target.matches("[data-switcher] button")) {
+	const container = event.target.closest("[data-switcher]");
+	const images = container.querySelectorAll("img");
+	
+	// Toggle the active class on each image
+	images.forEach(img => img.classList.toggle("active"));
+  }
+});
+
+
 (function($) {
 
 	const template2 = document.createElement('template2');
