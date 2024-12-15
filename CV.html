@@ -18,14 +18,134 @@
             color: #000000;
         }
 
+        /* Main container */
         .cont {
+            position: relative;
+            /* Establish positioning context */
             width: 90%;
             max-width: 1200px;
             margin: 20px auto;
             background-color: #FFFFFF;
+            /* Fallback background color */
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            /* Ensure pseudo-element stays within bounds */
+        }
+
+        /* Background pseudo-element */
+        .cont::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('images/true_tessellated_triangles.png');
+            /* Replace with your image path */
+            background-repeat: repeat;
+            /* Repeat the image */
+            background-size: auto;
+            /* No scaling */
+            background-position: top left;
+            /* Position as needed */
+            opacity: 0.1;
+            /* Adjust visibility of the image */
+            z-index: 0;
+            /* Place behind all text */
+            clip-path: inset(0);
+            /* Ensure clipping within the container */
+        }
+
+        /* Ensure all child elements remain above the pseudo-element */
+        .cont>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Generic section styles */
+        .sec {
+            position: relative;
+            /* Inherit positioning context */
+            padding: 20px;
+            margin-top: 20px;
+            /* Ensure consistent spacing */
+            border-radius: 10px;
+            background-color: transparent;
+            /* Ensure background image is visible */
+            z-index: 1;
+            /* Keep content above the pseudo-element */
+        }
+
+        .sec.prof {
+            position: relative;
+            padding: 20px;
+            /* Ensure consistent padding with other sections */
+            margin-top: 20px;
+            /* Ensure consistent vertical spacing */
+            margin-left: 0;
+            /* Remove any left offset */
+            margin-right: 0;
+            /* Align width with other sections */
+            background-color: transparent;
+            /* Transparent for pseudo-element visibility */
+            border-radius: 10px;
+            /* Match other sections' border radius */
+            z-index: 1;
+            /* Ensure text stays above pseudo-element */
+            box-sizing: border-box;
+            /* Ensure consistent box model */
+        }
+
+        /* Skill categories (.skl-cat) */
+        .skl-cat {
+            position: relative;
+            /* Inherit positioning context */
+            padding: 15px;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            background-color: transparent;
+            /* Ensure background image is visible */
+            z-index: 1;
+            /* Text stays above the background */
+        }
+
+
+        /* Print-specific styles */
+        @media print {
+            .cont {
+                padding: 10mm;
+                /* Adjust padding for print layout */
+                border-radius: 0;
+                /* Remove border radius for printing */
+                background-color: transparent;
+                /* Ensure background color doesn't conflict */
+                overflow: hidden;
+                /* Clip the pseudo-element */
+            }
+
+            .cont::before {
+                opacity: 0.1;
+                /* Keep the background image visible under text */
+                background-image: url('images/true_tessellated_triangles.png');
+                /* Ensure print-friendly path */
+                clip-path: inset(0);
+                /* Clip to the container's bounds */
+            }
+
+            .sec {
+                padding: 10mm;
+                /* Consistent padding across sections in print */
+                background-color: transparent;
+                /* Keep text readable with the background visible */
+            }
+
+            .skl-cat {
+                padding: 10mm;
+                background-color: transparent;
+                /* Allow the background to show through */
+            }
         }
 
         .hdr {
@@ -153,25 +273,14 @@
             gap: 20px;
         }
 
-        .skl-cat {
-            padding: 15px;
-            border: 2px solid #000000;
-            border-radius: 10px;
-            background-color: #FFFFFF;
-        }
 
-        .skl-cat h3 {
-            font-size: 20px;
-            color: #000000;
-            margin-bottom: 10px;
-        }
 
         .skl {
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
             border-bottom: 1px solid #000000;
-            background-color: #FFFFFF;
+            background-color: transparent;
         }
 
         .skl:last-child {
@@ -317,13 +426,6 @@
                 padding-left: 0;
             }
 
-            .skl-cat {
-                border: 1px solid #000000;
-            }
-
-            .skl-cat h3 {
-                font-size: 18px;
-            }
 
             .skl {
                 padding: 3px 0;
@@ -345,6 +447,91 @@
 
             .sec:not(.prof) {
                 padding: 0;
+            }
+        }
+
+
+        @media print {
+            body {
+                background-color: #FFFFFF;
+                color: #000000;
+            }
+
+            .cont {
+                background-color: #FFFFFF;
+                box-shadow: none;
+                margin: 0;
+                padding: 10mm;
+            }
+
+            .sec {
+                margin: 0 auto;
+                /* Center align all sections */
+                padding: 0;
+                /* Uniform padding for print */
+                text-align: left;
+                /* Enforce left alignment */
+                width: 100%;
+                /* Full width */
+                box-sizing: border-box;
+                /* Prevent content overflow */
+            }
+
+            .sec.prof {
+                margin: 0 auto;
+                padding: 0;
+                width: 100%;
+                /* Match the width with other sections */
+                box-sizing: border-box;
+            }
+
+            .prof h2 {
+                margin-top: 0;
+            }
+
+            .prof p {
+                margin: 0;
+                padding: 0;
+            }
+
+            .hdr {
+                border-bottom: none;
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+
+            .img {
+                border: 1px solid #000000;
+                background-color: #FFFFFF;
+                width: 120px;
+                height: 120px;
+            }
+
+            .bg-img {
+                display: block;
+            }
+
+            .img img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+
+            .inf {
+                text-align: left;
+            }
+
+            .inf h1 {
+                font-size: 28px;
+            }
+
+            .inf p {
+                font-size: 14px;
+            }
+
+            @page {
+                size: A4;
+                margin: 15mm;
             }
         }
     </style>
@@ -372,12 +559,16 @@
             <h2>Profile</h2>
             <div id="profile-programming">
                 <p>
-                    Programmer with extensive experience in leading projects and developing complex
-                    game mechanics. Currently serving as the main programmer for the upcoming Steam release,
+                    Experience in leading projects and developing complex
+                    game mechanics mainly implemented in C++ and C# respectively of the game engine being used.
+                    Currently serving as the main programmer for the upcoming Steam release,
                     <strong>Shadows of The Mirror</strong>, showcased in my <a href="https://ultikynnys.github.io/"
-                        target="_blank" rel="noopener noreferrer">portfolio</a>. Proven expertise in networking
-                    solutions, particularly with UDP/TCP-based Replication systems through my tenure at No Bright
-                    Shadows.
+                        target="_blank" rel="noopener noreferrer">portfolio</a>. Previous familiarity in networking
+                    solutions, particularly with UDP/TCP-based Replication systems used in UE5 through my tenure
+                    at No Bright
+                    Shadows, additionally I've made an example project on github showcasing a C++ implementation for
+                    UE5 RPCs
+                    to supplement my knowledge in multiplayer networking.
                     Adept in C++ with a strong foundation in quaternion mathematics, enabling the creation of
                     sophisticated mechanics such as Angular Gravity for the UE5 game <strong>Crystal Ball
                         Critters</strong>.
