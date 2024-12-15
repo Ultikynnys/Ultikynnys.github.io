@@ -6,43 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ubeid Hussein - CV</title>
     <style>
-        /* Base Styles */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #FFFFFF;
-            /* White Background */
             color: #000000;
-            /* Black Text */
         }
 
-        .container {
+        .cont {
             width: 90%;
             max-width: 1200px;
             margin: 20px auto;
             background-color: #FFFFFF;
-            /* White Container */
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Header Section */
-        .header {
+        .hdr {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            /* Align to the left */
             padding-bottom: 20px;
             border-bottom: 3px solid #000000;
-            /* Black Border */
             gap: 20px;
         }
 
-        /* Profile Picture Container */
-        .images {
+        .img {
             position: relative;
             display: inline-flex;
             align-items: center;
@@ -51,18 +47,14 @@
             height: 120px;
             padding: 10px;
             border: 2px solid #000000;
-            /* Black Border */
             border-radius: 50%;
             background-color: #FFFFFF;
-            /* White Background */
             box-sizing: border-box;
             flex-shrink: 0;
             overflow: hidden;
-            /* Ensure content is cropped to circle */
         }
 
-        /* Background Image Styling */
-        .background-image {
+        .bg-img {
             position: absolute;
             top: 0;
             left: 0;
@@ -71,387 +63,321 @@
             border-radius: 50%;
             background: url('images/Background.png') center/cover no-repeat;
             opacity: 0.3;
-            /* Adjust opacity as needed */
             z-index: 0;
-            /* Behind the profile picture */
-            /* Removed display: none; to show the background image */
         }
 
-        /* Profile Picture Styling */
-        .images img {
+        .img img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            /* Ensure the image covers the container */
             position: relative;
             z-index: 1;
-            /* In front of the background image */
         }
 
-        .info {
+        .inf {
             flex: 1;
             text-align: left;
         }
 
-        .info h1 {
-            margin: 10px 0 5px;
+        .inf h1 {
+            margin: 10px 0 5px 0;
             font-size: 32px;
             color: #000000;
-            /* Black Text */
         }
 
-        /* Role Information */
-        .info .role-programmer {
+        .r-pg {
             display: none;
         }
 
-        .info .role-technicalartist {
+        .r-ta {
             display: block;
         }
 
-        .info p {
+        .inf p {
             margin: 3px 0;
             font-size: 16px;
             font-weight: bold;
             color: #000000;
-            /* Black Text */
         }
 
-        /* Section Styles */
-        .section {
+        .sec {
             margin-top: 20px;
         }
 
-        .section h2 {
+        .sec h2 {
             font-size: 24px;
             color: #000000;
-            /* Black Text */
             border-bottom: 1px solid #000000;
-            /* Black Border */
             padding-bottom: 5px;
             margin-bottom: 15px;
         }
 
-        /* Profile (No Borders) */
-        .profile {
-            padding: 15px;
+        .prof {
+            padding: 0;
             border-radius: 10px;
             background-color: #FFFFFF;
-            /* White Background */
             color: #000000;
-            /* Black Text */
+            margin: 0;
         }
 
-        /* Style for links within profile */
-        .profile a {
+        .prof a {
             color: #000000;
-            /* Black Links */
             font-weight: bold;
-            /* Bold Text */
             text-decoration: underline;
         }
 
-        .profile a:hover {
+        .prof a:hover {
             color: #000000;
-            /* No color change on hover */
         }
 
-        /* Education and Employment */
-        .education-item,
-        .employment-item {
+        .edu,
+        .emp {
             margin-bottom: 15px;
         }
 
-        .education-item strong,
-        .employment-item h3 {
+        .edu strong,
+        .emp h3 {
             font-size: 18px;
             color: #000000;
-            /* Black Text */
         }
 
-        .education-item p,
-        .employment-item p {
+        .edu p,
+        .emp p {
             margin: 5px 0;
             color: #000000;
-            /* Black Text */
         }
 
-        /* Skills Section */
-        .skills {
+        .skls {
             display: grid;
             gap: 20px;
         }
 
-        .skills-category {
+        .skl-cat {
             padding: 15px;
             border: 2px solid #000000;
-            /* Black Border */
             border-radius: 10px;
             background-color: #FFFFFF;
-            /* White Background */
         }
 
-        .skills-category h3 {
+        .skl-cat h3 {
             font-size: 20px;
             color: #000000;
-            /* Black Text */
             margin-bottom: 10px;
         }
 
-        .skill {
+        .skl {
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
             border-bottom: 1px solid #000000;
-            /* Black Border */
             background-color: #FFFFFF;
-            /* White Background for Each Skill */
         }
 
-        .skill:last-child {
+        .skl:last-child {
             border-bottom: none;
         }
 
-        .skill-name {
+        .skl-nm {
             font-weight: bold;
             color: #000000;
-            /* Black Text */
         }
 
-        /* Proficiency Labels */
-        .skill-proficiency {
+        .skl-pr {
             padding: 2px 8px;
             border-radius: 5px;
             color: #000000;
-            /* Black Text */
             font-size: 14px;
             font-weight: bold;
             background-color: #FFFFFF;
-            /* White Background */
             border: 1px solid #000000;
-            /* Black Border for Visibility */
         }
 
-        /* Responsive Design */
         @media (max-width: 800px) {
-            .header {
+            .hdr {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
                 justify-content: center;
             }
 
-            .info {
+            .inf {
                 text-align: center;
             }
         }
 
         @media (max-width: 600px) {
-            .header {
+            .hdr {
                 padding-bottom: 10px;
             }
 
-            .info h1 {
+            .inf h1 {
                 font-size: 24px;
             }
 
-            .info p {
+            .inf p {
                 font-size: 14px;
             }
 
-            .section h2 {
+            .sec h2 {
                 font-size: 20px;
             }
 
-            .skills-category h3 {
+            .skl-cat h3 {
                 font-size: 18px;
             }
 
-            .images {
+            .img {
                 width: 100px;
                 height: 100px;
             }
 
-            .images img {
+            .img img {
                 width: 80px;
                 height: 80px;
             }
         }
 
         @media print {
-            .pagebreak {
-                clear: both;
-                page-break-after: always;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
             body {
                 background-color: #FFFFFF;
-                /* White Background for Print */
                 color: #000000;
-                /* Black Text for Print */
             }
 
-            .container {
+            .cont {
                 background-color: #FFFFFF;
-                /* White Container for Print */
                 box-shadow: none;
-                /* Remove shadow for print */
                 margin: 0;
                 padding: 10mm;
             }
 
-            .header {
-                border-bottom: 1px solid #000000;
-                /* Black Border for Print */
+            .hdr {
+                border-bottom: none;
                 flex-direction: row;
-                /* Ensure row layout */
                 justify-content: flex-start;
             }
 
-            .images {
+            .img {
                 border: 1px solid #000000;
-                /* Black Border for Print */
                 background-color: #FFFFFF;
-                /* White Background */
                 width: 120px;
-                /* Maintain original size for print */
                 height: 120px;
             }
 
-            .background-image {
-                /* Ensure background image is visible in print */
+            .bg-img {
                 display: block;
-                /* Make sure it's displayed */
             }
 
-            /* Remove any 'display: none;' that might hide the background image */
-            /* Previously, .background-image was set to display: none; */
-            /* Now, it's set to display: block; */
-
-            .images::after {
+            .img::after {
                 display: none;
-                /* Hide overlay in print if any */
             }
 
-            .images img {
+            .img img {
                 width: 100%;
-                /* Ensure full image fits container */
                 height: 100%;
                 object-fit: contain;
-                /* Prevent cropping */
             }
 
-            .info {
+            .inf {
                 text-align: left;
-                /* Maintain left alignment */
             }
 
-            .info h1 {
+            .inf h1 {
                 font-size: 28px;
-                /* Slightly reduce font size for print */
             }
 
-            .info p {
+            .inf p {
                 font-size: 14px;
-                /* Reduce font size for print */
             }
 
-            .section {
+            .sec {
                 margin-top: 10mm;
+                margin-bottom: 10mm;
+                padding: 0;
             }
 
-            .section h2 {
+            .sec h2 {
                 font-size: 20px;
                 border-bottom: 1px solid #000000;
-                /* Black Border for Print */
                 padding-bottom: 3px;
                 margin-bottom: 10px;
             }
 
-            /* Removed border from .profile in print */
-            .profile {
-                /* Removed border property */
-                padding: 15px;
-                border-radius: 10px;
-                background-color: #FFFFFF;
-                color: #000000;
+            .prof {
+                padding: 0;
+                margin: 0;
             }
 
-            .skills-category {
+            .prof h2 {
+                margin-top: 0;
+            }
+
+            .prof p {
+                margin-left: 0;
+                padding-left: 0;
+            }
+
+            .skl-cat {
                 border: 1px solid #000000;
-                /* Retain border for skills-category */
             }
 
-            .skills-category h3 {
+            .skl-cat h3 {
                 font-size: 18px;
             }
 
-            .skill {
+            .skl {
                 padding: 3px 0;
             }
 
-            .skill-proficiency {
+            .skl-pr {
                 font-size: 12px;
                 padding: 1px 6px;
             }
 
-            /* Set page size */
             @page {
                 size: A4;
                 margin: 15mm;
             }
 
-            /* Remove extra margins between sections */
-            .section {
-                margin-top: 10mm;
-                margin-bottom: 10mm;
+            .cont {
+                padding: 10mm;
             }
 
-            /* Adjust container padding */
-            .container {
-                padding: 10mm;
+            .sec:not(.prof) {
+                padding: 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Header Section with Profile Picture and Info -->
-        <div class="header">
-            <div class="images">
-                <div class="background-image"></div>
+    <div class="cont">
+        <div class="hdr">
+            <div class="img">
+                <div class="bg-img"></div>
                 <img src="images/Profile.png" alt="Ubeid Hussein">
             </div>
-            <div class="info">
+            <div class="inf">
                 <h1>Ubeid (Upi) Hussein</h1>
-                <!-- Role Information -->
-                <p id="role-technicalartist" class="role-technicalartist">Technical Artist</p>
-                <p id="role-programmer" class="role-programmer">Programmer</p>
+                <p id="r-ta" class="r-ta">Technical Artist</p>
+                <p id="r-pg" class="r-pg">Programmer</p>
                 <p>hussein.ubeid@outlook.com</p>
                 <p>Tampere, Finland</p>
-                <!-- Portfolio Link Integrated into Info -->
                 <p>Portfolio: <a href="https://ultikynnys.github.io/" target="_blank"
                         rel="noopener noreferrer">https://ultikynnys.github.io/</a></p>
             </div>
         </div>
 
-        <!-- Profile Section -->
-        <div class="section profile">
+        <div class="sec prof">
             <h2>Profile</h2>
-            <!-- Programming Profile -->
             <div id="profile-programming">
                 <p>
                     Highly skilled Game Programmer with extensive experience in leading projects and developing complex
                     game mechanics. Currently serving as the main programmer for the upcoming Steam release,
                     <strong>Shadows of The Mirror</strong>, showcased in my <a href="https://ultikynnys.github.io/"
                         target="_blank" rel="noopener noreferrer">portfolio</a>. Proven expertise in networking
-                    solutions,
-                    particularly with UDP/TCP-based Replication systems through my tenure at No Bright Shadows.
+                    solutions, particularly with UDP/TCP-based Replication systems through my tenure at No Bright
+                    Shadows.
                     Adept in C++ with a strong foundation in quaternion mathematics, enabling the creation of
                     sophisticated mechanics such as Angular Gravity for the UE5 game <strong>Crystal Ball
                         Critters</strong>.
@@ -462,7 +388,6 @@
                     of projects that exhibit my programming proficiency and commitment to excellence.
                 </p>
             </div>
-            <!-- 3D Modeler Profile -->
             <div id="profile-3dmodeler" style="display: none;">
                 <p>
                     Creative and technically proficient 3D Modeler with a lifelong passion for 3D design. Spearheaded
@@ -470,8 +395,8 @@
                     one of my proudest creations to date. Currently creating 3D models for the upcoming Steam title,
                     <strong>Shadows of The Mirror</strong>, as detailed in my <a href="https://ultikynnys.github.io/"
                         target="_blank" rel="noopener noreferrer">portfolio</a>. Leveraged early experience in 3D
-                    modeling
-                    to effectively communicate and collaborate with artists and programmers, bridging the gap between
+                    modeling to effectively communicate and collaborate with artists and programmers, bridging the gap
+                    between
                     artistic vision and technical execution. Skilled in various aspects of 3D art creation, ensuring
                     that
                     designs are both visually compelling and optimized for performance. Proven leadership in directing
@@ -483,25 +408,23 @@
             </div>
         </div>
 
-        <!-- Education Section -->
-        <div class="section education">
+        <div class="sec edu">
             <h2>Education</h2>
-            <div class="education-item">
+            <div class="edu">
                 <strong>University of Applied Sciences (TAMK)</strong>
                 <p>Bachelor of Engineering (B.Eng) in Information Technology (Computer Science)</p>
                 <p>01/2022 - Present</p>
             </div>
-            <div class="education-item">
+            <div class="edu">
                 <strong>Region Vocational College Tredu (TEKLU)</strong>
                 <p>Automation and Electrical Technician</p>
                 <p>01/2015 - 05/2018</p>
             </div>
         </div>
 
-        <!-- Employment History Section -->
-        <div class="section employment-history employment-history-end">
+        <div class="sec emp">
             <h2>Employment History</h2>
-            <div class="employment-item">
+            <div class="emp">
                 <h3>Arts and Assets Specialist</h3>
                 <p>No Bright Shadows | Remote | 01/2022 -
                     <script>
@@ -512,146 +435,132 @@
                     specialize in characters and anything rigged. I also utilize my technical artist skills to create
                     particle effects and shaders for games.</p>
             </div>
-            <div class="employment-item">
+            <div class="emp">
                 <h3>Data Entry</h3>
                 <p>Verwijnen & Verwijnen | Helsinki | 01/2021 - 01/2022</p>
                 <p>I organized and maintained both electronic and physical records for company expenses.</p>
             </div>
-            <div class="employment-item">
+            <div class="emp">
                 <h3>Maintenance Technician</h3>
                 <p>City of Kauniainen Hospital | Kauniainen | 07/2019 - 07/2020</p>
                 <p>Part of a maintenance crew ensuring the hospital was kept operational.</p>
             </div>
         </div>
 
-        <!-- Skills Section -->
-        <div class="section skills">
+        <div class="sec skls">
             <h2>Skills</h2>
-            <div class="skills">
-                <!-- 3D Modeling Category -->
-                <div class="skills-category">
+            <div class="skls">
+                <div class="skl-cat">
                     <h3>3D Modeling</h3>
-                    <div class="skill">
-                        <span class="skill-name">Modeling</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">Modeling</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">Animation</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">Animation</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">UV and Topology</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">UV and Topology</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">Rigging</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">Rigging</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">Texturing</span>
-                        <span class="skill-proficiency">Proficient</span>
+                    <div class="skl">
+                        <span class="skl-nm">Texturing</span>
+                        <span class="skl-pr">Proficient</span>
                     </div>
                 </div>
 
-                <!-- Programming Languages Category -->
-                <div class="skills-category">
+                <div class="skl-cat">
                     <h3>Programming Languages</h3>
-                    <div class="skill">
-                        <span class="skill-name">Python</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">Python</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">C++</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">C++</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">C#</span>
-                        <span class="skill-proficiency">Proficient</span>
+                    <div class="skl">
+                        <span class="skl-nm">C#</span>
+                        <span class="skl-pr">Proficient</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">CSS/HTML</span>
-                        <span class="skill-proficiency">Proficient</span>
+                    <div class="skl">
+                        <span class="skl-nm">CSS/HTML</span>
+                        <span class="skl-pr">Proficient</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">JavaScript</span>
-                        <span class="skill-proficiency">Proficient</span>
+                    <div class="skl">
+                        <span class="skl-nm">JavaScript</span>
+                        <span class="skl-pr">Proficient</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">HLSL</span>
-                        <span class="skill-proficiency">Proficient</span>
+                    <div class="skl">
+                        <span class="skl-nm">HLSL</span>
+                        <span class="skl-pr">Proficient</span>
                     </div>
                 </div>
 
-                <!-- Game Engines Category -->
-                <div class="skills-category">
+                <div class="skl-cat">
                     <h3>Game Engines</h3>
-                    <div class="skill">
-                        <span class="skill-name">Unity</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">Unity</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">Unreal Engine</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">Unreal Engine</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">Godot</span>
-                        <span class="skill-proficiency">Proficient</span>
+                    <div class="skl">
+                        <span class="skl-nm">Godot</span>
+                        <span class="skl-pr">Proficient</span>
                     </div>
                 </div>
 
-                <!-- Languages Category -->
-                <div class="skills-category">
+                <div class="skl-cat">
                     <h3>Languages</h3>
-                    <div class="skill">
-                        <span class="skill-name">Finnish</span>
-                        <span class="skill-proficiency">Native</span>
+                    <div class="skl">
+                        <span class="skl-nm">Finnish</span>
+                        <span class="skl-pr">Native</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">English</span>
-                        <span class="skill-proficiency">Expert</span>
+                    <div class="skl">
+                        <span class="skl-nm">English</span>
+                        <span class="skl-pr">Expert</span>
                     </div>
-                    <div class="skill">
-                        <span class="skill-name">Swedish</span>
-                        <span class="skill-proficiency">Basic</span>
+                    <div class="skl">
+                        <span class="skl-nm">Swedish</span>
+                        <span class="skl-pr">Basic</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JavaScript for Hidden Profile Switch -->
     <script>
-        // Initial Profile State: 'programming'
         let currentProfile = 'programming';
 
-        // Function to toggle profiles and role info
         function toggleProfile() {
-            const programmingProfile = document.getElementById('profile-programming');
-            const modelerProfile = document.getElementById('profile-3dmodeler');
-
-            const roleTechnicalArtist = document.getElementById('role-technicalartist');
-            const roleProgrammer = document.getElementById('role-programmer');
+            const progProf = document.getElementById('profile-programming');
+            const mdlProf = document.getElementById('profile-3dmodeler');
+            const rTa = document.getElementById('r-ta');
+            const rPg = document.getElementById('r-pg');
 
             if (currentProfile === 'programming') {
-                // Hide Programming Profile and show 3D Modeler Profile
-                programmingProfile.style.display = 'none';
-                modelerProfile.style.display = 'block';
-                // Hide Programmer Role and show Technical Artist Role
-                roleProgrammer.style.display = 'none';
-                roleTechnicalArtist.style.display = 'block';
+                progProf.style.display = 'none';
+                mdlProf.style.display = 'block';
+                rPg.style.display = 'none';
+                rTa.style.display = 'block';
                 currentProfile = '3dmodeler';
             } else {
-                // Show Programming Profile and hide 3D Modeler Profile
-                programmingProfile.style.display = 'block';
-                modelerProfile.style.display = 'none';
-                // Show Programmer Role and hide Technical Artist Role
-                roleProgrammer.style.display = 'block';
-                roleTechnicalArtist.style.display = 'none';
+                progProf.style.display = 'block';
+                mdlProf.style.display = 'none';
+                rPg.style.display = 'block';
+                rTa.style.display = 'none';
                 currentProfile = 'programming';
             }
         }
 
-        // Listen for the keyboard shortcut Ctrl + Shift + H
         document.addEventListener('keydown', function (e) {
             if (e.ctrlKey && e.shiftKey && e.code === 'KeyH') {
                 e.preventDefault();
@@ -659,10 +568,9 @@
             }
         });
 
-        // Initialize the display states on page load
         window.onload = function () {
-            document.getElementById('role-programmer').style.display = 'block';
-            document.getElementById('role-technicalartist').style.display = 'none';
+            document.getElementById('r-pg').style.display = 'block';
+            document.getElementById('r-ta').style.display = 'none';
             document.getElementById('profile-programming').style.display = 'block';
             document.getElementById('profile-3dmodeler').style.display = 'none';
         };
