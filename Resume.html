@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubeid Hussein - Työhakemus</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF;
+            color: #000000;
+        }
+
+        /* Pääasiallinen kontti */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        /* Otsikkosektio */
+        .header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .photo {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #000000;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .contact-info p {
+            margin: 3px 0;
+            font-size: 12px;
+        }
+
+        .contact-info a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Osioiden tyylit */
+        .section {
+            margin-bottom: 15px;
+        }
+
+        .section h2 {
+            font-size: 16px;
+            border-bottom: 1px solid #000000;
+            padding-bottom: 3px;
+            margin-bottom: 8px;
+        }
+
+        /* Kohteiden tyylit */
+        .item {
+            margin-bottom: 10px;
+        }
+
+        .item h3 {
+            font-size: 14px;
+            margin: 0;
+            color: #000000;
+        }
+
+        .item h4 {
+            font-size: 12px;
+            margin: 2px 0;
+            font-weight: normal;
+            color: #555555;
+        }
+
+        .item p {
+            margin: 2px 0;
+            font-size: 12px;
+            color: #333333;
+        }
+
+        /* Taidot */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-category {
+            flex: 1 1 45%;
+        }
+
+        .skill-category h3 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .skill {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .skill-name {
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .skill-level {
+            background-color: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+
+        /* Responsiivinen muotoilu */
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .photo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .skills {
+                flex-direction: column;
+            }
+
+            .skill-category {
+                flex: 1 1 100%;
+            }
+        }
+
+        /* Tulostusmuotoilu */
+        @media print {
+            body {
+                background-color: #FFFFFF;
+                color: #000000;
+            }
+
+            .container {
+                margin: 0;
+                padding: 10mm;
+            }
+
+            .header {
+                border-bottom: none;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Otsikkosektio -->
+        <div class="header">
+            <div class="photo">
+                <img src="images/Profile.png" alt="Ubeid Hussein">
+            </div>
+            <div class="contact-info">
+                <h1>Ubeid (Upi) Hussein</h1>
+                <p>Ohjelmoija</p>
+                <p>Sähköposti: <a href="mailto:hussein.ubeid@outlook.com">hussein.ubeid@outlook.com</a></p>
+                <p>Sijainti: Tampere, Suomi</p>
+                <p>Portfolio: <a href="https://ultikynnys.github.io/" target="_blank" rel="noopener noreferrer">ultikynnys.github.io</a></p>
+            </div>
+        </div>
+
+        <!-- Ammatillinen Yhteenveto -->
+        <div class="section">
+            <h2>Ammatillinen Yhteenveto</h2>
+            <p>
+                Kokeneena ohjelmoijana minulla on vahva tausta pelinkehityksessä ja laaja kokemus projektien johtamisesta sekä teknisten pelimekaniikkojen kehittämisestä. Olen johtanut useita pelijammeja ja kahden tulevan kaupallisen julkaisun kehitystä eri rooleissa, mukaan lukien tiiminvetäjä. Olen työskennellyt myös Beat Saberin modauksessa, luoden mukautettuja tasoja Meta Quest 1 ja 2 -laitteilla. Vaikka en ole henkilökohtaisesti kehittänyt VR-kokemusta, tekninen taustani kattaa suurimman osan vaadittavista taidoista VR-pelien tekemiseen, mikä mahdollistaa nopean oppimisen ja omaksumisen.
+            </p>
+        </div>
+
+        <!-- Työhistoria -->
+        <div class="section">
+            <h2>Työhistoria</h2>
+            <div class="item">
+                <h3>Progammer | Arts and Assets Specialist</h3>
+                <h4>No Bright Shadows | Etätyö</h4>
+                <p>Tammikuu 2022 - Nykyhetki</p>
+                <p>
+                    Pelimekaniikkojen ohjelmointi, hahmomallinnukseen, riggaamiseen, partikkelitehosteisiin ja shadereihin kehittämiseen. </p>
+            </div>
+            <div class="item">
+                <h3>Data Entry</h3>
+                <h4>Verwijnen & Verwijnen | Helsinki</h4>
+                <p>Tammikuu 2021 - Tammikuu 2022</p>
+                <p>
+                    Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden.
+                </p>
+            </div>
+            <div class="item">
+                <h3>Maintenance Technician</h3>
+                <h4>City of Kauniainen Hospital | Kauniainen</h4>
+                <p>Heinäkuu 2019 - Heinäkuu 2020</p>
+                <p>
+                    Osana huoltohenkilöstöä vastasin sairaalan toimintatehokkuuden ja turvallisuusstandardien ylläpitämisestä.
+                </p>
+            </div>
+        </div>
+
+        <!-- Koulutus -->
+        <div class="section">
+            <h2>Koulutus</h2>
+            <div class="item">
+                <h3>University of Applied Sciences (TAMK)</h3>
+                <h4>Kandidaatin insinööri (B.Eng) tietotekniikassa (Tietojenkäsittelytiede)</h4>
+                <p>Tammikuu 2022 - Nykyhetki</p>
+            </div>
+            <div class="item">
+                <h3>Region Vocational College Tredu (TEKLU)</h3>
+                <h4>Automaatio- ja sähkötekniikan teknikko</h4>
+                <p>Tammikuu 2015 - Toukokuu 2018</p>
+            </div>
+        </div>
+
+        <!-- Taidot -->
+        <div class="section">
+            <h2>Taidot</h2>
+            <div class="skills">
+                <!-- 3D Mallinnus -->
+                <div class="skill-category">
+                    <h3>3D Mallinnus</h3>
+                    <div class="skill">
+                        <span class="skill-name">Mallinnus</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Animaatio</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">UV ja Topologia</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Riggaus</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Teksturointi</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                </div>
+
+                <!-- Ohjelmointikielet -->
+                <div class="skill-category">
+                    <h3>Ohjelmointikielet</h3>
+                    <div class="skill">
+                        <span class="skill-name">Python</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">C++</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">C#</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">CSS/HTML</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">JavaScript</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">HLSL</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                </div>
+
+                <!-- Pelimoottorit -->
+                <div class="skill-category">
+                    <h3>Pelimoottorit</h3>
+                    <div class="skill">
+                        <span class="skill-name">Unity</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Unreal Engine</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Godot</span>
+                        <span class="skill-level">Proficient</span>
+                    </div>
+                </div>
+
+                <!-- Kielitaito -->
+                <div class="skill-category">
+                    <h3>Kielet</h3>
+                    <div class="skill">
+                        <span class="skill-name">Suomi</span>
+                        <span class="skill-level">Äidinkieli</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Englanti</span>
+                        <span class="skill-level">Expert</span>
+                    </div>
+                    <div class="skill">
+                        <span class="skill-name">Ruotsi</span>
+                        <span class="skill-level">Perustaidot</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
