@@ -62,6 +62,9 @@
 
     <!-- Load common portfolio code -->
     <script src="scripts/portfolio-common.js"></script>
+    
+    <!-- Load shared portfolio sections code -->
+    <script src="scripts/portfolio-sections.js"></script>
 
     <!-- Add Cato.js JS library FIRST -->
     <script src="scripts/libs/cato.min.js"></script>
@@ -178,39 +181,11 @@
 
         // Initialize the programming portfolio
         document.addEventListener('DOMContentLoaded', function() {
-            // Load the game section header
-            fetch('_includes/game-section-header.html')
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('game-section-header').innerHTML = html;
-                    
-                    // Load the games description from the programming-projects.md file
-                    fetch('projects/programming-projects.md')
-                        .then(response => response.text())
-                        .then(text => {
-                            // Look for a game description section in the markdown file
-                            const gamesSectionRegex = /## Games Description\s*?\n(.*?)(?=\n##|\n$)/s;
-                            const match = text.match(gamesSectionRegex);
-                            
-                            let description = "";
-                            if (match && match[1]) {
-                                description = match[1].trim();
-                            } else {
-                                // Default description for programming portfolio if not found
-                                description = "Games I've developed, combining my programming and technical skills.";
-                            }
-                            
-                            document.getElementById('games-description').textContent = description;
-                        })
-                        .catch(error => {
-                            console.error('Failed to load games description:', error);
-                            // Set default description if failed to load
-                            document.getElementById('games-description').textContent = "Games I've developed, combining my programming and technical skills.";
-                        });
-                })
-                .catch(error => {
-                    console.error('Failed to load game section header:', error);
-                });
+            // Load the game section header and description using the shared function
+            loadGameSectionHeader(
+                'projects/programming-projects.md', 
+                "Games I've developed, combining my programming and technical skills."
+            );
             
             // Initialize with the programming projects file AND the games file
             initPortfolio('projects/programming-projects.md', 'projects/games.md');
