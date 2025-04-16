@@ -4,11 +4,11 @@
     /* Base colors (dark theme by default) */
     --primary-bg: #1a1a1a;
     --secondary-bg: #2d2d2d;
-    --card-bg: rgba(255, 255, 255, 0.1);
+    --card-bg: #2d2d2d; /* Solid color, no transparency */
     --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-secondary: rgba(255, 255, 255, 1);
     --accent-color: #4a90e2;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
     --form-bg: #1a1a1a;
     --form-border: #4a90e2;
     --header-text-bg: white;
@@ -20,10 +20,10 @@
         /* Light theme colors */
         --primary-bg: #f5f5f5;
         --secondary-bg: #e0e0e0;
-        --card-bg: white;
+        --card-bg: #ffffff; /* Solid white, no transparency */
         --text-primary: #333333;
         --text-secondary: #555555;
-        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
         --form-bg: white;
         --form-border: #4a90e2;
         --header-text-bg: #333333;
@@ -51,20 +51,22 @@ body {
 }
 
 header {
-    text-align: center;
     margin-bottom: 3rem;
     background-color: transparent;
-    padding: 2rem;
+    padding: 1rem 2rem;
     position: relative;
-    margin-top: 10px; /* Add a little space after ribbon */
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .header-content {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 1rem;
+    flex-grow: 1;
+    text-align: center;
 }
 
 h1 {
@@ -159,14 +161,13 @@ h2 {
 }
 
 .project-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
+    display: block; 
     position: relative;
+    background: var(--card-bg);
+    border-radius: 10px; /* Keep overall rounding */
     box-shadow: var(--card-shadow);
+    cursor: pointer;
+    overflow: hidden; /* Ensure contents don't overflow rounded corners */
 }
 
 .project-card:hover {
@@ -175,11 +176,14 @@ h2 {
 }
 
 .project-media {
-    position: relative;
+    display: block; 
+    position: relative !important; 
     width: 100%;
+    padding-top: 56.25%; 
     height: 0;
-    padding-top: 56.25%; /* 16:9 aspect ratio */
-    background-color: #000; /* Black background for padding */
+    background-color: transparent; 
+    overflow: hidden !important; 
+    border-radius: 0; /* Remove separate rounding */
 }
 
 .project-media > * {
@@ -300,74 +304,45 @@ h2 {
 }
 
 .comparison-container {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
     width: 100%;
-    height: 100%;
+    height: 100%; 
     overflow: hidden;
+    background-color: transparent !important; /* Ensure transparent background */
 }
 
-.comparison-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.comparison-container img {
+    display: block;
+    max-width: 100%;
     height: 100%;
-    object-fit: contain; /* Changed from cover to contain */
-    background-color: #000; /* Black background */
+    object-fit: contain;
+    background-color: transparent !important; /* Make sure images don't have background */
 }
 
-.comparison-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    clip-path: inset(0 50% 0 0);
+/* Style for the Image Compare Viewer integration - Old (To be Removed) */
+/*
+.icv {
+    background-color: transparent !important;
 }
 
-.comparison-overlay img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Changed from cover to contain */
-    background-color: #000; /* Black background */
+.icv__core {
+    background-color: transparent !important;
 }
+*/
 
-.comparison-slider {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: white;
-    cursor: ew-resize;
-    z-index: 10;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.comparison-slider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
-    background: white;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+/* Fix for project expansion with comparison slider */
+.project-card.expanded .project-media {
+    overflow: visible !important; 
+    background-color: #111; 
 }
 
 .project-info {
+    display: block !important; 
     padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    clear: both; 
+    position: relative; 
+    z-index: 1; 
+    background: var(--card-bg); /* Give info a background to prevent visual overlap */
 }
 
 .project-info h3 {
@@ -390,6 +365,7 @@ h2 {
     padding: 0.5rem;
 }
 
+/* Private project tag */
 .private-tag {
     position: absolute;
     top: 0;
@@ -402,7 +378,7 @@ h2 {
     background: rgba(255, 0, 0, 0.8);
     color: white;
     font-size: 0.8rem;
-    border-radius: 0 0 5px 0;
+    border-radius: 0 0 5px 0; /* Keep inner corner rounded */
     font-weight: 500;
 }
 
@@ -418,7 +394,7 @@ h2 {
     background: rgba(76, 175, 80, 0.8);
     color: white;
     font-size: 0.8rem;
-    border-radius: 0 0 0 5px;
+    border-radius: 0 0 0 10px; /* Updated to match project-card border-radius */
     font-weight: 500;
     transition: all 0.3s ease;
 }
@@ -437,7 +413,7 @@ h2 {
     gap: 0.5rem;
     padding: 0.5rem 0.7rem;
     background: rgba(33, 33, 33, 0.9);
-    border-radius: 0 0 5px 0;
+    border-radius: 0 0 10px 0; /* Updated to match project-card radius */
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -460,13 +436,13 @@ h2 {
     gap: 0.5rem;
     padding: 0.5rem 0.7rem;
     background: rgba(230, 126, 34, 0.9); /* Orange color for demo */
-    border-radius: 0 0 5px 0;
+    border-radius: 0 0 10px 0; /* Updated to match project-card radius */
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
     font-size: 0.9rem;
     z-index: 5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
 }
 
 .demo-notch:hover {
@@ -479,7 +455,7 @@ h2 {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 1);
     border-radius: 5px;
     color: white;
     text-decoration: none;
@@ -487,50 +463,7 @@ h2 {
 }
 
 .artstation-link:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-/* Image Comparison Slider Styles */
-.image-comparison {
-    position: relative;
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-}
-
-.image-comparison img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-comparison .before {
-    width: 50%;
-    overflow: hidden;
-}
-
-.image-comparison .slider {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: var(--accent-color);
-    left: 50%;
-    transform: translateX(-2px);
-    cursor: ew-resize;
-}
-
-.image-comparison .slider::before {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: var(--accent-color);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 1);
 }
 
 /* Media Container Styles */
@@ -788,14 +721,15 @@ footer {
     padding-left: 1rem;
 }
 
-/* Add a theme toggle button for manual control */
+/* Theme Toggle Button - Positioned by Flexbox now */
 .theme-toggle {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    position: relative; /* Change from absolute/fixed */
+    top: auto; /* Remove absolute positioning */
+    right: auto; /* Remove absolute positioning */
+    width: auto; 
+    height: 30px; /* Match typical button height */
+    padding: 0 12px; /* Adjust padding */
+    border-radius: 5px; 
     background: var(--accent-color);
     border: none;
     color: white;
@@ -803,23 +737,29 @@ footer {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+    /* z-index: 101; Not needed unless overlapping sibling */
+    box-shadow: none; /* Remove shadow, looks odd in flex */
+    transition: background-color 0.3s ease;
+    margin-left: 15px; /* Add space between button groups */
+}
+
+.theme-toggle i {
+    font-size: 1rem;
 }
 
 .theme-toggle:hover {
-    transform: scale(1.1);
+    opacity: 0.9;
+    transform: none;
 }
 
 /* Add a class for manual theme override */
 body.light-theme {
     --primary-bg: #f5f5f5;
     --secondary-bg: #e0e0e0;
-    --card-bg: white;
+    --card-bg: #ffffff; /* Solid white, no transparency */
     --text-primary: #333333;
     --text-secondary: #555555;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
     --form-bg: white;
     --form-border: #4a90e2;
     --header-text-bg: #333333;
@@ -829,10 +769,10 @@ body.light-theme {
 body.dark-theme {
     --primary-bg: #1a1a1a;
     --secondary-bg: #2d2d2d;
-    --card-bg: rgba(255, 255, 255, 0.1);
+    --card-bg: #2d2d2d; /* Solid color, no transparency */
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.8);
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
     --form-bg: #1a1a1a;
     --form-border: #4a90e2;
     --header-text-bg: white;
@@ -856,24 +796,27 @@ body.dark-theme {
 /* Social ribbon */
 .social-ribbon {
     background-color: var(--secondary-bg);
-    padding: 5px 10px;
+    padding: 5px 15px; /* Adjust padding */
     width: 100%;
     position: relative;
     z-index: 100;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex; /* Use Flexbox */
+    align-items: center; /* Vertically align items */
+    justify-content: space-between; /* Push items to ends */
 }
 
 .social-buttons {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* Center align the buttons */
+    justify-content: flex-start; /* Align buttons to the start */
     gap: 10px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 15px;
+    /* max-width: 1400px; Not needed if ribbon handles width */
+    /* margin: 0 auto; No longer center */
+    /* padding: 0 15px; Padding handled by parent */
 }
 
-.kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch {
+.kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -942,6 +885,15 @@ body.dark-theme {
     transform: translateY(-2px);
 }
 
+.fab-notch {
+    background: #6f42c1; /* Fab purple-ish color */
+}
+
+.fab-notch:hover {
+    background: #5a32a3;
+    transform: translateY(-2px);
+}
+
 /* Responsive styles for social ribbon */
 @media (max-width: 768px) {
     .social-buttons {
@@ -949,7 +901,7 @@ body.dark-theme {
         padding: 5px;
     }
     
-    .kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch {
+    .kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch {
         padding: 0.4rem 0.6rem;
         font-size: 0.8rem;
     }
@@ -1036,7 +988,7 @@ body.light-theme .lang-javascript {
     margin: 0 auto;
 }
 
-/* Expanded project card styles */
+/* Expanded project card styles - no transitions */
 .project-card.expanded {
     position: fixed;
     top: 50%;
@@ -1047,26 +999,106 @@ body.light-theme .lang-javascript {
     max-height: 90vh;
     z-index: 1000;
     overflow-y: auto;
-    transition: all 0.5s ease;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    background: var(--card-bg);
+    box-shadow: 0 20px 40px rgb(0, 0, 0);
+    transition: none !important;
+    animation: none !important;
 }
 
+/* Remove ALL transitions when collapsing */
+.project-card,
+.project-card *,
+.overlay,
+.back-button,
+.close-button,
+.project-media,
+.project-info,
+.carousel-container,
+.carousel-image,
+.carousel-dot,
+.comparison-container,
+.comparison-image,
+.comparison-overlay {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Force media content to be visible in expanded view */
 .project-card.expanded .project-media {
     height: 0;
     padding-top: 56.25%;
+    position: relative;
+    z-index: 2;
+    background-color: #000; /* Black background for letterboxing */
+    overflow: visible !important;
 }
 
-.project-card.expanded .project-info {
-    padding: 2rem;
+/* Force general images/iframes (non-carousel) to be visible */
+.project-card.expanded .project-media > img,
+.project-card.expanded .project-media > iframe {
+    object-fit: contain !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    z-index: 5 !important; 
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-.project-card.expanded .project-info h3 {
-    font-size: 2rem;
+/* Ensure CAROUSEL container is positioned correctly */
+.project-card.expanded .carousel-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 3;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: hidden; /* Contain carousel elements */
 }
 
-.project-card.expanded .project-info p {
-    font-size: 1.1rem;
-    line-height: 1.7;
+/* Style CAROUSEL images specifically */
+.project-card.expanded .carousel-image {
+    object-fit: contain !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 5 !important; /* Base z-index for carousel images */
+    display: block !important;
+    opacity: 0 !important; /* Default hidden */
+    visibility: hidden !important; /* Default hidden */
+    transition: opacity 0.5s ease, visibility 0.5s ease !important; 
+}
+
+/* Active CAROUSEL image should always be visible */
+.project-card.expanded .carousel-image.active {
+    opacity: 1 !important;
+    z-index: 10 !important; /* Higher z-index for active */
+    visibility: visible !important;
+}
+
+/* Ensure CAROUSEL navigation elements are visible and on top */
+.project-card.expanded .carousel-nav,
+.project-card.expanded .carousel-dots {
+    z-index: 15 !important; /* Ensure controls are above active image */
+    opacity: 1 !important; /* Make sure they are visible */
+    visibility: visible !important;
+}
+
+/* Keep iframe styles separate */
+.project-card.expanded .project-media iframe {
+    /* Styles already defined above */
 }
 
 .overlay {
@@ -1078,13 +1110,11 @@ body.light-theme .lang-javascript {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 999;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: none;
 }
 
 .overlay.active {
     display: block;
-    opacity: 1;
 }
 
 .body-no-scroll {
@@ -1107,11 +1137,13 @@ body.light-theme .lang-javascript {
     cursor: pointer;
     z-index: 1001;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: none;
+    display: none; /* Hide the back button completely */
 }
 
 .project-card.expanded .back-button {
-    opacity: 1;
+    opacity: 0; /* Make sure it's hidden in expanded view */
+    display: none; /* Hide the back button completely in expanded view */
 }
 
 .back-button:hover {
@@ -1121,4 +1153,192 @@ body.light-theme .lang-javascript {
 /* Hide other project cards when one is expanded */
 .portfolio-grid.has-expanded .project-card:not(.expanded) {
     display: none;
+}
+
+/* Close button at bottom right of screen */
+.close-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1005;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    font-size: 1.2rem;
+}
+
+body.has-expanded-project .close-button {
+    display: flex;
+}
+
+.close-button:hover {
+    background: var(--accent-color);
+    opacity: 0.9;
+}
+
+/* Additional styles to ensure comparison slider works correctly in non-expanded view */
+.comparison-slider-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    overflow: visible !important;
+}
+
+.comparison-slider {
+    position: absolute !important;
+    display: block !important;
+    visibility: visible !important;
+    z-index: 10 !important;
+    cursor: ew-resize !important;
+}
+
+.comparison-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    overflow: visible !important;
+    z-index: 5 !important;
+    clip-path: inset(0 50% 0 0) !important;
+}
+
+.before-image, .after-image {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    object-fit: contain !important;
+}
+
+/* Ensure Image Compare Viewer elements override base styles - Old (To be Removed) */
+/*
+.project-media .comparison-container,
+.project-media .icv {
+    position: absolute !important; 
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: transparent !important;
+    overflow: visible !important; 
+}
+
+.project-media .icv__img,
+.project-media .icv__img-a,
+.project-media .icv__img-b {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; 
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: transparent !important;
+    z-index: 1 !important; 
+    transform: none !important; 
+    max-width: none !important; 
+}
+
+.project-media .icv__img-a {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    z-index: 1 !important; 
+    clip-path: none !important; 
+    transform: none !important;
+}
+
+.project-media .icv__img-b {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important; 
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; 
+    z-index: 2 !important; 
+    clip-path: var(--icv-clip-path, inset(0 50% 0 0)) !important; 
+    transform: none !important;
+}
+
+.project-media .icv__control {
+    z-index: 10 !important; 
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.project-media .icv__core {
+    overflow: hidden !important; 
+    position: absolute !important;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: transparent !important;
+}
+*/
+
+/* Game tag - Default */
+.game-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    background: rgba(76, 175, 80, 0.9); /* Default Green */
+    color: white;
+    font-size: 0.8rem;
+    border-radius: 0 0 0 5px; 
+    font-weight: 500;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Game tag Engine Colors */
+.game-tag.engine-unity {
+    background: rgba(170, 170, 170, 0.9); /* Grey #AAAAAA */
+}
+
+.game-tag.engine-unreal {
+    background: rgba(0, 120, 210, 0.9); /* Blue #0078D2 */
+}
+
+.game-tag.engine-godot {
+    background: rgba(71, 140, 176, 0.9); /* Purple/Blue #478CB0 */
+}
+
+.game-tag.engine-source {
+    background: rgba(23, 26, 33, 0.9); /* Dark Blue #171A21 */
+}
+
+/* Default remains green (rgba(76, 175, 80, 0.9)) */
+.game-tag.engine-default {
+    background: rgba(76, 175, 80, 0.9);
+}
+
+/* Position below store button when store is present */
+.game-tag.with-store {
+    top: 2.2rem; /* Position below the store button */
+}
+
+/* Remove hover since it has pointer-events: none */
+.game-tag:hover {
+    /* No hover effects needed */
 }

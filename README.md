@@ -84,6 +84,44 @@ Example:
 - Store: https://assetstore.unity.com/packages/3d/environments/sci-fi-city-123456
 ```
 
+### Game Projects
+
+Add new game projects to `games.md` using this format:
+
+```markdown
+## Game Name
+- Title: Game Title
+- Description: Game description...
+- Media: [image path or multi-image array]
+- Demo: [optional] [Game demo/itch.io URL]
+- Store: [optional] [Steam/Store URL]
+- Private: [true/false]
+- Engine: [Game engine used: Unity, Unreal Engine, Godot, Source Engine]
+```
+
+Parameters:
+- `Title`: The name of your game
+- `Description`: A description of the game and your contributions
+- `Media`: 
+  - Single image: Path to your game screenshot or promotional image
+  - Multiple images: Array format: `[screenshot1.jpg, screenshot2.jpg, screenshot3.jpg]`
+- `Demo`: Optional link to a playable demo or itch.io page
+- `Store`: Optional link to Steam or other store page
+- `Private`: Set to `true` if the project is private, `false` if public
+- `Engine`: The game engine used (Unity, Unreal Engine, Godot, Source Engine)
+
+Example:
+```markdown
+## Dungeon Crawler
+- Title: Dungeon Crawler
+- Description: A roguelike dungeon crawler with procedural level generation...
+- Media: [games/dungeon1.jpg, games/dungeon2.jpg]
+- Demo: https://itch.io/game/dungeon-crawler
+- Store: https://store.steampowered.com/app/123456/Dungeon_Crawler/
+- Private: false
+- Engine: Unity
+```
+
 ## Media Types
 
 ### Programming Projects
@@ -114,6 +152,17 @@ Example:
    - Same carousel functionality as programming projects
    - Great for showing different angles or details of 3D work
 
+### Game Projects
+1. **Single Images**
+   - Use relative paths to your game screenshot or promotional image files
+   - Supported formats: JPG, PNG
+   - Recommended size: 16:9 aspect ratio for consistency
+
+2. **Multiple Images**
+   - Use array format: `[screenshot1.jpg, screenshot2.jpg, ...]`
+   - Same carousel functionality as programming projects
+   - Great for showing different angles or details of the game
+
 ## Project Tags and Features
 
 ### Programming Projects
@@ -127,7 +176,12 @@ Example:
 - **Store Links**: Displayed when `Store` parameter is provided
 - **Image Carousel**: Automatically enabled for projects with multiple images
 
-## Best Practices
+### Game Projects
+- **Game Engine Tag**: Shows the engine used with an appropriate icon (Unity, Unreal Engine, Godot, Source Engine)
+- **Demo Links**: Displayed when `Demo` parameter is provided
+- **Store Links**: Displayed when `Store` parameter is provided
+- **Private Tag**: Automatically shown for projects with `Private: true`
+- **Image Carousel**: Automatically enabled for projects with multiple images
 
 1. **Media Organization**
    - Keep all media files in a dedicated `images` or `media` folder

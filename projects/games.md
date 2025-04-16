@@ -4,7 +4,8 @@
 - Title: The Mirror Game
 - Description: A high production value game made in Unity with a few friends, featuring custom 3D LUTs.
 - Media: images/wa.webp
-- Private: false
+- Private: true
+- Engine: Unity
 
 ## The Gatekeeper - Brackeys 2024 Game Jam
 - Title: The Gatekeeper
@@ -12,6 +13,7 @@
 - Media: images/BrackeysJam.png
 - Demo: https://itch.io/jam/brackeys-12/rate/2951800
 - Private: false
+- Engine: Unreal Engine
 
 ## Beavertown - Brackeys 2024 Game Jam
 - Title: Beavertown
@@ -19,6 +21,7 @@
 - Media: images/BrackeysJam.png
 - Demo: https://itch.io/jam/brackeys-12/rate/2956168
 - Private: false
+- Engine: Unity
 
 ## Scale Factor - GMTK 2024 Game Jam
 - Title: Scale Factor
@@ -26,6 +29,7 @@
 - Media: images/ScaleFactor.gif
 - Demo: https://itch.io/jam/gmtk-2024/rate/2900640
 - Private: false
+- Engine: Unity
 
 ## Bloodrush Defense - Jame Gam #39
 - Title: Bloodrush Defense
@@ -33,6 +37,7 @@
 - Media: images/blood.png
 - Demo: https://r60d.itch.io/bloodrush-defense
 - Private: false
+- Engine: Unity
 
 ## The Ritual - Easter Jam 2024
 - Title: The Ritual
@@ -40,6 +45,7 @@
 - Media: images/Ritual2.png
 - Demo: https://wreckz-studios.itch.io/the-ritual
 - Private: false
+- Engine: Unreal Engine
 
 ## Shadow of the Forest - ScreamJam 2023
 - Title: Shadow of the Forest
@@ -47,6 +53,7 @@
 - Media: images/shadow.png
 - Demo: https://r60d.itch.io/shadow-of-the-forest
 - Private: false
+- Engine: Unreal Engine
 
 ## Crystal Ball Critters
 - Title: Crystal Ball Critters
@@ -54,6 +61,7 @@
 - Media: images/Old/fulls/Converted/Hamster.jpg
 - Store: https://store.steampowered.com/app/2220080/Crystal_Ball_Critters/
 - Private: false
+- Engine: Unreal Engine
 
 ## dr_undertale - TF2 Mapping
 - Title: dr_undertale
@@ -61,6 +69,7 @@
 - Media: images/Old/fulls/Converted/Undertale.jpeg
 - Demo: https://gamebanana.com/mods/74601
 - Private: false
+- Engine: Source Engine
 
 ## dr_r60d - TF2 Mapping
 - Title: dr_r60d
@@ -68,3 +77,4 @@
 - Media: images/Old/fulls/Converted/R60D.jpg
 - Demo: https://gamebanana.com/mods/74575
 - Private: false 
+- Engine: Source Engine 
