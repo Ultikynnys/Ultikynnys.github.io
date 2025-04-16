@@ -1,123 +1,273 @@
-<!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Ultikynnys | Ubeid Hussein</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubeid Hussein - Portfolio</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .portfolio-choice-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+        .portfolio-choice {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 350px;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
 
+        .portfolio-choice:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
 
-				<!-- Banner -->				
-					<section id="banner" class="major">
+        .portfolio-image {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            background-color: #000;
+            overflow: hidden;
+        }
 
-						<div class="inner">
-							
-							<header class="major">
+        .portfolio-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
 
+        .portfolio-choice:hover .portfolio-image img {
+            transform: scale(1.05);
+        }
 
-								<h2>Technical Artist | Tools programmer | Game developer</h2>
-								<h2>About Me</h2> 
-							</header> 
+        .portfolio-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
 
-							<header class="minor">
-								<p>
-									Hello! My name is Ubeid, though you might also know me as Ultikynnys or R60D. 
-								
-									I’m passionate about creating games, tools, models, and tutorials, with a particular focus on 3D assets and character design. Thanks to my background in computer science, I’m equally comfortable with the programming side of game development.
-									<br /><br />
-									Most of my projects have been developed using UE5, where I have the most experience, but I’ve also worked with Unity and, more recently, Godot, as game jams often demand flexibility with different engines.
-									<br /><br />
-									From my early days of modding TF2 Source to collaborating with various teams on diverse games, I’ve gained a wealth of experience and valuable lessons that have shaped my broad understanding of game development.
-								</p>
-								</header> 
-	
-					</section>
-					<section id="banner" class="minor">
-						<div class="inner">
-							<p>If you’re interested in my work or have any questions, feel free to <a href="mailto:Hussein.Ubeid@outlook.com">contact</a> me.      </p>
-							<a href="https://ko-fi.com/r60dr60d" class="button">Support me at Ko-fi</a>
-							<a href="https://discord.gg/J7kWSfM4jw" class="button">My Discord Channel</a>		
-							<a href="https://github.com/Ultikynnys" class="button">Check My github</a>		
-						</div>
-					</section>
+        .portfolio-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
 
+        .portfolio-info p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
 
+        .portfolio-3d-card {
+            --accent-color: #ff6b6b;
+        }
 
+        .portfolio-3d-card .portfolio-info h3 {
+            color: #ff6b6b;
+        }
 
-				<!-- Main -->
-					<div id="main">
+        .portfolio-programming-card {
+            --accent-color: #4a90e2;
+        }
 
-						<!-- One -->
-						<div class="inner">
+        .portfolio-programming-card .portfolio-info h3 {
+            color: #4a90e2;
+        }
+    </style>
+</head>
+<body>
+    <!-- Add theme toggle button -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- Social ribbon bar -->
+    <div class="social-ribbon">
+        <div class="social-buttons">
+            <a href="https://ko-fi.com/r60dr60d" target="_blank" class="kofi-notch">
+                <i class="fas fa-mug-hot"></i> Support on Ko-fi
+            </a>
+            <a href="https://discord.gg/J7kWSfM4jw" target="_blank" class="discord-notch">
+                <i class="fab fa-discord"></i> Join Discord
+            </a>
+            <a href="mailto:Hussein.Ubeid@outlook.com" class="email-notch">
+                <i class="fas fa-envelope"></i> Email Me
+            </a>
+            <a href="https://www.linkedin.com/in/ubeid-hussein-31ba59204/" target="_blank" class="linkedin-notch">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com/Ultikynnys" target="_blank" class="github-notch">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.artstation.com/ultikynnys2" target="_blank" class="artstation-header-notch">
+                <i class="fab fa-artstation"></i> ArtStation
+            </a>
+        </div>
+    </div>
+    
+    <header>
+        <div class="header-content">
+            <div id="name-display" class="dynamic-name-container">
+                <div class="name-indicator">Full name</div>
+                <h1>Ubeid Hussein<span class="cursor"></span></h1>
+            </div>
+            <p class="subtitle">Developer & 3D Artist</p>
+            <!-- Add short bio -->
+            <div class="bio">
+                <p>I'm a developer and 3D artist focused on creating tools, add-ons, and 3D assets that streamline creative workflows. With experience in both programming and 3D design, I build bridges between technical requirements and artistic needs, developing custom tools and high-quality assets for a variety of projects.</p>
+            </div>
+        </div>
+    </header>
 
-							<section id="one" class="tiles">
+    <main>
+        <div class="section-divider">
+            <h2>Select Portfolio</h2>
+            <p>Choose which area of my work you'd like to explore</p>
+        </div>
+        
+        <div class="portfolio-choice-container">
+            <a href="programming-portfolio.html" class="portfolio-choice portfolio-programming-card">
+                <div class="portfolio-image">
+                    <img src="images/SourceStats.png" alt="Programming Portfolio">
+                </div>
+                <div class="portfolio-info">
+                    <h3>Programming</h3>
+                    <p>Explore my development projects, tools, and add-ons designed to enhance creative workflows</p>
+                </div>
+            </a>
+            
+            <a href="3d-portfolio.html" class="portfolio-choice portfolio-3d-card">
+                <div class="portfolio-image">
+                    <img src="images/B_Manor.webp" alt="3D Portfolio">
+                </div>
+                <div class="portfolio-info">
+                    <h3>3D Design</h3>
+                    <p>View my 3D modeling, character design, and animation projects for games and other applications</p>
+                </div>
+            </a>
+        </div>
+    </main>
 
-								<article>
-									<span class="image">
-										<img src="images/Old/fulls/Converted/SimplyCCTV.png" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="3d.html" class="link">3D Stuff</a></h3>
-										<p><b>Various 3D things I've made</b></p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/Main_render.png" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="tools.html" class="link">Tools|Products</a></h3>
-										<p><b>Programs I've written and products I'm selling</b></p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/Hamster.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="games.html" class="link">Games</a></h3>
-										<p> <b>Games or maps I've made</b></p>
-									</header>
-								</article>
+    <!-- Copyright footer -->
+    <footer class="copyright-footer">
+        <p>&copy; 2025 Ubeid Hussein. All rights reserved.</p>
+    </footer>
 
-								<article>
-									<span class="image">
-										<img src="images/Old/fulls/Converted/VidIntro.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="videos.html" class="link">Videos</a></h3>
-										<p><b>Tutorials and other Stuff</b></p>
-									</header>
-								</article>
+    <script>
+        // Name typing animation
+        const names = ["Ubeid Hussein", "Ultikynnys", "R60D"];
+        const nameDescriptions = ["Full name", "Also known as", "Also known as"];
+        let currentNameIndex = 0;
+        const nameContainer = document.getElementById('name-display').querySelector('h1');
+        const nameIndicator = document.querySelector('.name-indicator');
+        const cursor = document.querySelector('.cursor');
+        const typingSpeed = 100; // ms per character
+        const deleteSpeed = 50; // ms per character (deleting is faster)
+        const pauseBetweenNames = 8000; // pause for 8s between name changes (total ~10s with typing)
+        let isAnimating = false;
 
-							</section>
+        async function typeText(text) {
+            let displayText = '';
+            for (let i = 0; i < text.length; i++) {
+                displayText = text.substring(0, i + 1);
+                nameContainer.innerHTML = displayText + '<span class="cursor"></span>';
+                await new Promise(resolve => setTimeout(resolve, typingSpeed));
+            }
+        }
 
+        async function deleteText() {
+            let currentText = nameContainer.textContent.trim();
+            for (let i = currentText.length; i > 0; i--) {
+                let displayText = currentText.substring(0, i - 1);
+                nameContainer.innerHTML = displayText + '<span class="cursor"></span>';
+                await new Promise(resolve => setTimeout(resolve, deleteSpeed));
+            }
+        }
 
+        async function cycleName() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Fade out name indicator
+            nameIndicator.style.opacity = 0;
+            
+            // Delete current name
+            await deleteText();
+            
+            // Get next name and update index
+            currentNameIndex = (currentNameIndex + 1) % names.length;
+            
+            // Type new name
+            await typeText(names[currentNameIndex]);
+            
+            // Update and fade in name indicator
+            setTimeout(() => {
+                nameIndicator.textContent = nameDescriptions[currentNameIndex];
+                nameIndicator.style.opacity = 0.9;
+            }, 200);
+            
+            // Pause before next cycle
+            await new Promise(resolve => setTimeout(resolve, pauseBetweenNames));
+            
+            isAnimating = false;
+        }
 
-					</div>
-				</div>
+        // Start the name cycling
+        setTimeout(() => {
+            // Initial cycle after 2 seconds
+            cycleName();
+            
+            // Continue cycling as animation completes
+            setInterval(() => {
+                if (!isAnimating) cycleName();
+            }, 500);
+        }, 2000);
 
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
-</html>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+        
+        // Check if user preference exists in localStorage
+        const userPreference = localStorage.getItem('theme');
+        if (userPreference === 'light') {
+            document.body.classList.add('light-theme');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else if (userPreference === 'dark') {
+            document.body.classList.add('dark-theme');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light-theme')) {
+                // Switch to dark theme
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                // Switch to light theme
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,2 +1,4 @@
 index.html.bak
 *.bak
+.htaccess
+.vscode

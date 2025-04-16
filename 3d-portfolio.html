@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubeid Hussein - 3D Portfolio</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="portfolio-3d">
+    <!-- Add theme toggle button -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- Overlay for expanded project -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Social ribbon bar -->
+    <div class="social-ribbon">
+        <div class="social-buttons">
+            <a href="https://ko-fi.com/r60dr60d" target="_blank" class="kofi-notch">
+                <i class="fas fa-mug-hot"></i> Support on Ko-fi
+            </a>
+            <a href="https://discord.gg/J7kWSfM4jw" target="_blank" class="discord-notch">
+                <i class="fab fa-discord"></i> Join Discord
+            </a>
+            <a href="mailto:Hussein.Ubeid@outlook.com" class="email-notch">
+                <i class="fas fa-envelope"></i> Email Me
+            </a>
+            <a href="https://www.linkedin.com/in/ubeid-hussein-31ba59204/" target="_blank" class="linkedin-notch">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="https://github.com/Ultikynnys" target="_blank" class="github-notch">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.artstation.com/ultikynnys2" target="_blank" class="artstation-header-notch">
+                <i class="fab fa-artstation"></i> ArtStation
+            </a>
+        </div>
+    </div>
+    
+    <header>
+        <div class="header-content">
+            <div id="name-display" class="dynamic-name-container">
+                <div class="name-indicator">Full name</div>
+                <h1>Ubeid Hussein<span class="cursor"></span></h1>
+            </div>
+            <p class="subtitle">3D Artist & Designer</p>
+            <!-- Add short bio -->
+            <div class="bio">
+                <p>3D Modeler specializing in character design and workflow optimization. As the Arts and Assets Specialist at NBS for over 4 years, I've created complete character workflows from modeling to animation, produced particle effects, and developed countless props and materials. My strength lies in bridging the artistic and technical aspects of 3D creation—I understand both aesthetic principles and technical requirements, allowing me to create custom tools for specific project needs while delivering visually compelling assets.</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="portfolio-grid" id="projects-container">
+            <!-- Projects will be loaded here -->
+        </div>
+        
+        <!-- Games Section -->
+        <div class="section-divider">
+            <h2>Games</h2>
+            <p>Game projects where I contributed 3D modeling, animation, and asset creation.</p>
+        </div>
+        <div class="portfolio-grid" id="games-container">
+            <!-- Games will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Copyright footer -->
+    <footer class="copyright-footer">
+        <p>&copy; 2025 Ubeid Hussein. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Name typing animation
+        const names = ["Ubeid Hussein", "Ultikynnys", "R60D"];
+        const nameDescriptions = ["Full name", "Also known as", "Also known as"];
+        let currentNameIndex = 0;
+        const nameContainer = document.getElementById('name-display').querySelector('h1');
+        const nameIndicator = document.querySelector('.name-indicator');
+        const cursor = document.querySelector('.cursor');
+        const typingSpeed = 100; // ms per character
+        const deleteSpeed = 50; // ms per character (deleting is faster)
+        const pauseBetweenNames = 8000; // pause for 8s between name changes (total ~10s with typing)
+        let isAnimating = false;
+
+        async function typeText(text) {
+            let displayText = '';
+            for (let i = 0; i < text.length; i++) {
+                displayText = text.substring(0, i + 1);
+                nameContainer.innerHTML = displayText + '<span class="cursor"></span>';
+                await new Promise(resolve => setTimeout(resolve, typingSpeed));
+            }
+        }
+
+        async function deleteText() {
+            let currentText = nameContainer.textContent.trim();
+            for (let i = currentText.length; i > 0; i--) {
+                let displayText = currentText.substring(0, i - 1);
+                nameContainer.innerHTML = displayText + '<span class="cursor"></span>';
+                await new Promise(resolve => setTimeout(resolve, deleteSpeed));
+            }
+        }
+
+        async function cycleName() {
+            if (isAnimating) return;
+            isAnimating = true;
+            
+            // Fade out name indicator
+            nameIndicator.style.opacity = 0;
+            
+            // Delete current name
+            await deleteText();
+            
+            // Get next name and update index
+            currentNameIndex = (currentNameIndex + 1) % names.length;
+            
+            // Type new name
+            await typeText(names[currentNameIndex]);
+            
+            // Update and fade in name indicator
+            setTimeout(() => {
+                nameIndicator.textContent = nameDescriptions[currentNameIndex];
+                nameIndicator.style.opacity = 0.9;
+            }, 200);
+            
+            // Pause before next cycle
+            await new Promise(resolve => setTimeout(resolve, pauseBetweenNames));
+            
+            isAnimating = false;
+        }
+
+        // Start the name cycling
+        setTimeout(() => {
+            // Initial cycle after 2 seconds
+            cycleName();
+            
+            // Continue cycling as animation completes
+            setInterval(() => {
+                if (!isAnimating) cycleName();
+            }, 500);
+        }, 2000);
+
+        // Function to parse markdown content
+        function parseMarkdown(markdown) {
+            const projects = [];
+            const sections = markdown.split('## ');
+            
+            for (let i = 1; i < sections.length; i++) {
+                const section = sections[i];
+                const lines = section.split('\n');
+                const project = {};
+                
+                for (const line of lines) {
+                    if (line.startsWith('- Title:')) {
+                        project.title = line.replace('- Title:', '').trim();
+                    } else if (line.startsWith('- Description:')) {
+                        project.description = line.replace('- Description:', '').trim();
+                    } else if (line.startsWith('- Media:')) {
+                        const mediaContent = line.replace('- Media:', '').trim();
+                        if (mediaContent.startsWith('[') && mediaContent.endsWith(']')) {
+                            project.media = mediaContent.slice(1, -1)
+                                .split(',')
+                                .map(img => img.trim());
+                        } else {
+                            project.media = mediaContent;
+                        }
+                    } else if (line.startsWith('- ArtStation:')) {
+                        project.artstation = line.replace('- ArtStation:', '').trim();
+                    } else if (line.startsWith('- Store:')) {
+                        project.store = line.replace('- Store:', '').trim();
+                    } else if (line.startsWith('- Comparison:')) {
+                        project.comparison = line.replace('- Comparison:', '').trim().toLowerCase() === 'true';
+                    } else if (line.startsWith('- Private:')) {
+                        project.private = line.replace('- Private:', '').trim().toLowerCase() === 'true';
+                    } else if (line.startsWith('- Demo:')) {
+                        project.demo = line.replace('- Demo:', '').trim();
+                    }
+                }
+                
+                if (Object.keys(project).length > 0) {
+                    projects.push(project);
+                }
+            }
+            
+            return projects;
+        }
+
+        // Function to create comparison slider HTML
+        function createComparisonSlider(images, projectId) {
+            return `
+                <div class="comparison-container" id="comparison-${projectId}">
+                    <img src="${images[0]}" alt="Before" class="comparison-image">
+                    <div class="comparison-overlay">
+                        <img src="${images[1]}" alt="After" class="comparison-image">
+                    </div>
+                    <div class="comparison-slider" onmousedown="startComparison(${projectId})"></div>
+                </div>
+            `;
+        }
+
+        // Function to create carousel HTML
+        function createCarousel(images, projectId) {
+            return `
+                <div class="carousel-container" id="carousel-${projectId}">
+                    ${images.map((img, index) => `
+                        <img src="${img}" alt="Project view ${index + 1}" 
+                             class="carousel-image ${index === 0 ? 'active' : ''}">
+                    `).join('')}
+                    <button class="carousel-nav carousel-prev" onclick="prevImage(${projectId})">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-nav carousel-next" onclick="nextImage(${projectId})">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="carousel-dots">
+                        ${images.map((_, index) => `
+                            <div class="carousel-dot ${index === 0 ? 'active' : ''}" 
+                                 onclick="goToImage(${projectId}, ${index})"></div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Function to create project card HTML
+        function createProjectCard(project, index) {
+            const isVideo = typeof project.media === 'string' && 
+                          (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
+            const isMultiImage = Array.isArray(project.media);
+            const isSketchfab = typeof project.media === 'string' && project.media.includes('sketchfab.com/models');
+            
+            // Check if the store link is from Steam
+            const isSteamStore = project.store && (project.store.includes('steamcommunity.com') || project.store.includes('store.steampowered.com'));
+            
+            // Update all Steam community links to the new URL if needed
+            if (isSteamStore && project.store.includes('steamcommunity.com')) {
+                project.store = 'https://steamcommunity.com/id/R60D/myworkshopfiles/';
+            }
+            
+            let mediaContent = '';
+            if (isVideo) {
+                mediaContent = `<iframe src="${project.media}" frameborder="0" allowfullscreen></iframe>`;
+            } else if (project.comparison && isMultiImage && project.media.length === 2) {
+                mediaContent = createComparisonSlider(project.media, index);
+            } else if (isMultiImage) {
+                mediaContent = createCarousel(project.media, index);
+            } else if (isSketchfab) {
+                // Extract model ID and create proper embed iframe
+                const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] || 
+                                project.media.match(/models\/([^\/]+)/)?.[1];
+                if (modelId) {
+                    const embedUrl = `https://sketchfab.com/models/${modelId}/embed`;
+                    mediaContent = `
+                        <iframe 
+                            src="${embedUrl}" 
+                            frameborder="0" 
+                            allow="autoplay; fullscreen; xr-spatial-tracking" 
+                            webkitallowfullscreen mozallowfullscreen allowfullscreen
+                            style="width: 100%; height: 100%;">
+                        </iframe>
+                    `;
+                } else {
+                    mediaContent = `<img src="${project.media}" alt="${project.title}">`;
+                }
+            } else {
+                mediaContent = `<img src="${project.media}" alt="${project.title}">`;
+            }
+            
+            return `
+                <div class="project-card" data-project-id="${index}">
+                    ${project.private ? `
+                        <span class="private-tag">
+                            <i class="fas fa-lock"></i> Private
+                        </span>
+                    ` : project.demo ? `
+                        <a href="${project.demo}" target="_blank" class="demo-notch">
+                            <i class="fas fa-play-circle"></i> Demo
+                        </a>
+                    ` : project.artstation ? `
+                        <a href="${project.artstation}" target="_blank" class="artstation-notch">
+                            <i class="fab fa-artstation"></i> ArtStation
+                        </a>
+                    ` : ''}
+                    ${project.store ? `
+                        <a href="${project.store}" target="_blank" class="store-notch">
+                            <i class="${isSteamStore ? 'fab fa-steam' : 'fas fa-shopping-cart'}"></i> ${isSteamStore ? 'Steam' : 'Store'}
+                        </a>
+                    ` : ''}
+                    <div class="back-button">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <div class="project-media">
+                        ${mediaContent}
+                    </div>
+                    <div class="project-info">
+                        <h3>${project.title}</h3>
+                        <p>${project.description}</p>
+                        <div class="project-links">
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Carousel control functions
+        window.prevImage = function(projectId) {
+            const container = document.getElementById(`carousel-${projectId}`);
+            const images = container.querySelectorAll('.carousel-image');
+            const dots = container.querySelectorAll('.carousel-dot');
+            const activeIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+            const prevIndex = (activeIndex - 1 + images.length) % images.length;
+            
+            images[activeIndex].classList.remove('active');
+            images[prevIndex].classList.add('active');
+            
+            dots[activeIndex].classList.remove('active');
+            dots[prevIndex].classList.add('active');
+        };
+
+        window.nextImage = function(projectId) {
+            const container = document.getElementById(`carousel-${projectId}`);
+            const images = container.querySelectorAll('.carousel-image');
+            const dots = container.querySelectorAll('.carousel-dot');
+            const activeIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+            const nextIndex = (activeIndex + 1) % images.length;
+            
+            images[activeIndex].classList.remove('active');
+            images[nextIndex].classList.add('active');
+            
+            dots[activeIndex].classList.remove('active');
+            dots[nextIndex].classList.add('active');
+        };
+
+        // Comparison slider functions
+        window.startComparison = function(projectId) {
+            const container = document.getElementById(`comparison-${projectId}`);
+            const slider = container.querySelector('.comparison-slider');
+            const overlay = container.querySelector('.comparison-overlay');
+            
+            function moveSlider(e) {
+                const rect = container.getBoundingClientRect();
+                const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                const percent = (x / rect.width) * 100;
+                
+                slider.style.left = `${x}px`;
+                overlay.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            }
+            
+            function stopMoving() {
+                document.removeEventListener('mousemove', moveSlider);
+                document.removeEventListener('mouseup', stopMoving);
+            }
+            
+            document.addEventListener('mousemove', moveSlider);
+            document.addEventListener('mouseup', stopMoving);
+        };
+
+        // Add new function for dot navigation
+        window.goToImage = function(projectId, index) {
+            const container = document.getElementById(`carousel-${projectId}`);
+            const images = container.querySelectorAll('.carousel-image');
+            const dots = container.querySelectorAll('.carousel-dot');
+            
+            // Update active image
+            images.forEach(img => img.classList.remove('active'));
+            images[index].classList.add('active');
+            
+            // Update active dot
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+        };
+
+        // Load and display projects
+        fetch('projects/3d-projects.md')
+            .then(response => response.text())
+            .then(markdown => {
+                const projects = parseMarkdown(markdown);
+                const container = document.getElementById('projects-container');
+                container.innerHTML = projects.map((project, index) => createProjectCard(project, index)).join('');
+                
+                // Add event listeners for project card expansion
+                setupProjectExpansion();
+            })
+            .catch(error => {
+                console.error('Error loading projects:', error);
+                document.getElementById('projects-container').innerHTML = 
+                    '<div class="error">Error loading projects. Please try again later.</div>';
+            });
+            
+        // Load and display games
+        fetch('projects/games.md')
+            .then(response => response.text())
+            .then(markdown => {
+                const games = parseMarkdown(markdown);
+                const container = document.getElementById('games-container');
+                container.innerHTML = games.map((game, index) => createProjectCard(game, index + 100)).join('');
+                
+                // Add event listeners for project card expansion for games section
+                setupProjectExpansion('games-container');
+            })
+            .catch(error => {
+                console.error('Error loading games:', error);
+                document.getElementById('games-container').innerHTML = 
+                    '<div class="error">Error loading games. Please try again later.</div>';
+            });
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            window.location.href = `mailto:Hussein.Ubeid@outlook.com`;
+            
+            return false;
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        
+        // Check if user has previously set a theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        } else {
+            // Set the initial icon based on system preference
+            themeToggle.innerHTML = prefersDarkScheme.matches ? 
+                '<i class="fas fa-moon"></i>' : 
+                '<i class="fas fa-sun"></i>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light-theme')) {
+                // Switch to dark theme
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else if (document.body.classList.contains('dark-theme')) {
+                // Switch to light theme
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                // No manual theme set yet, check system preference and set opposite
+                if (prefersDarkScheme.matches) {
+                    document.body.classList.add('light-theme');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.body.classList.add('dark-theme');
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+        });
+
+        // Also listen for system preference changes
+        prefersDarkScheme.addEventListener('change', e => {
+            // Only update if no manual theme has been set
+            if (!document.body.classList.contains('light-theme') && 
+                !document.body.classList.contains('dark-theme')) {
+                themeToggle.innerHTML = e.matches ? 
+                    '<i class="fas fa-moon"></i>' : 
+                    '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        // Project expansion functionality
+        function setupProjectExpansion(containerId = 'projects-container') {
+            const container = document.getElementById(containerId);
+            const overlay = document.getElementById('overlay');
+            
+            // Add click event to project cards
+            container.addEventListener('click', function(e) {
+                const projectCard = e.target.closest('.project-card');
+                
+                // Ignore clicks on links
+                if (e.target.closest('a')) return;
+                
+                if (projectCard) {
+                    // If it's already expanded, collapse it
+                    if (projectCard.classList.contains('expanded')) {
+                        collapseProject(projectCard);
+                    } else {
+                        // Expand the project card
+                        expandProject(projectCard, container);
+                    }
+                }
+            });
+            
+            // Close expanded project when clicking on overlay
+            overlay.addEventListener('click', function() {
+                const expandedProject = document.querySelector('.project-card.expanded');
+                if (expandedProject) {
+                    collapseProject(expandedProject);
+                }
+            });
+            
+            // Handle back button click
+            container.addEventListener('click', function(e) {
+                if (e.target.closest('.back-button')) {
+                    const projectCard = e.target.closest('.project-card');
+                    if (projectCard) {
+                        collapseProject(projectCard);
+                    }
+                    // Prevent event from bubbling up to the project card
+                    e.stopPropagation();
+                }
+            });
+            
+            // Collapse project on scroll
+            window.addEventListener('scroll', function() {
+                const expandedProject = document.querySelector('.project-card.expanded');
+                if (expandedProject) {
+                    collapseProject(expandedProject);
+                }
+            });
+        }
+        
+        function expandProject(projectCard, container) {
+            // Store the original position for animation
+            const rect = projectCard.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Add expanded class to project
+            projectCard.classList.add('expanded');
+            
+            // Add class to container to hide other projects
+            container.classList.add('has-expanded');
+            
+            // Show overlay
+            const overlay = document.getElementById('overlay');
+            overlay.classList.add('active');
+            
+            // Prevent body scrolling
+            document.body.classList.add('body-no-scroll');
+        }
+        
+        function collapseProject(projectCard) {
+            // Remove expanded class
+            projectCard.classList.remove('expanded');
+            
+            // Remove class from container
+            const container = projectCard.closest('.portfolio-grid');
+            container.classList.remove('has-expanded');
+            
+            // Hide overlay
+            const overlay = document.getElementById('overlay');
+            overlay.classList.remove('active');
+            
+            // Allow body scrolling
+            document.body.classList.remove('body-no-scroll');
+        }
+    </script>
+</body>
+</html> 

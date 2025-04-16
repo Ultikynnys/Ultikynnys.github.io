@@ -1,1 +1,0 @@
-https://ultikynnys.github.io
