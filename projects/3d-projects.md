@@ -64,13 +64,11 @@
 - Media: https://sketchfab.com/models/e8db03653de64289a0c4540ace753be0/embed
 - Private: true
 
-
 ## Human Solar Flare
 - Title: Human Solar Flare - PvZ Heroes
 - Description: Character study using Marvelous Designer, Substance Designer, and various Blender addons for advanced clothing and texturing.
 - Media: https://sketchfab.com/models/3ad1329976014a9e84e00007cdfa1371/embed
 - Private: true
-
 
 ## Shoe Design
 - Title: Shoe Study
@@ -78,13 +76,11 @@
 - Media: https://sketchfab.com/models/83cf7e542e4b4f388abbe3af00565a56/embed
 - Store: https://www.fab.com/sellers/Ultikynnys%20Productions
 
-
 ## Ulti Brand Mascot
 - Title: Ulti - Brand Mascot
 - Description: Original character created as a mascot to showcase future 3D props and designs, featuring unique styling and personality.
 - Media: https://sketchfab.com/models/99bc3ecdf96d430fbbf21de07d43e273/embed
 - Private: true
-
 
 ## Smith & Wesson 357 Magnum
 - Title: Model 27-2 357 Magnum
@@ -92,20 +88,17 @@
 - Media: https://sketchfab.com/models/4a7da0ec37e844a1ba62dcd712c2495e/embed
 - Store: https://www.fab.com/sellers/Ultikynnys%20Productions
 
-
 ## Spatial Sphere
 - Title: Spatial Sphere - Album Cover
 - Description: Procedural modeling exercise in Blender creating complex geometric patterns for an album cover design.
 - Media: images/Old/fulls/Converted/Ballgen.jpg
 - Private: true
 
-
 ## Bit Character
 - Title: Bit - Pix and Bit (Patricia Taxxon)
 - Description: Character reconstruction from a single 2D reference, based on an album cover by Patricia Taxxon.
 - Media: images/Old/fulls/Converted/Pix.gif
 - Private: true
-
 
 ## Lupilo
 - Title: Lupilo - VRChat Avatar
@@ -165,14 +158,11 @@
 - Media: images/Old/fulls/Converted/Carl.jpg
 - Private: true
 
-
-
 ## Kumuko
 - Title: Kumuko - Kumo desu ga, Nani ka?
 - Description: Character model based on the protagonist from the anime "So I'm a Spider, So What?", featuring detailed arachnid anatomy.
 - Media: images/Old/fulls/Converted/kumuko.jpg
 - Private: true
-
 
 ## Mao Mao
 - Title: Mao Mao - Heroes of Pure Heart
@@ -180,10 +170,12 @@
 - Media: images/Old/fulls/Converted/MAOMAO.jpg
 - Private: true
 
-
 ## Demoman's Pipe Dream
 - Title: Demoman's Pipe Dream - TF2
 - Description: Viral physics simulation created using Team Fortress 2 Demoman pipes, showcasing advanced simulation and rendering.
 - Media: images/Old/fulls/Converted/pills.jpg
 - Demo: https://www.reddit.com/r/tf2/comments/hx1ubp/demo_dreamsblender/
-- Private: true 
+- Private: true
+
+## Games Description
+Games I've contributed to as a 3D artist and technical artist. My work includes character modeling, rigging, animation, environment design, and asset creation across various game projects and engines. 

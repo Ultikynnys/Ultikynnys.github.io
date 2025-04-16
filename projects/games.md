@@ -1,4 +1,5 @@
 # Game Projects
+Games I've developed and contributed to, showcasing my skills in game design, programming, and 3D artistry across various engines and platforms.
 
 ## The Mirror Game
 - Title: The Mirror Game

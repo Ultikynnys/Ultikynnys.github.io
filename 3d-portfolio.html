@@ -44,6 +44,9 @@
             <!-- Projects will be loaded here -->
         </div>
         
+        <!-- Game section header will be loaded here -->
+        <div id="game-section-header"></div>
+        
         <div class="portfolio-grid" id="games-container">
             <!-- Games will be loaded here -->
         </div>
@@ -193,6 +196,40 @@
 
         // Initialize the 3D portfolio
         document.addEventListener('DOMContentLoaded', function() {
+            // Load the game section header
+            fetch('_includes/game-section-header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('game-section-header').innerHTML = html;
+                    
+                    // Load the games description from the 3d-projects.md file
+                    fetch('projects/3d-projects.md')
+                        .then(response => response.text())
+                        .then(text => {
+                            // Look for a game description section in the markdown file
+                            const gamesSectionRegex = /## Games Description\s*?\n(.*?)(?=\n##|\n$)/s;
+                            const match = text.match(gamesSectionRegex);
+                            
+                            let description = "";
+                            if (match && match[1]) {
+                                description = match[1].trim();
+                            } else {
+                                // Default description for 3D portfolio if not found
+                                description = "Games I've worked on as a 3D artist and developer, creating characters, environments, and assets.";
+                            }
+                            
+                            document.getElementById('games-description').textContent = description;
+                        })
+                        .catch(error => {
+                            console.error('Failed to load games description:', error);
+                            // Set default description if failed to load
+                            document.getElementById('games-description').textContent = "Games I've worked on as a 3D artist and developer, creating characters, environments, and assets.";
+                        });
+                })
+                .catch(error => {
+                    console.error('Failed to load game section header:', error);
+                });
+                
             // Initialize with the 3D projects file AND the games file
             initPortfolio('projects/3d-projects.md', 'projects/games.md');
         });

@@ -1,6 +1,6 @@
 # Programming Projects
 
-I’m a versatile programmer completing a Bachelor’s in Computer Science at TAMK. My strongest languages are <span class="lang-python">Python</span>, <span class="lang-javascript">JavaScript</span>, <span class="lang-cpp">C++</span>, and <span class="lang-csharp">C#</span>. I build Blender tools and develop games in UE5, Unity, and Godot, applying technical expertise to craft efficient solutions. This portfolio demonstrates my front‑end and JavaScript skills, while my GitHub showcases a variety of projects highlighting adaptability across diverse challenges.
+I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. My strongest languages are <span class="lang-python">Python</span>, <span class="lang-javascript">JavaScript</span>, <span class="lang-cpp">C++</span>, and <span class="lang-csharp">C#</span>. I build Blender tools and develop games in UE5, Unity, and Godot, applying technical expertise to craft efficient solutions. This portfolio demonstrates my front‑end and JavaScript skills, while my GitHub showcases a variety of projects highlighting adaptability across diverse challenges.
 
 ## MOF‑Blender – UV Unwrapping Bridge
 - Title: MOF‑Blender
@@ -68,3 +68,6 @@ I’m a versatile programmer completing a Bachelor’s in Computer Science at TA
 - Description: A Blender add‑on using py360converter to switch between cubemap and equirectangular formats, with HDR and alpha‑separation support.
 - Media: images/cubemap.png
 - GitHub: https://github.com/Ultikynnys/BlenderCubemapConverter
+
+## Games Description
+Games I've developed, showcasing my programming skills in various engines including Unity, Unreal, and Source. I focus on gameplay mechanics, systems programming, and technical implementation to create engaging player experiences.
