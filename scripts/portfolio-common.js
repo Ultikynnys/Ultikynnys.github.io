@@ -378,107 +378,11 @@ function initThemeToggle() {
 
 // Function to initialize all comparison sliders on the page
 function initAllComparisonSliders(containerId = 'projects-container') {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    console.log("Initializing all comparison sliders in container:", containerId);
-    
-    const comparisonContainers = container.querySelectorAll('.comparison-container');
-    comparisonContainers.forEach(compContainer => {
-        const projectCard = compContainer.closest('.project-card');
-        const projectId = projectCard ? projectCard.getAttribute('data-project-id') : null;
-        
-        if (projectId) {
-            console.log("Initializing comparison slider for project:", projectId);
-            
-            const slider = compContainer.querySelector('.comparison-slider');
-            const overlay = compContainer.querySelector('.comparison-overlay');
-            
-            // Set initial positions
-            if (slider && overlay) {
-                // Ensure the slider is visible
-                slider.style.display = 'block';
-                slider.style.visibility = 'visible';
-                slider.style.left = '50%';
-                slider.style.zIndex = '10';
-                
-                // Ensure the overlay is visible and properly clipped
-                overlay.style.display = 'block';
-                overlay.style.visibility = 'visible';
-                overlay.style.clipPath = 'inset(0 50% 0 0)';
-                
-                // Make sure all images are visible
-                const images = compContainer.querySelectorAll('img');
-                images.forEach((img, index) => {
-                    img.style.opacity = '1';
-                    img.style.visibility = 'visible';
-                    img.style.display = 'block';
-                    img.style.zIndex = index === 0 ? '5' : '6';
-                    
-                    // Force image load if not already loaded
-                    if (!img.complete) {
-                        img.onload = function() {
-                            // Re-apply the clip path after image loads
-                            overlay.style.clipPath = 'inset(0 50% 0 0)';
-                        };
-                    }
-                });
-                
-                // Force a redraw
-                compContainer.style.opacity = '0.99';
-                setTimeout(() => {
-                    compContainer.style.opacity = '1';
-                    
-                    // Ensure the clip path is still set
-                    overlay.style.clipPath = 'inset(0 50% 0 0)';
-                    
-                    // Trigger the comparison slider initialization
-                    startComparison(projectId, null);
-                }, 50);
-            }
-        }
-    });
+    // Comparison slider functionality has been removed
 }
 
-// Initialize a MutationObserver to monitor DOM changes
 function setupComparisonObserver() {
-    // Create an observer to watch for DOM changes
-    const observer = new MutationObserver((mutations) => {
-        let shouldCheckComparisons = false;
-        
-        // Check if any mutations affect project cards or comparison sliders
-        mutations.forEach(mutation => {
-            if (mutation.type === 'childList') {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) { // Element node
-                        if (node.classList && 
-                            (node.classList.contains('project-card') || 
-                             node.classList.contains('comparison-container') ||
-                             node.querySelector('.comparison-container'))) {
-                            shouldCheckComparisons = true;
-                        }
-                    }
-                });
-            }
-        });
-        
-        // If relevant changes detected, initialize comparison sliders
-        if (shouldCheckComparisons) {
-            console.log("DOM changes detected, re-initializing comparison sliders");
-            setTimeout(() => {
-                initAllComparisonSliders();
-                initAllComparisonSliders('games-container');
-            }, 100);
-        }
-    });
-    
-    // Start observing the document with the configured parameters
-    observer.observe(document.body, { 
-        childList: true, 
-        subtree: true
-    });
-    
-    return observer;
+    // Comparison slider functionality has been removed
 }
 
 // Initialize the portfolio
@@ -597,8 +501,9 @@ function createDefaultProjectCard(project, index) {
             mediaContent = `<img src="${project.media}" alt="${project.title}">`;
         }
     } else if (project.comparison && isMultiImage && project.media.length === 2) {
-        // Use global createComparisonSlider function defined in comparison-slider.js
-        mediaContent = window.createComparisonSlider(project.media, index);
+        // All comparison slider functionality has been removed
+        // Create a carousel for comparison images instead
+        mediaContent = createCarousel(project.media, index);
     } else if (isMultiImage) {
         mediaContent = createCarousel(project.media, index);
     } else {
@@ -641,108 +546,25 @@ function createDefaultProjectCard(project, index) {
 
 // DOMContentLoaded to initialize sliders on first load
 document.addEventListener('DOMContentLoaded', function() {
-    // All comparison slider functionality is now handled in comparison-slider.js
+    // All comparison slider functionality has been removed
 });
 
-// Add more aggressive initialization for comparison sliders
+// Remove all comparison slider related code
 window.addEventListener('load', function() {
-    console.log("Window load complete - Executing emergency comparison slider fix");
-    
-    // First, try to directly set styles on all comparison elements
-    const allOverlays = document.querySelectorAll('.comparison-overlay');
-    console.log(`Found ${allOverlays.length} comparison overlays to fix`);
-    
-    allOverlays.forEach((overlay) => {
-        // Force the overlay to be visible with the correct clip path
-        overlay.style.display = 'block';
-        overlay.style.visibility = 'visible';
-        overlay.style.opacity = '1';
-        overlay.style.clipPath = 'inset(0 50% 0 0)';
-        overlay.style.zIndex = '6';
-        
-        // Force the overlay image to be visible
-        const overlayImg = overlay.querySelector('img');
-        if (overlayImg) {
-            overlayImg.style.display = 'block';
-            overlayImg.style.visibility = 'visible';
-            overlayImg.style.opacity = '1';
-            overlayImg.style.zIndex = '6';
-        }
-        
-        // Position the handle
-        const container = overlay.closest('.custom-comparison-container');
-        if (container) {
-            const handle = container.querySelector('.comparison-handle');
-            if (handle) {
-                handle.style.display = 'block';
-                handle.style.visibility = 'visible';
-                handle.style.left = '50%';
-                handle.style.zIndex = '10';
-            }
-            
-            // Force a redraw of the container
-            container.style.opacity = '0.99';
-            setTimeout(() => {
-                container.style.opacity = '1';
-            }, 10);
-        }
-    });
-    
-    // Then try to initialize each comparison slider
-    document.querySelectorAll('.custom-comparison-container').forEach((container) => {
-        if (typeof window.initComparisonSlider === 'function' && 
-            !container.hasAttribute('data-custom-slider-initialized')) {
-            try {
-                window.initComparisonSlider(container);
-            } catch (err) {
-                console.error("Error initializing slider:", err);
-            }
-        }
-    });
+    // Comparison slider functionality has been removed
 });
 
-// Add a function to manually position all sliders on load
+// Remove function for positioning sliders
 function positionAllSliders() {
-    document.querySelectorAll('.custom-comparison-container').forEach(container => {
-        const handle = container.querySelector('.comparison-handle');
-        const overlay = container.querySelector('.comparison-overlay');
-        
-        if (handle && overlay) {
-            // Get the current left position as percentage if set, or default to 50%
-            const percentStr = handle.style.left || '50%';
-            let percent = 50;
-            
-            // Parse the percentage value
-            if (percentStr.endsWith('%')) {
-                percent = parseFloat(percentStr);
-            } else {
-                // If it's a pixel value, convert to percentage
-                const width = container.clientWidth;
-                const pixelValue = parseFloat(percentStr);
-                if (!isNaN(pixelValue)) {
-                    percent = (pixelValue / width) * 100;
-                }
-            }
-            
-            // Make sure percent is between 0 and 100
-            percent = Math.max(0, Math.min(percent, 100));
-            
-            // Set the handle position
-            handle.style.left = `${percent}%`;
-            
-            // Set the overlay clip path
-            overlay.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
-        }
-    });
+    // Comparison slider functionality has been removed
 }
 
-// Call this function on load
+// Remove event listeners for slider positioning
 window.addEventListener('load', function() {
-    // Wait for a moment to ensure everything is rendered
-    setTimeout(positionAllSliders, 100);
-    // Try again a bit later in case of slow loading
-    setTimeout(positionAllSliders, 500);
+    // Comparison slider functionality has been removed
 });
 
-// Also call when the page is resized
-window.addEventListener('resize', positionAllSliders); 
+// Remove resize listener for sliders
+window.addEventListener('resize', function() {
+    // Comparison slider functionality has been removed
+}); 
