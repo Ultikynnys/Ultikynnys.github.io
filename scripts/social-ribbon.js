@@ -20,6 +20,9 @@ function createSocialRibbon() {
         <a href="https://www.fab.com/sellers/Ultikynnys%20Productions" target="_blank" class="fab-notch">
             <i class="fas fa-cube"></i> Fab Store
         </a>
+        <a href="cv_template.html" target="_blank" class="cv-notch">
+            <i class="fas fa-file-alt"></i> View CV
+        </a>
         <a href="mailto:Hussein.Ubeid@outlook.com" class="email-notch">
             <i class="fas fa-envelope"></i> Email Me
         </a>

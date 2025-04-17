@@ -816,7 +816,7 @@ body.dark-theme {
     /* padding: 0 15px; Padding handled by parent */
 }
 
-.kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch {
+.kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch, .cv-notch {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -894,6 +894,15 @@ body.dark-theme {
     transform: translateY(-2px);
 }
 
+.cv-notch {
+    background: #2e7d32; /* Green color for CV */
+}
+
+.cv-notch:hover {
+    background: #1b5e20;
+    transform: translateY(-2px);
+}
+
 /* Responsive styles for social ribbon */
 @media (max-width: 768px) {
     .social-buttons {
@@ -901,7 +910,7 @@ body.dark-theme {
         padding: 5px;
     }
     
-    .kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch {
+    .kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch, .cv-notch {
         padding: 0.4rem 0.6rem;
         font-size: 0.8rem;
     }

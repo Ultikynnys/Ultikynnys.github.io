@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubeid Hussein - CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Language toggle styles */
+        .language-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .language-toggle span {
+            padding: 5px 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .language-toggle span.active {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+        
+        /* Content language visibility */
+        .lang-fi { display: block; }
+        .lang-en { display: none; }
+        body.english .lang-fi { display: none; }
+        body.english .lang-en { display: block; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ccc; /* Background for non-print view */
+        }
+
+        .page {
+            display: flex;
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            margin: 20mm auto; /* Center page on screen */
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden; /* Contain floats/flex items */
+        }
+
+        .sidebar {
+            width: 35%; /* Adjust width as needed */
+            background-color: #2c3e50; /* Dark color */
+            color: #ecf0f1; /* Light text color */
+            padding: 15px 15px; /* Reduce vertical padding further */
+            box-sizing: border-box; /* Include padding in width */
+        }
+
+        .main-content {
+            width: 65%; /* Adjust width as needed */
+            background-color: #f8f9fa; /* Lighter color */
+            padding: 15px 20px 15px 30px; /* Reduce vertical padding further */
+            box-sizing: border-box; /* Include padding in width */
+            position: relative; /* For positioning the image */
+        }
+
+        .profile-image {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 100px; /* Adjust size */
+            height: 100px; /* Adjust size */
+            background-color: #ddd; /* Placeholder color */
+            border-radius: 50%; /* Make it circular */
+            border: 3px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            overflow: hidden; /* Ensure content is clipped to the circular shape */
+            /* background-image: url('path/to/your/image.jpg'); */
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            color: #2c3e50; /* Dark color for headings in main content */
+        }
+        .sidebar h2, .sidebar h3 {
+             color: #ecf0f1; /* Light color for headings in sidebar */
+             border-bottom: 1px solid #34495e;
+             padding-bottom: 5px;
+             margin-bottom: 15px;
+        }
+        .main-content h1 {
+            margin-bottom: 5px; /* Reduce space below name */
+            padding-right: 140px; /* Ensure name doesn't overlap image */
+        }
+         .main-content h2 {
+             border-bottom: 1px solid #bdc3c7;
+             padding-bottom: 5px;
+             margin-top: 25px;
+             margin-bottom: 15px;
+         }
+
+        .section {
+            margin-bottom: 25px;
+        }
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .section ul li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        .sidebar .section ul li i.fab, .sidebar .section ul li i.fas { /* Style for icons in sidebar lists */
+            margin-right: 10px;
+            width: 1.2em; /* Ensure icons align */
+            text-align: center;
+        }
+
+        .main-content .section ul li i.fab, .main-content .section ul li i.fas { /* Style for icons in main content lists */
+             margin-right: 8px;
+             width: 1.2em; /* Ensure icons align */
+             text-align: center;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+        }
+        
+        .skills-grid h3 {
+            grid-column: 1 / -1; /* Span all columns */
+            margin-bottom: 5px;
+        }
+        
+        .skills-grid ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .skills-grid li {
+            margin-bottom: 5px;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            html, body {
+                /* Removed width, height, overflow, box-sizing */
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background-color: #fff; /* Ensure white background for printing */
+                font-size: 9pt; /* Further reduced font size for print */
+            }
+            .page {
+                 width: 210mm; /* Set content width to A4 width */
+                /* Removed height: 100% */
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                page-break-inside: avoid; /* Try to keep page content together */
+                box-sizing: border-box;
+                display: flex; /* Keep flex display */
+                 /* align-items: flex-start; Removed this */
+                /* Removed overflow: hidden */
+            }
+            .main-content h1 { /* Ensure name starts at the top for print */
+                 margin-top: 0;
+             }
+            .section { /* Reduce spacing between sections for print */
+                margin-bottom: 8px; /* Further reduced margin */
+            }
+            .sidebar {
+                padding: 12px 12px; /* Further reduce padding */
+                /* Removed height */
+                font-size: 10.5pt; /* Increase sidebar font size for print */
+            }
+            .main-content {
+                 padding: 12px 18px 12px 25px; /* Further reduce padding */
+                 /* Removed height */
+            }
+             /* Force background colors and images to print */
+            html, body, .page, .sidebar, .main-content, .profile-image {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .skills-grid {
+                grid-gap: 4px; /* Further reduce gap */
+            }
+            
+            .skills-grid li {
+                margin-bottom: 2px; /* Further reduce margin */
+            }
+            
+            .language-toggle {
+                display: none; /* Hide toggle when printing */
+            }
+        }
+        @page {
+            size: 210mm 297mm; /* Explicitly set A4 size */
+            margin: 0mm; /* Remove browser default margins */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Language toggle button -->
+    <div class="language-toggle">
+        <span class="toggle-fi active" onclick="toggleLanguage('finnish')">FIN</span>
+        <span class="toggle-en" onclick="toggleLanguage('english')">ENG</span>
+    </div>
+
+    <div class="page">
+        <div class="sidebar">
+            <div class="section">
+                <h2 class="lang-fi">Ammatillinen Yhteenveto</h2>
+                <h2 class="lang-en">Professional Summary</h2>
+                <p class="lang-fi">Kokeneena ohjelmoijana ja projektien vetäjänä minulla on vankka osaamispohja ohjelmistokehityksestä. Erityisvahvuuksiini kuuluvat REST API -kehitys, C++-sovellukset sekä monipuolinen web-kehitys: hallitsen sekä backend-puolen Node.js/Express ja Python/Flask -teknologioilla että frontendin Bootstrap CSS:llä ja JavaScriptillä.</p>
+                
+                <p class="lang-fi">Vapaa-ajallani syvennyn intohimoisesti koodaamiseen kehittämällä Blenderille Python-lisäosia, joita myyn myös kaupallisesti SuperHive-alustalla. Lisäksi hyödynnän PyTorchia luovasti tekstuurien generoinnissa.</p>
+                
+                <p class="lang-fi">Opintojeni (TAMK) ja työkokemukseni (NBS) kautta olen saanut käytännön kokemusta ketteristä (Agile) ja vesiputousmallin (Waterfall) projektinhallintamenetelmistä. Olen myös tottunut hyödyntämään automaattista testausta ja CI/CD-putkia, esimerkiksi Steam-pelien päivitysten hallinnassa Microsoft Azuren avulla. Osoituksena frontend-taidoistani tämä CV on itse rakentamani.</p>
+                
+                <p class="lang-en">As a seasoned programmer and project lead, I possess a strong foundation in software development. My core strengths include REST API development, building C++ applications, and versatile web development, encompassing both backend technologies like Node.js/Express and Python/Flask, and frontend expertise with Bootstrap CSS and JavaScript.</p>
+                
+                <p class="lang-en">My passion for coding extends into my free time, where I develop Blender Python plugins, selling them commercially on the SuperHive platform. I also creatively apply PyTorch for texture generation tasks.</p>
+                
+                <p class="lang-en">Through my studies (TAMK) and work experience (NBS), I've gained hands-on experience with both Agile and Waterfall project management methodologies. I'm adept at leveraging automated testing and CI/CD pipelines, notably for managing Steam game updates via Microsoft Azure. As a testament to my frontend skills, this CV itself is my own creation.</p>
+            </div>
+            <div class="section">
+                <h2 class="lang-fi">Verkkosivut & Sosiaalinen Media</h2>
+                <h2 class="lang-en">Websites & Social Links</h2>
+                <ul>
+                     <li><a href="mailto:hussein.ubeid@outlook.com"><i class="fas fa-envelope"></i> hussein.ubeid@outlook.com</a></li>
+                     <li><a href="https://ultikynnys.github.io/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> ultikynnys.github.io</a></li>
+                     <li><a href="https://github.com/Ultikynnys" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> github.com/Ultikynnys</a></li>
+                    <!-- Add other relevant links here -->
+                    <!-- <li><a href="#"><i class="fab fa-linkedin"></i> linkedin.com/in/yourprofile</a></li> -->
+                    <!-- <li><a href="#"><i class="fab fa-twitter"></i> twitter.com/yourhandle</a></li> -->
+                </ul>
+            </div>
+            <div class="section">
+                <h2 class="lang-fi">Kielet</h2>
+                <h2 class="lang-en">Languages</h2>
+                <ul>
+                    <li class="lang-fi"><i class="fas fa-flag"></i> Suomi (Äidinkieli)</li>
+                    <li class="lang-fi"><i class="fas fa-flag"></i> Englanti (Erinomainen)</li>
+                    <li class="lang-en"><i class="fas fa-flag"></i> Finnish (Native)</li>
+                    <li class="lang-en"><i class="fas fa-flag"></i> English (Fluent)</li>
+                    <hr style="border-top: 1px solid #34495e; margin: 10px 0;">
+                    <li><i class="fab fa-js-square"></i> JavaScript (Proficient)</li>
+                    <li><i class="fab fa-python"></i> Python (Expert)</li>
+                    <li><i class="fab fa-cuttlefish"></i> C++ (Proficient)</li>
+                    <li><i class="fas fa-hashtag"></i> C# (Proficient)</li>
+                    <li><i class="fab fa-html5"></i> HTML/CSS (Proficient)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="profile-image">
+                <img src="images/Profile.png" alt="Ubeid Hussein" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <h1>Ubeid (Upi) Hussein</h1>
+            <p class="lang-fi">Ohjelmoija</p>
+            <p class="lang-en">Programmer</p>
+
+
+            <div class="section">
+                <h2 class="lang-fi">Työkokemus</h2>
+                <h2 class="lang-en">Work Experience</h2>
+                <div>
+                    <h3>Progammer | Arts and Assets Specialist</h3>
+                    <p class="lang-fi"><em>Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
+                    <p class="lang-en"><em>January 2022 - Present | No Bright Shadows (Remote)</em></p>
+                    <ul>
+                        <li class="lang-fi">Pelimekaniikkojen ohjelmointi, hahmomallinnukseen, riggaamiseen, partikkelitehosteisiin ja shadereihin kehittämiseen.</li>
+                        <li class="lang-en">Programming game mechanics, character modeling, rigging, particle effects, and shader development.</li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3>Data Entry</h3>
+                    <p class="lang-fi"><em>Tammikuu 2021 - Tammikuu 2022 | Verwijnen & Verwijnen (Helsinki)</em></p>
+                    <p class="lang-en"><em>January 2021 - January 2022 | Verwijnen & Verwijnen (Helsinki)</em></p>
+                    <ul>
+                        <li class="lang-fi">Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden.</li>
+                        <li class="lang-en">Organized and maintained both electronic and physical records related to company expenses, ensuring data accuracy and accessibility.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Maintenance Technician</h3>
+                    <p class="lang-fi"><em>Heinäkuu 2019 - Heinäkuu 2020 | City of Kauniainen Hospital (Kauniainen)</em></p>
+                    <p class="lang-en"><em>July 2019 - July 2020 | City of Kauniainen Hospital (Kauniainen)</em></p>
+                    <ul>
+                        <li class="lang-fi">Osana huoltohenkilöstöä vastasin sairaalan toimintatehokkuuden ja turvallisuusstandardien ylläpitämisestä.</li>
+                        <li class="lang-en">As part of the maintenance staff, I was responsible for maintaining hospital operational efficiency and safety standards.</li>
+                    </ul>
+                </div>
+                <!-- Add more work experience entries as needed -->
+            </div>
+
+            <div class="section">
+                <h2 class="lang-fi">Koulutus</h2>
+                <h2 class="lang-en">Education</h2>
+                 <div>
+                    <h3>University of Applied Sciences (TAMK)</h3>
+                    <p class="lang-fi"><em>Tammikuu 2022 - Nykyhetki | Kandidaatin insinööri (B.Eng) tietotekniikassa</em></p>
+                    <p class="lang-en"><em>January 2022 - Present | Bachelor of Engineering (B.Eng) in Information Technology</em></p>
+                    <ul>
+                        <li class="lang-fi">Tietojenkäsittelytiede</li>
+                        <li class="lang-en">Computer Science</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Region Vocational College Tredu (TEKLU)</h3>
+                    <p class="lang-fi"><em>Tammikuu 2015 - Toukokuu 2018 | Automaatio- ja sähkötekniikan teknikko</em></p>
+                    <p class="lang-en"><em>January 2015 - May 2018 | Automation and Electrical Engineering Technician</em></p>
+                </div>
+                 <!-- Add more education entries as needed -->
+            </div>
+
+            <div class="section">
+                <h2 class="lang-fi">Taidot</h2>
+                <h2 class="lang-en">Skills</h2>
+                <div class="skills-grid">
+                    <h3 class="lang-fi">Web-kehitys</h3>
+                    <h3 class="lang-en">Web Development</h3>
+                    <ul>
+                        <li><i class="fas fa-server"></i> REST API Development</li>
+                        <li><i class="fab fa-node-js"></i> Express.js</li>
+                        <li><i class="fab fa-python"></i> Flask</li>
+                    </ul>
+                    <ul>
+                        <li><i class="fab fa-bootstrap"></i> Bootstrap CSS</li>
+                        <li><i class="fas fa-exchange-alt"></i> Frontend/Backend Integration</li>
+                    </ul>
+                    
+                    <h3 class="lang-fi">Projekti &amp; DevOps</h3>
+                    <h3 class="lang-en">Project &amp; DevOps</h3>
+                    <ul>
+                        <li><i class="fas fa-tasks"></i> Agile/Waterfall</li>
+                        <li><i class="fas fa-vial"></i> Automated Testing</li>
+                    </ul>
+                    <ul>
+                        <li><i class="fas fa-code-branch"></i> CI/CD</li>
+                        <li><i class="fab fa-microsoft"></i> Azure</li>
+                    </ul>
+                    
+                    <h3 class="lang-fi">Työkalut &amp; Teknologiat</h3>
+                    <h3 class="lang-en">Tools &amp; Technologies</h3>
+                    <ul>
+                        <li><i class="fas fa-database"></i> MySQL</li>
+                        <li><i class="fab fa-docker"></i> Docker</li>
+                    </ul>
+                    <ul>
+                        <li><i class="fab fa-git-alt"></i> Git</li>
+                        <li><i class="fab fa-node-js"></i> Node.js</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for language toggle -->
+    <script>
+        function toggleLanguage(lang) {
+            if (lang === 'finnish') {
+                document.body.classList.remove('english');
+                document.querySelector('.toggle-fi').classList.add('active');
+                document.querySelector('.toggle-en').classList.remove('active');
+            } else {
+                document.body.classList.add('english');
+                document.querySelector('.toggle-fi').classList.remove('active');
+                document.querySelector('.toggle-en').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html> 
