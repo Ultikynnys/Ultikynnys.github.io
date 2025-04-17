@@ -9,7 +9,7 @@
  */
 function loadGameSectionHeader(markdownFile, defaultDescription) {
     // Load the game section header
-    fetch('_includes/game-section-header.html')
+    fetch('content/game-section-header.html')
         .then(response => response.text())
         .then(html => {
             document.getElementById('game-section-header').innerHTML = html;
