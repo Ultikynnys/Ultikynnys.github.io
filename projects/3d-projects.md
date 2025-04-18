@@ -91,25 +91,25 @@
 ## Spatial Sphere
 - Title: Spatial Sphere - Album Cover
 - Description: Procedural modeling exercise in Blender creating complex geometric patterns for an album cover design.
-- Media: images/Old/fulls/Converted/Ballgen.jpg
+- Media: images/Ballgen.jpg
 - Private: true
 
 ## Bit Character
 - Title: Bit - Pix and Bit (Patricia Taxxon)
 - Description: Character reconstruction from a single 2D reference, based on an album cover by Patricia Taxxon.
-- Media: images/Old/fulls/Converted/Pix.gif
+- Media: images/Pix.gif
 - Private: true
 
 ## Lupilo
 - Title: Lupilo - VRChat Avatar
 - Description: Commissioned fursona created as a fully rigged VRChat avatar with detailed modeling and texturing.
-- Media: images/Old/fulls/Converted/lupilo2.jpg
+- Media: images/lupilo2.jpg
 - Private: true
 
 ## Grim Punisher
 - Title: Grim Punisher | TF2 Hat
 - Description: Team Fortress 2 hat design based loosely on the aesthetic of the Undertaker.
-- Media: images/Old/fulls/Converted/GrimPunisher.jpeg
+- Media: images/GrimPunisher.jpeg
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -117,7 +117,7 @@
 ## Insidious Salamander
 - Title: Insidious Salamander | TF2 Hat
 - Description: Team Fortress 2 hat design modeled after the Spotted salamander.
-- Media: images/Old/fulls/Converted/salamander2.jpg
+- Media: images/salamander2.jpg
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -125,7 +125,7 @@
 ## The Show-Show Off
 - Title: The Show-Show Off | TF2 Hat
 - Description: Team Fortress 2 hat based on Shake's Hat from "Aqua TV Show Show Theme Sequence" - a meta-reference to popular culture.
-- Media: images/Old/fulls/Converted/TheShowShowOff.jpeg
+- Media: images/TheShowShowOff.jpeg
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -133,7 +133,7 @@
 ## Engician
 - Title: Engician | TF2 Hat
 - Description: Team Fortress 2 hat with a play on words for Engineer and Magician, featuring a classic magician's hat design.
-- Media: images/Old/fulls/Converted/Engician.jpeg
+- Media: images/Engician.jpeg
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -141,7 +141,7 @@
 ## Gliders Getup
 - Title: Gliders Getup | TF2 Hat
 - Description: Team Fortress 2 hat based on the Green Goblin, originally called "Goblineer" - a specialized cosmetic for the Engineer class.
-- Media: images/Old/fulls/Converted/Gliders.jpg
+- Media: images/Gliders.jpg
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -149,31 +149,31 @@
 ## Blue Shark Plushie
 - Title: Blue Shark - Ikea Plushie
 - Description: Detailed recreation of the iconic Ikea Blåhaj shark plushie, with accurate materials and proportions.
-- Media: images/Old/fulls/Converted/Blahaj.jpg
+- Media: images/Blahaj.jpg
 - Store: https://ultikynnys.gumroad.com/l/Blueshark
 
 ## Carl Character
 - Title: Carl - Truttle1
 - Description: Character model based on the YouTube channel Truttle1, which focuses on esoteric programming languages.
-- Media: images/Old/fulls/Converted/Carl.jpg
+- Media: images/Carl.jpg
 - Private: true
 
 ## Kumuko
 - Title: Kumuko - Kumo desu ga, Nani ka?
 - Description: Character model based on the protagonist from the anime "So I'm a Spider, So What?", featuring detailed arachnid anatomy.
-- Media: images/Old/fulls/Converted/kumuko.jpg
+- Media: images/kumuko.jpg
 - Private: true
 
 ## Mao Mao
 - Title: Mao Mao - Heroes of Pure Heart
 - Description: Character model based on the protagonist from the animated series Mao Mao: Heroes of Pure Heart.
-- Media: images/Old/fulls/Converted/MAOMAO.jpg
+- Media: images/MAOMAO.jpg
 - Private: true
 
 ## Demoman's Pipe Dream
 - Title: Demoman's Pipe Dream - TF2
 - Description: Viral physics simulation created using Team Fortress 2 Demoman pipes, showcasing advanced simulation and rendering.
-- Media: images/Old/fulls/Converted/pills.jpg
+- Media: images/pills.jpg
 - Demo: https://www.reddit.com/r/tf2/comments/hx1ubp/demo_dreamsblender/
 - Private: true
 

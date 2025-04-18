@@ -59,7 +59,7 @@ Games I've developed and contributed to, showcasing my skills in game design, pr
 ## Crystal Ball Critters
 - Title: Crystal Ball Critters
 - Description: A commercial game developed with No Bright Shadows where I handled the entire modeling pipeline, character rigging, VFX, and game mechanic programming.
-- Media: images/Old/fulls/Converted/Hamster.jpg
+- Media: images/Hamster.jpg
 - Store: https://store.steampowered.com/app/2220080/Crystal_Ball_Critters/
 - Private: false
 - Engine: Unreal Engine
@@ -67,7 +67,7 @@ Games I've developed and contributed to, showcasing my skills in game design, pr
 ## dr_undertale - TF2 Mapping
 - Title: dr_undertale
 - Description: My second Team Fortress 2 deathrun map that survived development hell, teaching me the importance of releasing and then polishing rather than striving for perfection.
-- Media: images/Old/fulls/Converted/Undertale.jpeg
+- Media: images/Undertale.jpeg
 - Demo: https://gamebanana.com/mods/74601
 - Private: false
 - Engine: Source Engine
@@ -75,7 +75,7 @@ Games I've developed and contributed to, showcasing my skills in game design, pr
 ## dr_r60d - TF2 Mapping
 - Title: dr_r60d
 - Description: My first public Team Fortress 2 map, marking the beginning of my game development journey.
-- Media: images/Old/fulls/Converted/R60D.jpg
+- Media: images/R60D.jpg
 - Demo: https://gamebanana.com/mods/74575
 - Private: false 
 - Engine: Source Engine 

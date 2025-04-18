@@ -43,13 +43,13 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 ## SmdAnimationScaler
 - Title: Source Animation Scaler
 - Description: A Python script for batch‑scaling bones in .smd animation files, fixing animations for Source Engine models.
-- Media: images/Old/fulls/Converted/smd.jpg
+- Media: images/smd.jpg
 - GitHub: https://github.com/R60D/SmdAnimationScaler
 
 ## Batch Image Processing
 - Title: Batch Image Processing
 - Description: A Python tool to compress and resize large image sets in bulk, enforcing specific aspect ratios for web or game use.
-- Media: images/Old/fulls/Converted/BatchImage.jpg
+- Media: images/BatchImage.jpg
 - GitHub: https://github.com/R60D/BatchImageProcessing
 
 ## Source Map Stats
