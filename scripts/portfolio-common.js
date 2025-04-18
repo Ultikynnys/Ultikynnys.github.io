@@ -10,6 +10,46 @@ const typingSpeed = 100; // ms per character
 const deleteSpeed = 50; // ms per character (deleting is faster)
 const pauseBetweenNames = 8000; // pause for 8s between name changes (total ~10s with typing)
 
+// Yasuo Mode Easter Egg variables
+let secretClickCount = 0;
+let secretClickTimer = null;
+let isYasuoMode = false;
+const yasuoAudioFiles = [
+    'audio/Yasuo_Original_BasicAttack_0.ogg',
+    'audio/Yasuo_Original_BasicAttack_1.ogg',
+    'audio/Yasuo_Original_BasicAttack_2.ogg',
+    'audio/Yasuo_Original_BasicAttack_3.ogg'
+];
+const yasuoAudio = yasuoAudioFiles.map(src => {
+    const audio = new Audio(src);
+    audio.preload = 'auto'; // Preload audio files
+    return audio;
+});
+
+// Metal slicing sound effects
+const metalSliceAudioFiles = [
+    'audio/metal1.mp3',
+    'audio/metal2.mp3',
+    'audio/metal3.mp3',
+    'audio/metal4.mp3',
+    'audio/metal5.mp3'
+];
+const metalSliceAudio = metalSliceAudioFiles.map(src => {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+    return audio;
+});
+
+const foolsAudio = new Audio('audio/Fools.ogg');
+foolsAudio.preload = 'auto';
+
+let visibleCardsCount = 0;
+let activeContainerSelector = null;
+let activeCardSelector = null;
+let expectedCardsCount = 0; // New variable to track the expected number of cards from MD files
+let markdownProcessed = false; // Flag to track if markdown has been processed
+let yasuoSliceCounter = 0; // New counter for sword slices
+
 // Initialize name animation
 function initNameAnimation() {
     const nameContainer = document.getElementById('name-display').querySelector('h1');
@@ -132,6 +172,15 @@ function parseMarkdown(markdown) {
         }
     }
     
+    if (Object.keys(result).length > 0) {
+        // Update the global expected cards count
+        if (isYasuoMode && !markdownProcessed) {
+            expectedCardsCount += result.projects.length;
+            console.log(`parseMarkdown: Added ${result.projects.length} cards to expectedCardsCount. New total: ${expectedCardsCount}`);
+            markdownProcessed = true; // Mark as processed to avoid double-counting
+        }
+    }
+    
     return result;
 }
 
@@ -206,6 +255,251 @@ window.goToImage = function(event, projectId, index) {
     dots[index].classList.add('active');
 };
 
+// Function to play random Yasuo sound
+function playRandomYasuoSound() {
+    const randomIndex = Math.floor(Math.random() * yasuoAudio.length);
+    // Clone the audio node to allow overlapping plays if clicks are fast
+    const audioToPlay = yasuoAudio[randomIndex].cloneNode();
+    audioToPlay.play().catch(e => console.error("Audio play failed:", e));
+}
+
+// Function to play random metal slice sound
+function playRandomMetalSliceSound() {
+    const randomIndex = Math.floor(Math.random() * metalSliceAudio.length);
+    // Clone the audio node to allow overlapping plays if clicks are fast
+    const audioToPlay = metalSliceAudio[randomIndex].cloneNode();
+    audioToPlay.play().catch(e => console.error("Metal slice audio play failed:", e));
+}
+
+// Function for Yasuo attack animation
+function yasuoAttack(cardElement) {
+    if (!cardElement || cardElement.style.visibility === 'hidden') {
+        console.log("YasuoAttack: Card already hidden or invalid.", cardElement);
+        return;
+    }
+
+    // Check visibility *before* hiding it
+    const wasVisible = window.getComputedStyle(cardElement).visibility !== 'hidden';
+    console.log("YasuoAttack: Attacking card. Was visible?", wasVisible, cardElement);
+
+    // Increment the slice counter each time an attack is performed
+    yasuoSliceCounter++;
+    console.log(`YasuoAttack: Slice ${yasuoSliceCounter} of 7`);
+
+    // Play Yasuo attack sound (voice line)
+    playRandomYasuoSound();
+
+    // --- Sword Animation ---
+    const sword = document.createElement('img');
+    sword.src = 'images/YasouSword.png';
+    sword.classList.add('yasuo-sword');
+    document.body.appendChild(sword);
+
+    const cardRect = cardElement.getBoundingClientRect();
+    const swordStartX = cardRect.left + cardRect.width / 2 - 150; 
+    const swordStartY = cardRect.top + cardRect.height / 2 - 150; 
+
+    sword.style.left = `${swordStartX}px`;
+    sword.style.top = `${swordStartY}px`;
+    sword.style.animation = 'yasuoSwipe 0.6s ease-out forwards';
+
+    sword.addEventListener('animationend', () => {
+        sword.remove();
+    });
+
+    // --- Card Splitting Animation --- 
+    cardElement.style.visibility = 'hidden'; // Hide original card immediately
+    cardElement.style.pointerEvents = 'none';
+
+    // Decrement count only if the card was actually visible before this attack
+    if (wasVisible) {
+        visibleCardsCount--;
+        console.log(`YasuoAttack: Decremented count. Cards remaining: ${visibleCardsCount}`);
+    }
+
+    // Create two halves slightly after sword starts animation
+    setTimeout(() => {
+        // Play metal slicing sound right when the card splits
+        playRandomMetalSliceSound();
+        
+        const cardRectDoc = cardElement.getBoundingClientRect(); 
+        const scrollX = window.scrollX || window.pageXOffset;
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        // --- Create flash line effect ---
+        const flashLine = document.createElement('div');
+        flashLine.classList.add('flash-slice');
+        // Calculate the position and angle of the slice (diagonal from top-right to bottom-left)
+        const sliceLength = Math.sqrt(Math.pow(cardRectDoc.width, 2) + Math.pow(cardRectDoc.height, 2));
+        const sliceAngle = Math.atan2(cardRectDoc.height, cardRectDoc.width) * (180 / Math.PI);
+        
+        // Position at the top-right corner of the card
+        flashLine.style.width = `${sliceLength}px`;
+        flashLine.style.left = `${cardRectDoc.left + scrollX}px`;
+        flashLine.style.top = `${cardRectDoc.top + scrollY}px`;
+        flashLine.style.transform = `rotate(${sliceAngle}deg)`;
+        
+        document.body.appendChild(flashLine);
+        
+        // Remove flash after animation
+        flashLine.addEventListener('animationend', () => {
+            flashLine.remove();
+        });
+
+        const topHalf = document.createElement('div');
+        const bottomHalf = document.createElement('div');
+
+        [topHalf, bottomHalf].forEach((half, index) => {
+            const clone = cardElement.cloneNode(true);
+            // Reset potential problematic styles on the clone
+            clone.style.visibility = 'visible'; 
+            clone.style.margin = '0'; 
+            clone.classList.remove('expanded'); 
+            clone.style.position = 'absolute'; // Ensure content is positioned within half
+            clone.style.top = '0';
+            clone.style.left = '0';
+            clone.style.width = '100%';
+            clone.style.height = '100%';
+
+            half.classList.add('card-half');
+            half.style.width = `${cardRectDoc.width}px`;
+            half.style.height = `${cardRectDoc.height}px`;
+            half.style.top = `${cardRectDoc.top + scrollY}px`; 
+            half.style.left = `${cardRectDoc.left + scrollX}px`;
+            
+            half.appendChild(clone); 
+            document.body.appendChild(half);
+
+            if (index === 0) { // Top half
+                half.classList.add('card-half-top');
+            } else { // Bottom half
+                 // Adjust inner clone position for bottom half clip-path (simplified)
+                 clone.style.top = `-${cardRectDoc.height / 2}px`; 
+                 half.classList.add('card-half-bottom');
+            }
+
+            half.addEventListener('animationend', () => {
+                half.remove();
+            });
+        });
+
+    }, 150); 
+
+     // Check if we've reached 7 slices - exit Yasuo mode
+     if (yasuoSliceCounter >= 7) {
+        console.log("YasuoAttack: 7 slices reached. Triggering Fools sound and deactivation.");
+        setTimeout(() => {
+            foolsAudio.play().catch(e => console.error("Fools audio play failed:", e));
+            deactivateYasuoMode();
+        }, 700);
+    } else if (wasVisible) {
+        console.log(`YasuoAttack: Card destroyed, ${visibleCardsCount} cards still visible.`);
+    }
+}
+
+// Function to cleanly deactivate Yasuo mode
+function deactivateYasuoMode() {
+    if (!isYasuoMode) return;
+    console.log("Deactivating Yasuo Mode. Resetting state.");
+    isYasuoMode = false;
+    yasuoSliceCounter = 0; // Reset slice counter
+    const indicator = document.getElementById('yasuo-mode-indicator');
+    document.body.style.border = "none";
+    document.body.classList.remove('yasuo-mode-active');
+    if (indicator) indicator.classList.remove('active');
+    secretClickCount = 0;
+    clearTimeout(secretClickTimer);
+}
+
+// Function to activate Yasuo mode
+function activateYasuoMode() {
+    if (isYasuoMode) return;
+    console.log("Activating Yasuo Mode...");
+    isYasuoMode = true;
+    yasuoSliceCounter = 0; // Reset slice counter
+    const indicator = document.getElementById('yasuo-mode-indicator');
+    document.body.style.border = "3px dashed red";
+    document.body.classList.add('yasuo-mode-active');
+    if (indicator) indicator.classList.add('active');
+
+    // Reset expectedCardsCount
+    expectedCardsCount = 0;
+    markdownProcessed = false;
+
+    // For special case of index page with a fixed number of cards
+    if (activeContainerSelector === '.portfolio-choice-container') {
+        // On index page, cards are static
+        const container = document.querySelector(activeContainerSelector);
+        if (container) {
+            const cards = container.querySelectorAll(activeCardSelector);
+            visibleCardsCount = cards.length;
+            console.log(`activateYasuoMode: Index page - set count to ${visibleCardsCount} static cards`);
+        }
+    } else {
+        // For portfolio pages, we'll trigger a reload/recount of the projects from Markdown
+
+        // Get the current project files being used
+        let projectsFile = null;
+        let gamesFile = null;
+
+        if (activeContainerSelector === '#programming-projects-container') {
+            projectsFile = 'projects/programming_projects.md';
+        } else if (activeContainerSelector === '#3d-projects-container') {
+            projectsFile = 'projects/3d_projects.md';
+            gamesFile = 'projects/games_projects.md';
+        }
+
+        // Temporarily save the current cards count from DOM in case initPortfolio takes time
+        visibleCardsCount = document.querySelectorAll(`${activeContainerSelector} ${activeCardSelector}`).length;
+        console.log(`activateYasuoMode: Initializing with DOM-counted ${visibleCardsCount} cards while loading Markdown`);
+
+        // This will update expectedCardsCount via parseMarkdown when loading completes
+        if (projectsFile) {
+            fetch(projectsFile)
+                .then(response => response.text())
+                .then(text => {
+                    parseMarkdown(text);
+                    visibleCardsCount = expectedCardsCount;
+                    console.log(`activateYasuoMode: Updated from Markdown to ${visibleCardsCount} cards`);
+                })
+                .catch(err => console.error("Error loading markdown for card counting:", err));
+        }
+
+        if (gamesFile) {
+            markdownProcessed = false; // Reset to allow counting games separately
+            fetch(gamesFile)
+                .then(response => response.text())
+                .then(text => {
+                    parseMarkdown(text);
+                    visibleCardsCount = expectedCardsCount;
+                    console.log(`activateYasuoMode: Updated from Markdown to ${visibleCardsCount} cards (including games)`);
+                })
+                .catch(err => console.error("Error loading game markdown for card counting:", err));
+        }
+    }
+
+    // Reset click counts
+    secretClickCount = 0;
+    clearTimeout(secretClickTimer);
+}
+
+// Function to handle clicks for Yasuo mode activation/deactivation
+function handleSecretModeClick() {
+    secretClickCount++;
+    clearTimeout(secretClickTimer);
+    secretClickTimer = setTimeout(() => {
+        secretClickCount = 0;
+    }, 500);
+
+    if (secretClickCount === 3) {
+        if (isYasuoMode) {
+            deactivateYasuoMode();
+        } else {
+            activateYasuoMode();
+        }
+    }
+}
+
 // Project expansion functionality
 function setupProjectExpansion(containerId = 'projects-container') {
     const container = document.getElementById(containerId);
@@ -230,6 +524,14 @@ function setupProjectExpansion(containerId = 'projects-container') {
         const clickedCard = e.target.closest('.project-card');
         
         if (clickedCard) {
+            // *** YASUO MODE CHECK ***
+            if (isYasuoMode) {
+                yasuoAttack(clickedCard);
+                e.stopPropagation(); // Prevent any other actions
+                return; // Don't expand the card
+            }
+            // *** END YASUO MODE CHECK ***
+
             // If the clicked card is already the expanded one, do nothing
             if (clickedCard === expandedCard) {
                 return;
@@ -396,6 +698,9 @@ function initPortfolio(projectsFile, gamesFile) {
         setupProjectExpansion('games-container');
     }
 
+    // Reset the markdown processed flag when loading new projects
+    markdownProcessed = false;
+
     // Load projects
     if (projectsFile) {
         fetch(projectsFile)
@@ -411,6 +716,12 @@ function initPortfolio(projectsFile, gamesFile) {
                 
                 if (projects.intro) {
                     document.querySelector('.bio').innerHTML = projects.intro;
+                }
+
+                // Update global count if in Yasuo mode
+                if (isYasuoMode) {
+                    visibleCardsCount = expectedCardsCount;
+                    console.log(`initPortfolio: Set visibleCardsCount to ${visibleCardsCount} from markdown data`);
                 }
 
                 projects.projects.forEach((project, index) => {
@@ -432,6 +743,9 @@ function initPortfolio(projectsFile, gamesFile) {
             });
     }
 
+    // Reset the markdown processed flag before loading games
+    markdownProcessed = false;
+
     // Load games
     if (gamesFile) {
         fetch(gamesFile)
@@ -445,6 +759,12 @@ function initPortfolio(projectsFile, gamesFile) {
                 const gamesContainer = document.getElementById('games-container');
                 const games = parseMarkdown(text);
                 
+                // Update global count if in Yasuo mode
+                if (isYasuoMode) {
+                    visibleCardsCount = expectedCardsCount;
+                    console.log(`initPortfolio: Set visibleCardsCount to ${visibleCardsCount} from markdown data`);
+                }
+
                 games.projects.forEach((game, index) => {
                     const gameCard = createProjectCard(game, index + 1000); // Use offset for game IDs
                     // Convert string to DOM element before appending
@@ -567,4 +887,80 @@ window.addEventListener('load', function() {
 // Remove resize listener for sliders
 window.addEventListener('resize', function() {
     // Comparison slider functionality has been removed
+});
+
+// Initialize all features when the DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Create and append Yasuo mode indicator image
+    const indicator = document.createElement('img');
+    indicator.id = 'yasuo-mode-indicator';
+    indicator.src = 'images/yasuo.png';
+    indicator.alt = 'Yasuo Mode Active';
+    document.body.appendChild(indicator);
+    
+    let projectsFile = null;
+    let gamesFile = null;
+
+    // Determine page type and set selectors
+    if (document.getElementById('programming-projects-container')) {
+        activeContainerSelector = '#programming-projects-container';
+        activeCardSelector = '.project-card';
+        projectsFile = 'projects/programming_projects.md';
+        initPortfolio(projectsFile, null); 
+        setupProjectExpansion(activeContainerSelector.substring(1)); // Pass ID without #
+    } else if (document.getElementById('3d-projects-container')) {
+        activeContainerSelector = '#3d-projects-container';
+        activeCardSelector = '.project-card';
+        projectsFile = 'projects/3d_projects.md';
+        gamesFile = 'projects/games_projects.md';
+        initPortfolio(projectsFile, gamesFile); 
+        setupProjectExpansion(activeContainerSelector.substring(1)); // Pass ID without #
+        // Note: If games are in a separate container, this might need adjustment
+    } else if (document.querySelector('.portfolio-choice-container')) {
+        // Index page
+        activeContainerSelector = '.portfolio-choice-container';
+        activeCardSelector = '.portfolio-choice';
+        if (document.getElementById('name-display')) {
+             initNameAnimation(); // Init name animation if on index
+        }
+    } else {
+         console.warn("Could not determine portfolio type for Yasuo mode setup.");
+    }
+    
+    // ... init theme toggle ...
+
+    // Add name click listener for Yasuo mode
+    const nameDisplayH1 = document.querySelector('#name-display h1');
+    if (nameDisplayH1) {
+        nameDisplayH1.style.cursor = 'pointer';
+        nameDisplayH1.addEventListener('click', handleSecretModeClick);
+    } else {
+         console.warn("Name display element (#name-display h1) not found for Yasuo mode listener.");
+    }
+
+    // Add delegated click listener to the active container for Yasuo attacks
+    if (activeContainerSelector && activeCardSelector) {
+        const containerElement = document.querySelector(activeContainerSelector);
+        if (containerElement) {
+            containerElement.addEventListener('click', function(e) {
+                if (!isYasuoMode) return; // Only act in Yasuo mode
+
+                // Find the clicked card element that matches the active selector
+                const clickedCard = e.target.closest(activeCardSelector);
+                
+                if (clickedCard) {
+                     // Prevent default behavior (like navigation for <a> tags on index)
+                     e.preventDefault(); 
+                    // Prevent card expansion or other listeners
+                    e.stopPropagation(); 
+                    
+                    yasuoAttack(clickedCard);
+                }
+            }, true); // Use capture phase to potentially intercept before other listeners
+        } else {
+             console.warn("Could not find container element to attach Yasuo click listener:", activeContainerSelector);
+        }
+    } else {
+         console.warn("Cannot attach Yasuo click listener: Active container/card selectors not set.");
+    }
 }); 

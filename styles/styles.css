@@ -132,6 +132,15 @@ h1.hidden {
     margin-bottom: 0.8rem;
 }
 
+/* Prevent text selection on name heading for better click handling */
+.dynamic-name-container h1 {
+    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none; /* Safari support */
+    -moz-user-select: none; /* Firefox support */
+    -ms-user-select: none; /* IE/Edge support */
+    cursor: pointer; /* Reinforce that it's clickable */
+}
+
 .subtitle {
     font-size: 1.5rem;
     color: var(--header-text-color);
@@ -1282,4 +1291,170 @@ body.has-expanded-project .close-button {
 /* Remove hover since it has pointer-events: none */
 .game-tag:hover {
     /* No hover effects needed */
+}
+
+/* Yasuo Mode Easter Egg */
+.yasuo-sword {
+    position: fixed;
+    z-index: 1001;
+    width: 300px; /* Already increased size */
+    height: auto;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-150%) rotate(135deg); /* Flipped rotation (180 - (-45) = 225, but 135 looks better) */
+}
+
+@keyframes yasuoSwipe {
+    0% {
+        opacity: 0.8;
+        transform: translateX(-150%) translateY(-50%) rotate(90deg) scale(1.8); /* Flipped rotation */
+    }
+    40% {
+        opacity: 1;
+        transform: translateX(50%) translateY(50%) rotate(170deg) scale(1.2); /* Flipped rotation */
+    }
+    60% {
+        opacity: 1;
+        transform: translateX(50%) translateY(50%) rotate(190deg) scale(1.2); /* Flipped rotation */
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(150%) translateY(150%) rotate(135deg) scale(1); /* Flipped rotation */
+    }
+}
+
+/* Card splitting effect */
+.card-half {
+    position: absolute; /* Positioned relative to the document */
+    overflow: hidden;
+    box-sizing: border-box;
+    /* Match card background/shadow if needed, or just show content */
+    background: var(--card-bg);
+    border-radius: 10px; /* Match card rounding */
+    box-shadow: var(--card-shadow);
+    z-index: 998; /* Below sword, above original card position */
+    pointer-events: none;
+}
+
+.card-half > * { /* Style the cloned content inside */
+    display: block; /* Ensure the cloned card inside behaves */
+    position: absolute; /* Position relative to the half */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.card-half-top {
+    clip-path: inset(0 0 50% 0);
+    animation: cardSplitTop 0.6s ease-out forwards;
+}
+
+.card-half-bottom {
+    clip-path: inset(50% 0 0 0);
+    animation: cardSplitBottom 0.6s ease-out forwards;
+}
+
+/* Align content in bottom half */
+.card-half-bottom > * {
+   top: -100%; /* Move the cloned card up so bottom half is visible */
+}
+
+
+@keyframes cardSplitTop {
+    from {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-50px) rotate(-5deg);
+        opacity: 0;
+    }
+}
+
+@keyframes cardSplitBottom {
+    from {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(50px) rotate(5deg);
+        opacity: 0;
+    }
+}
+
+/* Yasuo Mode Indicator */
+#yasuo-mode-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 300px; /* Doubled size */
+    height: auto;
+    z-index: 1002; 
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    pointer-events: none;
+}
+
+#yasuo-mode-indicator.active {
+    opacity: 0.8; /* Slightly transparent */
+    visibility: visible;
+}
+
+/* Vignette Overlay */
+body::before { /* Using body pseudo-element */
+    content: "";
+    position: fixed;
+    top: 0; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
+    z-index: 1000; /* Below sword and indicator */
+    pointer-events: none; /* Allow clicks through */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+body.yasuo-mode-active::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Flash slice effect */
+.flash-slice {
+    position: absolute;
+    height: 3px; /* Thin line */
+    background-color: white;
+    z-index: 1003; /* Above everything */
+    transform-origin: center left;
+    box-shadow: 
+        0 0 10px 2px rgba(255, 255, 255, 0.8),
+        0 0 20px 4px rgba(255, 255, 255, 0.6),
+        0 0 30px 6px rgba(255, 255, 255, 0.4),
+        0 0 40px 8px rgba(255, 255, 255, 0.2);
+    filter: brightness(1.5) contrast(1.2);
+    animation: flashSlice 0.4s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes flashSlice {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+    10% {
+        opacity: 1;
+        width: 100%;
+    }
+    30% {
+        opacity: 1;
+        width: 100%;
+    }
+    100% {
+        opacity: 0;
+        width: 100%;
+    }
 }
