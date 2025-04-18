@@ -376,14 +376,18 @@ function yasuoAttack(cardElement) {
         // --- Create flash line effect ---
         const flashLine = document.createElement('div');
         flashLine.classList.add('flash-slice');
-        // Calculate the position and angle of the slice (diagonal from top-right to bottom-left)
-        const sliceLength = Math.sqrt(Math.pow(cardRectDoc.width, 2) + Math.pow(cardRectDoc.height, 2));
+        // Set fixed length for flash line (1000px) instead of calculating based on card dimensions
+        const sliceLength = 1000; // Fixed length of 1000px
         const sliceAngle = Math.atan2(cardRectDoc.height, cardRectDoc.width) * (180 / Math.PI);
         
-        // Position at the top-right corner of the card
+        // Position starting before the top-right corner of the card for extended effect
+        // Calculate offset to move line starting point further away from diagonal
+        const offsetX = -cardRectDoc.width * 0.5; // Increase offset to 50% of card width
+        const offsetY = -cardRectDoc.height * 0.5; // Increase offset to 50% of card height
+        
         flashLine.style.width = `${sliceLength}px`;
-        flashLine.style.left = `${cardRectDoc.left + scrollX}px`;
-        flashLine.style.top = `${cardRectDoc.top + scrollY}px`;
+        flashLine.style.left = `${cardRectDoc.left + scrollX + offsetX}px`;
+        flashLine.style.top = `${cardRectDoc.top + scrollY + offsetY}px`;
         flashLine.style.transform = `rotate(${sliceAngle}deg)`;
         
         document.body.appendChild(flashLine);

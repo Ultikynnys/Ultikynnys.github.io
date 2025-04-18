@@ -1306,7 +1306,7 @@ body.has-expanded-project .close-button {
 /* Left-to-right slash (original direction) */
 .yasuo-sword.slash-left-to-right {
     transform: translateX(-150%) rotate(135deg); /* Flipped rotation */
-    animation: yasuoSwipeLeftToRight 0.3s ease-out forwards; /* Reduced from 0.4s to 0.3s for faster animation */
+    animation: yasuoSwipeLeftToRight 0.2s ease-out forwards; /* Reduced from 0.3s to 0.2s for faster animation */
 }
 
 /* Left-to-right animation (original) */
@@ -1315,11 +1315,11 @@ body.has-expanded-project .close-button {
         opacity: 0.8;
         transform: translateX(-150%) translateY(-50%) rotate(90deg) scale(1.8); /* Flipped rotation */
     }
-    40% {
+    30% { /* Changed from 40% to 30% to accelerate motion */
         opacity: 1;
         transform: translateX(50%) translateY(50%) rotate(170deg) scale(1.2); /* Flipped rotation */
     }
-    60% {
+    50% { /* Changed from 60% to 50% to accelerate motion */
         opacity: 1;
         transform: translateX(50%) translateY(50%) rotate(190deg) scale(1.2); /* Flipped rotation */
     }
