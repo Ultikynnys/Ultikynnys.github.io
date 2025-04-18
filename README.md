@@ -169,17 +169,25 @@ Example:
 - **Private Tag**: Automatically shown for projects with `Private: true`
 - **Store Links**: Displayed when `Store` parameter is provided
 - **GitHub Links**: Always shown when `GitHub` URL is provided
+- **Demo Links**: Displayed when `Demo` parameter is provided
 - **Image Carousel**: Automatically enabled for projects with multiple images
 
 ### 3D Projects
-- **ArtStation Links**: Always shown when `ArtStation` URL is provided
-- **Store Links**: Displayed when `Store` parameter is provided
+- **Private Tag**: Automatically shown for projects with `Private: true` 
+- **Store Links**: Displayed when `Store` parameter is provided, with special Steam Workshop/Store icons
+- **Demo Links**: Displayed when `Demo` parameter is provided
+- **Sketchfab Support**: Automatically embeds 3D models when Sketchfab URLs are provided
 - **Image Carousel**: Automatically enabled for projects with multiple images
 
 ### Game Projects
-- **Game Engine Tag**: Shows the engine used with an appropriate icon (Unity, Unreal Engine, Godot, Source Engine)
+- **Game Engine Tag**: Shows the engine used with an appropriate icon:
+  - Unity: Unity logo
+  - Unreal Engine: UE logo
+  - Godot: Ghost icon
+  - Source Engine: Steam icon
+  - Default: Gamepad icon
 - **Demo Links**: Displayed when `Demo` parameter is provided
-- **Store Links**: Displayed when `Store` parameter is provided
+- **Store Links**: Displayed when `Store` parameter is provided, with Steam icon for Steam store links
 - **Private Tag**: Automatically shown for projects with `Private: true`
 - **Image Carousel**: Automatically enabled for projects with multiple images
 
@@ -212,4 +220,4 @@ If projects aren't displaying correctly:
 2. Verify all required parameters are present
 3. Ensure media files exist at the specified paths
 4. For multiple images, verify the array format is correct
-5. Check the browser console for any JavaScript errors 
+5. Check the browser console for any JavaScript errors
