@@ -28,11 +28,11 @@ const yasuoAudio = yasuoAudioFiles.map(src => {
 
 // Metal slicing sound effects
 const metalSliceAudioFiles = [
-    'audio/metal1.mp3',
-    'audio/metal2.mp3',
-    'audio/metal3.mp3',
-    'audio/metal4.mp3',
-    'audio/metal5.mp3'
+    'audio/metal1.ogg',
+    'audio/metal2.ogg',
+    'audio/metal3.ogg',
+    'audio/metal4.ogg',
+    'audio/metal5.ogg'
 ];
 const metalSliceAudio = metalSliceAudioFiles.map(src => {
     const audio = new Audio(src);
@@ -50,6 +50,7 @@ finishedAudio.forEach(audio => {
 });
 let currentFinishedAudioIndex = 0;
 let isPlayingFinishedAudio = false;
+let slashDirection = 'left-to-right'; // Track slash direction to alternate
 
 // Function to play the next finished audio and toggle index
 function playNextFinishedAudio() {
@@ -323,7 +324,7 @@ function yasuoAttack(cardElement) {
 
     // Increment the slice counter each time an attack is performed
     yasuoSliceCounter++;
-    console.log(`YasuoAttack: Slice ${yasuoSliceCounter} of 7`);
+    console.log(`YasuoAttack: Slice ${yasuoSliceCounter} of 7, direction: ${slashDirection}`);
 
     // Play Yasuo attack sound (voice line)
     playRandomYasuoSound();
@@ -332,18 +333,36 @@ function yasuoAttack(cardElement) {
     const sword = document.createElement('img');
     sword.src = 'images/YasouSword.png';
     sword.classList.add('yasuo-sword');
+    
+    // Add the current direction class
+    sword.classList.add(`slash-${slashDirection}`);
+    
     document.body.appendChild(sword);
 
     const cardRect = cardElement.getBoundingClientRect();
-    const swordStartX = cardRect.left + cardRect.width / 2 - 150; 
-    const swordStartY = cardRect.top + cardRect.height / 2 - 150; 
-
-    sword.style.left = `${swordStartX}px`;
-    sword.style.top = `${swordStartY}px`;
-    sword.style.animation = 'yasuoSwipe 0.6s ease-out forwards';
-
+    
+    // Position the sword based on slash direction
+    if (slashDirection === 'left-to-right') {
+        const swordStartX = cardRect.left + cardRect.width / 2 - 150;
+        const swordStartY = cardRect.top + cardRect.height / 2 - 150;
+        sword.style.left = `${swordStartX}px`;
+        sword.style.top = `${swordStartY}px`;
+    } else { // right-to-left
+        const swordStartX = cardRect.left + cardRect.width / 2 - 150;
+        const swordStartY = cardRect.top + cardRect.height / 2 - 150;
+        sword.style.left = `${swordStartX}px`;
+        sword.style.top = `${swordStartY}px`;
+    }
+    
+    // Use the animation class instead of setting animation directly
+    // The animation is now set in the CSS via the slash-direction class
+    
     sword.addEventListener('animationend', () => {
         sword.remove();
+        
+        // Toggle slash direction for next attack
+        slashDirection = (slashDirection === 'left-to-right') ? 'right-to-left' : 'left-to-right';
+        console.log(`Next slash direction will be: ${slashDirection}`);
     });
 
     // --- Card Splitting Animation --- 
