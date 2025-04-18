@@ -1,0 +1,58 @@
+<footer onclick="activateSecretEffect()" style="cursor:pointer;">
+  <p id="footerText">&copy; 2025 Ubeid Hussein. All rights reserved.</p>
+</footer>
+
+<script>
+function activateSecretEffect() {
+  console.log("activateSecretEffect triggered"); // Debug log
+  
+  const textElem = document.getElementById('footerText');
+  if (!textElem) return;
+  
+  // Start rainbow text effect
+  const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+  let index = 0;
+  const colorInterval = setInterval(() => {
+    textElem.style.color = colors[index % colors.length];
+    index++;
+  }, 100);
+
+  // Spawn nyan cats moving from left to right
+  const spawnInterval = setInterval(() => {
+    const cat = document.createElement("img");
+    cat.src = "images/nyan.gif"; // using the nyan.gif in the images folder
+    cat.style.position = "fixed";
+    cat.style.left = "-100px";
+    cat.style.top = Math.random() * window.innerHeight + "px";
+    cat.style.width = "50px";
+    cat.style.zIndex = 1000;
+    document.body.appendChild(cat);
+
+    const duration = 5000;
+    const startTime = performance.now();
+    function animateCat(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      cat.style.left = (progress * (window.innerWidth + 100) - 100) + "px";
+      if (progress < 1) {
+        requestAnimationFrame(animateCat);
+      } else {
+        cat.remove();
+      }
+    }
+    requestAnimationFrame(animateCat);
+  }, 500);  // spawn a new nyan cat every 500 ms
+
+  // Stop the entire effect after 5 seconds
+  setTimeout(() => {
+    clearInterval(colorInterval);
+    clearInterval(spawnInterval);
+    textElem.style.color = "";
+    // Remove any remaining nyan cats
+    document.querySelectorAll("body > img").forEach(img => img.remove());
+  }, 5000);
+
+  // Prevent repeated triggering by removing the onclick handler
+  document.querySelector("footer").onclick = null;
+}
+</script>

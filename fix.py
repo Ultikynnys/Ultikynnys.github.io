@@ -1,70 +1,54 @@
 import os
-import re
 
-# Extensions for files to scan and image file types
-SCAN_EXTS = ('.html', '.md', '.js')
-IMAGE_EXTS = ('.jpg', '.jpeg', '.png', '.gif', '.webp', '.mp4')
+def update_index_files(root_dir):
+    target_files = ["index.html", "programming-portfolio.html", "3d-portfolio.html"]
+    # New footer fetching snippet that evaluates inline scripts
+    new_footer_fetch = (
+        "fetch('footer.html')\n"
+        "  .then(response => response.text())\n"
+        "  .then(html => {\n"
+        "    const container = document.getElementById('footer-container');\n"
+        "    container.innerHTML = html;\n"
+        "    container.querySelectorAll('script').forEach(oldScript => {\n"
+        "      const newScript = document.createElement('script');\n"
+        "      newScript.textContent = oldScript.textContent;\n"
+        "      document.body.appendChild(newScript);\n"
+        "    });\n"
+        "  })\n"
+        "  .catch(error => console.error('Failed to load footer:', error));"
+    )
 
-# Regex to match references like "images/filename.ext"
-pattern = re.compile(r'images/([\w\-.]+?\.(?:jpg|jpeg|png|gif|webp|mp4))', re.I)
-
-def collect_references(root_dir):
-    """
-    Walks through the workspace and collects all file names (in the images folder) referenced
-    in Markdown, HTML, and JavaScript files.
-    """
-    referenced = set()
-    for dirpath, _, files in os.walk(root_dir):
-        for file in files:
-            if file.lower().endswith(SCAN_EXTS):
-                filepath = os.path.join(dirpath, file)
-                try:
-                    with open(filepath, "r", encoding="utf-8") as f:
-                        content = f.read()
-                        matches = pattern.findall(content)
-                        for m in matches:
-                            referenced.add(m)
-                except Exception as e:
-                    print(f"Error reading {filepath}: {e}")
-    return referenced
-
-def find_image_files(images_dir):
-    """
-    Lists all image, gif, and video files in the images folder.
-    """
-    image_files = set()
-    for file in os.listdir(images_dir):
-        if file.lower().endswith(IMAGE_EXTS):
-            image_files.add(file)
-    return image_files
-
-def remove_unused_images(workspace_root, images_dir):
-    """
-    Deletes image files in images_dir that are not referenced in any scanned files.
-    """
-    referenced = collect_references(workspace_root)
-    all_images = find_image_files(images_dir)
-
-    print("Referenced image files:", referenced)
-    print("All images found:", all_images)
-
-    unused = all_images - referenced
-    print("Unused images to be removed:", unused)
-
-    for image in unused:
-        image_path = os.path.join(images_dir, image)
+    for file_name in target_files:
+        file_path = os.path.join(root_dir, file_name)
         try:
-            os.remove(image_path)
-            print(f"Removed {image_path}")
-        except Exception as e:
-            print(f"Failed to remove {image_path}: {e}")
+            with open(file_path, "r", encoding="utf-8") as f:
+                content = f.read()
 
-if __name__ == '__main__':
-    # Set the workspace root (assumes this script is at the root level)
-    workspace_root = os.getcwd()
-    images_folder = os.path.join(workspace_root, 'images')
-    
-    if not os.path.isdir(images_folder):
-        print(f"Images folder not found at {images_folder}")
-    else:
-        remove_unused_images(workspace_root, images_folder)
+            if "fetch('footer.html')" in content:
+                # Replace the original fetch snippet with the new snippet
+                # Assumption: the previous snippet starts at the fetch call and ends at the .catch block.
+                # We perform a simple string replace.
+                # Adjust the marker text below if your original snippet differs.
+                start_marker = "fetch('footer.html')"
+                end_marker = ".catch(error => console.error('Failed to load footer:', error));"
+                # Find the block to be replaced
+                start_index = content.find(start_marker)
+                end_index = content.find(end_marker, start_index)
+                if start_index != -1 and end_index != -1:
+                    end_index += len(end_marker)
+                    old_snippet = content[start_index:end_index]
+                    new_content = content.replace(old_snippet, new_footer_fetch)
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(new_content)
+                    print(f"Updated footer fetch in {file_path}")
+                else:
+                    print(f"Could not locate complete footer fetch snippet in {file_path}")
+            else:
+                print(f"No footer fetch snippet found in {file_path}.")
+        except Exception as e:
+            print(f"Error processing {file_path}: {e}")
+
+if __name__ == "__main__":
+    # Change root_dir as needed; here we use the current working directory
+    root_dir = os.getcwd()
+    update_index_files(root_dir)

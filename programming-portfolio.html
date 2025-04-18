@@ -51,9 +51,7 @@
     </main>
     
     <!-- Copyright footer -->
-    <footer class="copyright-footer">
-        <p>&copy; 2025 Ubeid Hussein. All rights reserved.</p>
-    </footer>
+    
 
     <!-- Load shared social ribbon script -->
     <script src="scripts/social-ribbon.js"></script>
@@ -183,5 +181,20 @@
             initPortfolio('projects/programming-projects.md', 'projects/games.md');
         });
     </script>
+<div id="footer-container"></div>
+<script>
+  fetch('footer.html')
+  .then(response => response.text())
+  .then(html => {
+    const container = document.getElementById('footer-container');
+    container.innerHTML = html;
+    container.querySelectorAll('script').forEach(oldScript => {
+      const newScript = document.createElement('script');
+      newScript.textContent = oldScript.textContent;
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(error => console.error('Failed to load footer:', error));
+</script>
 </body>
 </html> 
