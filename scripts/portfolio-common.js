@@ -341,28 +341,17 @@ function yasuoAttack(cardElement) {
 
     const cardRect = cardElement.getBoundingClientRect();
     
-    // Position the sword based on slash direction
-    if (slashDirection === 'left-to-right') {
-        const swordStartX = cardRect.left + cardRect.width / 2 - 150;
-        const swordStartY = cardRect.top + cardRect.height / 2 - 150;
-        sword.style.left = `${swordStartX}px`;
-        sword.style.top = `${swordStartY}px`;
-    } else { // right-to-left
-        const swordStartX = cardRect.left + cardRect.width / 2 - 150;
-        const swordStartY = cardRect.top + cardRect.height / 2 - 150;
-        sword.style.left = `${swordStartX}px`;
-        sword.style.top = `${swordStartY}px`;
-    }
+    // Position the sword based on slash direction - always centered on the card
+    const swordStartX = cardRect.left + cardRect.width / 2 - 150;
+    const swordStartY = cardRect.top + cardRect.height / 2 - 150;
+    sword.style.left = `${swordStartX}px`;
+    sword.style.top = `${swordStartY}px`;
     
     // Use the animation class instead of setting animation directly
     // The animation is now set in the CSS via the slash-direction class
     
     sword.addEventListener('animationend', () => {
         sword.remove();
-        
-        // Toggle slash direction for next attack
-        slashDirection = (slashDirection === 'left-to-right') ? 'right-to-left' : 'left-to-right';
-        console.log(`Next slash direction will be: ${slashDirection}`);
     });
 
     // --- Card Splitting Animation --- 
