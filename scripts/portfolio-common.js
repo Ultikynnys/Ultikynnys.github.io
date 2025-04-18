@@ -40,8 +40,47 @@ const metalSliceAudio = metalSliceAudioFiles.map(src => {
     return audio;
 });
 
-const foolsAudio = new Audio('audio/Fools.ogg');
-foolsAudio.preload = 'auto';
+// Replace fools.ogg with alternating finished sounds
+const finishedAudio = [
+    new Audio('audio/YasuoFinishedA.ogg'),
+    new Audio('audio/YasuoFinishedB.ogg')
+];
+finishedAudio.forEach(audio => {
+    audio.preload = 'auto';
+});
+let currentFinishedAudioIndex = 0;
+let isPlayingFinishedAudio = false;
+
+// Function to play the next finished audio and toggle index
+function playNextFinishedAudio() {
+    if (isPlayingFinishedAudio) {
+        console.log("Already playing a finished audio, ignoring request");
+        return;
+    }
+    
+    isPlayingFinishedAudio = true;
+    console.log(`Playing finished audio index: ${currentFinishedAudioIndex}`);
+    
+    const audioToPlay = finishedAudio[currentFinishedAudioIndex];
+    
+    audioToPlay.onended = function() {
+        console.log(`Finished audio ${currentFinishedAudioIndex} ended`);
+        currentFinishedAudioIndex = (currentFinishedAudioIndex + 1) % finishedAudio.length;
+        console.log(`Next finished audio will be index ${currentFinishedAudioIndex}`);
+        isPlayingFinishedAudio = false;
+    };
+    
+    audioToPlay.onerror = function() {
+        console.error(`Error playing finished audio ${currentFinishedAudioIndex}`);
+        isPlayingFinishedAudio = false;
+    };
+    
+    audioToPlay.currentTime = 0;
+    audioToPlay.play().catch(e => {
+        console.error("Finished audio play failed:", e);
+        isPlayingFinishedAudio = false;
+    });
+}
 
 let visibleCardsCount = 0;
 let activeContainerSelector = null;
@@ -387,9 +426,8 @@ function yasuoAttack(cardElement) {
 
      // Check if we've reached 7 slices - exit Yasuo mode
      if (yasuoSliceCounter >= 7) {
-        console.log("YasuoAttack: 7 slices reached. Triggering Fools sound and deactivation.");
+        console.log("YasuoAttack: 7 slices reached. Triggering deactivation.");
         setTimeout(() => {
-            foolsAudio.play().catch(e => console.error("Fools audio play failed:", e));
             deactivateYasuoMode();
         }, 700);
     } else if (wasVisible) {
@@ -401,6 +439,11 @@ function yasuoAttack(cardElement) {
 function deactivateYasuoMode() {
     if (!isYasuoMode) return;
     console.log("Deactivating Yasuo Mode. Resetting state.");
+    
+    if (!isPlayingFinishedAudio) {
+        playNextFinishedAudio();
+    }
+    
     isYasuoMode = false;
     yasuoSliceCounter = 0; // Reset slice counter
     const indicator = document.getElementById('yasuo-mode-indicator');
@@ -889,6 +932,60 @@ window.addEventListener('resize', function() {
     // Comparison slider functionality has been removed
 });
 
+// Function to force attach Yasuo name click handler directly
+function attachYasuoNameClickHandler() {
+    console.log("FORCE ATTACHING Yasuo name click handler");
+    const nameElement = document.querySelector('#name-display h1');
+    
+    if (nameElement) {
+        console.log("FOUND name element, removing old listeners and adding new one");
+        
+        // Remove any existing listeners to avoid duplicates
+        nameElement.removeEventListener('click', handleSecretModeClick);
+        
+        // Force add styling to make it obvious it's clickable
+        nameElement.style.cursor = 'pointer';
+        nameElement.style.userSelect = 'none';
+        
+        // Add new direct click handler that doesn't use wrapper function
+        nameElement.addEventListener('click', function yasuoClickListener(e) {
+            console.log("DIRECT NAME CLICK DETECTED!");
+            secretClickCount++;
+            console.log(`SECRET CLICK COUNT: ${secretClickCount}`);
+            
+            // Clear any existing timer
+            clearTimeout(secretClickTimer);
+            
+            // Set a timer to reset count if clicks are too far apart
+            secretClickTimer = setTimeout(() => {
+                console.log("CLICK TIMEOUT - resetting count");
+                secretClickCount = 0;
+            }, 500);
+            
+            // Check if we've reached 3 clicks
+            if (secretClickCount === 3) {
+                console.log("THREE CLICKS DETECTED - toggling Yasuo mode");
+                secretClickCount = 0;
+                clearTimeout(secretClickTimer);
+                
+                if (isYasuoMode) {
+                    console.log("DEACTIVATING Yasuo mode");
+                    deactivateYasuoMode();
+                } else {
+                    console.log("ACTIVATING Yasuo mode");
+                    activateYasuoMode();
+                }
+            }
+        });
+        
+        console.log("New click handler attached directly to name element");
+        return true;
+    } else {
+        console.error("CRITICAL: Name element not found for click handler");
+        return false;
+    }
+}
+
 // Initialize all features when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     // Create and append Yasuo mode indicator image
@@ -902,65 +999,107 @@ document.addEventListener('DOMContentLoaded', () => {
     let gamesFile = null;
 
     // Determine page type and set selectors
+    const isIndexPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname.endsWith('/') || 
+                        window.location.pathname.split('/').pop() === '';
+    
+    console.log("Page detection - Is index page:", isIndexPage);
+    console.log("Current pathname:", window.location.pathname);
+
     if (document.getElementById('programming-projects-container')) {
+        console.log("Detected programming portfolio page");
         activeContainerSelector = '#programming-projects-container';
         activeCardSelector = '.project-card';
         projectsFile = 'projects/programming_projects.md';
         initPortfolio(projectsFile, null); 
-        setupProjectExpansion(activeContainerSelector.substring(1)); // Pass ID without #
+        setupProjectExpansion(activeContainerSelector.substring(1));
     } else if (document.getElementById('3d-projects-container')) {
+        console.log("Detected 3D portfolio page");
         activeContainerSelector = '#3d-projects-container';
         activeCardSelector = '.project-card';
         projectsFile = 'projects/3d_projects.md';
         gamesFile = 'projects/games_projects.md';
         initPortfolio(projectsFile, gamesFile); 
-        setupProjectExpansion(activeContainerSelector.substring(1)); // Pass ID without #
-        // Note: If games are in a separate container, this might need adjustment
+        setupProjectExpansion(activeContainerSelector.substring(1));
     } else if (document.querySelector('.portfolio-choice-container')) {
         // Index page
+        console.log("Detected index page with .portfolio-choice-container");
         activeContainerSelector = '.portfolio-choice-container';
         activeCardSelector = '.portfolio-choice';
+        
+        // The index page doesn't use the initPortfolio function
         if (document.getElementById('name-display')) {
-             initNameAnimation(); // Init name animation if on index
+             initNameAnimation();
         }
     } else {
          console.warn("Could not determine portfolio type for Yasuo mode setup.");
     }
     
-    // ... init theme toggle ...
-
-    // Add name click listener for Yasuo mode
-    const nameDisplayH1 = document.querySelector('#name-display h1');
-    if (nameDisplayH1) {
-        nameDisplayH1.style.cursor = 'pointer';
-        nameDisplayH1.addEventListener('click', handleSecretModeClick);
-    } else {
-         console.warn("Name display element (#name-display h1) not found for Yasuo mode listener.");
+    // Initialize theme toggle if button exists
+    if (document.getElementById('themeToggle')) {
+        initThemeToggle();
     }
+
+    // Try to attach the name click handler
+    let handlerAttached = attachYasuoNameClickHandler();
+    console.log("Initial handler attachment result:", handlerAttached);
 
     // Add delegated click listener to the active container for Yasuo attacks
     if (activeContainerSelector && activeCardSelector) {
         const containerElement = document.querySelector(activeContainerSelector);
         if (containerElement) {
+            console.log(`Found container ${activeContainerSelector}, adding Yasuo card click listener`);
             containerElement.addEventListener('click', function(e) {
+                console.log("Container clicked, yasuo mode:", isYasuoMode);
                 if (!isYasuoMode) return; // Only act in Yasuo mode
 
                 // Find the clicked card element that matches the active selector
                 const clickedCard = e.target.closest(activeCardSelector);
                 
                 if (clickedCard) {
-                     // Prevent default behavior (like navigation for <a> tags on index)
-                     e.preventDefault(); 
-                    // Prevent card expansion or other listeners
+                    console.log("Card match found:", clickedCard);
+                    // Prevent default behavior (like navigation for <a> tags on index)
+                    e.preventDefault(); 
                     e.stopPropagation(); 
                     
                     yasuoAttack(clickedCard);
+                } else {
+                    console.log("No matching card element found in click path");
                 }
-            }, true); // Use capture phase to potentially intercept before other listeners
+            }, true); // Use capture phase
         } else {
              console.warn("Could not find container element to attach Yasuo click listener:", activeContainerSelector);
         }
     } else {
          console.warn("Cannot attach Yasuo click listener: Active container/card selectors not set.");
+    }
+});
+
+// Ensure index page has Yasuo mode enabled
+window.addEventListener('load', function() {
+    console.log("WINDOW LOAD EVENT - Checking name click handler on index");
+    
+    // Check if we're on index page
+    const isIndexPage = window.location.pathname.endsWith('index.html') || 
+                        window.location.pathname.endsWith('/') || 
+                        window.location.pathname.split('/').pop() === '';
+    
+    if (isIndexPage) {
+        console.log("INDEX PAGE LOAD DETECTED - forcing name click handler attachment");
+        
+        // Force attach name click handler after a short delay to ensure DOM is fully processed
+        setTimeout(() => {
+            const attached = attachYasuoNameClickHandler();
+            console.log("INDEX Force attachment result:", attached);
+            
+            // Try multiple times if it fails initially
+            if (!attached) {
+                console.log("First attempt failed, trying again in 500ms");
+                setTimeout(() => {
+                    const retryResult = attachYasuoNameClickHandler();
+                    console.log("Second attachment attempt result:", retryResult);
+                }, 500);
+            }
+        }, 100);
     }
 }); 
