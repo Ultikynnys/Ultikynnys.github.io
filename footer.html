@@ -1,58 +1,90 @@
-<footer onclick="activateSecretEffect()" style="cursor:pointer;">
-  <p id="footerText">&copy; 2025 Ubeid Hussein. All rights reserved.</p>
-</footer>
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .rainbow-text {
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: rainbowScroll 5s linear infinite;
+      text-shadow: 0 0 10px white;
+    }
 
-<script>
-function activateSecretEffect() {
-  console.log("activateSecretEffect triggered"); // Debug log
+    @keyframes rainbowScroll {
+      from { background-position: 0% center; }
+      to { background-position: 100% center; }
+    }
+    
+    .nyan-cat {
+      position: fixed;
+      left: -150px;
+      opacity: 0;
+      transform: scale(0.7);
+      /* Set a higher z-index so the cats appear above other elements */
+      z-index: 1000;
+      animation: nyanMove 3s ease-in forwards;
+      /* Fade the left side using a mask gradient */
+      mask-image: linear-gradient(to right, transparent 0%, black 30%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
+    }
+    
+    @keyframes nyanMove {
+      0% { left: -150px; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+    
+    /* Remove any margin/padding that may cause extra space under the footer */
+    body, html {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- ...existing content... -->
+  <footer onclick="triggerFooterEffect()" style="cursor:pointer;">
+    <p class="footer-text">&copy; 2025 Ubeid Hussein. All rights reserved.</p>
+  </footer>
   
-  const textElem = document.getElementById('footerText');
-  if (!textElem) return;
-  
-  // Start rainbow text effect
-  const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
-  let index = 0;
-  const colorInterval = setInterval(() => {
-    textElem.style.color = colors[index % colors.length];
-    index++;
-  }, 100);
+  <!-- Removed static nyan-cat image from markup -->
 
-  // Spawn nyan cats moving from left to right
-  const spawnInterval = setInterval(() => {
-    const cat = document.createElement("img");
-    cat.src = "images/nyan.gif"; // using the nyan.gif in the images folder
-    cat.style.position = "fixed";
-    cat.style.left = "-100px";
-    cat.style.top = Math.random() * window.innerHeight + "px";
-    cat.style.width = "50px";
-    cat.style.zIndex = 1000;
-    document.body.appendChild(cat);
+  <script>
+    function triggerFooterEffect() {
+      // Apply rainbow effect to footer text
+      const footerText = document.querySelector("footer .footer-text");
+      if (footerText) {
+        footerText.classList.add("rainbow-text");
+        setTimeout(() => {
+          footerText.classList.remove("rainbow-text");
+        }, 5000);
+      }
+      
+      // Create a random number of nyan cats (3 to 6) and animate them
+      const numCats = Math.floor(Math.random() * 4) + 3;
+      for (let i = 0; i < numCats; i++) {
+        const img = document.createElement("img");
+        img.setAttribute("src", "images/nyan.gif");
+        img.classList.add("nyan-cat");
 
-    const duration = 5000;
-    const startTime = performance.now();
-    function animateCat(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      cat.style.left = (progress * (window.innerWidth + 100) - 100) + "px";
-      if (progress < 1) {
-        requestAnimationFrame(animateCat);
-      } else {
-        cat.remove();
+        // Set a random vertical position that spans the entire screen height minus a margin
+        img.style.top = Math.random() * (window.innerHeight - 100) + "px";
+
+        // Stagger the start by applying a slight animation delay based on the cat index
+        img.style.animationDelay = (i * 0.5) + "s";
+
+        document.body.appendChild(img);
+        // Remove the image once its animation is finished (3s + delay)
+        img.addEventListener('animationend', () => {
+          img.remove();
+        });
       }
     }
-    requestAnimationFrame(animateCat);
-  }, 500);  // spawn a new nyan cat every 500 ms
-
-  // Stop the entire effect after 5 seconds
-  setTimeout(() => {
-    clearInterval(colorInterval);
-    clearInterval(spawnInterval);
-    textElem.style.color = "";
-    // Remove any remaining nyan cats
-    document.querySelectorAll("body > img").forEach(img => img.remove());
-  }, 5000);
-
-  // Prevent repeated triggering by removing the onclick handler
-  document.querySelector("footer").onclick = null;
-}
-</script>
+    
+    // Ensure the footer click handler is assigned
+    document.querySelector("footer").onclick = triggerFooterEffect;
+  </script>
+</body>
+</html>
