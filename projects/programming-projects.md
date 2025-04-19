@@ -55,7 +55,7 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 ## Source Map Stats
 - Title: Source Map Statistics
 - Description: Queries Source Engine servers and analyzes player counts per map to gauge popularity and usage patterns.
-- Media: images/SourceStats.png
+- Media: images/stats2.png
 - GitHub: https://github.com/Ultikynnys/SourceMapStats
 
 ## MP4 to WebP Converter
