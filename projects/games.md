@@ -30,7 +30,7 @@ Games I've developed and contributed to, showcasing my skills in game design, pr
 - Media: images/ScaleFactor.gif
 - Demo: https://itch.io/jam/gmtk-2024/rate/2900640
 - Private: false
-- Engine: Unity
+- Engine: Unreal Engine
 
 ## Bloodrush Defense - Jame Gam #39
 - Title: Bloodrush Defense
