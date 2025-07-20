@@ -6,7 +6,7 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 ## Master Music Player
 - Title: Master Music Player
 - Description: An Electron-based music player that serves as a wrapper for yt-dlp, providing an intuitive interface for downloading and managing music from YouTube, SoundCloud and Bandcamp.
-- Media: https://github.com/R60D/BlenderBatchCompressor/blob/main/Images/MMP.JPG?raw=true
+- Media: https://github.com/R60D/BlenderBatchCompressor/blob/main/Images/MMP.png?raw=true
 - GitHub: https://github.com/Ultikynnys/MasterMusicPlayer
 
 ## MOF‑Blender – UV Unwrapping Bridge
