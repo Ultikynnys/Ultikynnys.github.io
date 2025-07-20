@@ -2,6 +2,13 @@
 
 I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. My strongest languages are <span class="lang-python">Python</span>, <span class="lang-javascript">JavaScript</span>, <span class="lang-cpp">C++</span>, and <span class="lang-csharp">C#</span>. I build Blender tools and develop games in UE5, Unity, and Godot, applying technical expertise to craft efficient solutions. This portfolio demonstrates my front‑end and JavaScript skills, while my GitHub showcases a variety of projects highlighting adaptability across diverse challenges.
 
+
+## Master Music Player
+- Title: Master Music Player
+- Description: An Electron-based music player that serves as a wrapper for yt-dlp, providing an intuitive interface for downloading and managing music from YouTube, SoundCloud and Bandcamp.
+- Media: https://github.com/R60D/BlenderBatchCompressor/blob/main/Images/MMP.JPG?raw=true
+- GitHub: https://github.com/Ultikynnys/MasterMusicPlayer
+
 ## MOF‑Blender – UV Unwrapping Bridge
 - Title: MOF‑Blender
 - Description: A Blender add‑on that integrates the MinistryOfFlat UV‑unwrap engine directly into Blender, drastically cutting UV islands compared to the default Smart Unwrap.
