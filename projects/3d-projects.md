@@ -2,6 +2,12 @@
 
 3D Artist specializing in modeling, rigging, and animation, with over 6 years of experience. I blend my artistic skills with technical knowledge to create optimized assets and character solutions. Proficient in Blender, Substance Designer, and Substance Painter, I have contributed to game development projects and freelance work. I'm also a published artist on the Blender Market, creating tools to improve workflows for fellow artists.
 
+## Horror Mansion Interior - Modular Pack
+- Title: Horror Mansion Interior - Modular Pack
+- Description: Realistic asset pack for creating mansions and hotels with optimized assets.
+- Media: images/MansionInterior.jpg
+- Store: https://www.fab.com/listings/cfb84470-24cf-45ad-997f-d1c61df391d2
+
 ## SimplyCCTV
 - Title: SimplyCCTV
 - Description: Camera model and screen shader asset pack for security camera simulations and monitoring systems in games.
