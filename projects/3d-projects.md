@@ -6,7 +6,7 @@
 - Title: Horror Mansion Interior - Modular Pack
 - Description: Realistic asset pack for creating mansions and hotels with optimized assets.
 - Media: images/MansionInterior.jpg
-- Store: https://www.fab.com/listings/cfb84470-24cf-45ad-997f-d1c61df391d2
+- Store: https://www.fab.com/listings/26d61456-dc6a-44a3-82d6-46b4a900e4e0
 
 ## SimplyCCTV
 - Title: SimplyCCTV
