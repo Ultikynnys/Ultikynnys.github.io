@@ -20,6 +20,9 @@ When generating a cover letter based on this template:
 7. Keep the cover letter concise and impactful, typically 3-4 paragraphs]
 8. Never use AI like language, keep it as human as possible, don't use too complicated words.
 9. Don't use words like UV-Kartoitus, Unity-Pelimoottorit, in finnish these are just simplified to UV:t ja Unityssä
+10. Sometimes the requirements are too strict, this is because recruiters dont understand what they are trying to hire.
+11. If the requirements are too strict, try to find a way to justify why the candidate is a good fit for the position.
+12. Write the markdown sections that do not have a language tag in the language the job posting is written.
 
 ABOUT THE CANDIDATE:
 - Name: Ubeid Hussein (Upi)
@@ -88,6 +91,8 @@ PROGRAMMING EXPERTISE:
 
 - I don't draw, but I can use photoshop to create UI elements and renders for marketing purposes
 
+I have shipped mobile games, but plenty of Unity and Unreal Engine Projects for the Browser and PC.
+
 PERSONAL DETAILS:
 - Name: Ubeid Hussein
 - Native Finnish speaker, fluent English
@@ -96,7 +101,61 @@ PERSONAL DETAILS:
 
 
 COMPANY POSITION LISTING (FOR AI ASSISTANTS):
-<placeholder>
+
+Senior 2D/3D Game Artist - Games
+Helsinki, Finland
+
+Job Requisition ID
+JR34227
+Teams
+MoonLoot Games
+Work Type
+Onsite
+Netflix is one of the world's leading entertainment services, with over 300 million paid memberships in over 190 countries enjoying TV series, films and games across a wide variety of genres and languages. Members can play, pause and resume watching as much as they want, anytime, anywhere, and can change their plans at any time.
+
+Established in September 2022, MoonLoot Games is a Netflix game studio located in Helsinki, Finland. We thrive to become a world-class games studio bringing a variety of delightful and deeply engaging original games to hundreds of millions of Netflix members around the world. As a part of Netflix, we strive to hire the best and value integrity, excellence, respect, inclusion, and collaboration.
+
+We are looking for an experienced full-time Senior 2D/3D Game Artist with a strong sensibility for art and the technical ability to create 3D art. This position will work with the Art Director and Game Designers to bring innovative visuals to life in the Unity Engine and Blender.
+
+As a Senior 2D/3D Game Artist at MoonLoot you will...
+
+Design, create, and integrate game assets from start to finish
+
+Create textured game assets in low-mid poly geometry using Blender and in-house tooling
+
+Maintain a given style across a variety of assets, and expand that style to fit the requirements of new assets
+
+Recognize what design requirements are needed for the art assets, and support art vendors and engineers with visual feedback
+
+Work closely with the artists, designers, and engineers on the team
+
+Ideally, you are...
+
+Available full time in Helsinki or open to relocate to Helsinki
+
+Receptive to working independently and driving the visual style for the game assets
+
+Able to communicate ideas clearly and effectively
+
+Self-starter willing to find solutions and ask questions when needed
+
+A person with attention to detail and a desire to make excellent games
+
+An artist proficient with Blender and Unity Engine
+
+Skills & Requirements:
+
+Strong artistic skills with the ability to create assets from scratch (concepting, modeling, texturing)
+
+Portfolio demonstrating wide variety of 2D and 3D art on mobile games
+
+Shipped games as a Senior Artist in mobile games
+
+Strong communication skills
+
+Inclusion is a Netflix value and we strive to host a meaningful interview experience for all candidates. If you want an accommodation/adjustment for a disability or any other reason during the hiring process, please send a request to your recruiting partner.
+
+We are an equal-opportunity employer and celebrate diversity, recognizing that diversity builds stronger teams. We approach diversity and inclusion seriously and thoughtfully. We do not discriminate on the basis of race, religion, color, ancestry, national origin, caste, sex, sexual orientation, gender, gender identity or expression, age, disability, medical condition, pregnancy, genetic makeup, marital status, or military service.
 
 
 ## Cover Letter Content
