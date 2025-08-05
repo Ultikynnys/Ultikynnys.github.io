@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubeid Hussein - Cover Letter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Language toggle styles */
+        .language-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .language-toggle span {
+            padding: 5px 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .language-toggle span.active {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+        
+        /* Language visibility - only one language at a time */
+        body:not(.english) .lang-en { display: none !important; }
+        body.english .lang-fi { display: none !important; }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ccc; /* Background for non-print view */
+        }
+
+        .page {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            margin: 20mm auto; /* Center page on screen */
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #2c3e50; /* Blue header background */
+            color: #ecf0f1; /* Light text color */
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Subtle hexagon overlay for header */
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='60'%20height='52'%20viewBox='0%200%2060%2052'><path%20d='M30%201%20L59%2017%20L59%2035%20L30%2051%20L1%2035%20L1%2017%20Z'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.05'/></svg>");
+            background-repeat: repeat;
+            pointer-events: none;
+        }
+
+        /* Ensure header content stays above overlay */
+        .header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .header .contact-info {
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+
+        .header .contact-info i {
+            margin-right: 8px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .header .contact-info span {
+            margin: 0 15px;
+        }
+
+        .content {
+            background-color: #fff; /* White body background */
+            padding: 40px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .content h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 5px;
+        }
+
+        .content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .info-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #2c3e50;
+        }
+
+        .info-section h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info-list li i {
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: #2c3e50;
+            width: 20px;
+            text-align: center;
+        }
+
+        .signature {
+            margin-top: 40px;
+            text-align: right;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background-color: #fff !important;
+            }
+            .page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                min-height: 100vh;
+            }
+            .language-toggle {
+                display: none; /* Hide toggle when printing */
+            }
+            /* Force background colors to print */
+            .header {
+                background-color: #2c3e50 !important;
+                color: #ecf0f1 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        @page {
+            size: 210mm 297mm; /* Explicitly set A4 size */
+            margin: 0mm; /* Remove browser default margins */
+        }
+
+        /* Increase font weight for better readability */
+        p, li {
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language toggle button -->
+    <div class="language-toggle">
+        <span class="toggle-fi active" onclick="toggleLanguage('finnish')">FIN</span>
+        <span class="toggle-en" onclick="toggleLanguage('english')">ENG</span>
+    </div>
+
+    <div class="page">
+        <div class="header">
+            <h1 class="lang-fi" id="name-fi">Loading...</h1>
+            <h1 class="lang-en" id="name-en">Loading...</h1>
+            
+            <div class="contact-info">
+                <span><i class="fas fa-envelope"></i> <span id="email">Loading...</span></span>
+                <span><i class="fas fa-map-marker-alt"></i> <span class="lang-fi" id="location-fi">Loading...</span><span class="lang-en" id="location-en">Loading...</span></span>
+            </div>
+        </div>
+
+        <div class="content">
+            <h2 class="lang-fi">Saatekirje</h2>
+            <h2 class="lang-en">Cover Letter</h2>
+
+            <p class="lang-fi" id="greeting-fi">
+                Loading...
+            </p>
+            <p class="lang-en" id="greeting-en">
+                Loading...
+            </p>
+
+            <p class="lang-fi" id="introduction-fi">
+                Loading...
+            </p>
+            <p class="lang-en" id="introduction-en">
+                Loading...
+            </p>
+
+            <p class="lang-fi" id="body1-fi">
+                Loading...
+            </p>
+            <p class="lang-en" id="body1-en">
+                Loading...
+            </p>
+
+            <p class="lang-fi" id="body2-fi">
+                Loading...
+            </p>
+            <p class="lang-en" id="body2-en">
+                Loading...
+            </p>
+
+            <p class="lang-fi" id="closing-fi">
+                Loading...
+            </p>
+            <p class="lang-en" id="closing-en">
+                Loading...
+            </p>
+
+            <div class="info-section">
+                <h3 class="lang-fi">Lisätiedot</h3>
+                <h3 class="lang-en">Additional Information</h3>
+                
+                <ul class="info-list">
+                    <li>
+                        <i class="fas fa-euro-sign"></i>
+                        <strong class="lang-fi">Palkkavaatimus:</strong>
+                        <strong class="lang-en">Salary Expectation:</strong>
+                        <span class="lang-fi" id="salary-fi">Loading...</span>
+                        <span class="lang-en" id="salary-en">Loading...</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-map-marked-alt"></i>
+                        <strong class="lang-fi">Muutto:</strong>
+                        <strong class="lang-en">Relocation:</strong>
+                        <span class="lang-fi" id="relocation-fi">Loading...</span>
+                        <span class="lang-en" id="relocation-en">Loading...</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-calendar-alt"></i>
+                        <strong class="lang-fi">Aloitusaika:</strong>
+                        <strong class="lang-en">Start Date:</strong>
+                        <span class="lang-fi" id="startdate-fi">Loading...</span>
+                        <span class="lang-en" id="startdate-en">Loading...</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-briefcase"></i>
+                        <strong class="lang-fi">Työmuoto:</strong>
+                        <strong class="lang-en">Work Type:</strong>
+                        <span class="lang-fi" id="worktype-fi">Loading...</span>
+                        <span class="lang-en" id="worktype-en">Loading...</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-globe"></i>
+                        <strong class="lang-fi">Kielet:</strong>
+                        <strong class="lang-en">Languages:</strong>
+                        <span class="lang-fi" id="languages-fi">Loading...</span>
+                        <span class="lang-en" id="languages-en">Loading...</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <strong class="lang-fi">Yhteystiedot:</strong>
+                        <strong class="lang-en">Contact:</strong>
+                        <span id="contact-email">Loading...</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="signature">
+                <p class="lang-fi"><span id="signature-fi">Loading...</span><br><strong id="signature-name-fi">Loading...</strong></p>
+                <p class="lang-en"><span id="signature-en">Loading...</span><br><strong id="signature-name-en">Loading...</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for language toggle and markdown parsing -->
+    <script>
+        // Configuration object to store parsed data
+        let config = {};
+
+        // Parse markdown configuration
+        async function loadConfig() {
+            try {
+                const response = await fetch('cover_letter_config.md');
+                const text = await response.text();
+                parseMarkdown(text);
+                populateContent();
+            } catch (error) {
+                console.error('Error loading config:', error);
+                // Fallback to default values if config fails to load
+                setFallbackContent();
+            }
+        }
+
+        function parseMarkdown(text) {
+            const lines = text.split('\n');
+            let currentSection = '';
+            let collectingParagraph = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                
+                // Skip empty lines and main headers
+                if (!line || line.startsWith('# ')) continue;
+                
+                // Parse key-value pairs (personal info)
+                if (line.startsWith('- **') && line.includes('**:')) {
+                    const match = line.match(/- \*\*(.+?)\*\*: (.+)/);
+                    if (match) {
+                        const key = match[1].toLowerCase().replace(/ /g, '_');
+                        const value = match[2];
+                        config[key] = value;
+                    }
+                    continue;
+                }
+                
+                // Parse section headers (### )
+                if (line.startsWith('### ')) {
+                    currentSection = line.substring(4).toLowerCase().replace(/ /g, '_');
+                    config[currentSection] = '';
+                    collectingParagraph = true;
+                    continue;
+                }
+                
+                // Collect paragraph content
+                if (currentSection && line) {
+                    // If we encounter another section header, stop collecting
+                    if (line.startsWith('## ') || line.startsWith('### ')) {
+                        collectingParagraph = false;
+                        if (line.startsWith('### ')) {
+                            currentSection = line.substring(4).toLowerCase().replace(/ /g, '_');
+                            config[currentSection] = '';
+                            collectingParagraph = true;
+                        }
+                        continue;
+                    }
+                    
+                    // Add content to current section
+                    if (collectingParagraph) {
+                        if (config[currentSection] && config[currentSection].length > 0) {
+                            config[currentSection] += '\n' + line;
+                        } else {
+                            config[currentSection] = line;
+                        }
+                    }
+                }
+                
+                // Stop collecting when we hit the next major section
+                if (line.startsWith('## ') && !line.startsWith('### ')) {
+                    collectingParagraph = false;
+                }
+            }
+        }
+
+        function populateContent() {
+            // Personal information
+            document.getElementById('name-fi').textContent = config.name || 'Ubeid Hussein';
+            document.getElementById('name-en').textContent = config.name || 'Ubeid Hussein';
+            document.getElementById('email').textContent = config.email || 'hussein.ubeid@outlook.com';
+            document.getElementById('location-fi').textContent = config.location_fi || 'Tampere, Suomi';
+            document.getElementById('location-en').textContent = config.location_en || 'Tampere, Finland';
+            
+            // Cover letter content
+            document.getElementById('greeting-fi').textContent = config.greeting_fi || 'Hyvä vastaanottaja,';
+            document.getElementById('greeting-en').textContent = config.greeting_en || 'Dear Hiring Manager,';
+            document.getElementById('introduction-fi').textContent = config.introduction_fi || '';
+            document.getElementById('introduction-en').textContent = config.introduction_en || '';
+            document.getElementById('body1-fi').textContent = config.body1_fi || '';
+            document.getElementById('body1-en').textContent = config.body1_en || '';
+            document.getElementById('body2-fi').textContent = config.body2_fi || '';
+            document.getElementById('body2-en').textContent = config.body2_en || '';
+            document.getElementById('closing-fi').textContent = config.closing_fi || '';
+            document.getElementById('closing-en').textContent = config.closing_en || '';
+            
+            // Additional information
+            document.getElementById('salary-fi').textContent = config.salary_fi || '2000-3000€/kk';
+            document.getElementById('salary-en').textContent = config.salary_en || '€2000-3000/month';
+            document.getElementById('relocation-fi').textContent = config.relocation_fi || 'Neuvoteltavissa';
+            document.getElementById('relocation-en').textContent = config.relocation_en || 'Negotiable';
+            document.getElementById('startdate-fi').textContent = config.startdate_fi || 'Sopimuksen mukaan';
+            document.getElementById('startdate-en').textContent = config.startdate_en || 'According to agreement';
+            document.getElementById('worktype-fi').textContent = config.worktype_fi || 'Kokopäivätyö / Etätyö mahdollinen';
+            document.getElementById('worktype-en').textContent = config.worktype_en || 'Full-time / Remote work possible';
+            document.getElementById('languages-fi').textContent = config.languages_fi || 'Suomi (äidinkieli), Englanti (sujuva)';
+            document.getElementById('languages-en').textContent = config.languages_en || 'Finnish (native), English (fluent)';
+            document.getElementById('contact-email').textContent = config.email || 'hussein.ubeid@outlook.com';
+            
+            // Signature
+            document.getElementById('signature-fi').textContent = config.signature_fi || 'Ystävällisin terveisin,';
+            document.getElementById('signature-en').textContent = config.signature_en || 'Best regards,';
+            document.getElementById('signature-name-fi').textContent = config.name || 'Ubeid Hussein';
+            document.getElementById('signature-name-en').textContent = config.name || 'Ubeid Hussein';
+        }
+
+        function setFallbackContent() {
+            // Set default content if config loading fails
+            config = {
+                name: 'Ubeid Hussein',
+                email: 'hussein.ubeid@outlook.com',
+                location_fi: 'Tampere, Suomi',
+                location_en: 'Tampere, Finland',
+                greeting_fi: 'Hyvä vastaanottaja,',
+                greeting_en: 'Dear Hiring Manager,',
+                salary_fi: '2000-3000€/kk',
+                salary_en: '€2000-3000/month',
+                relocation_fi: 'Neuvoteltavissa',
+                relocation_en: 'Negotiable',
+                signature_fi: 'Ystävällisin terveisin,',
+                signature_en: 'Best regards,'
+            };
+            populateContent();
+        }
+
+        function toggleLanguage(lang) {
+            if (lang === 'finnish') {
+                document.body.classList.remove('english');
+                document.querySelector('.toggle-fi').classList.add('active');
+                document.querySelector('.toggle-en').classList.remove('active');
+            } else {
+                document.body.classList.add('english');
+                document.querySelector('.toggle-fi').classList.remove('active');
+                document.querySelector('.toggle-en').classList.add('active');
+            }
+        }
+
+        // Load configuration when page loads
+        document.addEventListener('DOMContentLoaded', loadConfig);
+    </script>
+</body>
+</html>
