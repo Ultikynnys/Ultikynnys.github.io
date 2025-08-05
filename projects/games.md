@@ -2,7 +2,7 @@
 Games I've developed and contributed to, showcasing my skills in game design, programming, and 3D artistry across various engines and platforms.
 
 
-## The Mirror Game
+## TIMBERSTRING
 - Title: TIMBERSTRING
 - Description: Did some vfx programming and asset implementation and creation. Made in 4 days for the GMTK 2025 game jam
 - Media: images/Timble.png

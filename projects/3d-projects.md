@@ -2,6 +2,14 @@
 
 3D Artist specializing in modeling, rigging, and animation, with over 6 years of experience. I blend my artistic skills with technical knowledge to create optimized assets and character solutions. Proficient in Blender, Substance Designer, and Substance Painter, I have contributed to game development projects and freelance work. I'm also a published artist on the Blender Market, creating tools to improve workflows for fellow artists.
 
+## TIMBERSTRING
+- Title: TIMBERSTRING
+- Description: All the 3D characters and renders were made by me.
+- Media: images/Timble.png
+- Demo: https://aengel-studio.itch.io/timberstring
+- Private: False
+- Engine: Unity
+
 ## Horror Mansion Interior - Modular Pack
 - Title: Horror Mansion Interior - Modular Pack
 - Description: Realistic asset pack for creating mansions and hotels with optimized assets.
