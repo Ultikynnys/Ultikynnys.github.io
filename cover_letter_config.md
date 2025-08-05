@@ -86,6 +86,8 @@ PROGRAMMING EXPERTISE:
 - Shader Development
 - VFX & Particles
 
+- I don't draw, but I can use photoshop to create UI elements and renders for marketing purposes
+
 PERSONAL DETAILS:
 - Name: Ubeid Hussein
 - Native Finnish speaker, fluent English
@@ -100,22 +102,22 @@ COMPANY POSITION LISTING (FOR AI ASSISTANTS):
 ## Cover Letter Content
 
 ### Greeting_FI
-Hyvä vastaanottaja,
+[AI INSTRUCTION: Create a Finnish greeting appropriate for the company and position. Consider the company culture and formality level.]
 
 ### Greeting_EN
-Dear Hiring Manager,
+[AI INSTRUCTION: Create an English greeting appropriate for the company and position. Consider the company culture and formality level.]
 
 ### Introduction
-I am writing with great interest to apply for the Senior 2D/3D Game Artist position at MoonLoot Games. I have a versatile background that combines deep 3D art skills with game development, which aligns perfectly with the profile you are looking for.
+[AI INSTRUCTION: Create an introduction that expresses interest in the specific position and company. Mention the candidate's relevant background that aligns with the position requirements. Keep it concise and engaging.]
 
 ### Body1
-I am proficient with Blender and Unity and have a solid track record of creating game-ready 3D assets from concept to modeling and texturing. My portfolio showcases a wide variety of 2D and 3D art for mobile games, and I have experience shipping games as a Senior Artist. My strength lies in creating and maintaining a consistent visual style while ensuring all assets meet design requirements.
+[AI INSTRUCTION: Analyze the company's position listing to identify key requirements and desired skills. Match those requirements with the candidate's relevant experience and expertise. Emphasize only the aspects of the candidate's skills that are directly relevant to the position. Focus on how the candidate's unique dual expertise can benefit the company.]
 
 ### Body2
-My programming skills give me a unique edge, as I understand both artistic and technical workflows. I can collaborate smoothly with designers and engineers, ensuring that art assets are not only visually appealing but also technically optimized. I am independent and proactive, always striving to find the best solutions to create high-quality games.
+[AI INSTRUCTION: Continue with additional relevant experience and skills. Highlight specific projects or achievements that demonstrate the candidate's capabilities in areas important to the position. Keep the content concise and impactful, typically 3-4 paragraphs total for Body1 and Body2.]
 
 ### Closing
-I look forward to the opportunity to discuss how I can contribute to your projects.
+[AI INSTRUCTION: Create a closing paragraph that expresses enthusiasm for the opportunity to discuss the position further. Include a call to action for the next steps in the hiring process.]
 
 ### Salary_FI
 2000-3000€/kk

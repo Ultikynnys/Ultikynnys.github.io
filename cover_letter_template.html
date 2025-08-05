@@ -359,7 +359,8 @@
                     }
                     
                     // Add content to current section
-                    if (collectingParagraph) {
+                    // Skip placeholder instructions
+                    if (collectingParagraph && !line.startsWith('[AI INSTRUCTION:')) {
                         if (config[currentSection] && config[currentSection].length > 0) {
                             config[currentSection] += '\n' + line;
                         } else {
