@@ -223,31 +223,20 @@
                 Loading...
             </p>
 
-            <p class="lang-fi" id="introduction-fi">
-                Loading...
-            </p>
-            <p class="lang-en" id="introduction-en">
-                Loading...
-            </p>
-
-            <p class="lang-fi" id="body1-fi">
-                Loading...
-            </p>
-            <p class="lang-en" id="body1-en">
+            <!-- Introduction, body, and closing sections are static and not affected by language toggle -->
+            <p id="introduction">
                 Loading...
             </p>
 
-            <p class="lang-fi" id="body2-fi">
-                Loading...
-            </p>
-            <p class="lang-en" id="body2-en">
+            <p id="body1">
                 Loading...
             </p>
 
-            <p class="lang-fi" id="closing-fi">
+            <p id="body2">
                 Loading...
             </p>
-            <p class="lang-en" id="closing-en">
+
+            <p id="closing">
                 Loading...
             </p>
 
@@ -397,14 +386,11 @@
             // Cover letter content
             document.getElementById('greeting-fi').textContent = config.greeting_fi || 'Hyvä vastaanottaja,';
             document.getElementById('greeting-en').textContent = config.greeting_en || 'Dear Hiring Manager,';
-            document.getElementById('introduction-fi').textContent = config.introduction_fi || '';
-            document.getElementById('introduction-en').textContent = config.introduction_en || '';
-            document.getElementById('body1-fi').textContent = config.body1_fi || '';
-            document.getElementById('body1-en').textContent = config.body1_en || '';
-            document.getElementById('body2-fi').textContent = config.body2_fi || '';
-            document.getElementById('body2-en').textContent = config.body2_en || '';
-            document.getElementById('closing-fi').textContent = config.closing_fi || '';
-            document.getElementById('closing-en').textContent = config.closing_en || '';
+            // Introduction, body, and closing sections are static (not language-specific)
+            document.getElementById('introduction').textContent = config.introduction || '';
+            document.getElementById('body1').textContent = config.body1 || '';
+            document.getElementById('body2').textContent = config.body2 || '';
+            document.getElementById('closing').textContent = config.closing || '';
             
             // Additional information
             document.getElementById('salary-fi').textContent = config.salary_fi || '2000-3000€/kk';
