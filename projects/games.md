@@ -1,9 +1,18 @@
 # Game Projects
 Games I've developed and contributed to, showcasing my skills in game design, programming, and 3D artistry across various engines and platforms.
 
+
+## The Mirror Game
+- Title: TIMBERSTRING
+- Description: Did some vfx programming and asset implementation and creation. Made in 4 days for the GMTK 2025 game jam
+- Media: images/Timble.png
+- Demo: https://aengel-studio.itch.io/timberstring
+- Private: False
+- Engine: Unity
+
 ## The Mirror Game
 - Title: The Mirror Game
-- Description: A high production value game made in Unity with a few friends, featuring custom 3D LUTs.
+- Description: A small indie game made in Unity with a few friends, currently on hiatus.
 - Media: images/wa.webp
 - Private: true
 - Engine: Unity
