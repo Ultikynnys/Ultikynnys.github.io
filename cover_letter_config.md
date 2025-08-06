@@ -102,81 +102,79 @@ PERSONAL DETAILS:
 
 COMPANY POSITION LISTING (FOR AI ASSISTANTS):
 
-Senior 2D/3D Game Artist - Games
-Helsinki, Finland
+About the job
+🎨 Senior Environment Artist | Remote (Europe) | Full-Time
 
-Job Requisition ID
-JR34227
-Teams
-MoonLoot Games
-Work Type
-Onsite
-Netflix is one of the world's leading entertainment services, with over 300 million paid memberships in over 190 countries enjoying TV series, films and games across a wide variety of genres and languages. Members can play, pause and resume watching as much as they want, anytime, anywhere, and can change their plans at any time.
 
-Established in September 2022, MoonLoot Games is a Netflix game studio located in Helsinki, Finland. We thrive to become a world-class games studio bringing a variety of delightful and deeply engaging original games to hundreds of millions of Netflix members around the world. As a part of Netflix, we strive to hire the best and value integrity, excellence, respect, inclusion, and collaboration.
 
-We are looking for an experienced full-time Senior 2D/3D Game Artist with a strong sensibility for art and the technical ability to create 3D art. This position will work with the Art Director and Game Designers to bring innovative visuals to life in the Unity Engine and Blender.
+Vercors Games is a newly established video game studio based in Madrid, made up of industry veterans. Our multicultural team of passionate and highly creative individuals is dedicated to crafting meaningful and visually stunning gaming experiences. We are currently working on a substantial AAA cross-platform title.
 
-As a Senior 2D/3D Game Artist at MoonLoot you will...
 
-Design, create, and integrate game assets from start to finish
+As part of this development, we’re expanding our world-building team and are looking for Senior Environment Artists to help shape the vibrant, stylized worlds of our game.
+We believe that environments are more than just backgrounds—they tell stories, guide players, and spark emotion. We're looking for artists who share that vision.
 
-Create textured game assets in low-mid poly geometry using Blender and in-house tooling
 
-Maintain a given style across a variety of assets, and expand that style to fit the requirements of new assets
+🎯 Responsibilities
 
-Recognize what design requirements are needed for the art assets, and support art vendors and engineers with visual feedback
+Help to define and execute the visual style and look of the game’s environment.
+Sculpt, model and texture props and modular elements.
+Integrate assets into the engine, and set dress 3D environments ensuring visual quality and performance.
+Collaborate with the Art Director and concept artists to produce high-quality assets and help define the visual style.
+Work with designers and animators to establish efficient pipelines and processes.
+Maintain quality, efficiency, and visual consistency across all work.
+Work cross-functionally to ensure the artistic vision aligns with technical and gameplay needs.
 
-Work closely with the artists, designers, and engineers on the team
 
-Ideally, you are...
+✅ Qualifications & Skills
 
-Available full time in Helsinki or open to relocate to Helsinki
+Degree in Art or related field.
+5+ years of professional experience in game development.
+Strong skills in 3D modeling, texturing, and sculpting (high- and low-poly).
+Proficiency in 3DS Max, Maya, or Blender.
+Experience with ZBrush and modern asset creation pipelines.
+Solid understanding of Unreal Engine 5 and real-time rendering constraints.
+Good sense of visual composition, lighting, and storytelling through environments.
+Strong collaboration and communication skills.
+Proactive, self-motivated, and solution-oriented.
 
-Receptive to working independently and driving the visual style for the game assets
 
-Able to communicate ideas clearly and effectively
+🌱 Bonus Points
 
-Self-starter willing to find solutions and ask questions when needed
+Experience with SpeedTree or vegetation creation tools.
+Passion for environmental storytelling.
+Background in traditional art or architecture.
+English & Spanish language skills
 
-A person with attention to detail and a desire to make excellent games
 
-An artist proficient with Blender and Unity Engine
 
-Skills & Requirements:
 
-Strong artistic skills with the ability to create assets from scratch (concepting, modeling, texturing)
+💡 Why Vercors?
 
-Portfolio demonstrating wide variety of 2D and 3D art on mobile games
-
-Shipped games as a Senior Artist in mobile games
-
-Strong communication skills
-
-Inclusion is a Netflix value and we strive to host a meaningful interview experience for all candidates. If you want an accommodation/adjustment for a disability or any other reason during the hiring process, please send a request to your recruiting partner.
-
-We are an equal-opportunity employer and celebrate diversity, recognizing that diversity builds stronger teams. We approach diversity and inclusion seriously and thoughtfully. We do not discriminate on the basis of race, religion, color, ancestry, national origin, caste, sex, sexual orientation, gender, gender identity or expression, age, disability, medical condition, pregnancy, genetic makeup, marital status, or military service.
+100% remote (Europe-based) with flexible hours
+Inclusive, supportive, and creative team culture
+Permanent contract & healthy work-life balance
+Be part of an original stylized AAA project, built from the ground up
 
 
 ## Cover Letter Content
 
 ### Greeting_FI
-[AI INSTRUCTION: Create a Finnish greeting appropriate for the company and position. Consider the company culture and formality level.]
+Hei Vercors Gamesin tiimi,
 
 ### Greeting_EN
-[AI INSTRUCTION: Create an English greeting appropriate for the company and position. Consider the company culture and formality level.]
+Hi Vercors Games Team,
 
 ### Introduction
-[AI INSTRUCTION: Create an introduction that expresses interest in the specific position and company. Mention the candidate's relevant background that aligns with the position requirements. Keep it concise and engaging.]
+I am writing to express my strong interest in the Senior Environment Artist position at Vercors Games, which I discovered on [Platform where you saw the ad, e.g., LinkedIn]. As a 3D artist and software developer with a deep passion for creating immersive, stylized worlds, I was immediately drawn to your studio's dedication to crafting meaningful and visually stunning gaming experiences. My background in both the artistic and technical sides of game development aligns perfectly with the requirements of this role.
 
 ### Body1
-[AI INSTRUCTION: Analyze the company's position listing to identify key requirements and desired skills. Match those requirements with the candidate's relevant experience and expertise. Emphasize only the aspects of the candidate's skills that are directly relevant to the position. Focus on how the candidate's unique dual expertise can benefit the company.]
+Throughout my freelance career, I have honed my skills in creating high-quality 3D assets, from modeling and sculpting to texturing and engine integration. I am an expert with Blender and have extensive experience with Unreal Engine, which allows me to not only build beautiful environments but also ensure they are optimized for real-time performance. Your focus on stylized AAA titles resonates with my artistic sensibilities, and I am confident in my ability to contribute to the unique visual style of your new project.
 
 ### Body2
-[AI INSTRUCTION: Continue with additional relevant experience and skills. Highlight specific projects or achievements that demonstrate the candidate's capabilities in areas important to the position. Keep the content concise and impactful, typically 3-4 paragraphs total for Body1 and Body2.]
+What sets me apart is my dual expertise as a programmer. I develop custom tools for Blender and understand asset pipelines from a technical standpoint. This unique perspective enables me to collaborate effectively with both artists and engineers, troubleshoot complex issues, and help establish efficient workflows—a key responsibility mentioned in the job description. Having completed over seven game jams, I thrive in collaborative, fast-paced environments and am adept at delivering quality work under tight deadlines.
 
 ### Closing
-[AI INSTRUCTION: Create a closing paragraph that expresses enthusiasm for the opportunity to discuss the position further. Include a call to action for the next steps in the hiring process.]
+I am very excited about the opportunity to bring my blend of artistic skill and technical knowledge to Vercors Games and contribute to building your next captivating world. Thank you for your time and consideration. I have attached my portfolio for your review and look forward to discussing how my skills can benefit your team.
 
 ### Salary_FI
 2000-3000€/kk
