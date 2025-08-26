@@ -204,6 +204,11 @@ function parseMarkdown(markdown) {
                 project.workshop = line.replace('- Workshop:', '').trim().toLowerCase() === 'true';
             } else if (line.startsWith('- Engine:')) {
                 project.engine = line.replace('- Engine:', '').trim();
+            } else if (line.startsWith('- Languages:')) {
+                const langsRaw = line.replace('- Languages:', '').trim();
+                if (langsRaw) {
+                    project.languages = langsRaw.split(',').map(l => l.trim()).filter(Boolean);
+                }
             }
         }
         
@@ -222,6 +227,81 @@ function parseMarkdown(markdown) {
     }
     
     return result;
+}
+
+// --- Language Colors Loader (from TOML) ---
+let LANGUAGE_COLORS = null;
+
+// Very small TOML parser for our simple format:
+// [lang]\n bg = "#hex"\n fg = "#hex"
+function parseSimpleToml(tomlText) {
+    const stripInlineComments = (s) => {
+        let inQuote = false;
+        let result = '';
+        for (let i = 0; i < s.length; i++) {
+            const ch = s[i];
+            if (ch === '"' && s[i - 1] !== '\\') inQuote = !inQuote;
+            if (ch === '#' && !inQuote) break;
+            result += ch;
+        }
+        return result.trim();
+    };
+
+    const map = {};
+    let current = null;
+    const lines = tomlText.split(/\r?\n/);
+    for (let raw of lines) {
+        let line = raw.trim();
+        if (!line || line.startsWith('#')) continue;
+        line = stripInlineComments(line);
+        if (!line) continue;
+
+        if (line.startsWith('[') && line.endsWith(']')) {
+            current = line.slice(1, -1).trim();
+            if (current) map[current] = {};
+            continue;
+        }
+        const eq = line.indexOf('=');
+        if (eq !== -1 && current) {
+            const key = line.slice(0, eq).trim();
+            let val = line.slice(eq + 1).trim();
+            if (val.startsWith('"') && val.endsWith('"')) {
+                val = val.slice(1, -1);
+            }
+            map[current][key] = val;
+        }
+    }
+    return map;
+}
+
+async function loadLanguageColors() {
+    try {
+        const res = await fetch('content/language_colors.toml');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const text = await res.text();
+        LANGUAGE_COLORS = parseSimpleToml(text);
+        injectLanguageColors(LANGUAGE_COLORS);
+    } catch (e) {
+        console.error('Failed to load TOML language colors:', e);
+    }
+}
+
+function injectLanguageColors(colors) {
+    if (!colors) return;
+    const styleId = 'language-colors-style';
+    let styleEl = document.getElementById(styleId);
+    if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = styleId;
+        document.head.appendChild(styleEl);
+    }
+    let css = '';
+    for (const [code, cfg] of Object.entries(colors)) {
+        const bg = (cfg && cfg.bg) || '#444';
+        const fg = (cfg && cfg.fg) || '#fff';
+        css += `.project-media .language-${code} { background: ${bg}; color: ${fg}; }\n`;
+    }
+    styleEl.textContent = css;
 }
 
 // Function to create carousel HTML
@@ -1000,6 +1080,7 @@ function attachYasuoNameClickHandler() {
 
 // Initialize all features when the DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    loadLanguageColors();
     // Create and append Yasuo mode indicator image
     const indicator = document.createElement('img');
     indicator.id = 'yasuo-mode-indicator';

@@ -459,6 +459,55 @@ h2 {
     padding-left: 1rem;
 }
 
+/* Language notches (bottom-right) */
+/* Note: override the generic .project-media > * sizing */
+.project-media > .language-notches {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    top: auto;
+    left: auto;
+    width: auto;
+    height: auto;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    z-index: 12; /* Above media, below carousel controls (15) */
+    pointer-events: none; /* Do not block clicks for expand or controls */
+}
+
+.project-media .language-notch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.78rem;
+    line-height: 1;
+    color: #fff;
+    background: #444; /* Fallback; overridden by dynamic language colors */
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.project-media .language-notch i {
+    font-size: 0.9em;
+}
+
+/* Per-language colors are now injected dynamically by scripts/portfolio-common.js
+    via the loadLanguageColors()/injectLanguageColors() functions. */
+
+/* Ensure visibility in expanded view without blocking controls */
+.project-card.expanded .project-media .language-notches {
+    z-index: 12;
+}
+
+@media (max-width: 480px) {
+    .project-media .language-notch {
+        font-size: 0.72rem;
+        padding: 0.2rem 0.45rem;
+    }
+}
+
 .artstation-link {
     display: inline-flex;
     align-items: center;
@@ -1114,11 +1163,6 @@ body.light-theme .lang-javascript {
     visibility: visible !important;
 }
 
-/* Keep iframe styles separate */
-.project-card.expanded .project-media iframe {
-    /* Styles already defined above */
-}
-
 .overlay {
     display: none;
     position: fixed;
@@ -1283,14 +1327,9 @@ body.has-expanded-project .close-button {
     background: rgba(76, 175, 80, 0.9);
 }
 
-/* Position below store button when store is present */
-.game-tag.with-store {
-    top: 2.2rem; /* Position below the store button */
-}
-
-/* Remove hover since it has pointer-events: none */
-.game-tag:hover {
-    /* No hover effects needed */
+/* If an engine tag exists, place the store notch below it */
+.project-card:has(.game-tag) .store-notch {
+    top: 2.2rem; /* Store below engine */
 }
 
 /* Yasuo Mode Easter Egg */

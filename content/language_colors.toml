@@ -1,0 +1,22 @@
+# Language color configuration (TOML)
+# Add languages as tables with bg/fg hex colors
+
+[python]
+bg = "#3776AB"
+fg = "#ffffff"
+
+[javascript]
+bg = "#f7df1e"
+fg = "#1a1a1a"
+
+[cpp]
+bg = "#00199C"
+fg = "#ffffff"
+
+[c]
+bg = "#130315"
+fg = "#ffffff"
+
+[csharp]
+bg = "#68217A"
+fg = "#ffffff"

@@ -80,6 +80,29 @@
                 project.store = 'https://steamcommunity.com/id/R60D/myworkshopfiles/';
             }
             
+            // Determine up to two languages from explicit metadata only (normalized; filtered to allowed if available). Only show for programming projects (index < 1000)
+            const allowed = (typeof LANGUAGE_COLORS === 'object' && LANGUAGE_COLORS) ? new Set(Object.keys(LANGUAGE_COLORS)) : null;
+            const languages = (Array.isArray(project.languages) ? project.languages : [])
+                .map(s => (s || '').toString().toLowerCase().trim())
+                .map(s => s
+                    .replace('c++', 'cpp')
+                    .replace('c#', 'csharp')
+                    .replace('c sharp', 'csharp')
+                    .replace('js', 'javascript')
+                )
+                .filter((code, idx, arr) => code && arr.indexOf(code) === idx && (!allowed || allowed.has(code)));
+            const languageLabels = { python: 'Python', javascript: 'JavaScript', cpp: 'C++', csharp: 'C#' };
+            const languageIcons = { python: 'fab fa-python', javascript: 'fab fa-js', cpp: 'fas fa-code', csharp: 'fas fa-hashtag' };
+            const languageNotches = (index < 1000 && languages && languages.length) ? `
+                <div class="language-notches">
+                    ${languages.slice(0, 2).map(code => `
+                        <span class="language-notch language-${code}">
+                            <i class="${languageIcons[code] || 'fas fa-code'}"></i> ${languageLabels[code] || code}
+                        </span>
+                    `).join('')}
+                </div>
+            ` : '';
+            
             let mediaContent = '';
             if (isVideo) {
                 mediaContent = `<iframe src="${project.media}" frameborder="0" allowfullscreen></iframe>`;
@@ -160,6 +183,7 @@
                     </div>
                     <div class="project-media">
                         ${mediaContent}
+                        ${languageNotches}
                     </div>
                     <div class="project-info">
                         <h3>${project.title}</h3>

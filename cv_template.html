@@ -56,23 +56,12 @@
             color: #fff;
         }
         
-        /* Language visibility - only one language at a time */
-        body:not(.english) .lang-en { display: none !important; }
-        body.english .lang-fi       { display: none !important; }
-        /* Ensure same rule inside 3D mode */
-        body.cv-3d-mode:not(.english) .lang-en { display: none !important; }
-        body.cv-3d-mode.english .lang-fi       { display: none !important; }
         
         /* CV type content visibility */
         .cv-programming { display: block; }
         .cv-3d { display: none; }
         body.cv-3d-mode .cv-programming { display: none; }
         body.cv-3d-mode .cv-3d { display: block; }
-        
-        /* Combined visibility rules */
-        body.cv-3d-mode.english .lang-fi.cv-3d { display: none; }
-        body.cv-3d-mode.english .lang-en.cv-3d { display: block; }
-
         
         body {
             margin: 0;
@@ -345,49 +334,38 @@
 <body>
     <!-- CV type toggle button -->
     <div class="cv-toggle">
-        <span class="toggle-programming active" onclick="toggleCV('programming')">Programming</span>
-        <span class="toggle-3d" onclick="toggleCV('3d')">3D Generalist</span>
+        <span class="toggle-programming active" onclick="toggleCV('programming')" data-i18n="ui.cvToggle.programming">Programming</span>
+        <span class="toggle-3d" onclick="toggleCV('3d')" data-i18n="ui.cvToggle.3d">3D Generalist</span>
     </div>
     
     <!-- Language toggle button -->
     <div class="language-toggle">
-        <span class="toggle-fi active" onclick="toggleLanguage('finnish')">FIN</span>
-        <span class="toggle-en" onclick="toggleLanguage('english')">ENG</span>
+        <span class="toggle-fi active" onclick="toggleLanguage('finnish')" data-i18n="ui.lang.fi">FIN</span>
+        <span class="toggle-en" onclick="toggleLanguage('english')" data-i18n="ui.lang.en">ENG</span>
     </div>
 
     <div class="page">
         <div class="sidebar">
             <div class="section">
-                <h2 class="lang-fi cv-programming">Ammatillinen Yhteenveto</h2>
-                <h2 class="lang-en cv-programming">Professional Summary</h2>
-                <h2 class="lang-fi cv-3d">Ammatillinen Yhteenveto</h2>
-                <h2 class="lang-en cv-3d">Professional Summary</h2>
+                <h2 class="cv-programming" data-i18n="sidebar.summary">Ammatillinen Yhteenveto</h2>
+                <h2 class="cv-3d" data-i18n="sidebar.summary">Ammatillinen Yhteenveto</h2>
                 
                 <!-- Programming CV Content -->
                 <div class="cv-programming">
-                    <p class="lang-fi">Kokeneena ohjelmoijana ja projektien vetäjänä minulla on vankka osaamispohja ohjelmistokehityksestä. Erityisvahvuuksiini kuuluvat REST API -kehitys, C++-sovellukset sekä monipuolinen web-kehitys. Minulla on yli 5 vuoden kokemus Python-ohjelmoinnista, mukaan lukien Flask-pohjaiset palvelut ja automaatiotyökalut.</p>
+                    <p data-i18n="summary.programming.p1">Kokeneena ohjelmoijana ja projektien vetäjänä minulla on vankka osaamispohja ohjelmistokehityksestä. Erityisvahvuuksiini kuuluvat REST API -kehitys, C++-sovellukset sekä monipuolinen web-kehitys. Minulla on yli 5 vuoden kokemus Python-ohjelmoinnista, mukaan lukien Flask-pohjaiset palvelut ja automaatiotyökalut.</p>
                     
-                    <p class="lang-fi">Olen saanut käytännön kokemusta ketteristä (Agile) ja vesiputousmallin (Waterfall) projektinhallintamenetelmistä. Olen myös tottunut hyödyntämään automaattista testausta ja CI/CD-putkia. Osoituksena frontend-taidoistani tämä CV on itse rakentamani.</p>
-                    
-                    <p class="lang-en">As a seasoned programmer and project lead, I possess a strong foundation in software development. My core strengths include REST API development, building C++ applications, and versatile web development. I have over 5 years of professional experience with Python, covering Flask services and automation tooling.</p>
-                    
-                    <p class="lang-en">I've gained hands-on experience with both Agile and Waterfall project management methodologies. I'm adept at leveraging automated testing and CI/CD pipelines. As a testament to my frontend skills, this CV itself is my own creation.</p>
+                    <p data-i18n="summary.programming.p2">Olen saanut käytännön kokemusta ketteristä (Agile) ja vesiputousmallin (Waterfall) projektinhallintamenetelmistä. Olen myös tottunut hyödyntämään automaattista testausta ja CI/CD-putkia. Osoituksena frontend-taidoistani tämä CV on itse rakentamani.</p>
                 </div>
                 
                 <div class="cv-3d">
-                    <p class="lang-fi">
+                    <p data-i18n="summary.3d.p1">
                         Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon optimoituja assetteja ja hahmoja Blenderissä sekä Substance-työkaluissa. Kehitän myös omia Python-pohjaisia työkaluja Blenderiin ja julkaisen työkaluja ja assetteja Blender Marketissa ja FAB-alustalla.
-                    </p>
-                
-                    <p class="lang-en">
-                        With 6+ years in modeling, rigging and animation, I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and publish add-ons and assets on Blender Market and FAB.
                     </p>
                 </div>
                 
             </div>
             <div class="section">
-                <h2 class="lang-fi">Verkkosivut & Sosiaalinen Media</h2>
-                <h2 class="lang-en">Websites & Social Links</h2>
+                <h2 data-i18n="sidebar.links.title">Verkkosivut & Sosiaalinen Media</h2>
                 
                 <!-- Common links for both CVs -->
                 <ul>
@@ -398,28 +376,24 @@
                 
                 <!-- 3D Generalist specific links -->
                 <ul class="cv-3d">
-                     <li><a href="https://www.fab.com/sellers/Ultikynnys%20Productions" target="_blank" rel="noopener noreferrer"><i class="fas fa-store"></i> FAB Marketplace</a></li>
-                     <li><a href="https://ultikynnys.gumroad.com/" target="_blank" rel="noopener noreferrer"><i class="fas fa-shopping-cart"></i> Gumroad Store</a></li>
-                     <li><a href="https://steamcommunity.com/id/R60D/myworkshopfiles/" target="_blank" rel="noopener noreferrer"><i class="fab fa-steam"></i> Steam Workshop</a></li>
+                     <li><a href="https://www.fab.com/sellers/Ultikynnys%20Productions" target="_blank" rel="noopener noreferrer"><i class="fas fa-store"></i> <span data-i18n="sidebar.links.fab">FAB Marketplace</span></a></li>
+                     <li><a href="https://ultikynnys.gumroad.com/" target="_blank" rel="noopener noreferrer"><i class="fas fa-shopping-cart"></i> <span data-i18n="sidebar.links.gumroad">Gumroad Store</span></a></li>
+                     <li><a href="https://steamcommunity.com/id/R60D/myworkshopfiles/" target="_blank" rel="noopener noreferrer"><i class="fab fa-steam"></i> <span data-i18n="sidebar.links.steam">Steam Workshop</span></a></li>
                 </ul>
             </div>
             <div class="section">
-                <h2 class="lang-fi">Kielet</h2>
-                <h2 class="lang-en">Languages</h2>
+                <h2 data-i18n="sidebar.languages.title">Kielet</h2>
                 <ul>
-                    <li class="lang-fi"><i class="fas fa-flag"></i> Suomi (Äidinkieli)</li>
-                    <li class="lang-fi"><i class="fas fa-flag"></i> Englanti (Erinomainen)</li>
-                    <li class="lang-en"><i class="fas fa-flag"></i> Finnish (Native)</li>
-                    <li class="lang-en"><i class="fas fa-flag"></i> English (Fluent)</li>
+                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.finnish_label">Suomi (Äidinkieli)</span></li>
+                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.english_label">Englanti (Erinomainen)</span></li>
                     <hr style="border-top: 1px solid #34495e; margin: 10px 0;">
                     
                     <!-- Programming languages -->
-
-                    <li><i class="fab fa-python"></i> Python</li>
-                    <li><i class="fab fa-cuttlefish"></i> C++ </li>
-                    <li><i class="fas fa-hashtag"></i> C# </li>
-                    <li><i class="fab fa-html5"></i> HTML/CSS </li>
-                    <li><i class="fab fa-js-square"></i> JavaScript/TypeScript</li>
+                    <li><i class="fab fa-python"></i> <span data-i18n="sidebar.programmingLanguages.python">Python</span></li>
+                    <li><i class="fab fa-cuttlefish"></i> <span data-i18n="sidebar.programmingLanguages.cpp">C++</span></li>
+                    <li><i class="fas fa-hashtag"></i> <span data-i18n="sidebar.programmingLanguages.csharp">C#</span></li>
+                    <li><i class="fab fa-html5"></i> <span data-i18n="sidebar.programmingLanguages.html_css">HTML/CSS</span></li>
+                    <li><i class="fab fa-js-square"></i> <span data-i18n="sidebar.programmingLanguages.js_ts">JavaScript/TypeScript</span></li>
                     
                 </ul>
             </div>
@@ -432,56 +406,45 @@
             <h1>Ubeid (Upi) Hussein</h1>
             <!-- Programming CV Title -->
             <div class="cv-programming">
-                <p class="lang-fi">Ohjelmoija</p>
-                <p class="lang-en">Programmer</p>
+                <p data-i18n="profile.title.programming">Ohjelmoija</p>
             </div>
             <!-- 3D Generalist CV Title -->
             <div class="cv-3d">
-                <p class="lang-fi">3D Generalisti & Tekninen Taiteilija</p>
-                <p class="lang-en">3D Generalist & Technical Artist</p>
+                <p data-i18n="profile.title.3d">3D Generalisti & Tekninen Taiteilija</p>
             </div>
 
 
             <div class="section">
-                <h2 class="lang-fi">Työkokemus</h2>
-                <h2 class="lang-en">Work Experience</h2>
+                <h2 data-i18n="sections.workExperience.title">Työkokemus</h2>
                 
                 <!-- Programming CV Work Experience -->
                 <div class="cv-programming">
                     <div>
-                        <h3>R&D Intern</h3>
-                        <p class="lang-fi"><em>Toukokuu 2025 - Nykyhetki | Solita</em></p>
-                        <p class="lang-en"><em>May 2025 - Present | Solita</em></p>
+                        <h3 data-i18n="work.programming.rnd.title">R&D Intern</h3>
+                        <p><em data-i18n="work.programming.rnd.period">Toukokuu 2025 - Nykyhetki | Solita</em></p>
                         <ul>
-                            <li class="lang-fi">Kehitän kaksihenkisen tiimin jäsenenä pieniä full stack -projekteja, jotka hyödyntävät erilaisia teknologiapinoja ja uusinta AI-integraatiota.</li>
-                            <li class="lang-en">Develop small full stack projects as part of a two-person team, utilizing various tech stacks and cutting-edge AI integration.</li>
+                            <li data-i18n="work.programming.rnd.b1">Kehitän kaksihenkisen tiimin jäsenenä pieniä full stack -projekteja, jotka hyödyntävät erilaisia teknologiapinoja ja uusinta AI-integraatiota.</li>
                         </ul>
                     </div>
                     <div>
-                        <h3>Programmer | Arts and Assets Specialist</h3>
-                        <p class="lang-fi"><em>Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
-                        <p class="lang-en"><em>January 2022 - Present | No Bright Shadows (Remote)</em></p>
+                        <h3 data-i18n="work.programming.nbs.title">Programmer | Arts and Assets Specialist</h3>
+                        <p><em data-i18n="work.programming.nbs.period">Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
                         <ul>
-                            <li class="lang-fi">Pelimekaniikkojen ohjelmointi, REST API -kehitys ja tietokantaintegraatiot.</li>
-                            <li class="lang-en">Programming game mechanics, REST API development, and database integrations.</li>
+                            <li data-i18n="work.programming.nbs.b1">Pelimekaniikkojen ohjelmointi, REST API -kehitys ja tietokantaintegraatiot.</li>
                         </ul>
                     </div>
                     <div>
-                        <h3>Data Entry</h3>
-                        <p class="lang-fi"><em>Tammikuu 2021 - Tammikuu 2022 | Verwijnen & Verwijnen (Helsinki)</em></p>
-                        <p class="lang-en"><em>January 2021 - January 2022 | Verwijnen & Verwijnen (Helsinki)</em></p>
+                        <h3 data-i18n="work.programming.data.title">Data Entry</h3>
+                        <p><em data-i18n="work.programming.data.period">Tammikuu 2021 - Tammikuu 2022 | Verwijnen & Verwijnen (Helsinki)</em></p>
                         <ul>
-                            <li class="lang-fi">Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden.</li>
-                            <li class="lang-en">Organized and maintained both electronic and physical records related to company expenses, ensuring data accuracy and accessibility.</li>
+                            <li data-i18n="work.programming.data.b1">Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden.</li>
                         </ul>
                     </div>
                     <div>
-                        <h3>Blender Tools Programmer</h3>
-                        <p class="lang-fi"><em>2019 - Nykyhetki | Freelance</em></p>
-                        <p class="lang-en"><em>2019 - Present | Freelance</em></p>
+                        <h3 data-i18n="work.programming.blender.title">Blender Tools Programmer</h3>
+                        <p><em data-i18n="work.programming.blender.period">2019 - Nykyhetki | Freelance</em></p>
                         <ul>
-                            <li class="lang-fi">Kehitän Blender-lisäosia Pythonilla, mukaan lukien työkalut kuten MOF-Blender (UV-unwrapping), UltiTools ja UltiBake, joita käytetään alan ammattilaisten keskuudessa.</li>
-                            <li class="lang-en">Develop Blender add-ons in Python, including tools such as MOF-Blender (UV-unwrapping), UltiTools, and UltiBake, which are used by professionals in the industry.</li>
+                            <li data-i18n="work.programming.blender.b1">Kehitän Blender-lisäosia Pythonilla, mukaan lukien työkalut kuten MOF-Blender (UV-unwrapping), UltiTools ja UltiBake, joita käytetään alan ammattilaisten keskuudessa.</li>
                         </ul>
                     </div>
                 </div>
@@ -489,118 +452,102 @@
                 <!-- 3D Generalist CV Work Experience -->
                 <div class="cv-3d">
                     <div>
-                        <h3>3D Artist & Technical Artist</h3>
-                        <p class="lang-fi"><em>Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
-                        <p class="lang-en"><em>January 2022 - Present | No Bright Shadows (Remote)</em></p>
+                        <h3 data-i18n="work.3d.nbs.title">3D Artist & Technical Artist</h3>
+                        <p><em data-i18n="work.3d.nbs.period">Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
                         <ul>
-                            <li class="lang-fi">Hahmomallinnukseen, riggaamiseen, animaatioon, partikkelitehosteisiin ja shadereihin kehittämiseen.</li>
-                            <li class="lang-en">Character modeling, rigging, animation, particle effects, and shader development.</li>
+                            <li data-i18n="work.3d.nbs.b1">Hahmomallinnukseen, riggaamiseen, animaatioon, partikkelitehosteisiin ja shadereihin kehittämiseen.</li>
                         </ul>
                     </div>
                     <div>
-                        <h3>Freelance 3D Artist</h3>
-                        <p class="lang-fi"><em>2018 - Nykyhetki | Eri asiakkaat</em></p>
-                        <p class="lang-en"><em>2018 - Present | Various Clients</em></p>
+                        <h3 data-i18n="work.3d.freelance.title">Freelance 3D Artist</h3>
+                        <p><em data-i18n="work.3d.freelance.period">2018 - Nykyhetki | Eri asiakkaat</em></p>
                         <ul>
-                            <li class="lang-fi">3D-mallinnusta, teksturointia ja animaatiota peliprojekteihin ja visualisointiin.</li>
-                            <li class="lang-en">3D modeling, texturing, and animation for game projects and visualization.</li>
+                            <li data-i18n="work.3d.freelance.b1">3D-mallinnusta, teksturointia ja animaatiota peliprojekteihin ja visualisointiin.</li>
                         </ul>
                     </div>
                     <div>
-                        <h3>Asset Store Creator</h3>
-                        <p class="lang-fi"><em>2019 - Nykyhetki | FAB, Gumroad, Steam Workshop</em></p>
-                        <p class="lang-en"><em>2019 - Present | FAB, Gumroad, Steam Workshop</em></p>
+                        <h3 data-i18n="work.3d.asset.title">Asset Store Creator</h3>
+                        <p><em data-i18n="work.3d.asset.period">2019 - Nykyhetki | FAB, Gumroad, Steam Workshop</em></p>
                         <ul>
-                            <li class="lang-fi">Kaupallisten 3D-assettien ja työkalujen luominen ja myynti eri alustoilla.</li>
-                            <li class="lang-en">Creating and selling commercial 3D assets and tools across various platforms.</li>
+                            <li data-i18n="work.3d.asset.b1">Kaupallisten 3D-assettien ja työkalujen luominen ja myynti eri alustoilla.</li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="section">
-                <h2 class="lang-fi">Koulutus</h2>
-                <h2 class="lang-en">Education</h2>
+                <h2 data-i18n="sections.education.title">Koulutus</h2>
                  <div>
 
 
                     
-                    <h3>University of Applied Sciences (TAMK)</h3>
-                    <p class="lang-fi">Tietojenkäsittelytiede</p>
-                    <p class="lang-en">Computer Science</p>
+                    <h3 data-i18n="education.tamk.institution">University of Applied Sciences (TAMK)</h3>
+                    <p data-i18n="education.tamk.field">Tietojenkäsittelytiede</p>
                     
-                    <p class="lang-fi"><em>Tammikuu 2022 - Nykyhetki | Kandidaatin insinööri (B.Eng) tietotekniikassa</em></p>
-                    <p class="lang-en"><em>January 2022 - Present | Bachelor of Engineering (B.Eng) in Information Technology</em></p>
+                    <p><em data-i18n="education.tamk.period">Tammikuu 2022 - Nykyhetki | Kandidaatin insinööri (B.Eng) tietotekniikassa</em></p>
                     <ul>
 
                     </ul>
                 </div>
                 <div>
-                    <h3>Region Vocational College Tredu (TEKLU)</h3>
+                    <h3 data-i18n="education.teklu.institution">Region Vocational College Tredu (TEKLU)</h3>
 
-                    <p class="lang-fi">Sähkö- ja automaatio-tekniikan teknikko</p>
-                    <p class="lang-en">Electrician and Automation Technician</p>
+                    <p data-i18n="education.teklu.field">Sähkö- ja automaatio-tekniikan teknikko</p>
 
-                    <p class="lang-fi"><em>Tammikuu 2015 - Toukokuu 2018 | Automaatio- ja sähkötekniikan teknikko</em></p>
-                    <p class="lang-en"><em>January 2015 - May 2018 | Automation and Electrical Engineering Technician</em></p>
+                    <p><em data-i18n="education.teklu.period">Tammikuu 2015 - Toukokuu 2018 | Automaatio- ja sähkötekniikan teknikko</em></p>
                 </div>
                  <!-- Add more education entries as needed -->
             </div>
 
             <div class="section">
-                <h2 class="lang-fi">Taidot</h2>
-                <h2 class="lang-en">Skills</h2>
+                <h2 data-i18n="sections.skills.title">Taidot</h2>
                 
                 <!-- Programming CV Skills -->
                 <div class="skills-grid cv-programming">
-                    <h3 class="lang-fi">Ohjelmointiosaaminen</h3>
-                    <h3 class="lang-en">Programming Expertise</h3>
+                    <h3 data-i18n="skills.programming.expertise.title">Ohjelmointiosaaminen</h3>
                     <ul>
-                        <li><i class="fas fa-laptop-code"></i> Backend Development</li>
-                        <li><i class="fas fa-window-maximize"></i> Frontend Development</li>
-                        <li><i class="fas fa-database"></i> Database Management</li>
+                        <li><i class="fas fa-laptop-code"></i> <span data-i18n="skills.programming.expertise.items.backend">Backend Development</span></li>
+                        <li><i class="fas fa-window-maximize"></i> <span data-i18n="skills.programming.expertise.items.frontend">Frontend Development</span></li>
+                        <li><i class="fas fa-database"></i> <span data-i18n="skills.programming.expertise.items.database">Database Management</span></li>
                     </ul>
                     <ul>
-                        <li><i class="fas fa-cloud"></i> REST API Development</li>
-                        <li><i class="fas fa-robot"></i> AI & Machine Learning</li>
+                        <li><i class="fas fa-cloud"></i> <span data-i18n="skills.programming.expertise.items.rest">REST API Development</span></li>
+                        <li><i class="fas fa-robot"></i> <span data-i18n="skills.programming.expertise.items.ai">AI & Machine Learning</span></li>
                     </ul>
                     
-                    <h3 class="lang-fi">Työkalut &amp; Ympäristöt</h3>
-                    <h3 class="lang-en">Tools &amp; Environments</h3>
+                    <h3 data-i18n="skills.programming.tools.title">Työkalut &amp; Ympäristöt</h3>
                     <ul>
-                        <li><i class="fas fa-code-branch"></i> Version Control (Git)</li>
-                        <li><i class="fas fa-server"></i> DevOps & Deployment</li>
-                        <li><i class="fab fa-docker"></i> Containerization</li>
+                        <li><i class="fas fa-code-branch"></i> <span data-i18n="skills.programming.tools.items.git">Version Control (Git)</span></li>
+                        <li><i class="fas fa-server"></i> <span data-i18n="skills.programming.tools.items.devops">DevOps & Deployment</span></li>
+                        <li><i class="fab fa-docker"></i> <span data-i18n="skills.programming.tools.items.containers">Containerization</span></li>
                     </ul>
                     <ul>
-                        <li><i class="fas fa-tasks"></i> Project Management</li>
-                        <li><i class="fas fa-gamepad"></i> Game Development</li>
+                        <li><i class="fas fa-tasks"></i> <span data-i18n="skills.programming.tools.items.pm">Project Management</span></li>
+                        <li><i class="fas fa-gamepad"></i> <span data-i18n="skills.programming.tools.items.gamedev">Game Development</span></li>
                     </ul>
                 </div>
                 
                 <!-- 3D Generalist CV Skills -->
                 <div class="skills-grid cv-3d">
-                    <h3 class="lang-fi">3D Mallinnus &amp; Animaatio</h3>
-                    <h3 class="lang-en">3D Modeling &amp; Animation</h3>
+                    <h3 data-i18n="skills.3d.modeling.title">3D Mallinnus &amp; Animaatio</h3>
                     <ul>
-                        <li><i class="fas fa-cube"></i> Blender (Expert)</li>
-                        <li><i class="fas fa-paint-brush"></i> Substance Designer</li>
-                        <li><i class="fas fa-palette"></i> Substance Painter</li>
+                        <li><i class="fas fa-cube"></i> <span data-i18n="skills.3d.modeling.items.blender">Blender (Expert)</span></li>
+                        <li><i class="fas fa-paint-brush"></i> <span data-i18n="skills.3d.modeling.items.designer">Substance Designer</span></li>
+                        <li><i class="fas fa-palette"></i> <span data-i18n="skills.3d.modeling.items.painter">Substance Painter</span></li>
                     </ul>
                     <ul>
-                        <li><i class="fas fa-running"></i> Character Rigging</li>
-                        <li><i class="fas fa-video"></i> Animation</li>
+                        <li><i class="fas fa-running"></i> <span data-i18n="skills.3d.modeling.items.rigging">Character Rigging</span></li>
+                        <li><i class="fas fa-video"></i> <span data-i18n="skills.3d.modeling.items.animation">Animation</span></li>
                     </ul>
                     
-                    <h3 class="lang-fi">Pelimootorit &amp; Työnkulku</h3>
-                    <h3 class="lang-en">Game Engines &amp; Workflow</h3>
+                    <h3 data-i18n="skills.3d.workflow.title">Pelimootorit &amp; Työnkulku</h3>
                     <ul>
-                        <li><i class="fab fa-unity"></i> Unity</li>
-                        <li><i class="fas fa-cog"></i> Unreal Engine</li>
+                        <li><i class="fab fa-unity"></i> <span data-i18n="skills.3d.workflow.items.unity">Unity</span></li>
+                        <li><i class="fas fa-cog"></i> <span data-i18n="skills.3d.workflow.items.unreal">Unreal Engine</span></li>
                     </ul>
                     <ul>
-                        <li><i class="fas fa-code"></i> Shader Development</li>
-                        <li><i class="fas fa-magic"></i> VFX & Particles</li>
+                        <li><i class="fas fa-code"></i> <span data-i18n="skills.3d.workflow.items.shader">Shader Development</span></li>
+                        <li><i class="fas fa-magic"></i> <span data-i18n="skills.3d.workflow.items.vfx">VFX & Particles</span></li>
                     </ul>
                     
 
@@ -611,6 +558,102 @@
 
     <!-- JavaScript for language and CV toggle -->
     <script>
+        // --- i18n loader (TOML) ---
+        let CV_I18N = null;
+        function resolvePath(obj, path) {
+            return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : undefined, obj);
+        }
+        function stripInlineComments(s) {
+            let inQuote = false;
+            let out = '';
+            for (let i = 0; i < s.length; i++) {
+                const ch = s[i];
+                if (ch === '"' && s[i - 1] !== '\\') inQuote = !inQuote;
+                if (ch === '#' && !inQuote) break;
+                out += ch;
+            }
+            return out.trim();
+        }
+        function splitDotted(name) {
+            const parts = [];
+            let buf = '';
+            let inQuote = false;
+            for (let i = 0; i < name.length; i++) {
+                const ch = name[i];
+                if (ch === '"' && name[i - 1] !== '\\') {
+                    inQuote = !inQuote;
+                    buf += ch;
+                } else if (ch === '.' && !inQuote) {
+                    parts.push(buf.trim());
+                    buf = '';
+                } else {
+                    buf += ch;
+                }
+            }
+            if (buf.length) parts.push(buf.trim());
+            return parts.map(p => p.replace(/^"(.*)"$/, '$1'));
+        }
+        function ensurePath(root, parts) {
+            let obj = root;
+            for (const p of parts) {
+                if (!obj[p] || typeof obj[p] !== 'object') obj[p] = {};
+                obj = obj[p];
+            }
+            return obj;
+        }
+        function parseTomlNested(tomlText) {
+            const result = {};
+            let current = result;
+            const lines = tomlText.split(/\r?\n/);
+            for (let raw of lines) {
+                let line = raw.trim();
+                if (!line || line.startsWith('#')) continue;
+                line = stripInlineComments(line);
+                if (!line) continue;
+                if (line.startsWith('[') && line.endsWith(']')) {
+                    const header = line.slice(1, -1).trim();
+                    const parts = splitDotted(header);
+                    current = ensurePath(result, parts);
+                    continue;
+                }
+                const eq = line.indexOf('=');
+                if (eq === -1) continue;
+                let key = line.slice(0, eq).trim();
+                let val = line.slice(eq + 1).trim();
+                if (key.startsWith('"') && key.endsWith('"')) key = key.slice(1, -1);
+                if (val.startsWith('"') && val.endsWith('"')) {
+                    val = val.slice(1, -1).replace(/\\"/g, '"');
+                } else {
+                    // For this dataset we expect quoted strings, but keep raw otherwise
+                }
+                current[key] = val;
+            }
+            return result;
+        }
+        async function loadI18n() {
+            try {
+                const res = await fetch('content/cv_lang.toml');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const text = await res.text();
+                CV_I18N = parseTomlNested(text);
+                applyI18n();
+            } catch (e) {
+                console.error('Failed to load i18n data (TOML):', e);
+            }
+        }
+        function applyI18n() {
+            if (!CV_I18N) return;
+            const lang = document.body.classList.contains('english') ? 'en' : 'fi';
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const val = resolvePath(CV_I18N[lang], key);
+                if (typeof val === 'string') {
+                    el.textContent = val;
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', loadI18n);
+
         function toggleLanguage(lang) {
             if (lang === 'finnish') {
                 document.body.classList.remove('english');
@@ -621,6 +664,7 @@
                 document.querySelector('.toggle-fi').classList.remove('active');
                 document.querySelector('.toggle-en').classList.add('active');
             }
+            applyI18n();
         }
         
         function toggleCV(cvType) {

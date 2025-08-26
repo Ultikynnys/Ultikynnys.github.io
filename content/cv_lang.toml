@@ -1,0 +1,267 @@
+# CV i18n data in TOML
+
+[fi.sidebar]
+summary = "Ammatillinen Yhteenveto"
+
+[fi.sidebar.links]
+title = "Verkkosivut ja sosiaalinen media"
+fab = "FAB-markkinapaikka"
+gumroad = "Gumroad-kauppa"
+steam = "Steam Workshop"
+
+[fi.sidebar.languages]
+title = "Kielet"
+finnish_label = "Suomi (äidinkieli)"
+english_label = "Englanti (erinomainen)"
+
+[fi.sidebar.programmingLanguages]
+python = "Python"
+cpp = "C++"
+csharp = "C#"
+html_css = "HTML/CSS"
+js_ts = "JavaScript/TypeScript"
+
+[fi.ui.cvToggle]
+programming = "Ohjelmointi"
+"3d" = "3D-generalisti"
+
+[fi.ui.lang]
+fi = "FIN"
+en = "ENG"
+
+[fi.summary.programming]
+p1 = "Kokeneena ohjelmoijana ja projektien vetäjänä minulla on vankka osaamispohja ohjelmistokehityksestä. Erityisvahvuuksiini kuuluvat REST API -kehitys, C++-sovellukset sekä monipuolinen web-kehitys. Minulla on yli 5 vuoden kokemus Python-ohjelmoinnista, mukaan lukien Flask-pohjaiset palvelut ja automaatiotyökalut."
+p2 = "Olen saanut käytännön kokemusta ketteristä (Agile) ja vesiputousmallin (Waterfall) projektinhallintamenetelmistä. Olen myös tottunut hyödyntämään automaattista testausta ja CI/CD-putkia. Osoituksena frontend-taidoistani toteutin tämän CV:n itse."
+
+[fi.summary."3d"]
+p1 = "Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon optimoituja assetteja ja hahmoja Blenderissä sekä Substance-työkaluissa. Kehitän myös omia Python-pohjaisia työkaluja Blenderiin ja julkaisen lisäosia ja 3D-assetteja Blender Marketissa ja FAB-alustalla."
+
+[fi.profile.title]
+programming = "Ohjelmoija"
+"3d" = "3D-generalisti ja tekninen taiteilija"
+
+[fi.sections.workExperience]
+title = "Työkokemus"
+
+[fi.sections.education]
+title = "Koulutus"
+
+[fi.sections.skills]
+title = "Taidot"
+
+[fi.work.programming.rnd]
+title = "Tutkimus- ja kehitysharjoittelija"
+period = "Toukokuu 2025 - Nykyhetki | Solita"
+b1 = "Kehitän kaksihenkisen tiimin jäsenenä pieniä full stack -projekteja, jotka hyödyntävät erilaisia teknologiapinoja ja uusinta AI-integraatiota."
+
+[fi.work.programming.nbs]
+title = "Ohjelmoija | Taide- ja sisältöasiantuntija"
+period = "Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)"
+b1 = "Pelimekaniikoiden ohjelmointi, C++ -kehitys"
+
+[fi.work.programming.data]
+title = "Kirjanpito"
+period = "Tammikuu 2021 - Tammikuu 2022 | Verwijnen & Verwijnen (Helsinki)"
+b1 = "Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden."
+
+[fi.work.programming.blender]
+title = "Blender-työkalujen ohjelmoija"
+period = "2019 - Nykyhetki | Freelance"
+b1 = "Kehitän Blender-lisäosia Pythonilla, mukaan lukien työkalut kuten MOF-Blender (UV-unwrapping), UltiTools ja UltiBake, joita käytetään alan ammattilaisten keskuudessa."
+
+[fi.work."3d".nbs]
+title = "3D-taiteilija ja tekninen taiteilija"
+period = "Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)"
+b1 = "Hahmomallinnus, riggaus, animaatio, partikkelitehosteet ja shader-kehitys."
+
+[fi.work."3d".freelance]
+title = "Freelance 3D -taiteilija"
+period = "2018 - Nykyhetki | Eri asiakkaat"
+b1 = "3D-mallinnusta, teksturointia ja animaatiota peliprojekteihin ja visualisointiin."
+
+[fi.work."3d".asset]
+title = "Asset Store -sisällöntuottaja"
+period = "2019 - Nykyhetki | FAB, Gumroad, Steam Workshop"
+b1 = "Kaupallisten 3D-assettien ja työkalujen luominen ja myynti eri alustoilla."
+
+[fi.education.tamk]
+institution = "Tampereen ammattikorkeakoulu (TAMK)"
+field = "Tietotekniikka"
+period = "Tammikuu 2022 - Nykyhetki | Insinööri (AMK), tietotekniikka"
+
+[fi.education.teklu]
+institution = "Tampereen seudun ammattiopisto Tredu (TEKLU)"
+field = "Sähkö- ja automaatiotekniikka"
+period = "Tammikuu 2015 - Toukokuu 2018 | Sähkö- ja automaatiotekniikan teknikko"
+
+[fi.skills.programming.expertise]
+title = "Ohjelmointiosaaminen"
+
+[fi.skills.programming.expertise.items]
+backend = "Backend-kehitys"
+frontend = "Frontend-kehitys"
+database = "Tietokantahallinta"
+rest = "REST API -kehitys"
+ai = "AI ja koneoppiminen"
+
+[fi.skills.programming.tools]
+title = "Työkalut ja ympäristöt"
+
+[fi.skills.programming.tools.items]
+git = "Versionhallinta (Git)"
+devops = "DevOps ja käyttöönotto"
+containers = "Konttiteknologiat"
+pm = "Projektinhallinta"
+gamedev = "Pelikehitys"
+
+[fi.skills."3d".modeling]
+title = "3D-mallinnus ja animaatio"
+
+[fi.skills."3d".modeling.items]
+blender = "Blender (Ekspertti)"
+designer = "Substance Designer"
+painter = "Substance Painter"
+rigging = "Hahmojen riggaus"
+animation = "Animaatio"
+
+[fi.skills."3d".workflow]
+title = "Pelimoottorit ja työnkulku"
+
+[fi.skills."3d".workflow.items]
+unity = "Unity"
+unreal = "Unreal Engine"
+shader = "Shader-kehitys"
+vfx = "VFX ja partikkelit"
+
+[en.sidebar]
+summary = "Professional Summary"
+
+[en.sidebar.links]
+title = "Websites & Social Links"
+fab = "FAB Marketplace"
+gumroad = "Gumroad Store"
+steam = "Steam Workshop"
+
+[en.sidebar.languages]
+title = "Languages"
+finnish_label = "Finnish (Native)"
+english_label = "English (Fluent)"
+
+[en.sidebar.programmingLanguages]
+python = "Python"
+cpp = "C++"
+csharp = "C#"
+html_css = "HTML/CSS"
+js_ts = "JavaScript/TypeScript"
+
+[en.ui.cvToggle]
+programming = "Programming"
+"3d" = "3D Generalist"
+
+[en.ui.lang]
+fi = "FIN"
+en = "ENG"
+
+[en.summary.programming]
+p1 = "As a seasoned programmer and project lead, I possess a strong foundation in software development. My core strengths include REST API development, building C++ applications, and versatile web development. I have over 5 years of professional experience with Python, covering Flask services and automation tooling."
+p2 = "I've gained hands-on experience with both Agile and Waterfall project management methodologies. I'm adept at leveraging automated testing and CI/CD pipelines. As a testament to my frontend skills, this CV itself is my own creation."
+
+[en.summary."3d"]
+p1 = "With 6+ years in modeling, rigging and animation, I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and publish add-ons and assets on Blender Market and FAB."
+
+[en.profile.title]
+programming = "Programmer"
+"3d" = "3D Generalist & Technical Artist"
+
+[en.sections.workExperience]
+title = "Work Experience"
+
+[en.sections.education]
+title = "Education"
+
+[en.sections.skills]
+title = "Skills"
+
+[en.work.programming.rnd]
+title = "R&D Intern"
+period = "May 2025 - Present | Solita"
+b1 = "Develop small full stack projects as part of a two-person team, utilizing various tech stacks and cutting-edge AI integration."
+
+[en.work.programming.nbs]
+title = "Programmer | Arts and Assets Specialist"
+period = "January 2022 - Present | No Bright Shadows (Remote)"
+b1 = "Programming game mechanics, C++ development"
+
+[en.work.programming.data]
+title = "Data Entry"
+period = "January 2021 - January 2022 | Verwijnen & Verwijnen (Helsinki)"
+b1 = "Organized and maintained both electronic and physical records related to company expenses, ensuring data accuracy and accessibility."
+
+[en.work.programming.blender]
+title = "Blender Tools Programmer"
+period = "2019 - Present | Freelance"
+b1 = "Develop Blender add-ons in Python, including tools such as MOF-Blender (UV-unwrapping), UltiTools, and UltiBake, which are used by professionals in the industry."
+
+[en.work."3d".nbs]
+title = "3D Artist & Technical Artist"
+period = "January 2022 - Present | No Bright Shadows (Remote)"
+b1 = "Character modeling, rigging, animation, particle effects, and shader development."
+
+[en.work."3d".freelance]
+title = "Freelance 3D Artist"
+period = "2018 - Present | Various Clients"
+b1 = "3D modeling, texturing, and animation for game projects and visualization."
+
+[en.work."3d".asset]
+title = "Asset Store Creator"
+period = "2019 - Present | FAB, Gumroad, Steam Workshop"
+b1 = "Creating and selling commercial 3D assets and tools across various platforms."
+
+[en.education.tamk]
+institution = "Tampere University of Applied Sciences (TAMK)"
+field = "Computer Science"
+period = "January 2022 - Present | Bachelor of Engineering (B.Eng) in Information Technology"
+
+[en.education.teklu]
+institution = "Tampere Vocational College Tredu (TEKLU)"
+field = "Electrician and Automation Technician"
+period = "January 2015 - May 2018 | Automation and Electrical Engineering Technician"
+
+[en.skills.programming.expertise]
+title = "Programming Expertise"
+
+[en.skills.programming.expertise.items]
+backend = "Backend Development"
+frontend = "Frontend Development"
+database = "Database Management"
+rest = "REST API Development"
+ai = "AI & Machine Learning"
+
+[en.skills.programming.tools]
+title = "Tools & Environments"
+
+[en.skills.programming.tools.items]
+git = "Version Control (Git)"
+devops = "DevOps & Deployment"
+containers = "Containerization"
+pm = "Project Management"
+gamedev = "Game Development"
+
+[en.skills."3d".modeling]
+title = "3D Modeling & Animation"
+
+[en.skills."3d".modeling.items]
+blender = "Blender (Expert)"
+designer = "Substance Designer"
+painter = "Substance Painter"
+rigging = "Character Rigging"
+animation = "Animation"
+
+[en.skills."3d".workflow]
+title = "Game Engines & Workflow"
+
+[en.skills."3d".workflow.items]
+unity = "Unity"
+unreal = "Unreal Engine"
+shader = "Shader Development"
+vfx = "VFX & Particles"
