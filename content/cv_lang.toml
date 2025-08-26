@@ -30,8 +30,8 @@ fi = "FIN"
 en = "ENG"
 
 [fi.summary.programming]
-p1 = "Kokeneena ohjelmoijana ja projektien vetäjänä minulla on vankka osaamispohja ohjelmistokehityksestä. Erityisvahvuuksiini kuuluvat REST API -kehitys, C++-sovellukset sekä monipuolinen web-kehitys. Minulla on yli 5 vuoden kokemus Python-ohjelmoinnista, mukaan lukien Flask-pohjaiset palvelut ja automaatiotyökalut."
-p2 = "Olen saanut käytännön kokemusta ketteristä (Agile) ja vesiputousmallin (Waterfall) projektinhallintamenetelmistä. Olen myös tottunut hyödyntämään automaattista testausta ja CI/CD-putkia. Osoituksena frontend-taidoistani toteutin tämän CV:n itse."
+p1 = "Olen pelikehittäjä, joka koodaa pelejä Unreal Engineillä ja Unityllä. Rakennan työkaluja, joilla suunnittelijat ja taiteilijat pääsevät nopeammin maaliin. Työskentelen Pythonilla ja C++:lla."
+p2 = "Julkaisen omia työkaluja ja myyn niitä kaupallisesti. 5+ vuotta devaus kokemusta. Agile ja Waterfall onnistuvat, samoin testit ja CI/CD. Tämän CV:n tein itse css/html/js:llä"
 
 [fi.summary."3d"]
 p1 = "Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon optimoituja assetteja ja hahmoja Blenderissä sekä Substance-työkaluissa. Kehitän myös omia Python-pohjaisia työkaluja Blenderiin ja julkaisen lisäosia ja 3D-assetteja Blender Marketissa ja FAB-alustalla."
@@ -103,6 +103,7 @@ frontend = "Frontend-kehitys"
 database = "Tietokantahallinta"
 rest = "REST API -kehitys"
 ai = "AI ja koneoppiminen"
+embedded = "Sulautettu C/C++"
 
 [fi.skills.programming.tools]
 title = "Työkalut ja ympäristöt"
@@ -163,8 +164,8 @@ fi = "FIN"
 en = "ENG"
 
 [en.summary.programming]
-p1 = "As a seasoned programmer and project lead, I possess a strong foundation in software development. My core strengths include REST API development, building C++ applications, and versatile web development. I have over 5 years of professional experience with Python, covering Flask services and automation tooling."
-p2 = "I've gained hands-on experience with both Agile and Waterfall project management methodologies. I'm adept at leveraging automated testing and CI/CD pipelines. As a testament to my frontend skills, this CV itself is my own creation."
+p1 = "I'm a Game Developer who codes games and builds tools that help designers and artists move faster. I work in Python and C++."
+p2 = "I ship my own tools and sell them commercially. 5+ years with Python and C++. Comfortable with Agile and Waterfall, tests and CI/CD. I also built this CV using my own tools."
 
 [en.summary."3d"]
 p1 = "With 6+ years in modeling, rigging and animation, I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and publish add-ons and assets on Blender Market and FAB."
@@ -236,6 +237,7 @@ frontend = "Frontend Development"
 database = "Database Management"
 rest = "REST API Development"
 ai = "AI & Machine Learning"
+embedded = "Embedded C and C++"
 
 [en.skills.programming.tools]
 title = "Tools & Environments"

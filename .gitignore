@@ -2,3 +2,8 @@ index.html.bak
 *.bak
 .htaccess
 .vscode
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

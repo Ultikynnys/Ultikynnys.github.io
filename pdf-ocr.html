@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PDF to Searchable PDF (OCR) - In Browser</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif; margin: 2rem; color: #222; }
+    h1 { font-size: 1.25rem; margin: 0 0 1rem; }
+    .card { max-width: 800px; padding: 1rem; border: 1px solid #ddd; border-radius: 8px; }
+    .row { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    input[type="file"] { padding: 0.5rem; }
+    button { padding: 0.6rem 1rem; border: none; border-radius: 6px; background: #2c3e50; color: #fff; cursor: pointer; }
+    button[disabled] { background: #999; cursor: not-allowed; }
+    .status { margin-top: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: pre-wrap; }
+    progress { width: 100%; height: 12px; }
+    .hint { color: #555; font-size: 0.9rem; }
+    .footer { margin-top: 1rem; color: #666; font-size: 0.85rem; }
+  </style>
+  <!-- PDF.js -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" referrerpolicy="no-referrer"></script>
+  <!-- Tesseract.js v2 (stable) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div class="card">
+    <h1>PDF to Searchable PDF (OCR)</h1>
+    <div class="row">
+      <input id="fileInput" type="file" accept="application/pdf" />
+      <button id="convertBtn" disabled>Convert to OCR PDF</button>
+      <a id="downloadLink" style="display:none;">Download OCR PDF</a>
+      <a id="openLink" style="display:none; margin-left:auto;" target="_blank">Open in new tab</a>
+    </div>
+    <div style="margin-top:0.5rem" class="hint">
+      All processing happens in your browser. Large PDFs may take time. Language: English (eng).
+    </div>
+    <div style="margin-top:1rem">
+      <progress id="overallProgress" value="0" max="100" style="display:none;"></progress>
+      <div id="status" class="status"></div>
+    </div>
+    <div class="footer">Uses PDF.js to render pages and Tesseract.js to generate a searchable PDF layer.</div>
+  </div>
+
+  <script>
+    // Enable UI only after external libraries are loaded
+    window.addEventListener('DOMContentLoaded', () => {
+      // Delay enabling until pdf.js and Tesseract are both ready
+      let waited = 0;
+      const step = 100; // ms
+      setStatus('Loading libraries...');
+      convertBtn.disabled = true;
+
+      const timer = setInterval(() => {
+        if (window['pdfjsLib'] && window['Tesseract']) {
+          clearInterval(timer);
+          // Configure PDF.js worker (version must match the pdf.js script)
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          convertBtn.disabled = false;
+          setStatus('Ready. Choose a PDF and click Convert to OCR PDF.');
+        } else {
+          waited += step;
+          if (waited >= 10000) { // 10s timeout
+            clearInterval(timer);
+            appendStatus('Libraries still loading. If this persists, check your network and reload.');
+          }
+        }
+      }, step);
+    });
+
+    const $ = (id) => document.getElementById(id);
+    const fileInput = $("fileInput");
+    const convertBtn = $("convertBtn");
+    const statusEl = $("status");
+    const overallProgress = $("overallProgress");
+    const dlLink = $("downloadLink");
+    const openLink = $("openLink");
+    let currentBlobUrl = null;
+
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+    }
+
+    function appendStatus(msg) {
+      statusEl.textContent += (statusEl.textContent ? "\n" : "") + msg;
+    }
+
+    function uiBusy(busy) {
+      convertBtn.disabled = busy;
+      overallProgress.style.display = busy ? 'block' : 'none';
+    }
+
+    async function renderPageToCanvas(page, scale = 1.5) {
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: context, viewport }).promise;
+      return canvas;
+    }
+
+    async function convertToOcrPdf(file) {
+      if (!window['pdfjsLib'] || !window['Tesseract']) {
+        throw new Error('Libraries not loaded yet. Please wait a moment and try again.');
+      }
+
+      uiBusy(true);
+      setStatus('Loading PDF...');
+      dlLink.style.display = 'none';
+      dlLink.removeAttribute('href');
+      dlLink.removeAttribute('download');
+
+      // Read the PDF as ArrayBuffer
+      const arrayBuffer = await file.arrayBuffer();
+      const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+      const pdf = await loadingTask.promise;
+      const totalPages = pdf.numPages;
+
+      // Create Tesseract worker
+      setStatus(`Initializing OCR engine...`);
+      const worker = Tesseract.createWorker({ logger: m => {
+        if (m.status && typeof m.progress === 'number') {
+          appendStatus(`${m.status}: ${(m.progress * 100).toFixed(1)}%`);
+        }
+      }});
+      await worker.load();
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng');
+      // Enable built-in PDF output aggregator inside Tesseract
+      await worker.setParameters({
+        tessedit_create_pdf: '1',
+        textonly_pdf: '0',
+        user_defined_dpi: '300'
+      });
+
+      try {
+        for (let p = 1; p <= totalPages; p++) {
+          setStatus(`Rendering page ${p}/${totalPages}...`);
+          const page = await pdf.getPage(p);
+          const canvas = await renderPageToCanvas(page, 2);
+
+          setStatus(`OCR page ${p}/${totalPages}...`);
+          const dataUrl = canvas.toDataURL('image/png');
+          await worker.recognize(dataUrl);
+
+          // Update overall progress (rough):
+          overallProgress.value = Math.floor((p / totalPages) * 100);
+        }
+
+        setStatus('Assembling searchable PDF...');
+        const { data } = await worker.getPDF('Searchable_OCR.pdf');
+        // Normalize to bytes (supports: Blob, ArrayBuffer, TypedArray, Array<number>, binary string)
+        let pdfBytes;
+        if (typeof Blob !== 'undefined' && data instanceof Blob) {
+          const ab = await data.arrayBuffer();
+          pdfBytes = new Uint8Array(ab);
+        } else if (data instanceof ArrayBuffer) {
+          pdfBytes = new Uint8Array(data);
+        } else if (ArrayBuffer.isView(data)) {
+          pdfBytes = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+        } else if (Array.isArray(data)) {
+          pdfBytes = new Uint8Array(data);
+        } else if (typeof data === 'string') {
+          const bin = data;
+          pdfBytes = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) pdfBytes[i] = bin.charCodeAt(i) & 0xff;
+        } else {
+          // As a last resort, stringify and hope it's a byte string (unlikely)
+          const s = String(data || '');
+          pdfBytes = new Uint8Array(s.length);
+          for (let i = 0; i < s.length; i++) pdfBytes[i] = s.charCodeAt(i) & 0xff;
+        }
+        // Sanity check and blob creation
+        try {
+          const header = new TextDecoder('ascii').decode(pdfBytes.subarray(0, 5));
+          if (header !== '%PDF-') {
+            appendStatus('Warning: OCR output does not start with %PDF-. The file may be corrupted.');
+          }
+        } catch (_) { /* ignore decoder errors */ }
+        appendStatus(`PDF size: ${pdfBytes.length.toLocaleString()} bytes`);
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        if (currentBlobUrl) {
+          try { URL.revokeObjectURL(currentBlobUrl); } catch (_) {}
+        }
+        const url = URL.createObjectURL(blob);
+        currentBlobUrl = url;
+
+        const outName = (file.name.replace(/\.pdf$/i, '') || 'document') + '_ocr.pdf';
+        dlLink.href = url;
+        dlLink.download = outName;
+        dlLink.textContent = `Download ${outName}`;
+        dlLink.style.display = 'inline-block';
+        openLink.href = url;
+        openLink.style.display = 'inline-block';
+        setStatus('Done. Your searchable PDF is ready.');
+      } finally {
+        await worker.terminate();
+        uiBusy(false);
+      }
+    }
+
+    convertBtn.addEventListener('click', async () => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!file) {
+        alert('Please choose a PDF file first.');
+        return;
+      }
+      if (!/\.pdf$/i.test(file.name)) {
+        alert('Selected file is not a PDF.');
+        return;
+      }
+      try {
+        await convertToOcrPdf(file);
+      } catch (err) {
+        console.error(err);
+        setStatus('Error: ' + (err && err.message ? err.message : String(err)));
+        uiBusy(false);
+      }
+    });
+  </script>
+</body>
+</html>

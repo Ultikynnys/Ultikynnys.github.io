@@ -3,6 +3,14 @@
 I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. My strongest languages are <span class="lang-python">Python</span>, <span class="lang-javascript">JavaScript</span>, <span class="lang-cpp">C++</span>, and <span class="lang-csharp">C#</span>. I build Blender tools and develop games in UE5, Unity, and Godot, applying technical expertise to craft efficient solutions. This portfolio demonstrates my front‑end and JavaScript skills, while my GitHub showcases a variety of projects highlighting adaptability across diverse challenges.
 
 
+## CoACD | Convex Collision Generator
+- Title: CoACD | Convex Collision Generator
+- Description: A Blender Ad-don that utilizes the 2022 paper for CoACD(Collision Aware Convex Decomposition)
+- Media: https://raw.githubusercontent.com/Ultikynnys/Ultikynnys.github.io/refs/heads/main/images/COACD.png
+- Store: https://superhivemarket.com/products/coacd--advanced-convex-collision-generator
+- Languages: Python, C++
+
+
 ## Master Music Player
 - Title: Master Music Player
 - Description: An Electron-based music player that serves as a wrapper for yt-dlp, providing an intuitive interface for downloading and managing music from YouTube, SoundCloud and Bandcamp.
@@ -15,7 +23,7 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 - Description: A Blender add‑on that integrates the MinistryOfFlat UV‑unwrap engine directly into Blender, drastically cutting UV islands compared to the default Smart Unwrap.
 - Media: https://raw.githubusercontent.com/Ultikynnys/MinistryOfBlender/refs/heads/main/Comparison.png
 - GitHub: https://github.com/Ultikynnys/MOF-Blender
-- Languages: Python
+- Languages: Python, C
 
 ## UltiTools – Blender Add‑on
 - Title: UltiTools
@@ -23,7 +31,7 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 - Media: images/image_processing20250103-2-4vo0ar.png
 - Store: https://blendermarket.com/products/ultitools
 - GitHub: https://github.com/Ultikynnys/UltitoolsDocumentation
-- Languages: Python
+- Languages: Python, C++
 
 ## UltiBake – Blender Baking Add‑on
 - Title: UltiBake
@@ -31,7 +39,7 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 - Media: images/UltibakeNew.png
 - Store: https://blendermarket.com/products/ultibake
 - GitHub: https://github.com/Ultikynnys/UltiBake
-- Languages: Python
+- Languages: Python, C++
 
 ## Animation+ – Blender Animation Tools
 - Title: Animation+

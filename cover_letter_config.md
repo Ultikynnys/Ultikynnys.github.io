@@ -102,81 +102,69 @@ PERSONAL DETAILS:
 
 COMPANY POSITION LISTING (FOR AI ASSISTANTS):
 
-3D Artist
-Jun 11, 2025
-Job Title: Game Artist
+Remedy Entertainment
+Aug 26, 2025
+Job Title: (Junior) Engine Programmer
 
-Location: Tampere, Finland
+Location: Espoo, Finland (on-site; hybrid model)
 
 Type: Full-time
 
-We are looking for a highly motivated and self-driven 3D Artist to join our team. You will play an integral role in our completely new and ambitious title for PC and consoles. Your primary responsibilities will include creating outstanding 3D art assets from start to finish and integrating them into the game engine. Alongside a passion for outstanding game visuals, you should be able to adapt your personal style and workflow to meet each project’s unique requirements. Familiarity with common software and techniques used in 3D graphics is essential.
+Summary:
+Remedy, the creator of Control®, Max Payne®, and Alan Wake®, is seeking a (Junior) Engine Programmer to design, develop, and deliver new features in the Northlight engine with a highly skilled team in Espoo.
 
-Requirements:
+What you get to do:
+- Work on core engine areas: ECS, physics, streaming, data transforms (design-time → runtime), scripting, core gameplay systems, developer & player UI tech, and level-editor tooling.
+- Provide great developer experience with robust debugging tools.
+- Design and implement performance-critical features that scale.
+- Improve iteration times, data/serialization formats, and APIs for data‑oriented gameplay code.
+- Contribute to engine performance, memory characteristics, and API design.
 
-Outstanding 3D art portfolio.
-Proficiency in using Blender.
-General knowledge required to create feasible game assets, including modeling, visual optimization, UV mapping, and texturing.
-Great communication and teamwork skills.
-Creative mindset with attention to detail.
-Artistic insight necessary for learning new skills and discussing your creative process.
-Prior professional experience in the game industry or closely related fields.
-Considered an advantage:
+What you bring:
+- Experience in game engine programming (AAA proprietary engines a plus).
+- Proficient in C++; comfortable with multithreaded programming.
+- Fluent English; clear communicator and collaborator across disciplines.
+- Organized, independent, inclusive, and documentation‑minded.
 
-Hands-on experience with Unity.
-Applicable knowledge in level art-design, animations, shaders, scene lighting, concept art, and game design.
-Additional supplementary art skills such as concept art, digital painting or sculpting, and visual design.
-Related experience in the game development process as a whole.
-What we offer:
+What’s in it for you:
+- Creative freedom and valued input; healthy work‑life balance.
+- Relocation service to Finland and hybrid work model.
+- On‑site role in Espoo; positions filled as suitable applicants are found.
 
-Development of PC and console titles with a highly talented and motivated team.
-An opportunity to work closely alongside a highly skilled art team led by our Art Director.
-A valued role in defining and creating amazing visuals for our upcoming game project.
-Flat hierarchy and agile working environment.
-A supportive team environment that values personal and artistic growth.
-Grand scale projects in cooperation with a major publisher.
-Some of our benefits include:
-
-
-Our office is located within a walking distance from downtown Tampere. Due to the highly collaborative nature of the work, we expect you to be able to work at the office.
-
-If you think that this description matches you, we highly encourage you to apply as soon as possible as we will interview candidates continuously. If you don’t match all the requirements, please demonstrate how your passion, attitude and interest in Iceflake and Paradox might compensate for this.
-
-Send your applications to jobs@iceflake.com
-
-Use the title 3D Artist and include a portfolio of your previous projects.
+Application:
+Apply with CV (EN), references/portfolio, and relevant information.
 
 ## Cover Letter Content
 
 ### Greeting_FI
-Hei Iceflaken tiimi,
+Hei Remedyn tiimi,
 
 ### Greeting_EN
-Hi Iceflake Team,
+Hi Remedy Team,
 
 ### Introduction
- I am writing to express my enthusiastic interest in the 3D Artist position advertised on your company website. As a dedicated 3D artist with a background in software development, I was immediately drawn to the opportunity to contribute to your new, ambitious title for PC and consoles. My hands-on experience in creating game-ready assets from concept to engine integration, combined with a deep understanding of the entire development process, makes me confident that I possess the skills and passion you are looking for.
+I’m applying for the (Junior) Engine Programmer role at Remedy in Espoo. I like getting close to the metal. C/C++ has been my day to day at school and in projects, and I enjoy building practical tools that make designers and artists faster. Working on Northlight’s core is the kind of problem space I’m excited about. I haven’t worked inside a proprietary AAA engine yet, but I do have engine side experience in Unreal (C++). I learn fast, and growing inside Northlight feels like the right next step for me
 
 ### Body1
-Over the past 5+ years of creating games, I have learned both the technical and artistic requirements behind high-quality, game-ready assets. My portfolio shows strong proficiency in Blender and a solid grasp of the asset pipeline (modeling, UVs, texturing, optimization). I also have hands-on experience integrating assets into Unity, and I adapt my workflow to each project so assets look great and run well.
+On the engineering side I keep things straightforward. Clear, testable C/C++. I profile first, then optimize. I’ve shipped stuff that shortens iteration and makes debugging boring (in a good way). A tiny C++ MP4 to WebP converter. Blender add ons artists actually use. I often pair Python with C/C++ via ctypes to speed up hot paths while keeping the edit run loop quick. Feels close to engine work: clean data transforms, solid serialization, tidy APIs, sensible memory/perf tradeoffs
 
 ### Body2
- Beyond my artistic skills, my background as a programmer gives me a unique perspective. I not only create assets but also understand the technical framework they must fit into. This dual expertise allows me to communicate fluently with both artists and engineers, troubleshoot technical issues, and contribute to building efficient, collaborative workflows. Having participated in over seven game jams, I am well-practiced in teamwork and delivering quality results under pressure, which aligns with your highly collaborative work environment.
+Because I also work in 3D production, I speak both languages: designer/artist and programmer, and I like being the glue. I write things down, keep changes small. I’m comfortable stepping into large codebases. I’m actively growing my multithreading skills and I appreciate focused code reviews. My goal is simple: ship features that scale and give developers great diagnostics and tooling
 
 ### Closing
-I am eager to bring my blend of artistic talent and technical knowledge to the Iceflake team and help define the visuals for your upcoming game. If you are unsure about my fit, I am happy to take an art task to prove my skills. Thank you for your time and consideration; my portfolio is attached, and I look forward to discussing how I can contribute.
+I’d love to chat about how I could help on Northlight and Remedy’s next games. I’m based in Tampere and happy to relocate to Espoo (hybrid works too). Portfolio and GitHub are attached. glad to do a short C++ task or walk through prior work. I’m planning my B.Eng thesis for 2026 and would be keen to explore doing it with Remedy
 
 ### Salary_FI
-2000-3000€/kk
-
-### Salary_EN
-€2000-3000/month
-
-### Relocation_FI
 Neuvoteltavissa
 
-### Relocation_EN
+### Salary_EN
 Negotiable
+
+### Relocation_FI
+Valmis muuttamaan Espooseen; Relocation‑tuki arvostettu
+
+### Relocation_EN
+Open to relocating to Espoo; relocation assistance appreciated
 
 ### StartDate_FI
 Sopimuksen mukaan
@@ -185,10 +173,10 @@ Sopimuksen mukaan
 According to agreement
 
 ### WorkType_FI
-Kokopäivätyö / Etätyö mahdollinen
+Kokopäivätyö / Lähityö Espoossa (hybridi mahdollista)
 
 ### WorkType_EN
-Full-time / Remote work possible
+Full-time / On-site in Espoo (hybrid model)
 
 ### Languages_FI
 Suomi (äidinkieli), Englanti (sujuva)
