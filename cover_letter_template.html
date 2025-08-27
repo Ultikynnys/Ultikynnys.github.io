@@ -20,7 +20,6 @@
             font-size: 14px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
         .language-toggle span {
             padding: 5px 8px;
             background-color: #f8f9fa;
@@ -164,12 +163,20 @@
             }
             body {
                 background-color: #fff !important;
+                font-size: 10.5pt; /* Slightly smaller font for print to help fit */
             }
             .page {
                 margin: 0;
                 box-shadow: none;
-                width: 100%;
-                min-height: 100vh;
+                /* Dynamically scaled width to keep effective width A4 after transform */
+                width: calc(210mm / var(--print-scale, 1));
+                height: auto;
+                min-height: initial;
+                transform: scale(var(--print-scale, 1));
+                transform-origin: top left;
+                overflow: hidden;
+                break-inside: avoid;
+                page-break-inside: avoid;
             }
             .language-toggle {
                 display: none; /* Hide toggle when printing */
@@ -180,7 +187,10 @@
                 color: #ecf0f1 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
+                padding: 20px; /* Reduce header padding for print */
             }
+            .content { padding: 24px; }
+            .info-section { padding: 16px; }
         }
 
         @page {
@@ -411,6 +421,15 @@
             document.getElementById('signature-en').textContent = config.signature_en || 'Best regards,';
             document.getElementById('signature-name-fi').textContent = config.name || 'Ubeid Hussein';
             document.getElementById('signature-name-en').textContent = config.name || 'Ubeid Hussein';
+
+            // Hide optional empty sections to save space
+            var body2El = document.getElementById('body2');
+            if (body2El && !body2El.textContent.trim()) {
+                body2El.style.display = 'none';
+            }
+
+            // Compute print scale after content is placed
+            computePrintScale();
         }
 
         function setFallbackContent() {
@@ -442,10 +461,35 @@
                 document.querySelector('.toggle-fi').classList.remove('active');
                 document.querySelector('.toggle-en').classList.add('active');
             }
+            // Height may change due to line-length differences
+            computePrintScale();
         }
 
         // Load configuration when page loads
         document.addEventListener('DOMContentLoaded', loadConfig);
+
+        // --- Fit to one A4 page when printing ---
+        function mmToPx(mm) {
+            return mm * (96 / 25.4); // 1in = 25.4mm, 1in = 96px
+        }
+        function computePrintScale() {
+            var page = document.querySelector('.page');
+            if (!page) return;
+            var root = document.documentElement;
+            // Measure with scale=1 to get natural height
+            root.style.setProperty('--print-scale', '1');
+            // Use scrollHeight to include overflowing content before scaling
+            var contentHeightPx = page.scrollHeight;
+            var maxHeightPx = mmToPx(297); // A4 height
+            var scale = Math.min(1, maxHeightPx / Math.max(1, contentHeightPx));
+            root.style.setProperty('--print-scale', String(scale));
+        }
+        // Recompute on print and on resize
+        window.addEventListener('beforeprint', computePrintScale);
+        window.addEventListener('resize', computePrintScale);
+        window.addEventListener('afterprint', function(){
+            document.documentElement.style.setProperty('--print-scale', '1');
+        });
     </script>
 </body>
 </html>

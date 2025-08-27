@@ -102,57 +102,55 @@ PERSONAL DETAILS:
 
 COMPANY POSITION LISTING (FOR AI ASSISTANTS):
 
-Remedy Entertainment
-Aug 26, 2025
-Job Title: (Junior) Engine Programmer
+Solita
+27.8.2025
+Tehtävä: Ohjelmistoarkkitehti (Dev-yhteisö)
 
-Location: Espoo, Finland (on-site; hybrid model)
+Sijainti: Helsinki ja Tampere; mahdollisuus myös muilta toimistoiltamme tai tapauskohtaisesti mistä tahansa Suomesta
 
-Type: Full-time
+Työsuhde: Kokopäivätyö
 
-Summary:
-Remedy, the creator of Control®, Max Payne®, and Alan Wake®, is seeking a (Junior) Engine Programmer to design, develop, and deliver new features in the Northlight engine with a highly skilled team in Espoo.
+Yhteenveto:
+Solitalla rakennetaan merkityksellisiä palveluita sekä julkiselle että yksityiselle sektorille. Haemme hands-on ohjelmistoarkkitehteja, jotka määrittelevät perustan, auttavat asiakasta ratkaisemaan oikean ongelman ja osallistuvat koodiin.
 
-What you get to do:
-- Work on core engine areas: ECS, physics, streaming, data transforms (design-time → runtime), scripting, core gameplay systems, developer & player UI tech, and level-editor tooling.
-- Provide great developer experience with robust debugging tools.
-- Design and implement performance-critical features that scale.
-- Improve iteration times, data/serialization formats, and APIs for data‑oriented gameplay code.
-- Contribute to engine performance, memory characteristics, and API design.
+Mitä teet:
+- Määrittelet arkkitehtuurin ja toteutuksen perusratkaisut alusta alkaen.
+- Tuet ja sparraat tiimiä, osallistut koodiin ja katselmointeihin.
+- Rakennat kestäviä, pitkäikäisiä ratkaisuja, joissa on selkeä diagnostiikka ja mittarit.
+- Teet yhteistyötä datan, pilvipalveluiden ja designin kanssa useilla toimialoilla.
 
-What you bring:
-- Experience in game engine programming (AAA proprietary engines a plus).
-- Proficient in C++; comfortable with multithreaded programming.
-- Fluent English; clear communicator and collaborator across disciplines.
-- Organized, independent, inclusive, and documentation‑minded.
+Mitä toivomme:
+- Vahva kokemus Java-, Kotlin- tai Node.js-kehityksestä.
+- Kokemusta pilvipalveluista (AWS tai Azure).
+- Kyky toimia sujuvasti suomeksi ja englanniksi.
+- Halu auttaa ja tarvittaessa haastaa asiakasta.
 
-What’s in it for you:
-- Creative freedom and valued input; healthy work‑life balance.
-- Relocation service to Finland and hybrid work model.
-- On‑site role in Espoo; positions filled as suitable applicants are found.
+Mitä tarjoamme:
+- Välittävä kulttuuri ja auttamisen arki.
+- Mahdollisuudet kasvuun, oppimispolut ja rotaatiot.
+- Vaikutusvaltaa teknologioihin ja toimintatapoihin.
+- Tasapaino työn ja vapaa-ajan välillä sekä monipuoliset edut.
 
-Application:
-Apply with CV (EN), references/portfolio, and relevant information.
+Haku:
+Lähetä CV/linkki LinkedIn-profiiliisi ja halutessasi hakemuskirje. Otamme yhteyttä.
 
 ## Cover Letter Content
 
 ### Greeting_FI
-Hei Remedyn tiimi,
+Hei Solitan tiimi,
 
 ### Greeting_EN
-Hi Remedy Team,
+Hi Solita Team,
 
 ### Introduction
-I’m applying for the (Junior) Engine Programmer role at Remedy in Espoo. I like getting close to the metal. C/C++ has been my day to day at school and in projects, and I enjoy building practical tools that make designers and artists faster. Working on Northlight’s core is the kind of problem space I’m excited about. I haven’t worked inside a proprietary AAA engine yet, but I do have engine side experience in Unreal (C++). I learn fast, and growing inside Northlight feels like the right next step for me
+Haen ohjelmistoarkkitehdin rooliin Solitan Dev-yhteisöön. Teen parhaillani R&D-harjoittelua Solitalla kahden hengen tiimissä: pieniä full stack -ratkaisuja ja käytännön AI‑integraatioita. Azure‑palvelut ja Azure DevOps ovat minulle tuttuja vuosien ajalta. Tästä syystä hyppäys arkkitehdiksi tuntuu luontevalta. Merkitykselliset projektit ja yhdessä tekeminen motivoivat
 
 ### Body1
-On the engineering side I keep things straightforward. Clear, testable C/C++. I profile first, then optimize. I’ve shipped stuff that shortens iteration and makes debugging boring (in a good way). A tiny C++ MP4 to WebP converter. Blender add ons artists actually use. I often pair Python with C/C++ via ctypes to speed up hot paths while keeping the edit run loop quick. Feels close to engine work: clean data transforms, solid serialization, tidy APIs, sensible memory/perf tradeoffs
+Arkkitehtuurissa pidän suunnan selkeänä. Määrittelen perustan, teen päätökset näkyviksi ja pilkon toteutuksen pieniin testattaviin osiin. Koodaan itse: Java ja Node kuuluvat osaamiseeni, myös Kotlinista kokemusta. Lisäksi C++ ja Python. Vahva frontend/backend‑kokemus. API:t ja tietomallit, suorituskyky, näkyvä diagnostiikka. Docker ja CI/CD käytännössä. Pilvi erityisesti Azure, myös AWS. Opin uusia työkaluja nopeasti
 
-### Body2
-Because I also work in 3D production, I speak both languages: designer/artist and programmer, and I like being the glue. I write things down, keep changes small. I’m comfortable stepping into large codebases. I’m actively growing my multithreading skills and I appreciate focused code reviews. My goal is simple: ship features that scale and give developers great diagnostics and tooling
 
 ### Closing
-I’d love to chat about how I could help on Northlight and Remedy’s next games. I’m based in Tampere and happy to relocate to Espoo (hybrid works too). Portfolio and GitHub are attached. glad to do a short C++ task or walk through prior work. I’m planning my B.Eng thesis for 2026 and would be keen to explore doing it with Remedy
+Katsotaan yhdessä, voisiko seuraava askeleeni olla Solitalla. Työskentelen Solitalla R&D‑harjoittelijana, ja Manu Setälä voi tarvittaessa suositella. Olen Tampereella, matkustan Helsinkiin ja muille toimistoille tarpeen mukaan. Aloitus sopimuksen mukaan. CV ja portfolio liitteenä. Jutellaan
 
 ### Salary_FI
 Neuvoteltavissa
@@ -161,10 +159,10 @@ Neuvoteltavissa
 Negotiable
 
 ### Relocation_FI
-Valmis muuttamaan Espooseen; Relocation‑tuki arvostettu
+Valmis työskentelemään Tampereella tai Helsingissä; etä sopimuksen mukaan
 
 ### Relocation_EN
-Open to relocating to Espoo; relocation assistance appreciated
+Based in Tampere; available in Helsinki; remote by agreement
 
 ### StartDate_FI
 Sopimuksen mukaan
@@ -173,10 +171,10 @@ Sopimuksen mukaan
 According to agreement
 
 ### WorkType_FI
-Kokopäivätyö / Lähityö Espoossa (hybridi mahdollista)
+Kokopäivätyö / Tampere tai Helsinki (hybridi mahdollista; muu Suomi tapauskohtaisesti)
 
 ### WorkType_EN
-Full-time / On-site in Espoo (hybrid model)
+Full-time / Tampere or Helsinki (hybrid; elsewhere in Finland case-by-case)
 
 ### Languages_FI
 Suomi (äidinkieli), Englanti (sujuva)

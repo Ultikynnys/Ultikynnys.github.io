@@ -383,18 +383,11 @@
             </div>
             <div class="section">
                 <h2 data-i18n="sidebar.languages.title">Kielet</h2>
-                <ul>
+                <ul id="lang-list">
                     <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.finnish_label">Suomi (Äidinkieli)</span></li>
                     <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.english_label">Englanti (Erinomainen)</span></li>
                     <hr style="border-top: 1px solid #34495e; margin: 10px 0;">
-                    
-                    <!-- Programming languages -->
-                    <li><i class="fab fa-python"></i> <span data-i18n="sidebar.programmingLanguages.python">Python</span></li>
-                    <li><i class="fab fa-cuttlefish"></i> <span data-i18n="sidebar.programmingLanguages.cpp">C++</span></li>
-                    <li><i class="fas fa-hashtag"></i> <span data-i18n="sidebar.programmingLanguages.csharp">C#</span></li>
-                    <li><i class="fab fa-html5"></i> <span data-i18n="sidebar.programmingLanguages.html_css">HTML/CSS</span></li>
-                    <li><i class="fab fa-js-square"></i> <span data-i18n="sidebar.programmingLanguages.js_ts">JavaScript/TypeScript</span></li>
-                    
+                    <!-- Programming languages will be injected dynamically -->
                 </ul>
             </div>
         </div>
@@ -651,8 +644,42 @@
                     el.textContent = val;
                 }
             });
+            // Rebuild programming language list dynamically from TOML
+            buildProgrammingLanguages();
         }
         document.addEventListener('DOMContentLoaded', loadI18n);
+
+        function buildProgrammingLanguages() {
+            if (!CV_I18N) return;
+            const lang = document.body.classList.contains('english') ? 'en' : 'fi';
+            const list = document.getElementById('lang-list');
+            if (!list) return;
+            // Remove previously injected programming language items
+            Array.from(list.querySelectorAll('li[data-prog-lang]')).forEach(li => li.remove());
+            const langs = CV_I18N[lang] && CV_I18N[lang].sidebar && CV_I18N[lang].sidebar.programmingLanguages;
+            if (!langs) return;
+            const iconFor = key => ({
+                python: 'fab fa-python',
+                cpp: 'fab fa-cuttlefish',
+                csharp: 'fas fa-hashtag',
+                html_css: 'fab fa-html5',
+                js_ts: 'fab fa-js-square',
+                java: 'fab fa-java',
+                kotlin: 'fas fa-code'
+            })[key] || 'fas fa-code';
+            Object.keys(langs).forEach(key => {
+                const li = document.createElement('li');
+                li.setAttribute('data-prog-lang', '1');
+                const i = document.createElement('i');
+                i.className = iconFor(key);
+                li.appendChild(i);
+                li.appendChild(document.createTextNode(' '));
+                const span = document.createElement('span');
+                span.textContent = String(langs[key]);
+                li.appendChild(span);
+                list.appendChild(li);
+            });
+        }
 
         function toggleLanguage(lang) {
             if (lang === 'finnish') {

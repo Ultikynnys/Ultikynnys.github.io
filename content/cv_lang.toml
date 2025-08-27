@@ -20,6 +20,8 @@ cpp = "C++"
 csharp = "C#"
 html_css = "HTML/CSS"
 js_ts = "JavaScript/TypeScript"
+java = "Java"
+kotlin = "Kotlin"
 
 [fi.ui.cvToggle]
 programming = "Ohjelmointi"
@@ -154,6 +156,8 @@ cpp = "C++"
 csharp = "C#"
 html_css = "HTML/CSS"
 js_ts = "JavaScript/TypeScript"
+java = "Java"
+kotlin = "Kotlin"
 
 [en.ui.cvToggle]
 programming = "Programming"
