@@ -20,3 +20,7 @@ fg = "#ffffff"
 [csharp]
 bg = "#68217A"
 fg = "#ffffff"
+
+[gdscript]
+bg = "#478cbf"
+fg = "#ffffff"
