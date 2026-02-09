@@ -58,24 +58,24 @@ function playNextFinishedAudio() {
         console.log("Already playing a finished audio, ignoring request");
         return;
     }
-    
+
     isPlayingFinishedAudio = true;
     console.log(`Playing finished audio index: ${currentFinishedAudioIndex}`);
-    
+
     const audioToPlay = finishedAudio[currentFinishedAudioIndex];
-    
-    audioToPlay.onended = function() {
+
+    audioToPlay.onended = function () {
         console.log(`Finished audio ${currentFinishedAudioIndex} ended`);
         currentFinishedAudioIndex = (currentFinishedAudioIndex + 1) % finishedAudio.length;
         console.log(`Next finished audio will be index ${currentFinishedAudioIndex}`);
         isPlayingFinishedAudio = false;
     };
-    
-    audioToPlay.onerror = function() {
+
+    audioToPlay.onerror = function () {
         console.error(`Error playing finished audio ${currentFinishedAudioIndex}`);
         isPlayingFinishedAudio = false;
     };
-    
+
     audioToPlay.currentTime = 0;
     audioToPlay.play().catch(e => {
         console.error("Finished audio play failed:", e);
@@ -94,7 +94,7 @@ let yasuoSliceCounter = 0; // New counter for sword slices
 function initNameAnimation() {
     const nameContainer = document.getElementById('name-display').querySelector('h1');
     const nameIndicator = document.querySelector('.name-indicator');
-    
+
     async function typeText(text) {
         let displayText = '';
         for (let i = 0; i < text.length; i++) {
@@ -116,28 +116,28 @@ function initNameAnimation() {
     async function cycleName() {
         if (isAnimating) return;
         isAnimating = true;
-        
+
         // Fade out name indicator
         nameIndicator.style.opacity = 0;
-        
+
         // Delete current name
         await deleteText();
-        
+
         // Get next name and update index
         currentNameIndex = (currentNameIndex + 1) % names.length;
-        
+
         // Type new name
         await typeText(names[currentNameIndex]);
-        
+
         // Update and fade in name indicator
         setTimeout(() => {
             nameIndicator.textContent = nameDescriptions[currentNameIndex];
             nameIndicator.style.opacity = 0.9;
         }, 200);
-        
+
         // Pause before next cycle
         await new Promise(resolve => setTimeout(resolve, pauseBetweenNames));
-        
+
         isAnimating = false;
     }
 
@@ -145,7 +145,7 @@ function initNameAnimation() {
     setTimeout(() => {
         // Initial cycle after 2 seconds
         cycleName();
-        
+
         // Continue cycling as animation completes
         setInterval(() => {
             if (!isAnimating) cycleName();
@@ -157,7 +157,7 @@ function initNameAnimation() {
 function parseMarkdown(markdown) {
     const result = { projects: [], intro: '' };
     const sections = markdown.split('## ');
-    
+
     // Extract intro section
     if (sections[0] && sections[0].startsWith('# ')) {
         const introLines = sections[0].split('\n');
@@ -166,12 +166,12 @@ function parseMarkdown(markdown) {
             result.intro = introLines.slice(1).join('\n').trim();
         }
     }
-    
+
     for (let i = 1; i < sections.length; i++) {
         const section = sections[i];
         const lines = section.split('\n');
         const project = {};
-        
+
         for (const line of lines) {
             if (line.startsWith('- Title:')) {
                 project.title = line.replace('- Title:', '').trim();
@@ -211,12 +211,12 @@ function parseMarkdown(markdown) {
                 }
             }
         }
-        
+
         if (Object.keys(project).length > 0) {
             result.projects.push(project);
         }
     }
-    
+
     if (Object.keys(result).length > 0) {
         // Update the global expected cards count
         if (isYasuoMode && !markdownProcessed) {
@@ -225,7 +225,7 @@ function parseMarkdown(markdown) {
             markdownProcessed = true; // Mark as processed to avoid double-counting
         }
     }
-    
+
     return result;
 }
 
@@ -329,47 +329,47 @@ function createCarousel(images, projectId) {
 }
 
 // Carousel control functions
-window.prevImage = function(event, projectId) {
+window.prevImage = function (event, projectId) {
     event.stopPropagation(); // Prevent click from bubbling to project card
     const container = document.getElementById(`carousel-${projectId}`);
     const images = container.querySelectorAll('.carousel-image');
     const dots = container.querySelectorAll('.carousel-dot');
     const activeIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
     const prevIndex = (activeIndex - 1 + images.length) % images.length;
-    
+
     images[activeIndex].classList.remove('active');
     images[prevIndex].classList.add('active');
-    
+
     dots[activeIndex].classList.remove('active');
     dots[prevIndex].classList.add('active');
 };
 
-window.nextImage = function(event, projectId) {
+window.nextImage = function (event, projectId) {
     event.stopPropagation(); // Prevent click from bubbling to project card
     const container = document.getElementById(`carousel-${projectId}`);
     const images = container.querySelectorAll('.carousel-image');
     const dots = container.querySelectorAll('.carousel-dot');
     const activeIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
     const nextIndex = (activeIndex + 1) % images.length;
-    
+
     images[activeIndex].classList.remove('active');
     images[nextIndex].classList.add('active');
-    
+
     dots[activeIndex].classList.remove('active');
     dots[nextIndex].classList.add('active');
 };
 
 // Add function for dot navigation
-window.goToImage = function(event, projectId, index) {
+window.goToImage = function (event, projectId, index) {
     event.stopPropagation(); // Prevent click from bubbling to project card
     const container = document.getElementById(`carousel-${projectId}`);
     const images = container.querySelectorAll('.carousel-image');
     const dots = container.querySelectorAll('.carousel-dot');
-    
+
     // Update active image
     images.forEach(img => img.classList.remove('active'));
     images[index].classList.add('active');
-    
+
     // Update active dot
     dots.forEach(dot => dot.classList.remove('active'));
     dots[index].classList.add('active');
@@ -413,23 +413,23 @@ function yasuoAttack(cardElement) {
     const sword = document.createElement('img');
     sword.src = 'images/YasouSword.png';
     sword.classList.add('yasuo-sword');
-    
+
     // Add the current direction class
     sword.classList.add(`slash-${slashDirection}`);
-    
+
     document.body.appendChild(sword);
 
     const cardRect = cardElement.getBoundingClientRect();
-    
+
     // Position the sword based on slash direction - always centered on the card
     const swordStartX = cardRect.left + cardRect.width / 2 - 150;
     const swordStartY = cardRect.top + cardRect.height / 2 - 150;
     sword.style.left = `${swordStartX}px`;
     sword.style.top = `${swordStartY}px`;
-    
+
     // Use the animation class instead of setting animation directly
     // The animation is now set in the CSS via the slash-direction class
-    
+
     sword.addEventListener('animationend', () => {
         sword.remove();
     });
@@ -448,8 +448,8 @@ function yasuoAttack(cardElement) {
     setTimeout(() => {
         // Play metal slicing sound right when the card splits
         playRandomMetalSliceSound();
-        
-        const cardRectDoc = cardElement.getBoundingClientRect(); 
+
+        const cardRectDoc = cardElement.getBoundingClientRect();
         const scrollX = window.scrollX || window.pageXOffset;
         const scrollY = window.scrollY || window.pageYOffset;
 
@@ -459,19 +459,19 @@ function yasuoAttack(cardElement) {
         // Set fixed length for flash line (1000px) instead of calculating based on card dimensions
         const sliceLength = 1000; // Fixed length of 1000px
         const sliceAngle = Math.atan2(cardRectDoc.height, cardRectDoc.width) * (180 / Math.PI);
-        
+
         // Position starting before the top-right corner of the card for extended effect
         // Calculate offset to move line starting point further away from diagonal
         const offsetX = -cardRectDoc.width * 0.5; // Increase offset to 50% of card width
         const offsetY = -cardRectDoc.height * 0.5; // Increase offset to 50% of card height
-        
+
         flashLine.style.width = `${sliceLength}px`;
         flashLine.style.left = `${cardRectDoc.left + scrollX + offsetX}px`;
         flashLine.style.top = `${cardRectDoc.top + scrollY + offsetY}px`;
         flashLine.style.transform = `rotate(${sliceAngle}deg)`;
-        
+
         document.body.appendChild(flashLine);
-        
+
         // Remove flash after animation
         flashLine.addEventListener('animationend', () => {
             flashLine.remove();
@@ -483,9 +483,9 @@ function yasuoAttack(cardElement) {
         [topHalf, bottomHalf].forEach((half, index) => {
             const clone = cardElement.cloneNode(true);
             // Reset potential problematic styles on the clone
-            clone.style.visibility = 'visible'; 
-            clone.style.margin = '0'; 
-            clone.classList.remove('expanded'); 
+            clone.style.visibility = 'visible';
+            clone.style.margin = '0';
+            clone.classList.remove('expanded');
             clone.style.position = 'absolute'; // Ensure content is positioned within half
             clone.style.top = '0';
             clone.style.left = '0';
@@ -495,18 +495,18 @@ function yasuoAttack(cardElement) {
             half.classList.add('card-half');
             half.style.width = `${cardRectDoc.width}px`;
             half.style.height = `${cardRectDoc.height}px`;
-            half.style.top = `${cardRectDoc.top + scrollY}px`; 
+            half.style.top = `${cardRectDoc.top + scrollY}px`;
             half.style.left = `${cardRectDoc.left + scrollX}px`;
-            
-            half.appendChild(clone); 
+
+            half.appendChild(clone);
             document.body.appendChild(half);
 
             if (index === 0) { // Top half
                 half.classList.add('card-half-top');
             } else { // Bottom half
-                 // Adjust inner clone position for bottom half clip-path (simplified)
-                 clone.style.top = `-${cardRectDoc.height / 2}px`; 
-                 half.classList.add('card-half-bottom');
+                // Adjust inner clone position for bottom half clip-path (simplified)
+                clone.style.top = `-${cardRectDoc.height / 2}px`;
+                half.classList.add('card-half-bottom');
             }
 
             half.addEventListener('animationend', () => {
@@ -514,10 +514,10 @@ function yasuoAttack(cardElement) {
             });
         });
 
-    }, 150); 
+    }, 150);
 
-     // Check if we've reached 7 slices - exit Yasuo mode
-     if (yasuoSliceCounter >= 7) {
+    // Check if we've reached 7 slices - exit Yasuo mode
+    if (yasuoSliceCounter >= 7) {
         console.log("YasuoAttack: 7 slices reached. Triggering deactivation.");
         setTimeout(() => {
             deactivateYasuoMode();
@@ -531,11 +531,11 @@ function yasuoAttack(cardElement) {
 function deactivateYasuoMode() {
     if (!isYasuoMode) return;
     console.log("Deactivating Yasuo Mode. Resetting state.");
-    
+
     if (!isPlayingFinishedAudio) {
         playNextFinishedAudio();
     }
-    
+
     isYasuoMode = false;
     yasuoSliceCounter = 0; // Reset slice counter
     const indicator = document.getElementById('yasuo-mode-indicator');
@@ -642,22 +642,22 @@ function setupProjectExpansion(containerId = 'projects-container') {
         console.warn('Container not found:', containerId);
         return;
     }
-    
+
     const overlay = document.getElementById('overlay');
     const globalCloseButton = document.getElementById('globalCloseButton');
-    
+
     // Track the currently expanded card globally *within this scope*
-    let expandedCard = null; 
-    
+    let expandedCard = null;
+
     // Handle project card clicks
-    container.addEventListener('click', function(e) {
+    container.addEventListener('click', function (e) {
         // Ignore clicks on links or buttons within the card (like carousel nav)
         if (e.target.closest('a') || e.target.closest('button')) {
             return;
         }
-        
+
         const clickedCard = e.target.closest('.project-card');
-        
+
         if (clickedCard) {
             // *** YASUO MODE CHECK ***
             if (isYasuoMode) {
@@ -681,32 +681,32 @@ function setupProjectExpansion(containerId = 'projects-container') {
             // Now, expand the newly clicked card
             expandProject(clickedCard, container);
             expandedCard = clickedCard; // Track the newly expanded card
-            
+
             // Stop propagation to prevent potential body/window listeners
-            e.stopPropagation(); 
+            e.stopPropagation();
         }
     });
-    
+
     // Handle closing via explicit close button
     if (globalCloseButton) {
-        globalCloseButton.addEventListener('click', function() {
+        globalCloseButton.addEventListener('click', function () {
             if (expandedCard) { // Only act if a card is expanded
                 collapseProject(expandedCard);
                 expandedCard = null; // Update tracked card
             }
         });
     }
-    
+
     // Handle closing via overlay click
     if (overlay) {
-        overlay.addEventListener('click', function() {
+        overlay.addEventListener('click', function () {
             if (expandedCard) { // Only act if a card is expanded
                 collapseProject(expandedCard);
                 expandedCard = null; // Update tracked card
             }
         });
     }
-    
+
     // We removed the scroll listener for closing as it was causing issues
     // We also removed the complex forceCardOpen and isExpanding logic
 }
@@ -714,42 +714,42 @@ function setupProjectExpansion(containerId = 'projects-container') {
 function expandProject(projectCard, container) {
     // Add expanded class to project without animations
     projectCard.classList.add('expanded');
-    
+
     // Add class to container to hide other projects
     container.classList.add('has-expanded');
-    
+
     // Show overlay
     const overlay = document.getElementById('overlay');
     overlay.classList.add('active');
-    
+
     // Show global close button
     document.body.classList.add('has-expanded-project');
-    
+
     // Prevent body scrolling
     document.body.classList.add('body-no-scroll');
 }
 
 function collapseProject(projectCard) {
     if (!projectCard) return; // Guard clause
-    
+
     // Remove expanded class
     projectCard.classList.remove('expanded');
-    
+
     // Remove class from container (find the correct parent grid)
     const container = projectCard.closest('.portfolio-grid');
-    if (container) { 
+    if (container) {
         container.classList.remove('has-expanded');
     }
-    
+
     // Hide overlay
     const overlay = document.getElementById('overlay');
-    if (overlay) { 
+    if (overlay) {
         overlay.classList.remove('active');
     }
-    
+
     // Hide global close button
     document.body.classList.remove('has-expanded-project');
-    
+
     // Allow body scrolling
     document.body.classList.remove('body-no-scroll');
 }
@@ -758,7 +758,7 @@ function collapseProject(projectCard) {
 function initThemeToggle() {
     const themeToggle = document.getElementById('themeToggle');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     // Check if user has previously set a theme preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
@@ -769,11 +769,11 @@ function initThemeToggle() {
         themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
     } else {
         // Set the initial icon based on system preference
-        themeToggle.innerHTML = prefersDarkScheme.matches ? 
-            '<i class="fas fa-moon"></i>' : 
+        themeToggle.innerHTML = prefersDarkScheme.matches ?
+            '<i class="fas fa-moon"></i>' :
             '<i class="fas fa-sun"></i>';
     }
-    
+
     themeToggle.addEventListener('click', () => {
         if (document.body.classList.contains('light-theme')) {
             // Switch to dark theme
@@ -804,10 +804,10 @@ function initThemeToggle() {
     // Also listen for system preference changes
     prefersDarkScheme.addEventListener('change', e => {
         // Only update if no manual theme has been set
-        if (!document.body.classList.contains('light-theme') && 
+        if (!document.body.classList.contains('light-theme') &&
             !document.body.classList.contains('dark-theme')) {
-            themeToggle.innerHTML = e.matches ? 
-                '<i class="fas fa-moon"></i>' : 
+            themeToggle.innerHTML = e.matches ?
+                '<i class="fas fa-moon"></i>' :
                 '<i class="fas fa-sun"></i>';
         }
     });
@@ -848,7 +848,7 @@ function initPortfolio(projectsFile, gamesFile) {
             .then(text => {
                 const projectsContainer = document.getElementById('projects-container');
                 const projects = parseMarkdown(text);
-                
+
                 if (projects.intro) {
                     document.querySelector('.bio').innerHTML = projects.intro;
                 }
@@ -893,7 +893,7 @@ function initPortfolio(projectsFile, gamesFile) {
             .then(text => {
                 const gamesContainer = document.getElementById('games-container');
                 const games = parseMarkdown(text);
-                
+
                 // Update global count if in Yasuo mode
                 if (isYasuoMode) {
                     visibleCardsCount = expectedCardsCount;
@@ -929,10 +929,10 @@ function handleEmailSubmit(event) {
 
 // Default project card creation function (for programming portfolio)
 function createDefaultProjectCard(project, index) {
-    const isVideo = typeof project.media === 'string' && 
-                  (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
+    const isVideo = typeof project.media === 'string' &&
+        (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
     const isMultiImage = Array.isArray(project.media);
-    
+
     let mediaContent = '';
     if (isVideo) {
         // Extract video ID and create proper embed URL
@@ -942,7 +942,7 @@ function createDefaultProjectCard(project, index) {
         } else if (project.media.includes('youtu.be/')) {
             videoId = project.media.split('youtu.be/')[1].split('?')[0];
         }
-        
+
         if (videoId) {
             mediaContent = `
                 <iframe 
@@ -964,7 +964,7 @@ function createDefaultProjectCard(project, index) {
     } else {
         mediaContent = `<img src="${project.media}" alt="${project.title}">`;
     }
-    
+
     return `
         <div class="project-card" data-project-id="${index}">
             ${project.private ? `
@@ -1000,12 +1000,12 @@ function createDefaultProjectCard(project, index) {
 }
 
 // DOMContentLoaded to initialize sliders on first load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // All comparison slider functionality has been removed
 });
 
 // Remove all comparison slider related code
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Comparison slider functionality has been removed
 });
 
@@ -1015,12 +1015,12 @@ function positionAllSliders() {
 }
 
 // Remove event listeners for slider positioning
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     // Comparison slider functionality has been removed
 });
 
 // Remove resize listener for sliders
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
     // Comparison slider functionality has been removed
 });
 
@@ -1028,38 +1028,38 @@ window.addEventListener('resize', function() {
 function attachYasuoNameClickHandler() {
     console.log("FORCE ATTACHING Yasuo name click handler");
     const nameElement = document.querySelector('#name-display h1');
-    
+
     if (nameElement) {
         console.log("FOUND name element, removing old listeners and adding new one");
-        
+
         // Remove any existing listeners to avoid duplicates
         nameElement.removeEventListener('click', handleSecretModeClick);
-        
+
         // Force add styling to make it obvious it's clickable
         nameElement.style.cursor = 'pointer';
         nameElement.style.userSelect = 'none';
-        
+
         // Add new direct click handler that doesn't use wrapper function
         nameElement.addEventListener('click', function yasuoClickListener(e) {
             console.log("DIRECT NAME CLICK DETECTED!");
             secretClickCount++;
             console.log(`SECRET CLICK COUNT: ${secretClickCount}`);
-            
+
             // Clear any existing timer
             clearTimeout(secretClickTimer);
-            
+
             // Set a timer to reset count if clicks are too far apart
             secretClickTimer = setTimeout(() => {
                 console.log("CLICK TIMEOUT - resetting count");
                 secretClickCount = 0;
             }, 500);
-            
+
             // Check if we've reached 3 clicks
             if (secretClickCount === 3) {
                 console.log("THREE CLICKS DETECTED - toggling Yasuo mode");
                 secretClickCount = 0;
                 clearTimeout(secretClickTimer);
-                
+
                 if (isYasuoMode) {
                     console.log("DEACTIVATING Yasuo mode");
                     deactivateYasuoMode();
@@ -1069,7 +1069,7 @@ function attachYasuoNameClickHandler() {
                 }
             }
         });
-        
+
         console.log("New click handler attached directly to name element");
         return true;
     } else {
@@ -1087,15 +1087,15 @@ document.addEventListener('DOMContentLoaded', () => {
     indicator.src = 'images/yasuo.png';
     indicator.alt = 'Yasuo Mode Active';
     document.body.appendChild(indicator);
-    
+
     let projectsFile = null;
     let gamesFile = null;
 
     // Determine page type and set selectors
-    const isIndexPage = window.location.pathname.endsWith('index.html') || 
-                        window.location.pathname.endsWith('/') || 
-                        window.location.pathname.split('/').pop() === '';
-    
+    const isIndexPage = window.location.pathname.endsWith('index.html') ||
+        window.location.pathname.endsWith('/') ||
+        window.location.pathname.split('/').pop() === '';
+
     console.log("Page detection - Is index page:", isIndexPage);
     console.log("Current pathname:", window.location.pathname);
 
@@ -1104,30 +1104,34 @@ document.addEventListener('DOMContentLoaded', () => {
         activeContainerSelector = '#programming-projects-container';
         activeCardSelector = '.project-card';
         projectsFile = 'projects/programming_projects.md';
-        initPortfolio(projectsFile, null); 
+        initPortfolio(projectsFile, null);
         setupProjectExpansion(activeContainerSelector.substring(1));
-    } else if (document.getElementById('3d-projects-container')) {
+    } else if (document.body.classList.contains('portfolio-3d') ||
+        (document.getElementById('projects-container') && document.getElementById('games-container'))) {
+        // 3D Portfolio page - has both projects and games containers, or has .portfolio-3d class
         console.log("Detected 3D portfolio page");
-        activeContainerSelector = '#3d-projects-container';
+        activeContainerSelector = '#projects-container';
         activeCardSelector = '.project-card';
-        projectsFile = 'projects/3d_projects.md';
-        gamesFile = 'projects/games_projects.md';
-        initPortfolio(projectsFile, gamesFile); 
-        setupProjectExpansion(activeContainerSelector.substring(1));
+        // Note: initPortfolio is called from the page's own script, not here
     } else if (document.querySelector('.portfolio-choice-container')) {
         // Index page
         console.log("Detected index page with .portfolio-choice-container");
         activeContainerSelector = '.portfolio-choice-container';
         activeCardSelector = '.portfolio-choice';
-        
+
         // The index page doesn't use the initPortfolio function
         if (document.getElementById('name-display')) {
-             initNameAnimation();
+            initNameAnimation();
         }
+    } else if (document.getElementById('projects-container')) {
+        // Generic fallback for pages with projects-container
+        console.log("Detected generic portfolio page with projects-container");
+        activeContainerSelector = '#projects-container';
+        activeCardSelector = '.project-card';
     } else {
-         console.warn("Could not determine portfolio type for Yasuo mode setup.");
+        console.warn("Could not determine portfolio type for Yasuo mode setup.");
     }
-    
+
     // Initialize theme toggle if button exists
     if (document.getElementById('themeToggle')) {
         initThemeToggle();
@@ -1142,49 +1146,49 @@ document.addEventListener('DOMContentLoaded', () => {
         const containerElement = document.querySelector(activeContainerSelector);
         if (containerElement) {
             console.log(`Found container ${activeContainerSelector}, adding Yasuo card click listener`);
-            containerElement.addEventListener('click', function(e) {
+            containerElement.addEventListener('click', function (e) {
                 console.log("Container clicked, yasuo mode:", isYasuoMode);
                 if (!isYasuoMode) return; // Only act in Yasuo mode
 
                 // Find the clicked card element that matches the active selector
                 const clickedCard = e.target.closest(activeCardSelector);
-                
+
                 if (clickedCard) {
                     console.log("Card match found:", clickedCard);
                     // Prevent default behavior (like navigation for <a> tags on index)
-                    e.preventDefault(); 
-                    e.stopPropagation(); 
-                    
+                    e.preventDefault();
+                    e.stopPropagation();
+
                     yasuoAttack(clickedCard);
                 } else {
                     console.log("No matching card element found in click path");
                 }
             }, true); // Use capture phase
         } else {
-             console.warn("Could not find container element to attach Yasuo click listener:", activeContainerSelector);
+            console.warn("Could not find container element to attach Yasuo click listener:", activeContainerSelector);
         }
     } else {
-         console.warn("Cannot attach Yasuo click listener: Active container/card selectors not set.");
+        console.warn("Cannot attach Yasuo click listener: Active container/card selectors not set.");
     }
 });
 
 // Ensure index page has Yasuo mode enabled
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     console.log("WINDOW LOAD EVENT - Checking name click handler on index");
-    
+
     // Check if we're on index page
-    const isIndexPage = window.location.pathname.endsWith('index.html') || 
-                        window.location.pathname.endsWith('/') || 
-                        window.location.pathname.split('/').pop() === '';
-    
+    const isIndexPage = window.location.pathname.endsWith('index.html') ||
+        window.location.pathname.endsWith('/') ||
+        window.location.pathname.split('/').pop() === '';
+
     if (isIndexPage) {
         console.log("INDEX PAGE LOAD DETECTED - forcing name click handler attachment");
-        
+
         // Force attach name click handler after a short delay to ensure DOM is fully processed
         setTimeout(() => {
             const attached = attachYasuoNameClickHandler();
             console.log("INDEX Force attachment result:", attached);
-            
+
             // Try multiple times if it fails initially
             if (!attached) {
                 console.log("First attempt failed, trying again in 500ms");

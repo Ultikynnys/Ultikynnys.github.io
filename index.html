@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/gif" href="content/200.gif">
     <title>Ubeid Hussein - Portfolio</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -35,7 +37,8 @@
             position: relative;
             width: 100%;
             height: 0;
-            padding-top: 56.25%; /* 16:9 aspect ratio */
+            padding-top: 56.25%;
+            /* 16:9 aspect ratio */
             background-color: #000;
             overflow: hidden;
         }
@@ -87,14 +90,15 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Add theme toggle button -->
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
-    
+
     <!-- Social ribbon will be inserted here by the script -->
-    
+
     <header>
         <div class="header-content">
             <div id="name-display" class="dynamic-name-container">
@@ -104,7 +108,10 @@
             <p class="subtitle">Developer & 3D Artist</p>
             <!-- Add short bio -->
             <div class="bio">
-                <p>I'm a developer and 3D artist focused on creating tools, add-ons, and 3D assets that streamline creative workflows. With experience in both programming and 3D design, I build bridges between technical requirements and artistic needs, developing custom tools and high-quality assets for a variety of projects.</p>
+                <p>I'm a developer and 3D artist focused on creating tools, add-ons, and 3D assets that streamline
+                    creative workflows. With experience in both programming and 3D design, I build bridges between
+                    technical requirements and artistic needs, developing custom tools and high-quality assets for a
+                    variety of projects.</p>
             </div>
         </div>
     </header>
@@ -114,32 +121,34 @@
             <h2>Select Portfolio</h2>
             <p>Choose which area of my work you'd like to explore</p>
         </div>
-        
+
         <div class="portfolio-choice-container">
             <a href="programming-portfolio.html" class="portfolio-choice portfolio-programming-card">
                 <div class="portfolio-image">
-                    <img src="https://raw.githubusercontent.com/Ultikynnys/Ultikynnys.github.io/refs/heads/main/images/COACD.png" alt="Programming Portfolio">
+                    <img src="https://raw.githubusercontent.com/Ultikynnys/Ultikynnys.github.io/refs/heads/main/images/COACD.png"
+                        alt="Programming Portfolio">
                 </div>
                 <div class="portfolio-info">
                     <h3>Programming</h3>
                     <p>Explore my development projects, tools, and add-ons designed to enhance creative workflows</p>
                 </div>
             </a>
-            
+
             <a href="3d-portfolio.html" class="portfolio-choice portfolio-3d-card">
                 <div class="portfolio-image">
                     <img src="images/MansionInterior.jpg" alt="3D Portfolio">
                 </div>
                 <div class="portfolio-info">
                     <h3>3D Design</h3>
-                    <p>View my 3D modeling, character design, and animation projects for games and other applications</p>
+                    <p>View my 3D modeling, character design, and animation projects for games and other applications
+                    </p>
                 </div>
             </a>
         </div>
     </main>
 
     <!-- Copyright footer -->
-    
+
 
     <!-- Load shared social ribbon script -->
     <script src="scripts/social-ribbon.js"></script>
@@ -178,28 +187,28 @@
         async function cycleName() {
             if (isAnimating) return;
             isAnimating = true;
-            
+
             // Fade out name indicator
             nameIndicator.style.opacity = 0;
-            
+
             // Delete current name
             await deleteText();
-            
+
             // Get next name and update index
             currentNameIndex = (currentNameIndex + 1) % names.length;
-            
+
             // Type new name
             await typeText(names[currentNameIndex]);
-            
+
             // Update and fade in name indicator
             setTimeout(() => {
                 nameIndicator.textContent = nameDescriptions[currentNameIndex];
                 nameIndicator.style.opacity = 0.9;
             }, 200);
-            
+
             // Pause before next cycle
             await new Promise(resolve => setTimeout(resolve, pauseBetweenNames));
-            
+
             isAnimating = false;
         }
 
@@ -207,7 +216,7 @@
         setTimeout(() => {
             // Initial cycle after 2 seconds
             cycleName();
-            
+
             // Continue cycling as animation completes
             setInterval(() => {
                 if (!isAnimating) cycleName();
@@ -217,7 +226,7 @@
         // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         const icon = themeToggle.querySelector('i');
-        
+
         // Check if user preference exists in localStorage
         const userPreference = localStorage.getItem('theme');
         if (userPreference === 'light') {
@@ -229,7 +238,7 @@
             icon.classList.remove('fa-sun');
             icon.classList.add('fa-moon');
         }
-        
+
         themeToggle.addEventListener('click', () => {
             if (document.body.classList.contains('light-theme')) {
                 // Switch to dark theme
@@ -248,20 +257,21 @@
             }
         });
     </script>
-<div id="footer-container"></div>
-<script>
-  fetch('footer.html')
-  .then(response => response.text())
-  .then(html => {
-    const container = document.getElementById('footer-container');
-    container.innerHTML = html;
-    container.querySelectorAll('script').forEach(oldScript => {
-      const newScript = document.createElement('script');
-      newScript.textContent = oldScript.textContent;
-      document.body.appendChild(newScript);
-    });
-  })
-  .catch(error => console.error('Failed to load footer:', error));
-</script>
+    <div id="footer-container"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(html => {
+                const container = document.getElementById('footer-container');
+                container.innerHTML = html;
+                container.querySelectorAll('script').forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    newScript.textContent = oldScript.textContent;
+                    document.body.appendChild(newScript);
+                });
+            })
+            .catch(error => console.error('Failed to load footer:', error));
+    </script>
 </body>
-</html> 
+
+</html>

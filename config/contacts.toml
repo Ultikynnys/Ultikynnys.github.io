@@ -1,0 +1,69 @@
+# Contact and Social Links Configuration
+# Edit this file to update your social links across the entire site
+
+[profile]
+name = "Ubeid Hussein"
+aliases = ["Ultikynnys", "R60D"]
+title = "Developer & 3D Artist"
+email = "Hussein.Ubeid@outlook.com"
+
+[social]
+  [social.kofi]
+  url = "https://ko-fi.com/r60dr60d"
+  label = "Support on Ko-fi"
+  icon = "fas fa-mug-hot"
+  class = "kofi-notch"
+
+  [social.discord]
+  url = "https://discord.gg/J7kWSfM4jw"
+  label = "Join Discord"
+  icon = "fab fa-discord"
+  class = "discord-notch"
+
+  [social.artstation]
+  url = "https://www.artstation.com/ultikynnys2"
+  label = "ArtStation"
+  icon = "fab fa-artstation"
+  class = "artstation-header-notch"
+
+  [social.fab]
+  url = "https://www.fab.com/sellers/NYETEI%20Productions"
+  label = "Fab Store"
+  iconSvg = "content/Fabstore.svg"
+  class = "fab-notch"
+
+  [social.cv]
+  url = "cv_template.html"
+  label = "View CV"
+  icon = "fas fa-file-alt"
+  class = "cv-notch"
+  external = false
+
+  [social.email]
+  url = "mailto:Hussein.Ubeid@outlook.com"
+  label = "Email Me"
+  icon = "fas fa-envelope"
+  class = "email-notch"
+  external = false
+
+  [social.linkedin]
+  url = "https://www.linkedin.com/in/ubeid-hussein-31ba59204/"
+  label = "LinkedIn"
+  icon = "fab fa-linkedin"
+  class = "linkedin-notch"
+
+  [social.github]
+  url = "https://github.com/Ultikynnys"
+  label = "GitHub"
+  icon = "fab fa-github"
+  class = "github-notch"
+
+  [social.twitter]
+  url = "https://x.com/ultikynnys"
+  label = "X / Twitter"
+  iconSvg = "content/Twitter.svg"
+  class = "twitter-notch"
+
+# Order in which social links appear in the ribbon
+[ribbon]
+order = ["kofi", "discord", "artstation", "fab", "cv", "email", "linkedin", "github", "twitter"]

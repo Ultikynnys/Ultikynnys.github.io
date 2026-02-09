@@ -4,7 +4,8 @@
     /* Base colors (dark theme by default) */
     --primary-bg: #1a1a1a;
     --secondary-bg: #2d2d2d;
-    --card-bg: #2d2d2d; /* Solid color, no transparency */
+    --card-bg: #2d2d2d;
+    /* Solid color, no transparency */
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 1);
     --accent-color: #4a90e2;
@@ -20,7 +21,8 @@
         /* Light theme colors */
         --primary-bg: #f5f5f5;
         --secondary-bg: #e0e0e0;
-        --card-bg: #ffffff; /* Solid white, no transparency */
+        --card-bg: #ffffff;
+        /* Solid white, no transparency */
         --text-primary: #333333;
         --text-secondary: #555555;
         --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
@@ -104,8 +106,15 @@ h1::after {
 }
 
 @keyframes cursor-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 h1.hidden {
@@ -134,11 +143,16 @@ h1.hidden {
 
 /* Prevent text selection on name heading for better click handling */
 .dynamic-name-container h1 {
-    user-select: none; /* Prevent text selection */
-    -webkit-user-select: none; /* Safari support */
-    -moz-user-select: none; /* Firefox support */
-    -ms-user-select: none; /* IE/Edge support */
-    cursor: pointer; /* Reinforce that it's clickable */
+    user-select: none;
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    /* Safari support */
+    -moz-user-select: none;
+    /* Firefox support */
+    -ms-user-select: none;
+    /* IE/Edge support */
+    cursor: pointer;
+    /* Reinforce that it's clickable */
 }
 
 .subtitle {
@@ -170,13 +184,15 @@ h2 {
 }
 
 .project-card {
-    display: block; 
+    display: block;
     position: relative;
     background: var(--card-bg);
-    border-radius: 10px; /* Keep overall rounding */
+    border-radius: 10px;
+    /* Keep overall rounding */
     box-shadow: var(--card-shadow);
     cursor: pointer;
-    overflow: hidden; /* Ensure contents don't overflow rounded corners */
+    overflow: hidden;
+    /* Ensure contents don't overflow rounded corners */
 }
 
 .project-card:hover {
@@ -185,17 +201,18 @@ h2 {
 }
 
 .project-media {
-    display: block; 
-    position: relative !important; 
+    display: block;
+    position: relative !important;
     width: 100%;
-    padding-top: 56.25%; 
+    padding-top: 56.25%;
     height: 0;
-    background-color: transparent; 
-    overflow: hidden !important; 
-    border-radius: 0; /* Remove separate rounding */
+    background-color: transparent;
+    overflow: hidden !important;
+    border-radius: 0;
+    /* Remove separate rounding */
 }
 
-.project-media > * {
+.project-media>* {
     position: absolute;
     top: 0;
     left: 0;
@@ -206,8 +223,10 @@ h2 {
 .project-media img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Changed from cover to contain to prevent cropping */
-    background-color: #000; /* Black background behind images */
+    object-fit: contain;
+    /* Changed from cover to contain to prevent cropping */
+    background-color: #000;
+    /* Black background behind images */
 }
 
 .carousel-container {
@@ -227,8 +246,10 @@ h2 {
     height: 100%;
     opacity: 0;
     transition: opacity 0.5s ease;
-    object-fit: contain; /* Changed from cover to contain */
-    background-color: #000; /* Black background */
+    object-fit: contain;
+    /* Changed from cover to contain */
+    background-color: #000;
+    /* Black background */
 }
 
 .carousel-image.active {
@@ -315,9 +336,10 @@ h2 {
 .comparison-container {
     position: relative;
     width: 100%;
-    height: 100%; 
+    height: 100%;
     overflow: hidden;
-    background-color: transparent !important; /* Ensure transparent background */
+    background-color: transparent !important;
+    /* Ensure transparent background */
 }
 
 .comparison-container img {
@@ -325,7 +347,8 @@ h2 {
     max-width: 100%;
     height: 100%;
     object-fit: contain;
-    background-color: transparent !important; /* Make sure images don't have background */
+    background-color: transparent !important;
+    /* Make sure images don't have background */
 }
 
 /* Style for the Image Compare Viewer integration - Old (To be Removed) */
@@ -341,17 +364,18 @@ h2 {
 
 /* Fix for project expansion with comparison slider */
 .project-card.expanded .project-media {
-    overflow: visible !important; 
-    background-color: #111; 
+    overflow: visible !important;
+    background-color: #111;
 }
 
 .project-info {
-    display: block !important; 
+    display: block !important;
     padding: 1.5rem;
-    clear: both; 
-    position: relative; 
-    z-index: 1; 
-    background: var(--card-bg); /* Give info a background to prevent visual overlap */
+    clear: both;
+    position: relative;
+    z-index: 1;
+    background: var(--card-bg);
+    /* Give info a background to prevent visual overlap */
 }
 
 .project-info h3 {
@@ -387,7 +411,8 @@ h2 {
     background: rgba(255, 0, 0, 0.8);
     color: white;
     font-size: 0.8rem;
-    border-radius: 0 0 5px 0; /* Keep inner corner rounded */
+    border-radius: 0 0 5px 0;
+    /* Keep inner corner rounded */
     font-weight: 500;
 }
 
@@ -403,7 +428,8 @@ h2 {
     background: rgba(76, 175, 80, 0.8);
     color: white;
     font-size: 0.8rem;
-    border-radius: 0 0 0 10px; /* Updated to match project-card border-radius */
+    border-radius: 0 0 0 10px;
+    /* Updated to match project-card border-radius */
     font-weight: 500;
     transition: all 0.3s ease;
 }
@@ -422,7 +448,8 @@ h2 {
     gap: 0.5rem;
     padding: 0.5rem 0.7rem;
     background: rgba(33, 33, 33, 0.9);
-    border-radius: 0 0 10px 0; /* Updated to match project-card radius */
+    border-radius: 0 0 10px 0;
+    /* Updated to match project-card radius */
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -444,8 +471,10 @@ h2 {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.7rem;
-    background: rgba(230, 126, 34, 0.9); /* Orange color for demo */
-    border-radius: 0 0 10px 0; /* Updated to match project-card radius */
+    background: rgba(230, 126, 34, 0.9);
+    /* Orange color for demo */
+    border-radius: 0 0 10px 0;
+    /* Updated to match project-card radius */
     color: white;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -461,7 +490,7 @@ h2 {
 
 /* Language notches (bottom-right) */
 /* Note: override the generic .project-media > * sizing */
-.project-media > .language-notches {
+.project-media>.language-notches {
     position: absolute;
     right: 8px;
     bottom: 8px;
@@ -472,8 +501,10 @@ h2 {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
-    z-index: 12; /* Above media, below carousel controls (15) */
-    pointer-events: none; /* Do not block clicks for expand or controls */
+    z-index: 12;
+    /* Above media, below carousel controls (15) */
+    pointer-events: none;
+    /* Do not block clicks for expand or controls */
 }
 
 .project-media .language-notch {
@@ -484,9 +515,10 @@ h2 {
     font-size: 0.78rem;
     line-height: 1;
     color: #fff;
-    background: #444; /* Fallback; overridden by dynamic language colors */
+    background: #444;
+    /* Fallback; overridden by dynamic language colors */
     border-radius: 6px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .project-media .language-notch i {
@@ -555,7 +587,8 @@ h2 {
     margin-bottom: 1rem;
 }
 
-.github-link svg, .store-link svg {
+.github-link svg,
+.store-link svg {
     width: 20px;
     height: 20px;
     fill: currentColor;
@@ -747,7 +780,8 @@ footer {
 
 /* Update demo-notch for better visibility in light mode */
 .demo-notch {
-    background: rgba(230, 126, 34, 0.9); /* Orange color for demo */
+    background: rgba(230, 126, 34, 0.9);
+    /* Orange color for demo */
     color: white;
 }
 
@@ -764,7 +798,8 @@ footer {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.7rem;
-    background: rgba(19, 29, 57, 0.9); /* ArtStation blue color */
+    background: rgba(19, 29, 57, 0.9);
+    /* ArtStation blue color */
     border-radius: 0 0 5px 0;
     color: white;
     text-decoration: none;
@@ -781,13 +816,18 @@ footer {
 
 /* Theme Toggle Button - Positioned by Flexbox now */
 .theme-toggle {
-    position: relative; /* Change from absolute/fixed */
-    top: auto; /* Remove absolute positioning */
-    right: auto; /* Remove absolute positioning */
-    width: auto; 
-    height: 30px; /* Match typical button height */
-    padding: 0 12px; /* Adjust padding */
-    border-radius: 5px; 
+    position: relative;
+    /* Change from absolute/fixed */
+    top: auto;
+    /* Remove absolute positioning */
+    right: auto;
+    /* Remove absolute positioning */
+    width: auto;
+    height: 30px;
+    /* Match typical button height */
+    padding: 0 12px;
+    /* Adjust padding */
+    border-radius: 5px;
     background: var(--accent-color);
     border: none;
     color: white;
@@ -796,9 +836,11 @@ footer {
     justify-content: center;
     cursor: pointer;
     /* z-index: 101; Not needed unless overlapping sibling */
-    box-shadow: none; /* Remove shadow, looks odd in flex */
+    box-shadow: none;
+    /* Remove shadow, looks odd in flex */
     transition: background-color 0.3s ease;
-    margin-left: 15px; /* Add space between button groups */
+    margin-left: 15px;
+    /* Add space between button groups */
 }
 
 .theme-toggle i {
@@ -814,7 +856,8 @@ footer {
 body.light-theme {
     --primary-bg: #f5f5f5;
     --secondary-bg: #e0e0e0;
-    --card-bg: #ffffff; /* Solid white, no transparency */
+    --card-bg: #ffffff;
+    /* Solid white, no transparency */
     --text-primary: #333333;
     --text-secondary: #555555;
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
@@ -827,7 +870,8 @@ body.light-theme {
 body.dark-theme {
     --primary-bg: #1a1a1a;
     --secondary-bg: #2d2d2d;
-    --card-bg: #2d2d2d; /* Solid color, no transparency */
+    --card-bg: #2d2d2d;
+    /* Solid color, no transparency */
     --text-primary: #ffffff;
     --text-secondary: rgba(255, 255, 255, 0.8);
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
@@ -854,27 +898,40 @@ body.dark-theme {
 /* Social ribbon */
 .social-ribbon {
     background-color: var(--secondary-bg);
-    padding: 5px 15px; /* Adjust padding */
+    padding: 5px 15px;
+    /* Adjust padding */
     width: 100%;
     position: relative;
     z-index: 100;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex; /* Use Flexbox */
-    align-items: center; /* Vertically align items */
-    justify-content: space-between; /* Push items to ends */
+    display: flex;
+    /* Use Flexbox */
+    align-items: center;
+    /* Vertically align items */
+    justify-content: space-between;
+    /* Push items to ends */
 }
 
 .social-buttons {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Align buttons to the start */
+    justify-content: flex-start;
+    /* Align buttons to the start */
     gap: 10px;
     /* max-width: 1400px; Not needed if ribbon handles width */
     /* margin: 0 auto; No longer center */
     /* padding: 0 15px; Padding handled by parent */
 }
 
-.kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch, .cv-notch {
+.kofi-notch,
+.discord-notch,
+.email-notch,
+.linkedin-notch,
+.github-notch,
+.artstation-header-notch,
+.fab-notch,
+.cv-notch,
+.twitter-notch {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -890,7 +947,8 @@ body.dark-theme {
 }
 
 .kofi-notch {
-    background: #FF5E5B; /* Ko-fi red color */
+    background: #FF5E5B;
+    /* Ko-fi red color */
 }
 
 .kofi-notch:hover {
@@ -899,7 +957,8 @@ body.dark-theme {
 }
 
 .discord-notch {
-    background: #5865F2; /* Discord blue color */
+    background: #5865F2;
+    /* Discord blue color */
 }
 
 .discord-notch:hover {
@@ -908,7 +967,8 @@ body.dark-theme {
 }
 
 .email-notch {
-    background: #4CAF50; /* Email green color */
+    background: #4CAF50;
+    /* Email green color */
 }
 
 .email-notch:hover {
@@ -917,7 +977,8 @@ body.dark-theme {
 }
 
 .linkedin-notch {
-    background: #0077B5; /* LinkedIn blue color */
+    background: #0077B5;
+    /* LinkedIn blue color */
 }
 
 .linkedin-notch:hover {
@@ -926,7 +987,8 @@ body.dark-theme {
 }
 
 .github-notch {
-    background: #333; /* GitHub dark color */
+    background: #333;
+    /* GitHub dark color */
 }
 
 .github-notch:hover {
@@ -935,7 +997,8 @@ body.dark-theme {
 }
 
 .artstation-header-notch {
-    background: #13aff0; /* ArtStation blue color */
+    background: #13aff0;
+    /* ArtStation blue color */
 }
 
 .artstation-header-notch:hover {
@@ -944,7 +1007,8 @@ body.dark-theme {
 }
 
 .fab-notch {
-    background: #6f42c1; /* Fab purple-ish color */
+    background: #6f42c1;
+    /* Fab purple-ish color */
 }
 
 .fab-notch:hover {
@@ -953,12 +1017,32 @@ body.dark-theme {
 }
 
 .cv-notch {
-    background: #2e7d32; /* Green color for CV */
+    background: #2e7d32;
+    /* Green color for CV */
 }
 
 .cv-notch:hover {
     background: #1b5e20;
     transform: translateY(-2px);
+}
+
+.twitter-notch {
+    background: #000000;
+    /* X/Twitter black */
+}
+
+.twitter-notch:hover {
+    background: #1a1a1a;
+    transform: translateY(-2px);
+}
+
+/* Custom SVG icons in social buttons */
+.social-icon-svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    filter: brightness(0) invert(1);
+    /* Make SVG white */
 }
 
 /* Responsive styles for social ribbon */
@@ -967,16 +1051,27 @@ body.dark-theme {
         justify-content: center;
         padding: 5px;
     }
-    
-    .kofi-notch, .discord-notch, .email-notch, .linkedin-notch, .github-notch, .artstation-header-notch, .fab-notch, .cv-notch {
+
+    .kofi-notch,
+    .discord-notch,
+    .email-notch,
+    .linkedin-notch,
+    .github-notch,
+    .artstation-header-notch,
+    .fab-notch,
+    .cv-notch {
         padding: 0.4rem 0.6rem;
         font-size: 0.8rem;
     }
 }
 
 /* Programming language styles - simple emphasis only */
-.lang-python, .lang-javascript, .lang-cpp, .lang-csharp {
-    font-weight: 600; /* Just keep them bold */
+.lang-python,
+.lang-javascript,
+.lang-cpp,
+.lang-csharp {
+    font-weight: 600;
+    /* Just keep them bold */
 }
 
 /* Remove all the special styling effects and colors */
@@ -1045,7 +1140,8 @@ body.light-theme .lang-javascript {
 
 .section-divider h2:after {
     content: "";
-    display: none; /* Remove the underline */
+    display: none;
+    /* Remove the underline */
 }
 
 .section-divider p {
@@ -1096,13 +1192,14 @@ body.light-theme .lang-javascript {
     padding-top: 56.25%;
     position: relative;
     z-index: 2;
-    background-color: #000; /* Black background for letterboxing */
+    background-color: #000;
+    /* Black background for letterboxing */
     overflow: visible !important;
 }
 
 /* Force general images/iframes (non-carousel) to be visible */
-.project-card.expanded .project-media > img,
-.project-card.expanded .project-media > iframe {
+.project-card.expanded .project-media>img,
+.project-card.expanded .project-media>iframe {
     object-fit: contain !important;
     background-color: transparent !important;
     width: 100% !important;
@@ -1112,7 +1209,7 @@ body.light-theme .lang-javascript {
     left: 0 !important;
     max-width: 100% !important;
     max-height: 100% !important;
-    z-index: 5 !important; 
+    z-index: 5 !important;
     display: block !important;
     opacity: 1 !important;
     visibility: visible !important;
@@ -1129,7 +1226,8 @@ body.light-theme .lang-javascript {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
-    overflow: hidden; /* Contain carousel elements */
+    overflow: hidden;
+    /* Contain carousel elements */
 }
 
 /* Style CAROUSEL images specifically */
@@ -1141,25 +1239,31 @@ body.light-theme .lang-javascript {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
-    z-index: 5 !important; /* Base z-index for carousel images */
+    z-index: 5 !important;
+    /* Base z-index for carousel images */
     display: block !important;
-    opacity: 0 !important; /* Default hidden */
-    visibility: hidden !important; /* Default hidden */
-    transition: opacity 0.5s ease, visibility 0.5s ease !important; 
+    opacity: 0 !important;
+    /* Default hidden */
+    visibility: hidden !important;
+    /* Default hidden */
+    transition: opacity 0.5s ease, visibility 0.5s ease !important;
 }
 
 /* Active CAROUSEL image should always be visible */
 .project-card.expanded .carousel-image.active {
     opacity: 1 !important;
-    z-index: 10 !important; /* Higher z-index for active */
+    z-index: 10 !important;
+    /* Higher z-index for active */
     visibility: visible !important;
 }
 
 /* Ensure CAROUSEL navigation elements are visible and on top */
 .project-card.expanded .carousel-nav,
 .project-card.expanded .carousel-dots {
-    z-index: 15 !important; /* Ensure controls are above active image */
-    opacity: 1 !important; /* Make sure they are visible */
+    z-index: 15 !important;
+    /* Ensure controls are above active image */
+    opacity: 1 !important;
+    /* Make sure they are visible */
     visibility: visible !important;
 }
 
@@ -1200,12 +1304,15 @@ body.light-theme .lang-javascript {
     z-index: 1001;
     opacity: 0;
     transition: none;
-    display: none; /* Hide the back button completely */
+    display: none;
+    /* Hide the back button completely */
 }
 
 .project-card.expanded .back-button {
-    opacity: 0; /* Make sure it's hidden in expanded view */
-    display: none; /* Hide the back button completely in expanded view */
+    opacity: 0;
+    /* Make sure it's hidden in expanded view */
+    display: none;
+    /* Hide the back button completely in expanded view */
 }
 
 .back-button:hover {
@@ -1278,7 +1385,8 @@ body.has-expanded-project .close-button {
     clip-path: inset(0 50% 0 0) !important;
 }
 
-.before-image, .after-image {
+.before-image,
+.after-image {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
@@ -1296,10 +1404,11 @@ body.has-expanded-project .close-button {
     align-items: center;
     gap: 0.5rem;
     padding: 0.3rem 0.7rem;
-    background: rgba(76, 175, 80, 0.9); /* Default Green */
+    background: rgba(76, 175, 80, 0.9);
+    /* Default Green */
     color: white;
     font-size: 0.8rem;
-    border-radius: 0 0 0 5px; 
+    border-radius: 0 0 0 5px;
     font-weight: 500;
     pointer-events: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -1307,19 +1416,23 @@ body.has-expanded-project .close-button {
 
 /* Game tag Engine Colors */
 .game-tag.engine-unity {
-    background: rgba(170, 170, 170, 0.9); /* Grey #AAAAAA */
+    background: rgba(170, 170, 170, 0.9);
+    /* Grey #AAAAAA */
 }
 
 .game-tag.engine-unreal {
-    background: rgba(0, 120, 210, 0.9); /* Blue #0078D2 */
+    background: rgba(0, 120, 210, 0.9);
+    /* Blue #0078D2 */
 }
 
 .game-tag.engine-godot {
-    background: rgba(71, 140, 176, 0.9); /* Purple/Blue #478CB0 */
+    background: rgba(71, 140, 176, 0.9);
+    /* Purple/Blue #478CB0 */
 }
 
 .game-tag.engine-source {
-    background: rgba(23, 26, 33, 0.9); /* Dark Blue #171A21 */
+    background: rgba(23, 26, 33, 0.9);
+    /* Dark Blue #171A21 */
 }
 
 /* Default remains green (rgba(76, 175, 80, 0.9)) */
@@ -1329,14 +1442,16 @@ body.has-expanded-project .close-button {
 
 /* If an engine tag exists, place the store notch below it */
 .project-card:has(.game-tag) .store-notch {
-    top: 2.2rem; /* Store below engine */
+    top: 2.2rem;
+    /* Store below engine */
 }
 
 /* Yasuo Mode Easter Egg */
 .yasuo-sword {
     position: fixed;
     z-index: 1001;
-    width: 300px; /* Already increased size */
+    width: 300px;
+    /* Already increased size */
     height: auto;
     pointer-events: none;
     opacity: 0;
@@ -1344,46 +1459,63 @@ body.has-expanded-project .close-button {
 
 /* Left-to-right slash (original direction) */
 .yasuo-sword.slash-left-to-right {
-    transform: translateX(-150%) rotate(135deg); /* Flipped rotation */
-    animation: yasuoSwipeLeftToRight 0.2s ease-out forwards; /* Reduced from 0.3s to 0.2s for faster animation */
+    transform: translateX(-150%) rotate(135deg);
+    /* Flipped rotation */
+    animation: yasuoSwipeLeftToRight 0.2s ease-out forwards;
+    /* Reduced from 0.3s to 0.2s for faster animation */
 }
 
 /* Left-to-right animation (original) */
 @keyframes yasuoSwipeLeftToRight {
     0% {
         opacity: 0.8;
-        transform: translateX(-150%) translateY(-50%) rotate(90deg) scale(1.8); /* Flipped rotation */
+        transform: translateX(-150%) translateY(-50%) rotate(90deg) scale(1.8);
+        /* Flipped rotation */
     }
-    30% { /* Changed from 40% to 30% to accelerate motion */
+
+    30% {
+        /* Changed from 40% to 30% to accelerate motion */
         opacity: 1;
-        transform: translateX(50%) translateY(50%) rotate(170deg) scale(1.2); /* Flipped rotation */
+        transform: translateX(50%) translateY(50%) rotate(170deg) scale(1.2);
+        /* Flipped rotation */
     }
-    50% { /* Changed from 60% to 50% to accelerate motion */
+
+    50% {
+        /* Changed from 60% to 50% to accelerate motion */
         opacity: 1;
-        transform: translateX(50%) translateY(50%) rotate(190deg) scale(1.2); /* Flipped rotation */
+        transform: translateX(50%) translateY(50%) rotate(190deg) scale(1.2);
+        /* Flipped rotation */
     }
+
     100% {
         opacity: 0;
-        transform: translateX(150%) translateY(150%) rotate(135deg) scale(1); /* Flipped rotation */
+        transform: translateX(150%) translateY(150%) rotate(135deg) scale(1);
+        /* Flipped rotation */
     }
 }
 
 /* Card splitting effect */
 .card-half {
-    position: absolute; /* Positioned relative to the document */
+    position: absolute;
+    /* Positioned relative to the document */
     overflow: hidden;
     box-sizing: border-box;
     /* Match card background/shadow if needed, or just show content */
     background: var(--card-bg);
-    border-radius: 10px; /* Match card rounding */
+    border-radius: 10px;
+    /* Match card rounding */
     box-shadow: var(--card-shadow);
-    z-index: 998; /* Below sword, above original card position */
+    z-index: 998;
+    /* Below sword, above original card position */
     pointer-events: none;
 }
 
-.card-half > * { /* Style the cloned content inside */
-    display: block; /* Ensure the cloned card inside behaves */
-    position: absolute; /* Position relative to the half */
+.card-half>* {
+    /* Style the cloned content inside */
+    display: block;
+    /* Ensure the cloned card inside behaves */
+    position: absolute;
+    /* Position relative to the half */
     top: 0;
     left: 0;
     width: 100%;
@@ -1401,8 +1533,9 @@ body.has-expanded-project .close-button {
 }
 
 /* Align content in bottom half */
-.card-half-bottom > * {
-   top: -100%; /* Move the cloned card up so bottom half is visible */
+.card-half-bottom>* {
+    top: -100%;
+    /* Move the cloned card up so bottom half is visible */
 }
 
 
@@ -1411,6 +1544,7 @@ body.has-expanded-project .close-button {
         transform: translateY(0) rotate(0);
         opacity: 1;
     }
+
     to {
         transform: translateY(-50px) rotate(-5deg);
         opacity: 0;
@@ -1422,6 +1556,7 @@ body.has-expanded-project .close-button {
         transform: translateY(0) rotate(0);
         opacity: 1;
     }
+
     to {
         transform: translateY(50px) rotate(5deg);
         opacity: 0;
@@ -1433,9 +1568,10 @@ body.has-expanded-project .close-button {
     position: fixed;
     bottom: 20px;
     left: 20px;
-    width: 300px; /* Doubled size */
+    width: 300px;
+    /* Doubled size */
     height: auto;
-    z-index: 1002; 
+    z-index: 1002;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -1443,21 +1579,25 @@ body.has-expanded-project .close-button {
 }
 
 #yasuo-mode-indicator.active {
-    opacity: 0.8; /* Slightly transparent */
+    opacity: 0.8;
+    /* Slightly transparent */
     visibility: visible;
 }
 
 /* Vignette Overlay */
-body::before { /* Using body pseudo-element */
+body::before {
+    /* Using body pseudo-element */
     content: "";
     position: fixed;
-    top: 0; 
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
-    z-index: 1000; /* Below sword and indicator */
-    pointer-events: none; /* Allow clicks through */
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.6) 100%);
+    z-index: 1000;
+    /* Below sword and indicator */
+    pointer-events: none;
+    /* Allow clicks through */
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -1471,11 +1611,13 @@ body.yasuo-mode-active::before {
 /* Flash slice effect */
 .flash-slice {
     position: absolute;
-    height: 3px; /* Thin line */
+    height: 3px;
+    /* Thin line */
     background-color: white;
-    z-index: 1003; /* Above everything */
+    z-index: 1003;
+    /* Above everything */
     transform-origin: center left;
-    box-shadow: 
+    box-shadow:
         0 0 10px 2px rgba(255, 255, 255, 0.8),
         0 0 20px 4px rgba(255, 255, 255, 0.6),
         0 0 30px 6px rgba(255, 255, 255, 0.4),
@@ -1490,14 +1632,17 @@ body.yasuo-mode-active::before {
         opacity: 0;
         width: 0;
     }
+
     10% {
         opacity: 1;
         width: 100%;
     }
+
     30% {
         opacity: 1;
         width: 100%;
     }
+
     100% {
         opacity: 0;
         width: 100%;

@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/gif" href="content/200.gif">
     <title>Ubeid Hussein - 3D Artist Portfolio</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="portfolio-3d">
     <!-- Add theme toggle button -->
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
     </button>
-    
+
     <!-- Overlay for expanded project -->
     <div class="overlay" id="overlay"></div>
-    
+
     <!-- Global close button -->
     <div class="close-button" id="globalCloseButton">
         <i class="fas fa-times"></i>
     </div>
-    
+
     <!-- Social ribbon will be inserted here by the script -->
-    
+
     <header>
         <div class="header-content">
             <div id="name-display" class="dynamic-name-container">
@@ -41,15 +44,15 @@
         <div class="portfolio-grid" id="projects-container">
             <!-- Projects will be loaded here -->
         </div>
-        
+
         <!-- Game section header will be loaded here -->
         <div id="game-section-header"></div>
-        
+
         <div class="portfolio-grid" id="games-container">
             <!-- Games will be loaded here -->
         </div>
     </main>
-    
+
     <!-- Copyright footer -->
     <footer class="copyright-footer">
         <p>&copy; 2025 Ubeid Hussein. All rights reserved.</p>
@@ -57,21 +60,21 @@
 
     <!-- Load shared social ribbon script -->
     <script src="scripts/social-ribbon.js"></script>
-    
+
     <!-- Load common portfolio code -->
     <script src="scripts/portfolio-common.js"></script>
-    
+
     <!-- Load shared portfolio sections code -->
     <script src="scripts/portfolio-sections.js"></script>
-    
+
     <script>
         // Function to create project card HTML - specific to 3D portfolio
         function createProjectCard(project, index) {
-            const isVideo = typeof project.media === 'string' && 
-                          (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
+            const isVideo = typeof project.media === 'string' &&
+                (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
             const isMultiImage = Array.isArray(project.media);
             const isSketchfab = typeof project.media === 'string' && project.media.includes('sketchfab.com/models');
-            
+
             let mediaContent = '';
             if (isVideo) {
                 // Extract video ID and create proper embed URL
@@ -81,7 +84,7 @@
                 } else if (project.media.includes('youtu.be/')) {
                     videoId = project.media.split('youtu.be/')[1].split('?')[0];
                 }
-                
+
                 if (videoId) {
                     mediaContent = `
                         <iframe 
@@ -102,16 +105,16 @@
                 mediaContent = createCarousel(project.media, index);
             } else if (isSketchfab) {
                 // Extract model ID and create proper embed iframe
-                const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] || 
-                                project.media.match(/models\/([^\/]+)/)?.[1];
+                const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] ||
+                    project.media.match(/models\/([^\/]+)/)?.[1];
                 if (modelId) {
                     const embedUrl = `https://sketchfab.com/models/${modelId}/embed`;
                     mediaContent = `
                         <iframe 
                             src="${embedUrl}" 
                             frameborder="0" 
-                            allow="autoplay; fullscreen; xr-spatial-tracking" 
-                            webkitallowfullscreen mozallowfullscreen allowfullscreen
+                            allow="fullscreen" 
+                            allowfullscreen
                             style="width: 100%; height: 100%;">
                         </iframe>
                     `;
@@ -121,20 +124,20 @@
             } else {
                 mediaContent = `<img src="${project.media}" alt="${project.title}">`;
             }
-            
+
             // Check if it's a TF2 Workshop item
             const isTF2Workshop = project.store && project.store.includes('steamcommunity.com') && (
-                project.title.includes('TF2') || 
-                project.title.includes('Team Fortress') || 
-                project.description.includes('TF2') || 
+                project.title.includes('TF2') ||
+                project.title.includes('Team Fortress') ||
+                project.description.includes('TF2') ||
                 project.description.includes('Team Fortress')
             );
-            
+
             // All TF2 projects should be marked as private
             if (isTF2Workshop && !project.private) {
                 project.private = true;
             }
-            
+
             return `
                 <div class="project-card" data-project-id="${index}">
                     ${project.private ? `
@@ -156,22 +159,20 @@
                         </a>
                     ` : ''}
                     ${index >= 1000 ? `
-                        <div class="game-tag${project.store ? ' with-store' : ''} ${
-                                project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
-                                project.engine && project.engine.toLowerCase().includes('unreal') ? 'engine-unreal' : 
-                                project.engine && project.engine.toLowerCase().includes('godot') ? 'engine-godot' :
+                        <div class="game-tag${project.store ? ' with-store' : ''} ${project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
+                        project.engine && project.engine.toLowerCase().includes('unreal') ? 'engine-unreal' :
+                            project.engine && project.engine.toLowerCase().includes('godot') ? 'engine-godot' :
                                 project.engine && project.engine.toLowerCase().includes('source') ? 'engine-source' :
-                                'engine-default'
-                            }">
-                             <i class="${
-                                project.engine && project.engine.toLowerCase().includes('unity') ? 'fab fa-unity' :
-                                project.engine && project.engine.toLowerCase().includes('unreal') ? '' : 
-                                project.engine && project.engine.toLowerCase().includes('godot') ? 'fas fa-ghost' :
+                                    'engine-default'
+                    }">
+                             <i class="${project.engine && project.engine.toLowerCase().includes('unity') ? 'fab fa-unity' :
+                        project.engine && project.engine.toLowerCase().includes('unreal') ? '' :
+                            project.engine && project.engine.toLowerCase().includes('godot') ? 'fas fa-ghost' :
                                 project.engine && project.engine.toLowerCase().includes('source') ? 'fab fa-steam' :
-                                'fas fa-gamepad'
-                            }"></i>
-                            ${project.engine && project.engine.toLowerCase().includes('unreal') ? 
-                                `<img src="images/UnrealEngine.svg" alt="Unreal Engine" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">` : ''}
+                                    'fas fa-gamepad'
+                    }"></i>
+                            ${project.engine && project.engine.toLowerCase().includes('unreal') ?
+                        `<img src="images/UnrealEngine.svg" alt="Unreal Engine" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">` : ''}
                              ${project.engine || 'Game'}
                         </div>
                     ` : ''}
@@ -190,21 +191,22 @@
         }
 
         // Initialize the 3D portfolio
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Existing code...
-            
+
             // Add this line to initialize theme toggle
             initThemeToggle();
-            
+
             // Load the game section header and description using the shared function
             loadGameSectionHeader(
-                'projects/3d-projects.md', 
+                'projects/3d-projects.md',
                 "Games I've worked on as a 3D artist and developer, creating characters, environments, and assets."
             );
-                
+
             // Initialize with the 3D projects file AND the games file
             initPortfolio('projects/3d-projects.md', 'projects/games.md');
         });
     </script>
 </body>
+
 </html>
