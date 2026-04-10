@@ -2,6 +2,14 @@
 
 3D Artist specializing in modeling, rigging, and animation, with over 6 years of experience. I blend my artistic skills with technical knowledge to create optimized assets and character solutions. Proficient in Blender, Substance Designer, and Substance Painter, I have contributed to game development projects and freelance work. I'm also a published artist on the Blender Market, creating tools to improve workflows for fellow artists.
 
+## Space Station Interior - Modular Asset Pack
+- Title: Space Station Interior - Modular Asset Pack
+- Description: An all-in-one modular asset collection that allows you to construct multi-level space station interiors, complete with a functional elevator system.
+- Media: images/SSModular.jpg
+- Store: https://www.fab.com/listings/2a61ecc6-7d4c-473f-8550-467033c6641b
+- Engine: Unreal Engine
+
+
 ## TIMBERSTRING
 - Title: TIMBERSTRING
 - Description: All the 3D characters and renders were made by me.
@@ -15,6 +23,8 @@
 - Description: Realistic asset pack for creating mansions and hotels with optimized assets.
 - Media: images/MansionInterior.jpg
 - Store: https://www.fab.com/listings/26d61456-dc6a-44a3-82d6-46b4a900e4e0
+
+
 
 ## SimplyCCTV
 - Title: SimplyCCTV
