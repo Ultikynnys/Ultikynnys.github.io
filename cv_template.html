@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ubeid Hussein - CV</title>
+    <title data-i18n="ui.pageTitle">Ubeid Hussein - CV</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Language toggle styles */
         .language-toggle {
             position: absolute;
             top: 15px;
@@ -20,8 +19,7 @@
             font-size: 14px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
-        /* CV type toggle styles */
+
         .cv-toggle {
             position: absolute;
             top: 15px;
@@ -35,61 +33,63 @@
             font-size: 14px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
+
         .language-toggle span {
             padding: 5px 8px;
             background-color: #f8f9fa;
         }
-        
+
         .language-toggle span.active {
             background-color: #2c3e50;
             color: #fff;
         }
-        
+
         .cv-toggle span {
             padding: 5px 8px;
             background-color: #f8f9fa;
         }
-        
+
         .cv-toggle span.active {
             background-color: #2c3e50;
             color: #fff;
         }
-        
-        
-        /* CV type content visibility */
+
         .cv-programming { display: block; }
         .cv-3d { display: none; }
+        .cv-gamedev { display: none; }
         body.cv-3d-mode .cv-programming { display: none; }
         body.cv-3d-mode .cv-3d { display: block; }
-        
+        body.cv-3d-mode .cv-gamedev { display: none; }
+        body.cv-gamedev-mode .cv-programming { display: none; }
+        body.cv-gamedev-mode .cv-3d { display: none; }
+        body.cv-gamedev-mode .cv-gamedev { display: block; }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ccc; /* Background for non-print view */
+            background-color: #ccc;
         }
 
         .page {
             display: flex;
-            width: 210mm; /* A4 width */
-            min-height: 297mm; /* A4 height */
-            margin: 20mm auto; /* Center page on screen */
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20mm auto;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden; /* Contain floats/flex items */
+            overflow: hidden;
         }
 
         .sidebar {
-            width: 35%; /* Adjust width as needed */
-            background-color: #2c3e50; /* Dark color */
-            color: #ecf0f1; /* Light text color */
-            padding: 15px 15px; /* Reduce vertical padding further */
-            box-sizing: border-box; /* Include padding in width */
-            position: relative; /* Needed for hexagon overlay */
+            width: 35%;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px 15px;
+            box-sizing: border-box;
+            position: relative;
         }
 
-        /* Subtle hexagon overlay */
         .sidebar::before {
             content: "";
             position: absolute;
@@ -98,79 +98,106 @@
             bottom: 0;
             left: 0;
             background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='60'%20height='52'%20viewBox='0%200%2060%2052'><path%20d='M30%201%20L59%2017%20L59%2035%20L30%2051%20L1%2035%20L1%2017%20Z'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.05'/></svg>");
-            background-size: 30px 26px; /* hex size */
+            background-size: 30px 26px;
             background-repeat: repeat;
-            pointer-events: none; /* keep sidebar interactive */
+            pointer-events: none;
             z-index: 0;
         }
-        
-        /* 3D Mode specific styling with contrasting colors and circular pattern */
+
         body.cv-3d-mode .sidebar {
-            background-color: #6A0DAD; /* Purple - contrasting color */
+            background-color: #6A0DAD;
         }
-        
-        /* Circular pattern overlay for 3D mode */
+
         body.cv-3d-mode .sidebar::before {
             background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'><circle%20cx='20'%20cy='20'%20r='8'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.08'/></svg>");
             background-size: 40px 40px;
         }
-        
-        /* Update text colors for 3D mode */
-        body.cv-3d-mode .sidebar h2, 
+
+        body.cv-3d-mode .sidebar h2,
         body.cv-3d-mode .sidebar h3 {
-            color: #F5F5F5; /* Light text for better contrast on purple */
-            border-bottom: 1px solid #9370DB; /* Medium purple for borders */
-        }
-        
-        body.cv-3d-mode .main-content h1, 
-        body.cv-3d-mode .main-content h2, 
-        body.cv-3d-mode .main-content h3 {
-            color: #6A0DAD; /* Purple headings in main content */
-        }
-        
-        body.cv-3d-mode .main-content h2 {
-            border-bottom: 1px solid #9370DB; /* Medium purple for borders */
-        }
-        
-        /* Update link colors for 3D mode */
-        body.cv-3d-mode .sidebar a {
-            color: #FFFFFF; /* White links in sidebar */
-        }
-        
-        body.cv-3d-mode .sidebar a:hover {
-            color: #DDDDDD; /* Light gray on hover */
+            color: #F5F5F5;
+            border-bottom: 1px solid #9370DB;
         }
 
-        /* Ensure content stays above overlay */
+        body.cv-3d-mode .main-content h1,
+        body.cv-3d-mode .main-content h2,
+        body.cv-3d-mode .main-content h3 {
+            color: #6A0DAD;
+        }
+
+        body.cv-3d-mode .main-content h2 {
+            border-bottom: 1px solid #9370DB;
+        }
+
+        body.cv-3d-mode .sidebar a {
+            color: #FFFFFF;
+        }
+
+        body.cv-3d-mode .sidebar a:hover {
+            color: #DDDDDD;
+        }
+
+        body.cv-gamedev-mode .sidebar {
+            background-color: #1a6b3c;
+        }
+
+        body.cv-gamedev-mode .sidebar::before {
+            background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'><polygon%20points='20,5%2035,20%2020,35%205,20'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.08'/></svg>");
+            background-size: 40px 40px;
+        }
+
+        body.cv-gamedev-mode .sidebar h2,
+        body.cv-gamedev-mode .sidebar h3 {
+            color: #F5F5F5;
+            border-bottom: 1px solid #4CAF50;
+        }
+
+        body.cv-gamedev-mode .main-content h1,
+        body.cv-gamedev-mode .main-content h2,
+        body.cv-gamedev-mode .main-content h3 {
+            color: #1a6b3c;
+        }
+
+        body.cv-gamedev-mode .main-content h2 {
+            border-bottom: 1px solid #4CAF50;
+        }
+
+        body.cv-gamedev-mode .sidebar a {
+            color: #FFFFFF;
+        }
+
+        body.cv-gamedev-mode .sidebar a:hover {
+            color: #DDDDDD;
+        }
+
         .sidebar > * {
             position: relative;
             z-index: 1;
         }
 
         .main-content {
-            width: 65%; /* Adjust width as needed */
-            background-color: #f8f9fa; /* Lighter color */
-            padding: 15px 20px 15px 30px; /* Reduce vertical padding further */
-            box-sizing: border-box; /* Include padding in width */
-            position: relative; /* For positioning the image */
+            width: 65%;
+            background-color: #f8f9fa;
+            padding: 15px 20px 15px 30px;
+            box-sizing: border-box;
+            position: relative;
         }
 
         .profile-image {
             position: absolute;
             top: 30px;
             right: 30px;
-            width: 100px; /* Adjust size */
-            height: 100px; /* Adjust size */
-            background-color: #ddd; /* Placeholder color */
-            border-radius: 50%; /* Make it circular */
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            border-radius: 50%;
             border: 3px solid #fff;
             box-shadow: 0 0 5px rgba(0,0,0,0.2);
-            overflow: hidden; /* Ensure content is clipped to the circular shape */
-            /* background-image: url('path/to/your/image.jpg'); */
+            overflow: hidden;
             background-size: cover;
             background-position: center;
         }
-        
+
         .profile-image img {
             width: 100%;
             height: 100%;
@@ -180,17 +207,17 @@
 
         h1, h2, h3 {
             margin-top: 0;
-            color: #2c3e50; /* Dark color for headings in main content */
+            color: #2c3e50;
         }
         .sidebar h2, .sidebar h3 {
-             color: #ecf0f1; /* Light color for headings in sidebar */
+             color: #ecf0f1;
              border-bottom: 1px solid #34495e;
              padding-bottom: 5px;
              margin-bottom: 15px;
         }
         .main-content h1 {
-            margin-bottom: 5px; /* Reduce space below name */
-            padding-right: 140px; /* Ensure name doesn't overlap image */
+            margin-bottom: 5px;
+            padding-right: 140px;
         }
          .main-content h2 {
              border-bottom: 1px solid #bdc3c7;
@@ -211,24 +238,24 @@
         }
 
         .sidebar a {
-            color: #FFFFFF; /* White links for better visibility */
+            color: #FFFFFF;
             text-decoration: none;
-            font-size: 0.95em; /* Slightly smaller font size */
+            font-size: 0.95em;
         }
         .sidebar a:hover {
-            color: #DDDDDD; /* Light gray on hover */
+            color: #DDDDDD;
             text-decoration: underline;
         }
 
-        .sidebar .section ul li i.fab, .sidebar .section ul li i.fas { /* Style for icons in sidebar lists */
+        .sidebar .section ul li i.fab, .sidebar .section ul li i.fas {
             margin-right: 10px;
-            width: 1.2em; /* Ensure icons align */
+            width: 1.2em;
             text-align: center;
         }
 
-        .main-content .section ul li i.fab, .main-content .section ul li i.fas { /* Style for icons in main content lists */
+        .main-content .section ul li i.fab, .main-content .section ul li i.fas {
              margin-right: 8px;
-             width: 1.2em; /* Ensure icons align */
+             width: 1.2em;
              text-align: center;
         }
 
@@ -237,427 +264,404 @@
             grid-template-columns: repeat(2, 1fr);
             grid-gap: 10px;
         }
-        
+
         .skills-grid h3 {
-            grid-column: 1 / -1; /* Span all columns */
+            grid-column: 1 / -1;
             margin-bottom: 5px;
         }
-        
+
         .skills-grid ul {
             margin: 0;
             padding: 0;
             list-style: none;
         }
-        /* Override to ensure 3D sections stay hidden unless cv-3d-mode is active */
         .cv-3d {
+            display: none !important;
+        }
+        .cv-gamedev {
             display: none !important;
         }
         body.cv-3d-mode .cv-3d {
             display: block !important;
         }
-        
+        body.cv-3d-mode .cv-gamedev {
+            display: none !important;
+        }
+        body.cv-gamedev-mode .cv-3d {
+            display: none !important;
+        }
+        body.cv-gamedev-mode .cv-gamedev {
+            display: block !important;
+        }
+
         .skills-grid li {
             margin-bottom: 5px;
         }
 
-        /* Print-specific styles */
         @media print {
             html, body {
-                /* Removed width, height, overflow, box-sizing */
                 margin: 0;
                 padding: 0;
             }
             body {
-                background-color: #fff; /* Ensure white background for printing */
-                font-size: 9pt; /* Further reduced font size for print */
+                background-color: #fff;
+                font-size: 9pt;
             }
             .page {
-                 width: 210mm; /* Set content width to A4 width */
-                /* Removed height: 100% */
+                 width: 210mm;
                 margin: 0;
                 padding: 0;
                 box-shadow: none;
                 border: none;
-                page-break-inside: avoid; /* Try to keep page content together */
+                page-break-inside: avoid;
                 box-sizing: border-box;
-                display: flex; /* Keep flex display */
-                 /* align-items: flex-start; Removed this */
-                /* Removed overflow: hidden */
-            }
-            .main-content h1 { /* Ensure name starts at the top for print */
+                display: flex;
+             }
+            .main-content h1 {
                  margin-top: 0;
              }
-            .section { /* Reduce spacing between sections for print */
-                margin-bottom: 8px; /* Further reduced margin */
+            .section {
+                margin-bottom: 8px;
             }
             .sidebar {
-                padding: 12px 12px; /* Further reduce padding */
-                /* Removed height */
-                font-size: 10.5pt; /* Increase sidebar font size for print */
+                padding: 12px 12px;
+                font-size: 10.5pt;
             }
             .main-content {
-                 padding: 12px 18px 12px 25px; /* Further reduce padding */
-                 /* Removed height */
-            }
-             /* Force background colors and images to print */
+                 padding: 12px 18px 12px 25px;
+             }
             html, body, .page, .sidebar, .main-content, .profile-image {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
             .skills-grid {
-                grid-gap: 4px; /* Further reduce gap */
+                grid-gap: 4px;
             }
-            
+
             .skills-grid li {
-                margin-bottom: 2px; /* Further reduce margin */
+                margin-bottom: 2px;
             }
-            
+
             .language-toggle {
-                display: none; /* Hide toggle when printing */
+                display: none;
             }
-            
+
             .cv-toggle {
-                display: none; /* Hide toggle when printing */
+                display: none;
             }
         }
         @page {
-            size: 210mm 297mm; /* Explicitly set A4 size */
-            margin: 0mm; /* Remove browser default margins */
+            size: 210mm 297mm;
+            margin: 0mm;
         }
 
-        /* Increase font weight for better readability */
         p, li {
             font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <!-- CV type toggle button -->
     <div class="cv-toggle">
-        <span class="toggle-programming active" onclick="toggleCV('programming')" data-i18n="ui.cvToggle.programming">Programming</span>
-        <span class="toggle-3d" onclick="toggleCV('3d')" data-i18n="ui.cvToggle.3d">3D Generalist</span>
+        <span class="toggle-programming active" onclick="toggleCV('programming')" data-i18n="ui.cvToggle.programming"></span>
+        <span class="toggle-3d" onclick="toggleCV('3d')" data-i18n="ui.cvToggle.3d"></span>
+        <span class="toggle-gamedev" onclick="toggleCV('gamedev')" data-i18n="ui.cvToggle.gamedev"></span>
     </div>
-    
-    <!-- Language toggle button -->
+
     <div class="language-toggle">
-        <span class="toggle-fi active" onclick="toggleLanguage('finnish')" data-i18n="ui.lang.fi">FIN</span>
-        <span class="toggle-en" onclick="toggleLanguage('english')" data-i18n="ui.lang.en">ENG</span>
+        <span class="toggle-fi active" onclick="toggleLanguage('finnish')" data-i18n="ui.lang.fi"></span>
+        <span class="toggle-en" onclick="toggleLanguage('english')" data-i18n="ui.lang.en"></span>
     </div>
 
     <div class="page">
         <div class="sidebar">
             <div class="section">
-                <h2 class="cv-programming" data-i18n="sidebar.summary">Ammatillinen Yhteenveto</h2>
-                <h2 class="cv-3d" data-i18n="sidebar.summary">Ammatillinen Yhteenveto</h2>
-                
-                <!-- Programming CV Content -->
+                <h2 class="cv-programming cv-gamedev" data-i18n="sidebar.summary"></h2>
+                <h2 class="cv-3d" data-i18n="sidebar.summary"></h2>
+
                 <div class="cv-programming">
-                    <p data-i18n="summary.programming.p1">Kokeneena ohjelmoijana ja projektien vetäjänä minulla on vankka osaamispohja ohjelmistokehityksestä. Erityisvahvuuksiini kuuluvat REST API -kehitys, C++-sovellukset sekä monipuolinen web-kehitys. Minulla on yli 5 vuoden kokemus Python-ohjelmoinnista, mukaan lukien Flask-pohjaiset palvelut ja automaatiotyökalut.</p>
-                    
-                    <p data-i18n="summary.programming.p2">Olen saanut käytännön kokemusta ketteristä (Agile) ja vesiputousmallin (Waterfall) projektinhallintamenetelmistä. Olen myös tottunut hyödyntämään automaattista testausta ja CI/CD-putkia. Osoituksena frontend-taidoistani tämä CV on itse rakentamani.</p>
+                    <p data-i18n="summary.programming.p1"></p>
+                    <p data-i18n="summary.programming.p2"></p>
                 </div>
-                
+
                 <div class="cv-3d">
-                    <p data-i18n="summary.3d.p1">
-                        Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon optimoituja assetteja ja hahmoja Blenderissä sekä Substance-työkaluissa. Kehitän myös omia Python-pohjaisia työkaluja Blenderiin ja julkaisen työkaluja ja assetteja Blender Marketissa ja FAB-alustalla.
-                    </p>
+                    <p data-i18n="summary.3d.p1"></p>
                 </div>
-                
+
+                <div class="cv-gamedev">
+                    <p data-i18n="summary.gamedev.p1"></p>
+                    <p data-i18n="summary.gamedev.p2"></p>
+                </div>
+
             </div>
             <div class="section">
-                <h2 data-i18n="sidebar.links.title">Verkkosivut & Sosiaalinen Media</h2>
-                
-                <!-- Common links for both CVs -->
+                <h2 data-i18n="sidebar.links.title"></h2>
+
                 <ul>
-                     <li><a href="mailto:hussein.ubeid@outlook.com"><i class="fas fa-envelope"></i> hussein.ubeid@outlook.com</a></li>
-                     <li><a href="https://ultikynnys.github.io/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> ultikynnys.github.io</a></li>
-                     <li><a href="https://github.com/Ultikynnys" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> github.com/Ultikynnys</a></li>
+                     <li><a href="mailto:hussein.ubeid@outlook.com"><i class="fas fa-envelope"></i> <span data-i18n="sidebar.links.email"></span></a></li>
+                     <li><a href="https://ultikynnys.github.io/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> <span data-i18n="sidebar.links.website"></span></a></li>
+                     <li><a href="https://github.com/Ultikynnys" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> <span data-i18n="sidebar.links.github"></span></a></li>
                 </ul>
-                
-                <!-- 3D Generalist specific links -->
+
                 <ul class="cv-3d">
-                     <li><a href="https://www.fab.com/sellers/Ultikynnys%20Productions" target="_blank" rel="noopener noreferrer"><i class="fas fa-store"></i> <span data-i18n="sidebar.links.fab">FAB Marketplace</span></a></li>
-                     <li><a href="https://ultikynnys.gumroad.com/" target="_blank" rel="noopener noreferrer"><i class="fas fa-shopping-cart"></i> <span data-i18n="sidebar.links.gumroad">Gumroad Store</span></a></li>
-                     <li><a href="https://steamcommunity.com/id/R60D/myworkshopfiles/" target="_blank" rel="noopener noreferrer"><i class="fab fa-steam"></i> <span data-i18n="sidebar.links.steam">Steam Workshop</span></a></li>
+                     <li><a href="https://www.fab.com/sellers/Ultikynnys%20Productions" target="_blank" rel="noopener noreferrer"><i class="fas fa-store"></i> <span data-i18n="sidebar.links.fab"></span></a></li>
+                     <li><a href="https://ultikynnys.gumroad.com/" target="_blank" rel="noopener noreferrer"><i class="fas fa-shopping-cart"></i> <span data-i18n="sidebar.links.gumroad"></span></a></li>
+                     <li><a href="https://steamcommunity.com/id/R60D/myworkshopfiles/" target="_blank" rel="noopener noreferrer"><i class="fab fa-steam"></i> <span data-i18n="sidebar.links.steam"></span></a></li>
                 </ul>
             </div>
             <div class="section">
-                <h2 data-i18n="sidebar.languages.title">Kielet</h2>
-                <ul id="lang-list">
-                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.finnish_label">Suomi (Äidinkieli)</span></li>
-                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.english_label">Englanti (Erinomainen)</span></li>
-                    <hr style="border-top: 1px solid #34495e; margin: 10px 0;">
-                    <!-- Programming languages will be injected dynamically -->
+                <h2 data-i18n="sidebar.skills.title"></h2>
+                <ul id="skills-list"></ul>
+            </div>
+            <div class="section">
+                <h2 data-i18n="sidebar.languages.title"></h2>
+                <ul>
+                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.finnish_label"></span></li>
+                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.english_label"></span></li>
                 </ul>
             </div>
         </div>
         <div class="main-content">
             <div class="profile-image">
-                <img src="images/Profile.png" alt="Ubeid Hussein" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+                <img src="images/Profile.png" alt="" data-i18n-alt="ui.profileAlt" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
             </div>
             <br>
-            <h1>Ubeid (Upi) Hussein</h1>
-            <!-- Programming CV Title -->
+            <h1 data-i18n="profile.name"></h1>
             <div class="cv-programming">
-                <p data-i18n="profile.title.programming">Ohjelmoija</p>
+                <p data-i18n="profile.title.programming"></p>
             </div>
-            <!-- 3D Generalist CV Title -->
             <div class="cv-3d">
-                <p data-i18n="profile.title.3d">3D Generalisti & Tekninen Taiteilija</p>
+                <p data-i18n="profile.title.3d"></p>
             </div>
-
+            <div class="cv-gamedev">
+                <p data-i18n="profile.title.gamedev"></p>
+            </div>
 
             <div class="section">
-                <h2 data-i18n="sections.workExperience.title">Työkokemus</h2>
-                
-                <!-- Programming CV Work Experience -->
+                <h2 data-i18n="sections.workExperience.title"></h2>
+
                 <div class="cv-programming">
                     <div>
-                        <h3 data-i18n="work.programming.rnd.title">R&D Intern</h3>
-                        <p><em data-i18n="work.programming.rnd.period">Toukokuu 2025 - Nykyhetki | Solita</em></p>
+                        <h3 data-i18n="work.programming.rnd.title"></h3>
+                        <p><em data-i18n="work.programming.rnd.period"></em></p>
                         <ul>
-                            <li data-i18n="work.programming.rnd.b1">Kehitän kaksihenkisen tiimin jäsenenä pieniä full stack -projekteja, jotka hyödyntävät erilaisia teknologiapinoja ja uusinta AI-integraatiota.</li>
+                            <li data-i18n="work.programming.rnd.b1"></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 data-i18n="work.programming.nbs.title">Programmer | Arts and Assets Specialist</h3>
-                        <p><em data-i18n="work.programming.nbs.period">Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
+                        <h3 data-i18n="work.programming.nbs.title"></h3>
+                        <p><em data-i18n="work.programming.nbs.period"></em></p>
                         <ul>
-                            <li data-i18n="work.programming.nbs.b1">Pelimekaniikkojen ohjelmointi, REST API -kehitys ja tietokantaintegraatiot.</li>
+                            <li data-i18n="work.programming.nbs.b1"></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 data-i18n="work.programming.data.title">Data Entry</h3>
-                        <p><em data-i18n="work.programming.data.period">Tammikuu 2021 - Tammikuu 2022 | Verwijnen & Verwijnen (Helsinki)</em></p>
+                        <h3 data-i18n="work.programming.data.title"></h3>
+                        <p><em data-i18n="work.programming.data.period"></em></p>
                         <ul>
-                            <li data-i18n="work.programming.data.b1">Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden.</li>
+                            <li data-i18n="work.programming.data.b1"></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 data-i18n="work.programming.blender.title">Blender Tools Programmer</h3>
-                        <p><em data-i18n="work.programming.blender.period">2019 - Nykyhetki | Freelance</em></p>
+                        <h3 data-i18n="work.programming.blender.title"></h3>
+                        <p><em data-i18n="work.programming.blender.period"></em></p>
                         <ul>
-                            <li data-i18n="work.programming.blender.b1">Kehitän Blender-lisäosia Pythonilla, mukaan lukien työkalut kuten MOF-Blender (UV-unwrapping), UltiTools ja UltiBake, joita käytetään alan ammattilaisten keskuudessa.</li>
+                            <li data-i18n="work.programming.blender.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.programming.thesis.title"></h3>
+                        <p><em data-i18n="work.programming.thesis.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.programming.thesis.b1"></li>
                         </ul>
                     </div>
                 </div>
-                
-                <!-- 3D Generalist CV Work Experience -->
+
                 <div class="cv-3d">
                     <div>
-                        <h3 data-i18n="work.3d.nbs.title">3D Artist & Technical Artist</h3>
-                        <p><em data-i18n="work.3d.nbs.period">Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)</em></p>
+                        <h3 data-i18n="work.3d.nbs.title"></h3>
+                        <p><em data-i18n="work.3d.nbs.period"></em></p>
                         <ul>
-                            <li data-i18n="work.3d.nbs.b1">Hahmomallinnukseen, riggaamiseen, animaatioon, partikkelitehosteisiin ja shadereihin kehittämiseen.</li>
+                            <li data-i18n="work.3d.nbs.b1"></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 data-i18n="work.3d.freelance.title">Freelance 3D Artist</h3>
-                        <p><em data-i18n="work.3d.freelance.period">2018 - Nykyhetki | Eri asiakkaat</em></p>
+                        <h3 data-i18n="work.3d.freelance.title"></h3>
+                        <p><em data-i18n="work.3d.freelance.period"></em></p>
                         <ul>
-                            <li data-i18n="work.3d.freelance.b1">3D-mallinnusta, teksturointia ja animaatiota peliprojekteihin ja visualisointiin.</li>
+                            <li data-i18n="work.3d.freelance.b1"></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 data-i18n="work.3d.asset.title">Asset Store Creator</h3>
-                        <p><em data-i18n="work.3d.asset.period">2019 - Nykyhetki | FAB, Gumroad, Steam Workshop</em></p>
+                        <h3 data-i18n="work.3d.asset.title"></h3>
+                        <p><em data-i18n="work.3d.asset.period"></em></p>
                         <ul>
-                            <li data-i18n="work.3d.asset.b1">Kaupallisten 3D-assettien ja työkalujen luominen ja myynti eri alustoilla.</li>
+                            <li data-i18n="work.3d.asset.b1"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cv-gamedev">
+                    <div>
+                        <h3 data-i18n="work.gamedev.rnd.title"></h3>
+                        <p><em data-i18n="work.gamedev.rnd.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.rnd.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.gamedev.nbs.title"></h3>
+                        <p><em data-i18n="work.gamedev.nbs.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.nbs.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.gamedev.data.title"></h3>
+                        <p><em data-i18n="work.gamedev.data.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.data.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.gamedev.blender.title"></h3>
+                        <p><em data-i18n="work.gamedev.blender.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.blender.b1"></li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="section">
-                <h2 data-i18n="sections.education.title">Koulutus</h2>
+                <h2 data-i18n="sections.education.title"></h2>
                  <div>
-
-
-                    
-                    <h3 data-i18n="education.tamk.institution">University of Applied Sciences (TAMK)</h3>
-                    <p data-i18n="education.tamk.field">Tietojenkäsittelytiede</p>
-                    
-                    <p><em data-i18n="education.tamk.period">Tammikuu 2022 - Nykyhetki | Kandidaatin insinööri (B.Eng) tietotekniikassa</em></p>
-                    <ul>
-
-                    </ul>
+                    <h3 data-i18n="education.tamk.institution"></h3>
+                    <p data-i18n="education.tamk.field"></p>
+                    <p><em data-i18n="education.tamk.period"></em></p>
+                    <ul></ul>
                 </div>
                 <div>
-                    <h3 data-i18n="education.teklu.institution">Region Vocational College Tredu (TEKLU)</h3>
-
-                    <p data-i18n="education.teklu.field">Sähkö- ja automaatio-tekniikan teknikko</p>
-
-                    <p><em data-i18n="education.teklu.period">Tammikuu 2015 - Toukokuu 2018 | Automaatio- ja sähkötekniikan teknikko</em></p>
-                </div>
-                 <!-- Add more education entries as needed -->
-            </div>
-
-            <div class="section">
-                <h2 data-i18n="sections.skills.title">Taidot</h2>
-                
-                <!-- Programming CV Skills -->
-                <div class="skills-grid cv-programming">
-                    <h3 data-i18n="skills.programming.expertise.title">Ohjelmointiosaaminen</h3>
-                    <ul>
-                        <li><i class="fas fa-laptop-code"></i> <span data-i18n="skills.programming.expertise.items.backend">Backend Development</span></li>
-                        <li><i class="fas fa-window-maximize"></i> <span data-i18n="skills.programming.expertise.items.frontend">Frontend Development</span></li>
-                        <li><i class="fas fa-database"></i> <span data-i18n="skills.programming.expertise.items.database">Database Management</span></li>
-                    </ul>
-                    <ul>
-                        <li><i class="fas fa-cloud"></i> <span data-i18n="skills.programming.expertise.items.rest">REST API Development</span></li>
-                        <li><i class="fas fa-robot"></i> <span data-i18n="skills.programming.expertise.items.ai">AI & Machine Learning</span></li>
-                    </ul>
-                    
-                    <h3 data-i18n="skills.programming.tools.title">Työkalut &amp; Ympäristöt</h3>
-                    <ul>
-                        <li><i class="fas fa-code-branch"></i> <span data-i18n="skills.programming.tools.items.git">Version Control (Git)</span></li>
-                        <li><i class="fas fa-server"></i> <span data-i18n="skills.programming.tools.items.devops">DevOps & Deployment</span></li>
-                        <li><i class="fab fa-docker"></i> <span data-i18n="skills.programming.tools.items.containers">Containerization</span></li>
-                    </ul>
-                    <ul>
-                        <li><i class="fas fa-tasks"></i> <span data-i18n="skills.programming.tools.items.pm">Project Management</span></li>
-                        <li><i class="fas fa-gamepad"></i> <span data-i18n="skills.programming.tools.items.gamedev">Game Development</span></li>
-                    </ul>
-                </div>
-                
-                <!-- 3D Generalist CV Skills -->
-                <div class="skills-grid cv-3d">
-                    <h3 data-i18n="skills.3d.modeling.title">3D Mallinnus &amp; Animaatio</h3>
-                    <ul>
-                        <li><i class="fas fa-cube"></i> <span data-i18n="skills.3d.modeling.items.blender">Blender (Expert)</span></li>
-                        <li><i class="fas fa-paint-brush"></i> <span data-i18n="skills.3d.modeling.items.designer">Substance Designer</span></li>
-                        <li><i class="fas fa-palette"></i> <span data-i18n="skills.3d.modeling.items.painter">Substance Painter</span></li>
-                    </ul>
-                    <ul>
-                        <li><i class="fas fa-running"></i> <span data-i18n="skills.3d.modeling.items.rigging">Character Rigging</span></li>
-                        <li><i class="fas fa-video"></i> <span data-i18n="skills.3d.modeling.items.animation">Animation</span></li>
-                    </ul>
-                    
-                    <h3 data-i18n="skills.3d.workflow.title">Pelimootorit &amp; Työnkulku</h3>
-                    <ul>
-                        <li><i class="fab fa-unity"></i> <span data-i18n="skills.3d.workflow.items.unity">Unity</span></li>
-                        <li><i class="fas fa-cog"></i> <span data-i18n="skills.3d.workflow.items.unreal">Unreal Engine</span></li>
-                    </ul>
-                    <ul>
-                        <li><i class="fas fa-code"></i> <span data-i18n="skills.3d.workflow.items.shader">Shader Development</span></li>
-                        <li><i class="fas fa-magic"></i> <span data-i18n="skills.3d.workflow.items.vfx">VFX & Particles</span></li>
-                    </ul>
-                    
-
+                    <h3 data-i18n="education.teklu.institution"></h3>
+                    <p data-i18n="education.teklu.field"></p>
+                    <p><em data-i18n="education.teklu.period"></em></p>
                 </div>
             </div>
-        </div>
+
+            </div>
     </div>
 
-    <!-- JavaScript for language and CV toggle -->
     <script>
-        // --- i18n loader (TOML) ---
-        let CV_I18N = null;
-        function resolvePath(obj, path) {
-            return path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : undefined, obj);
+        let CV_DATA = {};
+
+        function markdownToHtml(text) {
+            let html = text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+            html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+            html = html.replace(/\n/g, '<br>');
+            return html;
         }
-        function stripInlineComments(s) {
-            let inQuote = false;
-            let out = '';
-            for (let i = 0; i < s.length; i++) {
-                const ch = s[i];
-                if (ch === '"' && s[i - 1] !== '\\') inQuote = !inQuote;
-                if (ch === '#' && !inQuote) break;
-                out += ch;
-            }
-            return out.trim();
-        }
-        function splitDotted(name) {
-            const parts = [];
-            let buf = '';
-            let inQuote = false;
-            for (let i = 0; i < name.length; i++) {
-                const ch = name[i];
-                if (ch === '"' && name[i - 1] !== '\\') {
-                    inQuote = !inQuote;
-                    buf += ch;
-                } else if (ch === '.' && !inQuote) {
-                    parts.push(buf.trim());
-                    buf = '';
-                } else {
-                    buf += ch;
-                }
-            }
-            if (buf.length) parts.push(buf.trim());
-            return parts.map(p => p.replace(/^"(.*)"$/, '$1'));
-        }
-        function ensurePath(root, parts) {
-            let obj = root;
-            for (const p of parts) {
-                if (!obj[p] || typeof obj[p] !== 'object') obj[p] = {};
-                obj = obj[p];
-            }
-            return obj;
-        }
-        function parseTomlNested(tomlText) {
-            const result = {};
-            let current = result;
-            const lines = tomlText.split(/\r?\n/);
-            for (let raw of lines) {
-                let line = raw.trim();
-                if (!line || line.startsWith('#')) continue;
-                line = stripInlineComments(line);
+
+        function parseCVMarkdown(text) {
+            const data = { fi: {}, en: {} };
+            const lines = text.split(/\r?\n/);
+            let currentLang = null;
+            let currentKey = null;
+
+            for (const raw of lines) {
+                const line = raw.trim();
                 if (!line) continue;
-                if (line.startsWith('[') && line.endsWith(']')) {
-                    const header = line.slice(1, -1).trim();
-                    const parts = splitDotted(header);
-                    current = ensurePath(result, parts);
+
+                if (line.startsWith('## ')) {
+                    const lang = line.substring(3).trim().toLowerCase();
+                    currentLang = lang === 'fi' ? 'fi' : 'en';
+                    currentKey = null;
                     continue;
                 }
-                const eq = line.indexOf('=');
-                if (eq === -1) continue;
-                let key = line.slice(0, eq).trim();
-                let val = line.slice(eq + 1).trim();
-                if (key.startsWith('"') && key.endsWith('"')) key = key.slice(1, -1);
-                if (val.startsWith('"') && val.endsWith('"')) {
-                    val = val.slice(1, -1).replace(/\\"/g, '"');
-                } else {
-                    // For this dataset we expect quoted strings, but keep raw otherwise
+
+                if (line.startsWith('### ')) {
+                    currentKey = line.substring(4).trim();
+                    if (!data[currentLang][currentKey]) {
+                        data[currentLang][currentKey] = '';
+                    }
+                    continue;
                 }
-                current[key] = val;
+
+                if (currentLang && currentKey) {
+                    if (data[currentLang][currentKey]) {
+                        data[currentLang][currentKey] += '\n' + line;
+                    } else {
+                        data[currentLang][currentKey] = line;
+                    }
+                }
             }
-            return result;
-        }
-        async function loadI18n() {
-            try {
-                const res = await fetch('content/cv_lang.toml');
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const text = await res.text();
-                CV_I18N = parseTomlNested(text);
-                applyI18n();
-            } catch (e) {
-                console.error('Failed to load i18n data (TOML):', e);
+
+            for (const lang of ['fi', 'en']) {
+                for (const key of Object.keys(data[lang])) {
+                    data[lang][key] = data[lang][key].trim();
+                }
             }
+
+            return data;
         }
-        function applyI18n() {
-            if (!CV_I18N) return;
+
+        function getValue(key, cvType, lang) {
+            let val = CV_DATA[cvType]?.[lang]?.[key];
+            if (val != null) return val;
+            const fallbacks = cvType === 'programming' ? ['3d', 'gamedev'] : cvType === '3d' ? ['programming', 'gamedev'] : ['programming', '3d'];
+            for (const fb of fallbacks) {
+                val = CV_DATA[fb]?.[lang]?.[key];
+                if (val != null) return val;
+            }
+            return CV_DATA.shared?.[lang]?.[key] || null;
+        }
+
+        function renderCV() {
             const lang = document.body.classList.contains('english') ? 'en' : 'fi';
+            let cvType = 'programming';
+            if (document.body.classList.contains('cv-3d-mode')) {
+                cvType = '3d';
+            } else if (document.body.classList.contains('cv-gamedev-mode')) {
+                cvType = 'gamedev';
+            }
+
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                const val = resolvePath(CV_I18N[lang], key);
-                if (typeof val === 'string') {
-                    el.textContent = val;
+                const val = getValue(key, cvType, lang);
+                if (val) {
+                    el.innerHTML = markdownToHtml(val);
+                }
+                const altKey = el.getAttribute('data-i18n-alt');
+                if (altKey) {
+                    const altVal = getValue(altKey, cvType, lang);
+                    if (altVal) {
+                        el.alt = altVal;
+                    }
                 }
             });
-            // Rebuild programming language list dynamically from TOML
-            buildProgrammingLanguages();
-        }
-        document.addEventListener('DOMContentLoaded', loadI18n);
 
-        function buildProgrammingLanguages() {
-            if (!CV_I18N) return;
+            const titleVal = getValue('ui.pageTitle', cvType, lang);
+            if (titleVal) {
+                document.title = titleVal;
+            }
+
+            buildSkills(cvType);
+        }
+
+        function buildSkills(cvType) {
             const lang = document.body.classList.contains('english') ? 'en' : 'fi';
-            const list = document.getElementById('lang-list');
+            const list = document.getElementById('skills-list');
             if (!list) return;
-            // Remove previously injected programming language items
-            Array.from(list.querySelectorAll('li[data-prog-lang]')).forEach(li => li.remove());
-            const langs = CV_I18N[lang] && CV_I18N[lang].sidebar && CV_I18N[lang].sidebar.programmingLanguages;
-            if (!langs) return;
+
+            list.innerHTML = '';
+
+            const data = CV_DATA[cvType]?.[lang];
+            if (!data) return;
+
             const iconFor = key => ({
                 python: 'fab fa-python',
                 cpp: 'fab fa-cuttlefish',
@@ -665,20 +669,55 @@
                 html_css: 'fab fa-html5',
                 js_ts: 'fab fa-js-square',
                 java: 'fab fa-java',
-                kotlin: 'fas fa-code'
+                kotlin: 'fas fa-code',
+                embedded: 'fas fa-microchip',
+                protocols: 'fas fa-project-diagram',
+                hdl: 'fas fa-microchip',
+                ci_cd: 'fas fa-cogs',
+                blender: 'fas fa-cube',
+                substance: 'fas fa-paint-brush',
+                modeling: 'fas fa-shapes',
+                rigging: 'fas fa-bone',
+                texturing: 'fas fa-palette',
+                shaders: 'fas fa-eye',
+                unreal: 'fab fa-unity',
+                unity: 'fab fa-unity',
+                godot: 'fas fa-gamepad'
             })[key] || 'fas fa-code';
-            Object.keys(langs).forEach(key => {
-                const li = document.createElement('li');
-                li.setAttribute('data-prog-lang', '1');
-                const i = document.createElement('i');
-                i.className = iconFor(key);
-                li.appendChild(i);
-                li.appendChild(document.createTextNode(' '));
-                const span = document.createElement('span');
-                span.textContent = String(langs[key]);
-                li.appendChild(span);
-                list.appendChild(li);
+
+            const prefix = 'sidebar.skills.';
+            Object.keys(data).forEach(key => {
+                if (key.startsWith(prefix)) {
+                    const skillKey = key.substring(prefix.length);
+                    const li = document.createElement('li');
+                    const i = document.createElement('i');
+                    i.className = iconFor(skillKey);
+                    li.appendChild(i);
+                    li.appendChild(document.createTextNode(' '));
+                    const span = document.createElement('span');
+                    span.textContent = data[key];
+                    li.appendChild(span);
+                    list.appendChild(li);
+                }
             });
+        }
+
+        async function loadCVMarkdown() {
+            try {
+                const [sharedRes, progRes, d3Res, gameDevRes] = await Promise.all([
+                    fetch('content/cv_shared.md'),
+                    fetch('content/cv_programming.md'),
+                    fetch('content/cv_3d.md'),
+                    fetch('content/cv_gamedev.md')
+                ]);
+                CV_DATA.shared = parseCVMarkdown(await sharedRes.text());
+                CV_DATA.programming = parseCVMarkdown(await progRes.text());
+                CV_DATA['3d'] = parseCVMarkdown(await d3Res.text());
+                CV_DATA['gamedev'] = parseCVMarkdown(await gameDevRes.text());
+                renderCV();
+            } catch (e) {
+                console.error('Failed to load CV markdown:', e);
+            }
         }
 
         function toggleLanguage(lang) {
@@ -691,20 +730,25 @@
                 document.querySelector('.toggle-fi').classList.remove('active');
                 document.querySelector('.toggle-en').classList.add('active');
             }
-            applyI18n();
+            renderCV();
         }
-        
+
         function toggleCV(cvType) {
+            document.body.classList.remove('cv-3d-mode', 'cv-gamedev-mode');
+            document.querySelectorAll('.cv-toggle span').forEach(s => s.classList.remove('active'));
             if (cvType === 'programming') {
-                document.body.classList.remove('cv-3d-mode');
                 document.querySelector('.toggle-programming').classList.add('active');
-                document.querySelector('.toggle-3d').classList.remove('active');
-            } else {
+            } else if (cvType === '3d') {
                 document.body.classList.add('cv-3d-mode');
-                document.querySelector('.toggle-programming').classList.remove('active');
                 document.querySelector('.toggle-3d').classList.add('active');
+            } else {
+                document.body.classList.add('cv-gamedev-mode');
+                document.querySelector('.toggle-gamedev').classList.add('active');
             }
+            renderCV();
         }
+
+        document.addEventListener('DOMContentLoaded', loadCVMarkdown);
     </script>
 </body>
-</html> 
+</html>

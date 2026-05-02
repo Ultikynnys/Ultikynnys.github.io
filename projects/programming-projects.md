@@ -1,6 +1,6 @@
 # Programming Projects
 
-I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. My strongest languages are <span class="lang-python">Python</span>, <span class="lang-javascript">JavaScript</span>, <span class="lang-cpp">C++</span>, and <span class="lang-csharp">C#</span>. I build Blender tools and develop games in UE5, Unity, and Godot, applying technical expertise to craft efficient solutions. This portfolio demonstrates my front‑end and JavaScript skills, while my GitHub showcases a variety of projects highlighting adaptability across diverse challenges.
+Embedded Systems Engineer with a smart IoT alarm clock thesis built on an ESP32 embedded system, designed from scratch — from PCB design to firmware programming. 5+ years with C++ and Python. I ship my own tools and sell them commercially. Comfortable with Agile and Waterfall, tests and CI/CD. This website is built with my own tools.
 
 
 ## UltiBridge | Universal Scene Exporter
@@ -104,5 +104,3 @@ I'm a versatile programmer completing a Bachelor's in Computer Science at TAMK. 
 - GitHub: https://github.com/Ultikynnys/BlenderCubemapConverter
 - Languages: Python
 
-## Games Description
-Games I've developed, showcasing my programming skills in various engines including Unity, Unreal, and Source. I focus on gameplay mechanics, systems programming, and technical implementation to create engaging player experiences.

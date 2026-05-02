@@ -32,10 +32,10 @@
                 <div class="name-indicator">Full name</div>
                 <h1>Ubeid Hussein<span class="cursor"></span></h1>
             </div>
-            <p class="subtitle">3D Artist & Technical Artist</p>
+            <p class="subtitle">3D Generalist & Technical Artist</p>
             <!-- Add short bio -->
             <div class="bio">
-                <p></p>
+                <p>I am an Embedded Systems Engineer and 3D Generalist who thrives at the intersection of code and art. With 5+ years of <span class="lang-cpp">C++</span> and <span class="lang-python">Python</span> development and 6+ years in 3D modeling and animation, I bridge the gap between strict technical requirements and creative vision. From programming <span class="keyword-esp32">ESP32</span>-based IoT hardware to developing custom <span class="keyword-blender">Blender</span> add-ons and commercial assets for <span class="engine-unreal">Unreal</span>, <span class="engine-unity">Unity</span>, and <span class="engine-godot">Godot</span>, I build end-to-end solutions for both physical and digital worlds.</p>
             </div>
         </div>
     </header>
@@ -43,13 +43,6 @@
     <main>
         <div class="portfolio-grid" id="projects-container">
             <!-- Projects will be loaded here -->
-        </div>
-
-        <!-- Game section header will be loaded here -->
-        <div id="game-section-header"></div>
-
-        <div class="portfolio-grid" id="games-container">
-            <!-- Games will be loaded here -->
         </div>
     </main>
 
@@ -63,9 +56,6 @@
 
     <!-- Load common portfolio code -->
     <script src="scripts/portfolio-common.js"></script>
-
-    <!-- Load shared portfolio sections code -->
-    <script src="scripts/portfolio-sections.js"></script>
 
     <script>
         // Function to create project card HTML - specific to 3D portfolio
@@ -192,19 +182,8 @@
 
         // Initialize the 3D portfolio
         document.addEventListener('DOMContentLoaded', function () {
-            // Existing code...
-
-            // Add this line to initialize theme toggle
             initThemeToggle();
-
-            // Load the game section header and description using the shared function
-            loadGameSectionHeader(
-                'projects/3d-projects.md',
-                "Games I've worked on as a 3D artist and developer, creating characters, environments, and assets."
-            );
-
-            // Initialize with the 3D projects file AND the games file
-            initPortfolio('projects/3d-projects.md', 'projects/games.md');
+            initPortfolio('projects/3d-projects.md');
         });
     </script>
 </body>

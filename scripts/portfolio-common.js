@@ -1,14 +1,15 @@
 // Common portfolio functionality
 // Shared between programming-portfolio.html and 3d-portfolio.html
 
-// Name typing animation
+// Name scramble-decoding animation
 const names = ["Ubeid Hussein", "Ultikynnys", "R60D"];
 const nameDescriptions = ["Full name", "Also known as", "Also known as"];
 let currentNameIndex = 0;
 let isAnimating = false;
-const typingSpeed = 100; // ms per character
-const deleteSpeed = 50; // ms per character (deleting is faster)
-const pauseBetweenNames = 8000; // pause for 8s between name changes (total ~10s with typing)
+const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+const decodeTotalTime = 1200;
+const decodeFlashesPerPos = 8;
+const pauseBetweenNames = 8000;
 
 // Yasuo Mode Easter Egg variables
 let secretClickCount = 0;
@@ -90,63 +91,75 @@ let expectedCardsCount = 0; // New variable to track the expected number of card
 let markdownProcessed = false; // Flag to track if markdown has been processed
 let yasuoSliceCounter = 0; // New counter for sword slices
 
+function getRandomChar() {
+    return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+}
+
+function randomString(length) {
+    let s = '';
+    for (let i = 0; i < length; i++) s += getRandomChar();
+    return s;
+}
+
+function buildDecodeHtml(target, lockedUpTo, currentScramble) {
+    let html = '';
+    for (let j = 0; j < target.length; j++) {
+        if (j < lockedUpTo) {
+            html += target[j];
+        } else if (j === lockedUpTo) {
+            html += '<span class="char-decoding">' + currentScramble[j] + '</span>';
+        } else {
+            html += currentScramble[j];
+        }
+    }
+    html += '<span class="cursor"></span>';
+    return html;
+}
+
 // Initialize name animation
 function initNameAnimation() {
     const nameContainer = document.getElementById('name-display').querySelector('h1');
     const nameIndicator = document.querySelector('.name-indicator');
 
-    async function typeText(text) {
-        let displayText = '';
-        for (let i = 0; i < text.length; i++) {
-            displayText = text.substring(0, i + 1);
-            nameContainer.innerHTML = displayText + '<span class="cursor"></span>';
-            await new Promise(resolve => setTimeout(resolve, typingSpeed));
-        }
-    }
+    async function scrambleDecode(target) {
+        const totalDecodeTime = decodeTotalTime;
+        const timePerPos = totalDecodeTime / target.length;
 
-    async function deleteText() {
-        let currentText = nameContainer.textContent.trim();
-        for (let i = currentText.length; i > 0; i--) {
-            let displayText = currentText.substring(0, i - 1);
-            nameContainer.innerHTML = displayText + '<span class="cursor"></span>';
-            await new Promise(resolve => setTimeout(resolve, deleteSpeed));
+        for (let pos = 0; pos < target.length; pos++) {
+            const flashInterval = timePerPos / decodeFlashesPerPos;
+            for (let i = 0; i < decodeFlashesPerPos; i++) {
+                const currentScramble = target.substring(0, pos) + getRandomChar() + randomString(target.length - pos - 1);
+                nameContainer.innerHTML = buildDecodeHtml(target, pos, currentScramble);
+                await new Promise(resolve => setTimeout(resolve, flashInterval));
+            }
+            const afterLock = target.substring(0, pos + 1) + randomString(target.length - pos - 1);
+            nameContainer.innerHTML = afterLock + '<span class="cursor"></span>';
         }
+
+        nameContainer.innerHTML = target + '<span class="cursor"></span>';
     }
 
     async function cycleName() {
         if (isAnimating) return;
         isAnimating = true;
 
-        // Fade out name indicator
         nameIndicator.style.opacity = 0;
 
-        // Delete current name
-        await deleteText();
-
-        // Get next name and update index
         currentNameIndex = (currentNameIndex + 1) % names.length;
+        await scrambleDecode(names[currentNameIndex]);
 
-        // Type new name
-        await typeText(names[currentNameIndex]);
-
-        // Update and fade in name indicator
         setTimeout(() => {
             nameIndicator.textContent = nameDescriptions[currentNameIndex];
             nameIndicator.style.opacity = 0.9;
         }, 200);
 
-        // Pause before next cycle
         await new Promise(resolve => setTimeout(resolve, pauseBetweenNames));
 
         isAnimating = false;
     }
 
-    // Start the name cycling
     setTimeout(() => {
-        // Initial cycle after 2 seconds
         cycleName();
-
-        // Continue cycling as animation completes
         setInterval(() => {
             if (!isAnimating) cycleName();
         }, 500);
@@ -1106,9 +1119,13 @@ document.addEventListener('DOMContentLoaded', () => {
         projectsFile = 'projects/programming_projects.md';
         initPortfolio(projectsFile, null);
         setupProjectExpansion(activeContainerSelector.substring(1));
-    } else if (document.body.classList.contains('portfolio-3d') ||
-        (document.getElementById('projects-container') && document.getElementById('games-container'))) {
-        // 3D Portfolio page - has both projects and games containers, or has .portfolio-3d class
+    } else if (document.body.classList.contains('portfolio-gamedev')) {
+        // Game Dev Portfolio page - games are primary projects
+        console.log("Detected gamedev portfolio page");
+        activeContainerSelector = '#projects-container';
+        activeCardSelector = '.project-card';
+    } else if (document.body.classList.contains('portfolio-3d')) {
+        // 3D Portfolio page
         console.log("Detected 3D portfolio page");
         activeContainerSelector = '#projects-container';
         activeCardSelector = '.project-card';

@@ -1,6 +1,6 @@
 # 3D Projects
 
-3D Artist specializing in modeling, rigging, and animation, with over 6 years of experience. I blend my artistic skills with technical knowledge to create optimized assets and character solutions. Proficient in Blender, Substance Designer, and Substance Painter, I have contributed to game development projects and freelance work. I'm also a published artist on the Blender Market, creating tools to improve workflows for fellow artists.
+3D Generalist & Technical Artist with 6+ years in modeling, rigging and animation. I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and publish add-ons and assets on Blender Market and FAB.
 
 ## Space Station Interior - Modular Asset Pack
 - Title: Space Station Interior - Modular Asset Pack
@@ -200,6 +200,3 @@
 - Media: images/pills.jpg
 - Demo: https://www.reddit.com/r/tf2/comments/hx1ubp/demo_dreamsblender/
 - Private: true
-
-## Games Description
-Games I've contributed to as a 3D artist and technical artist. My work includes character modeling, rigging, animation, environment design, and asset creation across various game projects and engines. 

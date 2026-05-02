@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/gif" href="content/200.gif">
-    <title>Ubeid Hussein - Programming Portfolio</title>
+    <title>Ubeid Hussein - Game Development Portfolio</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="portfolio-programming">
+<body class="portfolio-gamedev">
     <!-- Add theme toggle button -->
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-moon"></i>
@@ -32,7 +32,7 @@
                 <div class="name-indicator">Full name</div>
                 <h1>Ubeid Hussein<span class="cursor"></span></h1>
             </div>
-            <p class="subtitle">Embedded Systems Engineer</p>
+            <p class="subtitle">Game Developer</p>
             <!-- Add short bio -->
             <div class="bio">
                 <p>I am an Embedded Systems Engineer and 3D Generalist who thrives at the intersection of code and art. With 5+ years of <span class="lang-cpp">C++</span> and <span class="lang-python">Python</span> development and 6+ years in 3D modeling and animation, I bridge the gap between strict technical requirements and creative vision. From programming <span class="keyword-esp32">ESP32</span>-based IoT hardware to developing custom <span class="keyword-blender">Blender</span> add-ons and commercial assets for <span class="engine-unreal">Unreal</span>, <span class="engine-unity">Unity</span>, and <span class="engine-godot">Godot</span>, I build end-to-end solutions for both physical and digital worlds.</p>
@@ -58,55 +58,40 @@
     <script src="scripts/portfolio-common.js"></script>
 
     <script>
-        // Function to create project card HTML - specific to programming portfolio
+        // Function to create project card HTML - specific to gamedev portfolio
         function createProjectCard(project, index) {
             const isVideo = typeof project.media === 'string' &&
                 (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
             const isMultiImage = Array.isArray(project.media);
             const isSketchfab = typeof project.media === 'string' && project.media.includes('sketchfab.com/models');
 
-            // Check if the store link is from Steam
-            const isSteamStore = project.store && (project.store.includes('steamcommunity.com') || project.store.includes('store.steampowered.com'));
-
-            // Update all Steam community links to the new URL if needed
-            if (isSteamStore && project.store.includes('steamcommunity.com')) {
-                project.store = 'https://steamcommunity.com/id/R60D/myworkshopfiles/';
-            }
-
-            // Determine up to two languages from explicit metadata only (normalized; filtered to allowed if available). Only show for programming projects (index < 1000)
-            const allowed = (typeof LANGUAGE_COLORS === 'object' && LANGUAGE_COLORS) ? new Set(Object.keys(LANGUAGE_COLORS)) : null;
-            const languages = (Array.isArray(project.languages) ? project.languages : [])
-                .map(s => (s || '').toString().toLowerCase().trim())
-                .map(s => s
-                    .replace('c++', 'cpp')
-                    .replace('c#', 'csharp')
-                    .replace('c sharp', 'csharp')
-                    .replace('js', 'javascript')
-                )
-                .filter((code, idx, arr) => code && arr.indexOf(code) === idx && (!allowed || allowed.has(code)));
-            const languageLabels = { python: 'Python', javascript: 'JavaScript', cpp: 'C++', csharp: 'C#', gdscript: 'GDScript' };
-            const languageIcons = { python: 'fab fa-python', javascript: 'fab fa-js', cpp: 'fas fa-code', csharp: 'fas fa-code', gdscript: 'fas fa-file-code' };
-            const languageNotches = (index < 1000 && languages && languages.length) ? `
-                <div class="language-notches">
-                    ${languages.slice(0, 3).map(code => `
-                        <span class="language-notch language-${code}">
-                            <i class="${languageIcons[code] || 'fas fa-code'}"></i> ${languageLabels[code] || code}
-                        </span>
-                    `).join('')}
-                </div>
-            ` : '';
-
             let mediaContent = '';
             if (isVideo) {
-                mediaContent = `<iframe src="${project.media}" frameborder="0" allowfullscreen></iframe>`;
+                let videoId;
+                if (project.media.includes('youtube.com/watch')) {
+                    videoId = new URL(project.media).searchParams.get('v');
+                } else if (project.media.includes('youtu.be/')) {
+                    videoId = project.media.split('youtu.be/')[1].split('?')[0];
+                }
+
+                if (videoId) {
+                    mediaContent = `
+                        <iframe 
+                            src="https://www.youtube.com/embed/${videoId}" 
+                            frameborder="0" 
+                            allowfullscreen
+                            style="width: 100%; height: 100%;">
+                        </iframe>
+                    `;
+                } else {
+                    mediaContent = `<img src="${project.media}" alt="${project.title}">`;
+                }
             } else if (project.comparison && isMultiImage && project.media.length === 2) {
-                // Comparison slider removed, default to creating a carousel for these images
                 console.log(`Project ${index} requested comparison; rendering carousel instead.`);
                 mediaContent = createCarousel(project.media, index);
             } else if (isMultiImage) {
                 mediaContent = createCarousel(project.media, index);
             } else if (isSketchfab) {
-                // Extract model ID and create proper embed iframe
                 const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] ||
                     project.media.match(/models\/([^\/]+)/)?.[1];
                 if (modelId) {
@@ -116,7 +101,7 @@
                             src="${embedUrl}" 
                             frameborder="0" 
                             allow="fullscreen" 
-                            webkitallowfullscreen mozallowfullscreen allowfullscreen
+                            allowfullscreen
                             style="width: 100%; height: 100%;">
                         </iframe>
                     `;
@@ -125,6 +110,18 @@
                 }
             } else {
                 mediaContent = `<img src="${project.media}" alt="${project.title}">`;
+            }
+
+            // Check if it's a TF2 Workshop item
+            const isTF2Workshop = project.store && project.store.includes('steamcommunity.com') && (
+                project.title.includes('TF2') ||
+                project.title.includes('Team Fortress') ||
+                project.description.includes('TF2') ||
+                project.description.includes('Team Fortress')
+            );
+
+            if (isTF2Workshop && !project.private) {
+                project.private = true;
             }
 
             return `
@@ -141,55 +138,50 @@
                         <a href="${project.github}" target="_blank" class="github-link">
                             <i class="fab fa-github"></i> GitHub
                         </a>
-                    ` : `
-                        <span class="private-tag">
-                            <i class="fas fa-lock"></i> Private
-                        </span>
-                    `}
+                    ` : project.artstation ? `
+                        <a href="${project.artstation}" target="_blank" class="artstation-link">
+                            <i class="fab fa-artstation"></i> ArtStation
+                        </a>
+                    ` : ''}
                     ${project.store ? `
                         <a href="${project.store}" target="_blank" class="store-notch">
                             <i class="${project.workshop ? 'fab fa-steam' : (project.steam ? 'fab fa-steam' : 'fas fa-shopping-cart')}"></i> ${project.workshop ? 'Workshop' : (project.steam ? 'Steam' : 'Store')}
                         </a>
                     ` : ''}
-                    ${index >= 1000 ? `
-                        <div class="game-tag${project.store ? ' with-store' : ''} ${project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
-                        project.engine && project.engine.toLowerCase().includes('unreal') ? 'engine-unreal' :
-                            project.engine && project.engine.toLowerCase().includes('godot') ? 'engine-godot' :
-                                project.engine && project.engine.toLowerCase().includes('source') ? 'engine-source' :
-                                    'engine-default'
-                    }">
-                            <i class="${project.engine && project.engine.toLowerCase().includes('unity') ? 'fab fa-unity' :
-                        project.engine && project.engine.toLowerCase().includes('unreal') ? '' :
-                            project.engine && project.engine.toLowerCase().includes('godot') ? 'fas fa-ghost' :
-                                project.engine && project.engine.toLowerCase().includes('source') ? 'fab fa-steam' :
-                                    'fas fa-gamepad'
-                    }"></i>
+                    <div class="game-tag ${project.store ? ' with-store' : ''} ${project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
+                    project.engine && project.engine.toLowerCase().includes('unreal') ? 'engine-unreal' :
+                        project.engine && project.engine.toLowerCase().includes('godot') ? 'engine-godot' :
+                            project.engine && project.engine.toLowerCase().includes('source') ? 'engine-source' :
+                                'engine-default'
+                }">
+                        <i class="${project.engine && project.engine.toLowerCase().includes('unity') ? 'fab fa-unity' :
+                    project.engine && project.engine.toLowerCase().includes('unreal') ? '' :
+                        project.engine && project.engine.toLowerCase().includes('godot') ? 'fas fa-ghost' :
+                            project.engine && project.engine.toLowerCase().includes('source') ? 'fab fa-steam' :
+                                'fas fa-gamepad'
+                }"></i>
                             ${project.engine && project.engine.toLowerCase().includes('unreal') ?
                         `<img src="images/UnrealEngine.svg" alt="Unreal Engine" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">` : ''}
                             ${project.engine || 'Game'}
-                        </div>
-                    ` : ''}
+                    </div>
                     <div class="back-button">
                         <i class="fas fa-times"></i>
                     </div>
                     <div class="project-media">
                         ${mediaContent}
-                        ${languageNotches}
                     </div>
                     <div class="project-info">
                         <h3>${project.title}</h3>
                         <p>${project.description}</p>
-                        <div class="project-links">
-                        </div>
                     </div>
                 </div>
             `;
         }
 
-        // Initialize the programming portfolio
+        // Initialize the gamedev portfolio
         document.addEventListener('DOMContentLoaded', function () {
             initThemeToggle();
-            initPortfolio('projects/programming-projects.md');
+            initPortfolio('projects/games.md', null);
         });
     </script>
 </body>

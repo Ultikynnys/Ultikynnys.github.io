@@ -14,22 +14,12 @@
     --form-border: #4a90e2;
     --header-text-bg: white;
     --header-text-color: #1a1a1a;
+    --pattern-dot: rgba(255, 255, 255, 0.12);
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        /* Light theme colors */
-        --primary-bg: #f5f5f5;
-        --secondary-bg: #e0e0e0;
-        --card-bg: #ffffff;
-        /* Solid white, no transparency */
-        --text-primary: #333333;
-        --text-secondary: #555555;
-        --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
-        --form-bg: white;
-        --form-border: #4a90e2;
-        --header-text-bg: #333333;
-        --header-text-color: white;
+        --pattern-dot: rgba(0, 0, 0, 0.15);
     }
 }
 
@@ -44,6 +34,21 @@ body {
     background-color: var(--primary-bg);
     color: var(--text-primary);
     line-height: 1.6;
+    background-image:
+        radial-gradient(var(--pattern-dot) 1.5px, transparent 1.5px),
+        radial-gradient(var(--pattern-dot) 1.5px, transparent 1.5px);
+    background-size: 60px 60px, 60px 60px;
+    background-position: 0 0, 30px 30px;
+    animation: scrollPattern 120s linear infinite;
+}
+
+@keyframes scrollPattern {
+    0% {
+        background-position: 0 0, 30px 30px;
+    }
+    100% {
+        background-position: 60px 60px, 90px 90px;
+    }
 }
 
 .container {
@@ -101,7 +106,7 @@ h1::after {
     height: 1em;
     background-color: var(--header-text-color);
     margin-left: 2px;
-    animation: cursor-blink 1s infinite;
+    animation: cursor-blink 1s steps(1) infinite;
     vertical-align: middle;
 }
 
@@ -153,6 +158,13 @@ h1.hidden {
     /* IE/Edge support */
     cursor: pointer;
     /* Reinforce that it's clickable */
+}
+
+.char-decoding {
+    text-decoration: underline;
+    text-decoration-color: var(--header-text-color);
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
 }
 
 .subtitle {
@@ -610,6 +622,11 @@ body.portfolio-programming {
     --accent-color: #4a90e2;
 }
 
+/* Game Dev Portfolio specific styles */
+body.portfolio-gamedev {
+    --accent-color: #2ecc71;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
@@ -865,20 +882,13 @@ body.light-theme {
     --form-border: #4a90e2;
     --header-text-bg: #333333;
     --header-text-color: white;
+    --pattern-dot: rgba(0, 0, 0, 0.15);
 }
 
 body.dark-theme {
     --primary-bg: #1a1a1a;
     --secondary-bg: #2d2d2d;
-    --card-bg: #2d2d2d;
-    /* Solid color, no transparency */
-    --text-primary: #ffffff;
-    --text-secondary: rgba(255, 255, 255, 0.8);
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
-    --form-bg: #1a1a1a;
-    --form-border: #4a90e2;
-    --header-text-bg: white;
-    --header-text-color: #1a1a1a;
+    --pattern-dot: rgba(255, 255, 255, 0.12);
 }
 
 /* Bio section styles */
@@ -1065,48 +1075,63 @@ body.dark-theme {
     }
 }
 
-/* Programming language styles - simple emphasis only */
+/* Programming language styles */
 .lang-python,
 .lang-javascript,
 .lang-cpp,
 .lang-csharp {
-    font-weight: 600;
-    /* Just keep them bold */
+    font-weight: 700;
 }
 
-/* Remove all the special styling effects and colors */
-.lang-python::after,
-.lang-cpp::after,
-.lang-csharp::after {
-    content: none;
-}
-
-/* Remove the specific language colors and effects */
 .lang-python {
-    color: inherit;
+    color: #3572A5;
 }
 
 .lang-javascript {
-    color: inherit;
-    text-shadow: none;
-    background-color: transparent;
-    padding: 0;
-    border-radius: 0;
+    color: #f1e05a;
 }
 
 .lang-cpp {
-    color: inherit;
+    color: #f34b7d;
 }
 
 .lang-csharp {
-    color: inherit;
+    color: #178600;
 }
 
-/* Remove light theme specific overrides too */
+/* Game engine styles */
+.engine-unreal {
+    font-weight: 700;
+    color: #a0a0ff;
+}
+
+.engine-unity {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.engine-godot {
+    font-weight: 700;
+    color: #478cbf;
+}
+
+/* Keyword highlight styles */
+.keyword-esp32 {
+    font-weight: 700;
+    color: #e67e22;
+}
+
+.keyword-blender {
+    font-weight: 700;
+    color: #f5792a;
+}
+
+body.light-theme .engine-unity {
+    color: #222222;
+}
+
 body.light-theme .lang-javascript {
-    color: inherit;
-    text-shadow: none;
-    background-color: transparent;
+    color: #b8860b;
 }
 
 /* Simple copyright footer */
