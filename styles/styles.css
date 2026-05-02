@@ -1673,3 +1673,10 @@ body.yasuo-mode-active::before {
         width: 100%;
     }
 }
+
+.secret-hint {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    opacity: 0.25;
+    pointer-events: none;
+}
