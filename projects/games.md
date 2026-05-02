@@ -1,6 +1,6 @@
 # Game Projects
 
-Game developer with hands-on experience in Unity, Unreal Engine and Godot. I combine technical artistry with programming — game mechanics, shaders, particle effects, and graphics optimization. I build tools that help designers and artists ship faster.
+Game developer with hands-on experience in Unity, Unreal Engine and Godot. I combine technical artistry with programming - game mechanics, shaders, particle effects, and graphics optimization. I build tools that help designers and artists ship faster.
 
 ## TIMBERSTRING
 - Title: TIMBERSTRING

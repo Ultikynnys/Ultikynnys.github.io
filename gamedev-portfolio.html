@@ -95,10 +95,12 @@
                 const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] ||
                     project.media.match(/models\/([^\/]+)/)?.[1];
                 if (modelId) {
-                    const embedUrl = `https://sketchfab.com/models/${modelId}/embed`;
+                    const embedUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=0&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
+                    const autoUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=1&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
                     mediaContent = `
                         <iframe 
-                            src="${embedUrl}" 
+                            src="${embedUrl}"
+                            data-autoplay-url="${autoUrl}"
                             frameborder="0" 
                             allow="fullscreen" 
                             allowfullscreen

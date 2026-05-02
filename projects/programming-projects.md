@@ -1,6 +1,6 @@
 # Programming Projects
 
-Embedded Systems Engineer with a smart IoT alarm clock thesis built on an ESP32 embedded system, designed from scratch — from PCB design to firmware programming. 5+ years with C++ and Python. I ship my own tools and sell them commercially. Comfortable with Agile and Waterfall, tests and CI/CD. This website is built with my own tools.
+Embedded Systems Engineer with a smart IoT alarm clock thesis built on an ESP32 embedded system, designed from scratch - from PCB design to firmware programming. 5+ years with C++ and Python. I ship my own tools and sell them commercially. Comfortable with Agile and Waterfall, tests and CI/CD. This website is built with my own tools.
 
 
 ## UltiBridge | Universal Scene Exporter

@@ -931,6 +931,19 @@ function initPortfolio(projectsFile, gamesFile) {
                 `;
             });
     }
+
+    // Swap Sketchfab iframes to autoplay on individual hover
+    document.querySelectorAll('.portfolio-grid').forEach(grid => {
+        grid.addEventListener('mouseover', function onHover(e) {
+            const card = e.target.closest('[data-project-id]');
+            if (!card) return;
+            const iframe = card.querySelector('iframe[data-autoplay-url]');
+            if (iframe) {
+                iframe.src = iframe.dataset.autoplayUrl;
+                iframe.removeAttribute('data-autoplay-url');
+            }
+        });
+    });
 }
 
 // Email handler function
