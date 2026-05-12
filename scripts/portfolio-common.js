@@ -902,6 +902,133 @@ function markPaidProducts() {
     });
 }
 
+function setupSketchfabFallback() {
+    const containers = document.querySelectorAll('.sketchfab-container');
+    if (containers.length === 0) return;
+
+    if (!window._sketchfabMessageHandler) {
+        window._sketchfabMessageHandler = (event) => {
+            if (event.origin !== 'https://sketchfab.com') return;
+            document.querySelectorAll('.sketchfab-container[data-active="true"]').forEach(container => {
+                const iframe = container.querySelector('iframe');
+                if (!iframe) return;
+                try {
+                    if (event.source === iframe.contentWindow) {
+                        container.dataset.viewerReady = 'true';
+                        const spinner = container.querySelector('.sketchfab-loading');
+                        if (spinner) spinner.style.display = 'none';
+                    }
+                } catch (_) {}
+            });
+        };
+        window.addEventListener('message', window._sketchfabMessageHandler);
+    }
+
+    if (!window._sketchfabRetryHandler) {
+        window._sketchfabRetryHandler = (e) => {
+            const btn = e.target.closest('.sketchfab-retry-btn');
+            if (btn) {
+                const container = btn.closest('.sketchfab-container');
+                if (container) retrySketchfab(container);
+            }
+        };
+        document.addEventListener('click', window._sketchfabRetryHandler);
+    }
+
+    containers.forEach(container => {
+        if (container.dataset.fallbackInitialized) return;
+        container.dataset.fallbackInitialized = 'true';
+
+        const iframe = container.querySelector('iframe');
+        if (!iframe) return;
+
+        container.dataset.retryCount = '0';
+        container.dataset.viewerReady = 'false';
+        container.dataset.active = 'true';
+
+        const spinner = container.querySelector('.sketchfab-loading');
+        if (spinner) spinner.style.display = '';
+
+        iframe.onload = () => {
+            setTimeout(() => {
+                if (container.dataset.viewerReady !== 'true') {
+                    showFallback(container);
+                }
+            }, 3000);
+        };
+
+        iframe.onerror = () => {
+            showFallback(container);
+        };
+
+        setTimeout(() => {
+            if (container.dataset.viewerReady !== 'true') {
+                showFallback(container);
+            }
+        }, 8000);
+    });
+}
+
+function showFallback(container) {
+    if (container.dataset.viewerReady === 'true') return;
+
+    const iframe = container.querySelector('iframe');
+    if (iframe) iframe.style.display = 'none';
+
+    const spinner = container.querySelector('.sketchfab-loading');
+    if (spinner) spinner.style.display = 'none';
+
+    const retryBtn = container.querySelector('.sketchfab-retry-btn');
+    if (retryBtn) {
+        const retryCount = parseInt(container.dataset.retryCount || '0', 10);
+        retryBtn.style.display = retryCount < 2 ? '' : 'none';
+    }
+}
+
+function retrySketchfab(container) {
+    const retryCount = parseInt(container.dataset.retryCount || '0', 10);
+    if (retryCount >= 2) return;
+
+    container.dataset.retryCount = String(retryCount + 1);
+    container.dataset.viewerReady = 'false';
+    container.dataset.active = 'true';
+
+    const iframe = container.querySelector('iframe');
+    if (!iframe) return;
+
+    const retryBtn = container.querySelector('.sketchfab-retry-btn');
+    if (retryBtn) retryBtn.style.display = 'none';
+
+    const originalSrc = iframe.src;
+    iframe.src = '';
+    iframe.style.display = '';
+
+    const spinner = container.querySelector('.sketchfab-loading');
+    if (spinner) spinner.style.display = '';
+
+    setTimeout(() => {
+        iframe.src = originalSrc;
+
+        iframe.onload = () => {
+            setTimeout(() => {
+                if (container.dataset.viewerReady !== 'true') {
+                    showFallback(container);
+                }
+            }, 3000);
+        };
+
+        iframe.onerror = () => {
+            showFallback(container);
+        };
+
+        setTimeout(() => {
+            if (container.dataset.viewerReady !== 'true') {
+                showFallback(container);
+            }
+        }, 8000);
+    }, 50);
+}
+
 // Function to initialize all comparison sliders on the page
 function initAllComparisonSliders(containerId = 'projects-container') {
     // Comparison slider functionality has been removed
@@ -951,6 +1078,7 @@ function initPortfolio(projectsFile, gamesFile) {
                     projectsContainer.appendChild(tempDiv.firstElementChild);
                 });
                 markPaidProducts();
+                setupSketchfabFallback();
             })
             .catch(e => {
                 console.error('Error loading projects:', e);
@@ -993,6 +1121,7 @@ function initPortfolio(projectsFile, gamesFile) {
                     gamesContainer.appendChild(tempDiv.firstElementChild);
                 });
                 markPaidProducts();
+                setupSketchfabFallback();
             })
             .catch(e => {
                 console.error('Error loading games:', e);

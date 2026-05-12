@@ -109,15 +109,23 @@
                 if (modelId) {
                     const embedUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=0&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
                     const autoUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=1&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
+                    const thumbUrl = `https://media.sketchfab.com/models/${modelId}/thumbnails/small.jpg`;
                     mediaContent = `
-                        <iframe 
-                            src="${embedUrl}"
-                            data-autoplay-url="${autoUrl}"
-                            frameborder="0" 
-                            allow="fullscreen" 
-                            allowfullscreen
-                            style="width: 100%; height: 100%;">
-                        </iframe>
+                        <div class="sketchfab-container">
+                            <div class="sketchfab-loading"></div>
+                            <img src="${thumbUrl}" alt="${project.title}" class="sketchfab-fallback"
+                                 style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;">
+                            <iframe 
+                                src="${embedUrl}"
+                                data-autoplay-url="${autoUrl}"
+                                frameborder="0" 
+                                allow="fullscreen" 
+                                allowfullscreen
+                                loading="lazy"
+                                style="width: 100%; height: 100%; position: relative; z-index: 1;">
+                            </iframe>
+                            <button class="sketchfab-retry-btn" style="display:none">Retry ↻</button>
+                        </div>
                     `;
                 } else {
                     mediaContent = `<img src="${project.media}" alt="${project.title}">`;
