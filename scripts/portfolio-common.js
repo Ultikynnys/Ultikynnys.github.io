@@ -826,6 +826,12 @@ function initThemeToggle() {
     });
 }
 
+function markPaidProducts() {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.classList.toggle('paid-product', !!card.querySelector('.store-notch'));
+    });
+}
+
 // Function to initialize all comparison sliders on the page
 function initAllComparisonSliders(containerId = 'projects-container') {
     // Comparison slider functionality has been removed
@@ -879,6 +885,7 @@ function initPortfolio(projectsFile, gamesFile) {
                     tempDiv.innerHTML = projectCard;
                     projectsContainer.appendChild(tempDiv.firstElementChild);
                 });
+                markPaidProducts();
             })
             .catch(e => {
                 console.error('Error loading projects:', e);
@@ -920,6 +927,7 @@ function initPortfolio(projectsFile, gamesFile) {
                     tempDiv.innerHTML = gameCard;
                     gamesContainer.appendChild(tempDiv.firstElementChild);
                 });
+                markPaidProducts();
             })
             .catch(e => {
                 console.error('Error loading games:', e);
