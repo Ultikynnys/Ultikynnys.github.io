@@ -26,7 +26,7 @@
 ## MOF‑Blender – UV Unwrapping Bridge
 - Title: MOF‑Blender
 - Description: A Blender add‑on that integrates the MinistryOfFlat UV‑unwrap engine directly into Blender, drastically cutting UV islands compared to the default Smart Unwrap.
-- Media: https://raw.githubusercontent.com/Ultikynnys/MinistryOfBlender/refs/heads/main/Comparison.png
+- Media: images/MOFBLENDER.png
 - GitHub: https://github.com/Ultikynnys/MOF-Blender
 - Languages: Python, C
 

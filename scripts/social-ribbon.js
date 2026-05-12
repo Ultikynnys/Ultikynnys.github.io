@@ -137,6 +137,21 @@ function createSocialRibbon(config) {
 
     // Insert the completed ribbon at the beginning of the body
     document.body.insertAdjacentElement('afterbegin', ribbonContainer);
+
+    // Add "Back to Home" button on portfolio pages only
+    if (window.location.pathname.includes('portfolio')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const href = urlParams.has('page') && urlParams.get('page') === 'full'
+            ? 'index.html?page=full'
+            : 'index.html';
+
+        const homeButton = document.createElement('a');
+        homeButton.className = 'home-notch';
+        homeButton.href = href;
+        homeButton.innerHTML = '<i class="fas fa-arrow-left"></i>';
+
+        ribbonContainer.insertBefore(homeButton, ribbonContainer.firstChild);
+    }
 }
 
 // Execute when DOM is loaded
