@@ -922,6 +922,15 @@ body.dark-theme {
     /* Push items to ends */
 }
 
+.social-ribbon.ribbon-index {
+    justify-content: center;
+}
+
+.social-ribbon.ribbon-index .social-buttons {
+    flex: 1;
+    justify-content: center;
+}
+
 .social-buttons {
     display: flex;
     flex-wrap: wrap;
