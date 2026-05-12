@@ -950,7 +950,8 @@ body.dark-theme {
 .artstation-header-notch,
 .fab-notch,
 .cv-notch,
-.twitter-notch {
+.twitter-notch,
+.home-notch {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -1055,6 +1056,15 @@ body.dark-theme {
     transform: translateY(-2px);
 }
 
+.home-notch {
+    background: #555;
+}
+
+.home-notch:hover {
+    background: #444;
+    transform: translateY(-2px);
+}
+
 /* Custom SVG icons in social buttons */
 .social-icon-svg {
     width: 16px;
@@ -1078,7 +1088,8 @@ body.dark-theme {
     .github-notch,
     .artstation-header-notch,
     .fab-notch,
-    .cv-notch {
+    .cv-notch,
+    .home-notch {
         padding: 0.4rem 0.6rem;
         font-size: 0.8rem;
     }
