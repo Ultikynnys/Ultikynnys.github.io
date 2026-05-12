@@ -151,8 +151,6 @@ function createSocialRibbon(config) {
         homeButton.innerHTML = '<i class="fas fa-arrow-left"></i>';
 
         ribbonContainer.insertBefore(homeButton, ribbonContainer.firstChild);
-    } else {
-        ribbonContainer.classList.add('ribbon-index');
     }
 }
 
