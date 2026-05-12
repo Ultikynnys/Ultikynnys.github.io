@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/gif" href="content/200.gif">
-    <title data-header="page-title">Loading...</title>
+    <title>Ubeid Hussein - Portfolio</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -113,38 +113,40 @@
                 <div class="name-indicator">Full name</div>
                 <h1>Ubeid Hussein<span class="cursor"></span></h1>
             </div>
-            <p class="subtitle" data-header="subtitle"></p>
+            <p class="subtitle">Embedded Systems Engineer, 3D Generalist & Game Developer</p>
+            <!-- Add short bio -->
             <div class="bio">
-                <p class="bio-nonfull" data-header="bio-nonfull"></p>
-                <p class="bio-full" data-header="bio-full"></p>
+                <p>I am an Embedded Systems Engineer and 3D Generalist who thrives at the intersection of code and art. With 5+ years of <span class="lang-cpp">C++</span> and <span class="lang-python">Python</span> development and 6+ years in 3D modeling and animation, I bridge the gap between strict technical requirements and creative vision. From programming <span class="keyword-esp32">ESP32</span>-based IoT hardware to developing custom <span class="keyword-blender">Blender</span> add-ons and commercial assets for <span class="engine-unreal">Unreal</span>, <span class="engine-unity">Unity</span>, and <span class="engine-godot">Godot</span>, I build end-to-end solutions for both physical and digital worlds.</p>
             </div>
         </div>
     </header>
 
     <main>
         <div class="section-divider">
-            <h2 data-header="section-title"></h2>
-            <p data-header="section-desc"></p>
+            <h2>Select Portfolio</h2>
+            <p>Choose which area of my work you'd like to explore</p>
         </div>
 
         <div class="portfolio-choice-container">
             <a href="programming-portfolio.html" class="portfolio-choice portfolio-programming-card">
                 <div class="portfolio-image">
-                    <img src="images/MMP.png" alt="Programming Portfolio">
+                    <img src="https://raw.githubusercontent.com/Ultikynnys/Ultikynnys.github.io/refs/heads/main/images/COACD.png"
+                        alt="Programming Portfolio">
                 </div>
                 <div class="portfolio-info">
-                    <h3 data-header="programming-title"></h3>
-                    <p data-header="programming-desc"></p>
+                    <h3>Programming</h3>
+                    <p>Explore my development projects, tools, and add-ons designed to enhance creative workflows</p>
                 </div>
             </a>
 
             <a href="3d-portfolio.html" class="portfolio-choice portfolio-3d-card">
                 <div class="portfolio-image">
-                    <img src="images/Ballgen.jpg" alt="3D Portfolio">
+                    <img src="images/MansionInterior.jpg" alt="3D Portfolio">
                 </div>
                 <div class="portfolio-info">
-                    <h3 data-header="3d-title"></h3>
-                    <p data-header="3d-desc"></p>
+                    <h3>3D Design</h3>
+                    <p>View my 3D modeling, character design, and animation projects for games and other applications
+                    </p>
                 </div>
             </a>
 
@@ -153,37 +155,136 @@
                     <img src="images/Timble.png" alt="Game Development Portfolio">
                 </div>
                 <div class="portfolio-info">
-                    <h3 data-header="gamedev-title"></h3>
-                    <p data-header="gamedev-desc"></p>
+                    <h3>Game Development</h3>
+                    <p>Explore games I've developed and contributed to across multiple engines and platforms</p>
                 </div>
             </a>
         </div>
     </main>
 
+    <!-- Copyright footer -->
+
+
     <!-- Load shared social ribbon script -->
     <script src="scripts/social-ribbon.js"></script>
-    <script src="scripts/load-headers.js"></script>
-    <script src="scripts/portfolio-common.js"></script>
 
     <script>
-        if (new URLSearchParams(window.location.search).has('page')) {
-            document.querySelectorAll('.portfolio-choice').forEach(function(link) {
-                var existing = new URLSearchParams(link.search);
-                new URLSearchParams(window.location.search).forEach(function(value, key) {
-                    existing.set(key, value);
-                });
-                link.search = existing.toString();
-            });
+        // Name scramble-decoding animation
+        const names = ["Ubeid Hussein", "Ultikynnys", "R60D"];
+        const nameDescriptions = ["Full name", "Also known as", "Also known as"];
+        let currentNameIndex = 0;
+        const nameContainer = document.getElementById('name-display').querySelector('h1');
+        const nameIndicator = document.querySelector('.name-indicator');
+        const cursor = document.querySelector('.cursor');
+        const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+        const decodeTotalTime = 1200;
+        const decodeFlashesPerPos = 8;
+        const pauseBetweenNames = 8000;
+        let isAnimating = false;
+
+        function getRandomChar() {
+            return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
         }
 
-        // Swap portfolio card images when ?page=full is active
-        const pageParam = new URLSearchParams(window.location.search).get('page');
-        if (pageParam === 'full') {
-            const progImg = document.querySelector('.portfolio-programming-card .portfolio-image img');
-            const tdImg = document.querySelector('.portfolio-3d-card .portfolio-image img');
-            if (progImg) progImg.src = 'images/COACD.png';
-            if (tdImg) tdImg.src = 'images/MansionInterior.jpg';
+        function buildDecodeHtml(target, lockedUpTo, currentScramble) {
+            let html = '';
+            for (let j = 0; j < target.length; j++) {
+                if (j < lockedUpTo) {
+                    html += target[j];
+                } else if (j === lockedUpTo) {
+                    html += '<span class="char-decoding">' + currentScramble[j] + '</span>';
+                } else {
+                    html += currentScramble[j];
+                }
+            }
+            html += '<span class="cursor"></span>';
+            return html;
         }
+
+        function randomString(length) {
+            let s = '';
+            for (let i = 0; i < length; i++) s += getRandomChar();
+            return s;
+        }
+
+        async function scrambleDecode(target) {
+            const totalDecodeTime = decodeTotalTime;
+            const timePerPos = totalDecodeTime / target.length;
+
+            for (let pos = 0; pos < target.length; pos++) {
+                const flashInterval = timePerPos / decodeFlashesPerPos;
+                for (let i = 0; i < decodeFlashesPerPos; i++) {
+                    const currentScramble = target.substring(0, pos) + getRandomChar() + randomString(target.length - pos - 1);
+                    nameContainer.innerHTML = buildDecodeHtml(target, pos, currentScramble);
+                    await new Promise(resolve => setTimeout(resolve, flashInterval));
+                }
+                const afterLock = target.substring(0, pos + 1) + randomString(target.length - pos - 1);
+                nameContainer.innerHTML = afterLock + '<span class="cursor"></span>';
+            }
+
+            nameContainer.innerHTML = target + '<span class="cursor"></span>';
+        }
+
+        async function cycleName() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            nameIndicator.style.opacity = 0;
+
+            currentNameIndex = (currentNameIndex + 1) % names.length;
+            await scrambleDecode(names[currentNameIndex]);
+
+            setTimeout(() => {
+                nameIndicator.textContent = nameDescriptions[currentNameIndex];
+                nameIndicator.style.opacity = 0.9;
+            }, 200);
+
+            await new Promise(resolve => setTimeout(resolve, pauseBetweenNames));
+
+            isAnimating = false;
+        }
+
+        // Start the name cycling
+        setTimeout(() => {
+            cycleName();
+            setInterval(() => {
+                if (!isAnimating) cycleName();
+            }, 500);
+        }, 2000);
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const icon = themeToggle.querySelector('i');
+
+        // Check if user preference exists in localStorage
+        const userPreference = localStorage.getItem('theme');
+        if (userPreference === 'light') {
+            document.body.classList.add('light-theme');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else if (userPreference === 'dark') {
+            document.body.classList.add('dark-theme');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light-theme')) {
+                // Switch to dark theme
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                // Switch to light theme
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
     </script>
     <div id="footer-container"></div>
     <script>

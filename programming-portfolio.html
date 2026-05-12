@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/gif" href="content/200.gif">
-    <title data-header="page-title">Loading...</title>
+    <title>Ubeid Hussein - Programming Portfolio</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -32,10 +32,10 @@
                 <div class="name-indicator">Full name</div>
                 <h1>Ubeid Hussein<span class="cursor"></span></h1>
             </div>
-            <p class="subtitle" data-header="subtitle"></p>
+            <p class="subtitle">Embedded Systems Engineer</p>
+            <!-- Add short bio -->
             <div class="bio">
-                <p class="bio-nonfull" data-header="bio-nonfull"></p>
-                <p class="bio-full" data-header="bio-full"></p>
+                <p>I am an Embedded Systems Engineer and 3D Generalist who thrives at the intersection of code and art. With 5+ years of <span class="lang-cpp">C++</span> and <span class="lang-python">Python</span> development and 6+ years in 3D modeling and animation, I bridge the gap between strict technical requirements and creative vision. From programming <span class="keyword-esp32">ESP32</span>-based IoT hardware to developing custom <span class="keyword-blender">Blender</span> add-ons and commercial assets for <span class="engine-unreal">Unreal</span>, <span class="engine-unity">Unity</span>, and <span class="engine-godot">Godot</span>, I build end-to-end solutions for both physical and digital worlds.</p>
             </div>
         </div>
     </header>
@@ -46,28 +46,17 @@
         </div>
     </main>
 
+    <!-- Copyright footer -->
+    <footer class="copyright-footer">
+        <p>&copy; 2026 Ubeid Hussein. All rights reserved.</p>
+        <p class="secret-hint">PS: click my name 3 times...</p>
+    </footer>
+
     <!-- Load shared social ribbon script -->
     <script src="scripts/social-ribbon.js"></script>
-    <script src="scripts/load-headers.js"></script>
 
     <!-- Load common portfolio code -->
     <script src="scripts/portfolio-common.js"></script>
-
-    <div id="footer-container"></div>
-    <script>
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(html => {
-                const container = document.getElementById('footer-container');
-                container.innerHTML = html;
-                container.querySelectorAll('script').forEach(oldScript => {
-                    const newScript = document.createElement('script');
-                    newScript.textContent = oldScript.textContent;
-                    document.body.appendChild(newScript);
-                });
-            })
-            .catch(error => console.error('Failed to load footer:', error));
-    </script>
 
     <script>
         // Function to create project card HTML - specific to programming portfolio

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-header="page-title">Loading...</title>
+  <title>PDF to Searchable PDF (OCR) - In Browser</title>
   <style>
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif; margin: 2rem; color: #222; }
     h1 { font-size: 1.25rem; margin: 0 0 1rem; }
@@ -21,11 +21,10 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" referrerpolicy="no-referrer"></script>
   <!-- Tesseract.js v2 (stable) -->
   <script defer src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
-  <script src="scripts/load-headers.js"></script>
 </head>
-<body class="pdf-ocr">
+<body>
   <div class="card">
-    <h1 data-header="title"></h1>
+    <h1>PDF to Searchable PDF (OCR)</h1>
     <div class="row">
       <input id="fileInput" type="file" accept="application/pdf" />
       <button id="convertBtn" disabled>Convert to OCR PDF</button>
@@ -45,7 +44,6 @@
   <script>
     // Enable UI only after external libraries are loaded
     window.addEventListener('DOMContentLoaded', () => {
-      loadPageHeaders();
       // Delay enabling until pdf.js and Tesseract are both ready
       let waited = 0;
       const step = 100; // ms

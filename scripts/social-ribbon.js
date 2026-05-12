@@ -141,11 +141,6 @@ function createSocialRibbon(config) {
 
 // Execute when DOM is loaded
 document.addEventListener('DOMContentLoaded', async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.has('page') || urlParams.get('page') !== 'full') {
-        document.body.classList.add('hide-paid-products');
-    }
-
     const config = await loadContactsConfig();
     if (config) {
         createSocialRibbon(config);
