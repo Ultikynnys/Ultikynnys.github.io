@@ -1,7 +1,5 @@
 # 3D Projects
 
-3D Generalist & Technical Artist with 6+ years in modeling, rigging and animation. I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and publish add-ons and assets on Blender Market and FAB.
-
 ## Space Station Interior - Modular Asset Pack
 - Title: Space Station Interior - Modular Asset Pack
 - Description: An all-in-one modular asset collection that allows you to construct multi-level space station interiors, complete with a functional elevator system.

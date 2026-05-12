@@ -869,6 +869,31 @@ footer {
     transform: none;
 }
 
+/* Hide paid products unless URL flag is set */
+body.hide-paid-products .paid-product {
+    display: none;
+}
+
+body.hide-paid-products .commercial-mention {
+    display: none;
+}
+
+body.hide-paid-products .fab-notch {
+    display: none;
+}
+
+body.hide-paid-products .cv-notch {
+    display: none;
+}
+
+/* Bio text swapping for full/non-full mode */
+body.hide-paid-products .bio-full {
+    display: none;
+}
+body:not(.hide-paid-products) .bio-nonfull {
+    display: none;
+}
+
 /* Add a class for manual theme override */
 body.light-theme {
     --primary-bg: #f5f5f5;
@@ -1190,6 +1215,11 @@ body.dark-theme {
 .keyword-blender {
     font-weight: 700;
     color: #f5792a;
+}
+
+.keyword-electron {
+    font-weight: 700;
+    color: #4fc3f7;
 }
 
 body.light-theme .engine-unity {
