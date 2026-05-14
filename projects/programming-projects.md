@@ -1,5 +1,12 @@
 # Programming Projects
 
+## Custom Kilo Code Fork
+- Title: Custom Kilo Code Fork
+- Description: A private fork of Kilo Code focused on improving the developer experience in automation, including actual autoadvance, quality-of-life upgrades, and bug fixes to agent tools. It reflects the stage of my AI workflow where I customize the agent itself to get more leverage out of my tooling.
+- Media: images/kilo-fork.png
+- Private: true
+- Languages: JavaScript
+
 ## UltiBridge | Universal Scene Exporter
 - Title: UltiBridge | Universal Scene Exporter
 - Description: A Blender addon that allows you to export your scene to unity godot and unreal with 1:1 parity
