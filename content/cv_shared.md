@@ -39,15 +39,6 @@ ultikynnys.github.io
 ### sidebar.links.github
 github.com/Ultikynnys
 
-### sidebar.links.fab
-FAB-markkinapaikka
-
-### sidebar.links.gumroad
-Gumroad-kauppa
-
-### sidebar.links.steam
-Steam Workshop
-
 ### sidebar.skills.title
 Tekniset taidot
 
@@ -124,15 +115,6 @@ ultikynnys.github.io
 
 ### sidebar.links.github
 github.com/Ultikynnys
-
-### sidebar.links.fab
-FAB Marketplace
-
-### sidebar.links.gumroad
-Gumroad Store
-
-### sidebar.links.steam
-Steam Workshop
 
 ### sidebar.skills.title
 Technical Skills

@@ -22,7 +22,7 @@ Texturing & Materials
 Shader Development
 
 ### summary.3d.p1
-Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon optimoituja assetteja ja hahmoja Blenderissä sekä Substance-työkaluissa. Kehitän myös omia Python-pohjaisia työkaluja Blenderiin ja julkaisen lisäosia ja 3D-assetteja Blender Marketissa ja FAB-alustalla.
+Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon optimoituja assetteja ja hahmoja Blenderissä sekä Substance-työkaluissa. Kehitän myös omia Python-pohjaisia työkaluja Blenderiin ja tuotan laadukkaita asset-paketteja hahmoista rekvisiittoihin.
 
 ### profile.title.3d
 3D-generalisti ja tekninen taiteilija
@@ -46,13 +46,13 @@ Freelance 3D -taiteilija
 3D-mallinnusta, teksturointia ja animaatiota peliprojekteihin ja visualisointiin.
 
 ### work.3d.asset.title
-Asset Store -sisällöntuottaja
+3D-assettien tuottaja
 
 ### work.3d.asset.period
-2019 - Nykyhetki | FAB, Gumroad, Steam Workshop
+2019 - Nykyhetki
 
 ### work.3d.asset.b1
-Kaupallisten 3D-assettien ja työkalujen luominen ja myynti eri alustoilla.
+Laadukkaiden 3D-assettien ja -assettipakettien luominen hahmoista rekvisiittoihin.
 
 ## EN
 
@@ -78,7 +78,7 @@ Texturing & Materials
 Shader Development
 
 ### summary.3d.p1
-With 6+ years in modeling, rigging and animation, I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and publish add-ons and assets on Blender Market and FAB.
+With 6+ years in modeling, rigging and animation, I create optimized assets and characters using Blender and Substance tools. I also develop my own Python-based Blender tools and produce high-quality asset packs ranging from characters to props.
 
 ### profile.title.3d
 3D Generalist & Technical Artist
@@ -102,10 +102,10 @@ Freelance 3D Artist
 3D modeling, texturing, and animation for game projects and visualization.
 
 ### work.3d.asset.title
-Asset Store Creator
+3D Asset Creator
 
 ### work.3d.asset.period
-2019 - Present | FAB, Gumroad, Steam Workshop
+2019 - Present
 
 ### work.3d.asset.b1
-Creating and selling commercial 3D assets and tools across various platforms.
+Creating high-quality 3D assets and asset packs, ranging from characters to props.

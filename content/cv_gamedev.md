@@ -34,7 +34,7 @@ Shaders & VFX
 Pelikehittäjä, jolla on kokemusta Unitystä, Unreal Enginestä ja Godotista. Yhdistän teknisen taiteilijan osaamisen ohjelmointiin  -  hallitsen pelimekaniikat, shaderit, partikkelitehosteet ja grafiikkaoptimoinnin. Kehitän työkaluja, jotka nopeuttavat suunnittelijoiden ja taiteilijoiden työtä.
 
 ### summary.gamedev.p2
-5+ vuoden kokemus C++:lla ja Pythonilla. Julkaisen omia työkaluja kaupallisesti. Kokemusta Agile- ja Waterfall-menetelmistä, testauksesta ja CI/CD:stä. Toteutan pelejä ja pelityökaluja alusta loppuun.
+5+ vuoden kokemus C++:lla ja Pythonilla. Kehitän ja ylläpidän omia työkaluja ammattimaiseen tuotantokäyttöön. Kokemusta Agile- ja Waterfall-menetelmistä, testauksesta ja CI/CD:stä. Toteutan pelejä ja pelityökaluja alusta loppuun.
 
 ### profile.title.gamedev
 Pelikehittäjä
@@ -73,7 +73,7 @@ Blender-työkalujen ohjelmoija
 2019 - Nykyhetki | Freelance
 
 ### work.gamedev.blender.b1
-Kehitän Blender-lisäosia Pythonilla pelien ja 3D-taiteilijoiden työnkulkujen tehostamiseksi. Työkalut kuten MOF-Blender (UV-unwrapping), UltiTools ja UltiBake ovat käytössä alan ammattilaisilla.
+Kehitän Blender-lisäosia Pythonilla pelien ja 3D-taiteilijoiden työnkulkujen tehostamiseksi. Työkalujani käytetään ammattimaisessa tuotantotyössä.
 
 ## EN
 
@@ -111,7 +111,7 @@ Shaders & VFX
 Game developer with hands-on experience in Unity, Unreal Engine and Godot. I combine technical artistry with programming  -  game mechanics, shaders, particle effects, and graphics optimization. I build tools that help designers and artists ship faster.
 
 ### summary.gamedev.p2
-5+ years with C++ and Python. I publish and sell my own tools commercially. Comfortable with Agile and Waterfall, tests and CI/CD. I ship games and game tooling from concept to completion.
+5+ years with C++ and Python. I build and maintain my own tools for professional production use. Comfortable with Agile and Waterfall, tests and CI/CD. I ship games and game tooling from concept to completion.
 
 ### profile.title.gamedev
 Game Developer
@@ -150,4 +150,4 @@ Blender Tools Programmer
 2019 - Present | Freelance
 
 ### work.gamedev.blender.b1
-Develop Blender add-ons in Python to streamline game and 3D artist workflows. Tools such as MOF-Blender (UV-unwrapping), UltiTools, and UltiBake are used by professionals in the industry.
+Develop Blender add-ons in Python to streamline game and 3D artist workflows. My tooling is used in professional production work.

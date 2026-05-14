@@ -31,7 +31,7 @@ CI/CD & Testing
 Sulautettujen järjestelmien insinööri. Opinnäytetyönä älykäs IoT-herätyskello, joka on suunniteltu ja toteutettu alusta loppuun ESP32-pohjaisella sulautetulla järjestelmällä  -  piirilevysuunnittelusta ohjelmointiin.
 
 ### summary.programming.p2
-5+ vuoden kokemus C++:lla ja Pythonilla. Julkaisen omia työkaluja kaupallisesti. Kokemusta Agile- ja Waterfall-menetelmistä, testauksesta ja CI/CD:stä. Tämä CV on tehty itse CSS/HTML/JS:llä.
+5+ vuoden kokemus C++:lla ja Pythonilla. Kehitän ja ylläpidän omia työkaluja ammattimaiseen tuotantokäyttöön. Kokemusta Agile- ja Waterfall-menetelmistä, testauksesta ja CI/CD:stä. Tämä CV on tehty itse CSS/HTML/JS:llä.
 
 ### profile.title.programming
 Sulautettujen järjestelmien insinööri
@@ -70,7 +70,7 @@ Blender-työkalujen ohjelmoija
 2019 - Nykyhetki | Freelance
 
 ### work.programming.blender.b1
-Kehitän Blender-lisäosia Pythonilla, mukaan lukien työkalut kuten MOF-Blender (UV-unwrapping), UltiTools ja UltiBake, joita käytetään alan ammattilaisten keskuudessa.
+Kehitän Blender-lisäosia Pythonilla taiteilijoiden työnkulkujen tehostamiseksi, ja työkalujani käytetään ammattimaisessa tuotantotyössä.
 
 ### work.programming.thesis.title
 Opinnäytetyö: OpenAlarm
@@ -114,7 +114,7 @@ CI/CD & Testing
 Embedded Systems Engineer. My thesis is a smart IoT alarm clock built on an ESP32 embedded system, designed from scratch  -  from PCB design to firmware programming.
 
 ### summary.programming.p2
-5+ years with C++ and Python. I ship my own tools and sell them commercially. Comfortable with Agile and Waterfall, tests and CI/CD. I also built this CV using my own tools.
+5+ years with C++ and Python. I build and maintain my own tools for professional production use. Comfortable with Agile and Waterfall, tests and CI/CD. I also built this CV using my own tools.
 
 ### profile.title.programming
 Embedded Systems Engineer
@@ -153,7 +153,7 @@ Blender Tools Programmer
 2019 - Present | Freelance
 
 ### work.programming.blender.b1
-Develop Blender add-ons in Python, including tools such as MOF-Blender (UV-unwrapping), UltiTools, and UltiBake, which are used by professionals in the industry.
+Develop Blender add-ons in Python to improve artist workflows, with tooling used in professional production work.
 
 ### work.programming.thesis.title
 Thesis: OpenAlarm
