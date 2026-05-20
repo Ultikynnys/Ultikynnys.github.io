@@ -19,9 +19,9 @@
     <!-- Overlay for expanded project -->
     <div class="overlay" id="overlay"></div>
 
-    <!-- Global close button -->
-    <div class="close-button" id="globalCloseButton">
-        <i class="fas fa-times"></i>
+    <!-- Back button for expanded project -->
+    <div class="back-button" id="globalBackButton">
+        <i class="fas fa-arrow-left"></i>
     </div>
 
     <!-- Social ribbon will be inserted here by the script -->
@@ -54,150 +54,21 @@
     <script src="scripts/portfolio-common.js"></script>
 
     <div id="footer-container"></div>
-    <script>
-        fetch('footer.html')
-            .then(response => response.text())
-            .then(html => {
-                const container = document.getElementById('footer-container');
-                container.innerHTML = html;
-                container.querySelectorAll('script').forEach(oldScript => {
-                    const newScript = document.createElement('script');
-                    newScript.textContent = oldScript.textContent;
-                    document.body.appendChild(newScript);
-                });
-            })
-            .catch(error => console.error('Failed to load footer:', error));
-    </script>
+    <script src="scripts/load-footer.js"></script>
 
     <script>
         // Function to create project card HTML - specific to programming portfolio
         function createProjectCard(project, index) {
-            const isVideo = typeof project.media === 'string' &&
-                (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
-            const isMultiImage = Array.isArray(project.media);
-            const isSketchfab = typeof project.media === 'string' && project.media.includes('sketchfab.com/models');
-
-            // Check if the store link is from Steam
             const isSteamStore = project.store && (project.store.includes('steamcommunity.com') || project.store.includes('store.steampowered.com'));
-
-            // Update all Steam community links to the new URL if needed
             if (isSteamStore && project.store.includes('steamcommunity.com')) {
                 project.store = 'https://steamcommunity.com/id/R60D/myworkshopfiles/';
             }
-
-            // Determine up to two languages from explicit metadata only (normalized; filtered to allowed if available). Only show for programming projects (index < 1000)
-            const allowed = (typeof LANGUAGE_COLORS === 'object' && LANGUAGE_COLORS) ? new Set(Object.keys(LANGUAGE_COLORS)) : null;
-            const languages = (Array.isArray(project.languages) ? project.languages : [])
-                .map(s => (s || '').toString().toLowerCase().trim())
-                .map(s => s
-                    .replace('c++', 'cpp')
-                    .replace('c#', 'csharp')
-                    .replace('c sharp', 'csharp')
-                    .replace('js', 'javascript')
-                )
-                .filter((code, idx, arr) => code && arr.indexOf(code) === idx && (!allowed || allowed.has(code)));
-            const languageLabels = { python: 'Python', javascript: 'JavaScript', cpp: 'C++', csharp: 'C#', gdscript: 'GDScript' };
-            const languageIcons = { python: 'fab fa-python', javascript: 'fab fa-js', cpp: 'fas fa-code', csharp: 'fas fa-code', gdscript: 'fas fa-file-code' };
-            const languageNotches = (index < 1000 && languages && languages.length) ? `
-                <div class="language-notches">
-                    ${languages.slice(0, 3).map(code => `
-                        <span class="language-notch language-${code}">
-                            <i class="${languageIcons[code] || 'fas fa-code'}"></i> ${languageLabels[code] || code}
-                        </span>
-                    `).join('')}
-                </div>
-            ` : '';
-
-            let mediaContent = '';
-            if (isVideo) {
-                mediaContent = `<iframe src="${project.media}" frameborder="0" allowfullscreen></iframe>`;
-            } else if (project.comparison && isMultiImage && project.media.length === 2) {
-                // Comparison slider removed, default to creating a carousel for these images
-                console.log(`Project ${index} requested comparison; rendering carousel instead.`);
-                mediaContent = createCarousel(project.media, index);
-            } else if (isMultiImage) {
-                mediaContent = createCarousel(project.media, index);
-            } else if (isSketchfab) {
-                // Extract model ID and create proper embed iframe
-                const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] ||
-                    project.media.match(/models\/([^\/]+)/)?.[1];
-                if (modelId) {
-                    const embedUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=0&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
-                    const autoUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=1&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
-                    mediaContent = `
-                        <iframe 
-                            src="${embedUrl}"
-                            data-autoplay-url="${autoUrl}"
-                            frameborder="0" 
-                            allow="fullscreen" 
-                            webkitallowfullscreen mozallowfullscreen allowfullscreen
-                            style="width: 100%; height: 100%;">
-                        </iframe>
-                    `;
-                } else {
-                    mediaContent = `<img src="${project.media}" alt="${project.title}">`;
-                }
-            } else {
-                mediaContent = `<img src="${project.media}" alt="${project.title}">`;
-            }
-
-            return `
-                <div class="project-card" data-project-id="${index}">
-                    ${project.private ? `
-                        <span class="private-tag">
-                            <i class="fas fa-lock"></i> Private
-                        </span>
-                    ` : project.demo ? `
-                        <a href="${project.demo}" target="_blank" class="demo-notch">
-                            <i class="fas fa-play-circle"></i> Demo
-                        </a>
-                    ` : project.github ? `
-                        <a href="${project.github}" target="_blank" class="github-link">
-                            <i class="fab fa-github"></i> GitHub
-                        </a>
-                    ` : `
-                        <span class="private-tag">
-                            <i class="fas fa-lock"></i> Private
-                        </span>
-                    `}
-                    ${project.store ? `
-                        <a href="${project.store}" target="_blank" class="store-notch">
-                            <i class="${project.workshop ? 'fab fa-steam' : (project.steam ? 'fab fa-steam' : 'fas fa-shopping-cart')}"></i> ${project.workshop ? 'Workshop' : (project.steam ? 'Steam' : 'Store')}
-                        </a>
-                    ` : ''}
-                    ${index >= 1000 ? `
-                        <div class="game-tag${project.store ? ' with-store' : ''} ${project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
-                        project.engine && project.engine.toLowerCase().includes('unreal') ? 'engine-unreal' :
-                            project.engine && project.engine.toLowerCase().includes('godot') ? 'engine-godot' :
-                                project.engine && project.engine.toLowerCase().includes('source') ? 'engine-source' :
-                                    'engine-default'
-                    }">
-                            <i class="${project.engine && project.engine.toLowerCase().includes('unity') ? 'fab fa-unity' :
-                        project.engine && project.engine.toLowerCase().includes('unreal') ? '' :
-                            project.engine && project.engine.toLowerCase().includes('godot') ? 'fas fa-ghost' :
-                                project.engine && project.engine.toLowerCase().includes('source') ? 'fab fa-steam' :
-                                    'fas fa-gamepad'
-                    }"></i>
-                            ${project.engine && project.engine.toLowerCase().includes('unreal') ?
-                        `<img src="images/UnrealEngine.svg" alt="Unreal Engine" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">` : ''}
-                            ${project.engine || 'Game'}
-                        </div>
-                    ` : ''}
-                    <div class="back-button">
-                        <i class="fas fa-times"></i>
-                    </div>
-                    <div class="project-media">
-                        ${mediaContent}
-                        ${languageNotches}
-                    </div>
-                    <div class="project-info">
-                        <h3>${project.title}</h3>
-                        <p>${project.description}</p>
-                        <div class="project-links">
-                        </div>
-                    </div>
-                </div>
-            `;
+            return createUnifiedProjectCard(project, index, {
+                badgeOrder: ['private', 'demo', 'github'],
+                fallbackBadge: 'private',
+                showLanguageNotches: true,
+                alwaysShowEngineTag: false
+            });
         }
 
         // Initialize the programming portfolio

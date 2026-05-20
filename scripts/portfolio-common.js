@@ -245,75 +245,6 @@ function parseMarkdown(markdown) {
     return result;
 }
 
-function parsePageHeaders(markdown) {
-    const result = {};
-    const sections = markdown.split(/\n(?=## )/);
-
-    for (const section of sections) {
-        const lines = section.split('\n');
-        let currentKey = null;
-        let firstLine = lines[0].trim();
-
-        if (firstLine.startsWith('## ') && !firstLine.startsWith('### ')) {
-            currentKey = firstLine.replace('## ', '').trim();
-        } else if (firstLine.startsWith('### ')) {
-            currentKey = firstLine.replace('### ', '').trim();
-            const parentSection = lines.slice(1).find(l => l.startsWith('## '));
-        }
-
-        if (!currentKey) continue;
-
-        const kv = {};
-        for (const line of lines) {
-            const trimmed = line.trim();
-            if (trimmed.startsWith('- ') && trimmed.includes(':')) {
-                const colonIdx = trimmed.indexOf(':');
-                const key = trimmed.substring(2, colonIdx).trim();
-                const value = trimmed.substring(colonIdx + 1).trim();
-                if (key && value) {
-                    kv[key] = value;
-                }
-            }
-        }
-
-        if (Object.keys(kv).length > 0) {
-            if (firstLine.startsWith('### ') && result[currentKey]) {
-                Object.assign(result[currentKey], kv);
-            } else {
-                result[currentKey] = kv;
-            }
-        }
-    }
-
-    return result;
-}
-
-function loadPageHeaders() {
-    fetch('content/page-headers.md')
-        .then(r => {
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            return r.text();
-        })
-        .then(text => {
-            const allHeaders = parsePageHeaders(text);
-            const pageKey = document.body.classList.contains('portfolio-programming') ? 'programming'
-                : document.body.classList.contains('portfolio-3d') ? '3d'
-                : document.body.classList.contains('portfolio-gamedev') ? 'gamedev'
-                : document.body.classList.contains('pdf-ocr') ? 'pdf-ocr'
-                : 'index';
-            const headers = allHeaders[pageKey];
-            if (!headers) return;
-            Object.entries(headers).forEach(([key, value]) => {
-                if (key === 'page-title') {
-                    document.title = value;
-                    return;
-                }
-                const el = document.querySelector(`[data-header="${key}"]`);
-                if (el) el.innerHTML = value;
-            });
-        })
-        .catch(e => console.warn('Failed to load page headers:', e));
-}
 
 // --- Language Colors Loader (from TOML) ---
 let LANGUAGE_COLORS = null;
@@ -388,6 +319,211 @@ function injectLanguageColors(colors) {
         css += `.project-media .language-${code} { background: ${bg}; color: ${fg}; }\n`;
     }
     styleEl.textContent = css;
+}
+
+// Shared media rendering: handles YouTube, Sketchfab, carousels, comparisons, and single images
+function resolveMediaContent(project, index) {
+    const isVideo = typeof project.media === 'string' &&
+        (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
+    const isMultiImage = Array.isArray(project.media);
+    const isSketchfab = typeof project.media === 'string' && project.media.includes('sketchfab.com/models');
+
+    if (isVideo) {
+        let videoId;
+        if (project.media.includes('youtube.com/watch')) {
+            videoId = new URL(project.media).searchParams.get('v');
+        } else if (project.media.includes('youtu.be/')) {
+            videoId = project.media.split('youtu.be/')[1].split('?')[0];
+        }
+
+        if (videoId) {
+            return `
+                <iframe 
+                    src="https://www.youtube.com/embed/${videoId}" 
+                    frameborder="0" 
+                    allowfullscreen
+                    style="width: 100%; height: 100%;">
+                </iframe>
+            `;
+        }
+        return `<img src="${project.media}" alt="${project.title}">`;
+    } else if (project.comparison && isMultiImage && project.media.length === 2) {
+        console.log(`Project ${index} requested comparison; rendering carousel instead.`);
+        return createCarousel(project.media, index);
+    } else if (isMultiImage) {
+        return createCarousel(project.media, index);
+    } else if (isSketchfab) {
+        const modelId = project.media.match(/models\/([^\/]+)\/embed/)?.[1] ||
+            project.media.match(/models\/([^\/]+)/)?.[1];
+        if (modelId) {
+            const embedUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=0&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
+            const autoUrl = `https://sketchfab.com/models/${modelId}/embed?autostart=1&ui_controls=0&ui_infos=0&ui_watermark=0&ui_annotations=0&ui_stop=0`;
+            return `
+                <iframe 
+                    src="${embedUrl}"
+                    data-autoplay-url="${autoUrl}"
+                    frameborder="0" 
+                    allow="fullscreen" 
+                    allowfullscreen
+                    style="width: 100%; height: 100%;">
+                </iframe>
+            `;
+        }
+        return `<img src="${project.media}" alt="${project.title}">`;
+    } else {
+        return `<img src="${project.media}" alt="${project.title}">`;
+    }
+}
+
+// Shared badge rendering: returns the top-left badge HTML based on a priority-ordered chain
+// badgeOptions = { badgeOrder: ['private','demo','github',...], fallbackBadge: ''|'private' }
+function resolveBadge(project, badgeOptions) {
+    const order = badgeOptions.badgeOrder || ['private', 'demo', 'github'];
+    const fallback = badgeOptions.fallbackBadge || '';
+
+    const badgeMap = {
+        private: project.private ? {
+            tag: 'span',
+            cls: 'private-tag',
+            icon: 'fas fa-lock',
+            text: 'Private'
+        } : null,
+        demo: project.demo ? {
+            tag: 'a',
+            cls: 'demo-notch',
+            icon: 'fas fa-play-circle',
+            text: 'Demo',
+            href: project.demo
+        } : null,
+        github: project.github ? {
+            tag: 'a',
+            cls: 'github-link',
+            icon: 'fab fa-github',
+            text: 'GitHub',
+            href: project.github
+        } : null,
+        artstation: project.artstation ? {
+            tag: 'a',
+            cls: 'artstation-link',
+            icon: 'fab fa-artstation',
+            text: 'ArtStation',
+            href: project.artstation
+        } : null
+    };
+
+    for (const key of order) {
+        const b = badgeMap[key];
+        if (b) {
+            if (b.tag === 'a') {
+                return `<a href="${b.href}" target="_blank" class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</a>`;
+            }
+            return `<span class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</span>`;
+        }
+    }
+
+    if (fallback === 'private') {
+        return `<span class="private-tag"><i class="fas fa-lock"></i> Private</span>`;
+    }
+    return '';
+}
+
+// Shared store notch rendering
+function resolveStoreNotch(project) {
+    if (!project.store) return '';
+    return `
+        <a href="${project.store}" target="_blank" class="store-notch">
+            <i class="${project.workshop ? 'fab fa-steam' : (project.steam ? 'fab fa-steam' : 'fas fa-shopping-cart')}"></i> ${project.workshop ? 'Workshop' : (project.steam ? 'Steam' : 'Store')}
+        </a>
+    `;
+}
+
+// Shared game engine tag rendering
+function resolveGameTag(project) {
+    const engineClass = project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
+        project.engine && project.engine.toLowerCase().includes('unreal') ? 'engine-unreal' :
+        project.engine && project.engine.toLowerCase().includes('godot') ? 'engine-godot' :
+        project.engine && project.engine.toLowerCase().includes('source') ? 'engine-source' :
+        'engine-default';
+
+    const engineIcon = project.engine && project.engine.toLowerCase().includes('unity') ? 'fab fa-unity' :
+        project.engine && project.engine.toLowerCase().includes('unreal') ? '' :
+        project.engine && project.engine.toLowerCase().includes('godot') ? 'fas fa-ghost' :
+        project.engine && project.engine.toLowerCase().includes('source') ? 'fab fa-steam' :
+        'fas fa-gamepad';
+
+    const unrealImg = project.engine && project.engine.toLowerCase().includes('unreal') ?
+        `<img src="images/UnrealEngine.svg" alt="Unreal Engine" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">` : '';
+
+    return `
+        <div class="game-tag${project.store ? ' with-store' : ''} ${engineClass}">
+            ${engineIcon ? `<i class="${engineIcon}"></i>` : ''}
+            ${unrealImg}
+            ${project.engine || 'Game'}
+        </div>
+    `;
+}
+
+// Unified project card creation
+// options = { badgeOrder, fallbackBadge, showLanguageNotches, alwaysShowEngineTag }
+function createUnifiedProjectCard(project, index, options) {
+    options = options || {};
+
+    const mediaContent = resolveMediaContent(project, index);
+    const badgeHtml = resolveBadge(project, {
+        badgeOrder: options.badgeOrder || ['private', 'demo', 'github'],
+        fallbackBadge: options.fallbackBadge || ''
+    });
+    const storeNotchHtml = resolveStoreNotch(project);
+    const gameTagHtml = (options.alwaysShowEngineTag || index >= 1000) ? resolveGameTag(project) : '';
+
+    let languageNotchesHtml = '';
+    if (options.showLanguageNotches && index < 1000) {
+        const allowed = (typeof LANGUAGE_COLORS === 'object' && LANGUAGE_COLORS) ? new Set(Object.keys(LANGUAGE_COLORS)) : null;
+        const languages = (Array.isArray(project.languages) ? project.languages : [])
+            .map(s => (s || '').toString().toLowerCase().trim())
+            .map(s => s
+                .replace('c++', 'cpp')
+                .replace('c#', 'csharp')
+                .replace('c sharp', 'csharp')
+                .replace('js', 'javascript')
+            )
+            .filter((code, idx, arr) => code && arr.indexOf(code) === idx && (!allowed || allowed.has(code)));
+        const languageLabels = { python: 'Python', javascript: 'JavaScript', cpp: 'C++', csharp: 'C#', gdscript: 'GDScript' };
+        const languageIcons = { python: 'fab fa-python', javascript: 'fab fa-js', cpp: 'fas fa-code', csharp: 'fas fa-code', gdscript: 'fas fa-file-code' };
+
+        if (languages.length) {
+            languageNotchesHtml = `
+                <div class="language-notches">
+                    ${languages.slice(0, 3).map(code => `
+                        <span class="language-notch language-${code}">
+                            <i class="${languageIcons[code] || 'fas fa-code'}"></i> ${languageLabels[code] || code}
+                        </span>
+                    `).join('')}
+                </div>
+            `;
+        }
+    }
+
+    return `
+        <div class="project-card" data-project-id="${index}">
+            ${badgeHtml}
+            ${storeNotchHtml}
+            ${gameTagHtml}
+            <div class="project-media">
+                ${mediaContent}
+                ${languageNotchesHtml}
+            </div>
+            <div class="project-info">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+            </div>
+        </div>
+    `;
+}
+
+// Default project card wrapper (overridden by page-specific scripts)
+function createProjectCard(project, index) {
+    return createUnifiedProjectCard(project, index, {});
 }
 
 // Function to create carousel HTML
@@ -730,7 +866,6 @@ function setupProjectExpansion(containerId = 'projects-container') {
     }
 
     const overlay = document.getElementById('overlay');
-    const globalCloseButton = document.getElementById('globalCloseButton');
 
     // Track the currently expanded card globally *within this scope*
     let expandedCard = null;
@@ -773,16 +908,6 @@ function setupProjectExpansion(containerId = 'projects-container') {
         }
     });
 
-    // Handle closing via explicit close button
-    if (globalCloseButton) {
-        globalCloseButton.addEventListener('click', function () {
-            if (expandedCard) { // Only act if a card is expanded
-                collapseProject(expandedCard);
-                expandedCard = null; // Update tracked card
-            }
-        });
-    }
-
     // Handle closing via overlay click
     if (overlay) {
         overlay.addEventListener('click', function () {
@@ -795,6 +920,17 @@ function setupProjectExpansion(containerId = 'projects-container') {
 
     // We removed the scroll listener for closing as it was causing issues
     // We also removed the complex forceCardOpen and isExpanding logic
+
+    // Handle closing via back button click
+    const globalBackButton = document.getElementById('globalBackButton');
+    if (globalBackButton) {
+        globalBackButton.addEventListener('click', function () {
+            if (expandedCard) {
+                collapseProject(expandedCard);
+                expandedCard = null;
+            }
+        });
+    }
 }
 
 function expandProject(projectCard, container) {
@@ -808,8 +944,11 @@ function expandProject(projectCard, container) {
     const overlay = document.getElementById('overlay');
     overlay.classList.add('active');
 
-    // Show global close button
-    document.body.classList.add('has-expanded-project');
+    // Show back button
+    const backButton = document.getElementById('globalBackButton');
+    if (backButton) {
+        backButton.classList.add('visible');
+    }
 
     // Prevent body scrolling
     document.body.classList.add('body-no-scroll');
@@ -833,8 +972,11 @@ function collapseProject(projectCard) {
         overlay.classList.remove('active');
     }
 
-    // Hide global close button
-    document.body.classList.remove('has-expanded-project');
+    // Hide back button
+    const backButton = document.getElementById('globalBackButton');
+    if (backButton) {
+        backButton.classList.remove('visible');
+    }
 
     // Allow body scrolling
     document.body.classList.remove('body-no-scroll');
@@ -905,15 +1047,6 @@ function markPaidProducts() {
     });
 }
 
-// Function to initialize all comparison sliders on the page
-function initAllComparisonSliders(containerId = 'projects-container') {
-    // Comparison slider functionality has been removed
-}
-
-function setupComparisonObserver() {
-    // Comparison slider functionality has been removed
-}
-
 // Sort projects so those with a defined priority (lower number) come first
 function sortByPriority(projects) {
     return projects.sort((a, b) => {
@@ -926,10 +1059,7 @@ function sortByPriority(projects) {
 // Initialize the portfolio
 function initPortfolio(projectsFile, gamesFile) {
     initNameAnimation();
-    initThemeToggle();
 
-    // Initialize project expansion functionality
-    setupProjectExpansion('projects-container');
     if (document.getElementById('games-container')) {
         setupProjectExpansion('games-container');
     }
@@ -1040,103 +1170,6 @@ function handleEmailSubmit(event) {
     return false;
 }
 
-// Default project card creation function (for programming portfolio)
-function createDefaultProjectCard(project, index) {
-    const isVideo = typeof project.media === 'string' &&
-        (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
-    const isMultiImage = Array.isArray(project.media);
-
-    let mediaContent = '';
-    if (isVideo) {
-        // Extract video ID and create proper embed URL
-        let videoId;
-        if (project.media.includes('youtube.com/watch')) {
-            videoId = new URL(project.media).searchParams.get('v');
-        } else if (project.media.includes('youtu.be/')) {
-            videoId = project.media.split('youtu.be/')[1].split('?')[0];
-        }
-
-        if (videoId) {
-            mediaContent = `
-                <iframe 
-                    src="https://www.youtube.com/embed/${videoId}" 
-                    frameborder="0" 
-                    allowfullscreen
-                    style="width: 100%; height: 100%;">
-                </iframe>
-            `;
-        } else {
-            mediaContent = `<img src="${project.media}" alt="${project.title}">`;
-        }
-    } else if (project.comparison && isMultiImage && project.media.length === 2) {
-        // All comparison slider functionality has been removed
-        // Create a carousel for comparison images instead
-        mediaContent = createCarousel(project.media, index);
-    } else if (isMultiImage) {
-        mediaContent = createCarousel(project.media, index);
-    } else {
-        mediaContent = `<img src="${project.media}" alt="${project.title}">`;
-    }
-
-    return `
-        <div class="project-card" data-project-id="${index}">
-            ${project.private ? `
-                <span class="private-tag">
-                    <i class="fas fa-lock"></i> Private
-                </span>
-            ` : project.demo ? `
-                <a href="${project.demo}" target="_blank" class="demo-notch">
-                    <i class="fas fa-play-circle"></i> Demo
-                </a>
-            ` : ''}
-            ${project.github ? `
-                <a href="${project.github}" target="_blank" class="github-notch">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-            ` : ''}
-            ${project.store ? `
-                <a href="${project.store}" target="_blank" class="store-notch">
-                    <i class="fas fa-shopping-cart"></i> Store
-                </a>
-            ` : ''}
-            <div class="project-media">
-                ${mediaContent}
-            </div>
-            <div class="project-info">
-                <h3>${project.title}</h3>
-                <p>${project.description}</p>
-                <div class="project-links">
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// DOMContentLoaded to initialize sliders on first load
-document.addEventListener('DOMContentLoaded', function () {
-    // All comparison slider functionality has been removed
-});
-
-// Remove all comparison slider related code
-window.addEventListener('load', function () {
-    // Comparison slider functionality has been removed
-});
-
-// Remove function for positioning sliders
-function positionAllSliders() {
-    // Comparison slider functionality has been removed
-}
-
-// Remove event listeners for slider positioning
-window.addEventListener('load', function () {
-    // Comparison slider functionality has been removed
-});
-
-// Remove resize listener for sliders
-window.addEventListener('resize', function () {
-    // Comparison slider functionality has been removed
-});
-
 // Function to force attach Yasuo name click handler directly
 function attachYasuoNameClickHandler() {
     console.log("FORCE ATTACHING Yasuo name click handler");
@@ -1225,12 +1258,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Detected gamedev portfolio page");
         activeContainerSelector = '#projects-container';
         activeCardSelector = '.project-card';
+        setupProjectExpansion(activeContainerSelector.substring(1));
     } else if (document.body.classList.contains('portfolio-3d')) {
         // 3D Portfolio page
         console.log("Detected 3D portfolio page");
         activeContainerSelector = '#projects-container';
         activeCardSelector = '.project-card';
         // Note: initPortfolio is called from the page's own script, not here
+        setupProjectExpansion(activeContainerSelector.substring(1));
     } else if (document.querySelector('.portfolio-choice-container')) {
         // Index page
         console.log("Detected index page with .portfolio-choice-container");

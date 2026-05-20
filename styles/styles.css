@@ -374,12 +374,6 @@ h2 {
 }
 */
 
-/* Fix for project expansion with comparison slider */
-.project-card.expanded .project-media {
-    overflow: visible !important;
-    background-color: #111;
-}
-
 .project-info {
     display: block !important;
     padding: 1.5rem;
@@ -1234,9 +1228,11 @@ body.light-theme .lang-javascript {
     transform: translate(-50%, -50%);
     width: 90vw;
     max-width: 1200px;
-    max-height: 90vh;
+    height: 90vh;
     z-index: 1000;
-    overflow-y: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     background: var(--card-bg);
     box-shadow: 0 20px 40px rgb(0, 0, 0);
     transition: none !important;
@@ -1263,13 +1259,19 @@ body.light-theme .lang-javascript {
 
 /* Force media content to be visible in expanded view */
 .project-card.expanded .project-media {
-    height: 0;
-    padding-top: 56.25%;
+    flex: 0 0 55%;
     position: relative;
+    overflow: hidden;
     z-index: 2;
     background-color: #000;
     /* Black background for letterboxing */
-    overflow: visible !important;
+}
+
+/* Allow info section to scroll internally */
+.project-card.expanded .project-info {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 /* Force general images/iframes (non-carousel) to be visible */
@@ -1364,67 +1366,34 @@ body.light-theme .lang-javascript {
 
 /* Back button for expanded view */
 .back-button {
-    position: absolute;
+    display: none;
+    position: fixed;
     top: 15px;
-    right: 15px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.6);
+    left: 15px;
+    padding: 0.5rem 0.7rem;
+    background: #555;
     color: white;
-    display: flex;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1005;
+    font-size: 0.9rem;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    z-index: 1001;
-    opacity: 0;
-    transition: none;
-    display: none;
-    /* Hide the back button completely */
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.project-card.expanded .back-button {
-    opacity: 0;
-    /* Make sure it's hidden in expanded view */
-    display: none;
-    /* Hide the back button completely in expanded view */
+.back-button.visible {
+    display: inline-flex;
 }
 
 .back-button:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: #444;
 }
 
 /* Hide other project cards when one is expanded */
 .portfolio-grid.has-expanded .project-card:not(.expanded) {
     display: none;
-}
-
-/* Close button at bottom right of screen */
-.close-button {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    color: white;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 1005;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    font-size: 1.2rem;
-}
-
-body.has-expanded-project .close-button {
-    display: flex;
-}
-
-.close-button:hover {
-    background: var(--accent-color);
-    opacity: 0.9;
 }
 
 /* Additional styles to ensure comparison slider works correctly in non-expanded view */
