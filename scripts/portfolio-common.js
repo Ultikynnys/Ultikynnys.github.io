@@ -222,6 +222,9 @@ function parseMarkdown(markdown) {
                 if (langsRaw) {
                     project.languages = langsRaw.split(',').map(l => l.trim()).filter(Boolean);
                 }
+            } else if (line.startsWith('- Priority:')) {
+                const val = parseInt(line.replace('- Priority:', '').trim(), 10);
+                if (!isNaN(val)) project.priority = val;
             }
         }
 
@@ -911,6 +914,15 @@ function setupComparisonObserver() {
     // Comparison slider functionality has been removed
 }
 
+// Sort projects so those with a defined priority (lower number) come first
+function sortByPriority(projects) {
+    return projects.sort((a, b) => {
+        const pa = a.priority !== undefined ? a.priority : Infinity;
+        const pb = b.priority !== undefined ? b.priority : Infinity;
+        return pa - pb;
+    });
+}
+
 // Initialize the portfolio
 function initPortfolio(projectsFile, gamesFile) {
     initNameAnimation();
@@ -944,7 +956,8 @@ function initPortfolio(projectsFile, gamesFile) {
                     console.log(`initPortfolio: Set visibleCardsCount to ${visibleCardsCount} from markdown data`);
                 }
 
-                projects.projects.forEach((project, index) => {
+                sortByPriority(projects.projects)
+                    .forEach((project, index) => {
                     const projectCard = createProjectCard(project, index);
                     const tempDiv = document.createElement('div');
                     tempDiv.innerHTML = projectCard;
@@ -985,7 +998,8 @@ function initPortfolio(projectsFile, gamesFile) {
                     console.log(`initPortfolio: Set visibleCardsCount to ${visibleCardsCount} from markdown data`);
                 }
 
-                games.projects.forEach((game, index) => {
+                sortByPriority(games.projects)
+                    .forEach((game, index) => {
                     const gameCard = createProjectCard(game, index + 1000); // Use offset for game IDs
                     // Convert string to DOM element before appending
                     const tempDiv = document.createElement('div');

@@ -1,5 +1,13 @@
 # Programming Projects
 
+## OpenAlarm
+- Title: OpenAlarm
+- Description: A feature-rich, ESP32-based open-source alarm clock, media player, and IoT device with a web-based management interface, custom PCB design and 3D-printable case. Bachelor's thesis project.
+- Media: https://raw.githubusercontent.com/Ultikynnys/OpenAlarm/main/Assets/pcb_v1_1.png
+- GitHub: https://github.com/Ultikynnys/OpenAlarm
+- Languages: C, C++
+- Priority: 1
+
 ## Custom Kilo Code Fork
 - Title: Custom Kilo Code Fork
 - Description: A private fork of Kilo Code focused on improving the developer experience in automation, including actual autoadvance, quality-of-life upgrades, and bug fixes to agent tools. It reflects the stage of my AI workflow where I customize the agent itself to get more leverage out of my tooling.
