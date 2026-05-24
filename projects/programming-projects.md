@@ -8,9 +8,17 @@
 - Languages: C, C++
 - Priority: 1
 
+## WordFocus
+- Title: WordFocus
+- Description: A Tauri-based speed-reading app that shows one word at a time to test whether single-word focus improves reading speed in practice.
+- Media: https://raw.githubusercontent.com/Ultikynnys/WordFocus/main/Images/Showcase.webp
+- GitHub: https://github.com/Ultikynnys/WordFocus
+- Languages: TypeScript, Rust
+- Priority: 2
+
 ## Custom Kilo Code Fork
 - Title: Custom Kilo Code Fork
-- Description: A private fork of Kilo Code focused on improving the developer experience in automation, including actual autoadvance, quality-of-life upgrades, and bug fixes to agent tools. It reflects the stage of my AI workflow where I customize the agent itself to get more leverage out of my tooling.
+- Description: A private Kilo Code fork with workflow fixes, automation improvements, and developer experience upgrades.
 - Media: images/kilo-fork.png
 - Private: true
 - Languages: JavaScript

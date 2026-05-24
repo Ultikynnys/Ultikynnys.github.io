@@ -488,8 +488,8 @@ function createUnifiedProjectCard(project, index, options) {
                 .replace('js', 'javascript')
             )
             .filter((code, idx, arr) => code && arr.indexOf(code) === idx && (!allowed || allowed.has(code)));
-        const languageLabels = { python: 'Python', javascript: 'JavaScript', cpp: 'C++', csharp: 'C#', gdscript: 'GDScript' };
-        const languageIcons = { python: 'fab fa-python', javascript: 'fab fa-js', cpp: 'fas fa-code', csharp: 'fas fa-code', gdscript: 'fas fa-file-code' };
+        const languageLabels = { python: 'Python', javascript: 'JavaScript', typescript: 'TypeScript', rust: 'Rust', cpp: 'C++', csharp: 'C#', gdscript: 'GDScript' };
+        const languageIcons = { python: 'fab fa-python', javascript: 'fab fa-js', typescript: 'fas fa-code', rust: 'fas fa-gear', cpp: 'fas fa-code', csharp: 'fas fa-code', gdscript: 'fas fa-file-code' };
 
         if (languages.length) {
             languageNotchesHtml = `

@@ -9,6 +9,10 @@ fg = "#ffffff"
 bg = "#f7df1e"
 fg = "#1a1a1a"
 
+[typescript]
+bg = "#3178c6"
+fg = "#ffffff"
+
 [cpp]
 bg = "#00199C"
 fg = "#ffffff"
@@ -23,4 +27,8 @@ fg = "#ffffff"
 
 [gdscript]
 bg = "#478cbf"
+fg = "#ffffff"
+
+[rust]
+bg = "#dea584"
 fg = "#ffffff"
