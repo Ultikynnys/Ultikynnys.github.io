@@ -140,10 +140,7 @@ function createSocialRibbon(config) {
 
     // Add "Back to Home" button on portfolio pages only
     if (window.location.pathname.includes('portfolio')) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const href = urlParams.has('page') && urlParams.get('page') === 'full'
-            ? 'index.html?page=full'
-            : 'index.html';
+        const href = 'index.html';
 
         const homeButton = document.createElement('a');
         homeButton.className = 'home-notch';
@@ -158,11 +155,6 @@ function createSocialRibbon(config) {
 
 // Execute when DOM is loaded
 document.addEventListener('DOMContentLoaded', async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (!urlParams.has('page') || urlParams.get('page') !== 'full') {
-        document.body.classList.add('hide-paid-products');
-    }
-
     const config = await loadContactsConfig();
     if (config) {
         createSocialRibbon(config);

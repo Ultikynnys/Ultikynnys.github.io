@@ -165,26 +165,7 @@
     <script src="scripts/load-headers.js"></script>
     <script src="scripts/portfolio-common.js"></script>
 
-    <script>
-        if (new URLSearchParams(window.location.search).has('page')) {
-            document.querySelectorAll('.portfolio-choice').forEach(function(link) {
-                var existing = new URLSearchParams(link.search);
-                new URLSearchParams(window.location.search).forEach(function(value, key) {
-                    existing.set(key, value);
-                });
-                link.search = existing.toString();
-            });
-        }
 
-        // Swap portfolio card images when ?page=full is active
-        const pageParam = new URLSearchParams(window.location.search).get('page');
-        if (pageParam === 'full') {
-            const progImg = document.querySelector('.portfolio-programming-card .portfolio-image img');
-            const tdImg = document.querySelector('.portfolio-3d-card .portfolio-image img');
-            if (progImg) progImg.src = 'images/COACD.png';
-            if (tdImg) tdImg.src = 'images/MansionInterior.jpg';
-        }
-    </script>
     <div id="footer-container"></div>
     <script src="scripts/load-footer.js"></script>
 </body>
