@@ -8,12 +8,6 @@ title = "Developer & 3D Artist"
 email = "Hussein.Ubeid@outlook.com"
 
 [social]
-  [social.kofi]
-  url = "https://ko-fi.com/r60dr60d"
-  label = "Support on Ko-fi"
-  icon = "fas fa-mug-hot"
-  class = "kofi-notch"
-
   [social.discord]
   url = "https://discord.gg/J7kWSfM4jw"
   label = "Join Discord"
@@ -25,12 +19,6 @@ email = "Hussein.Ubeid@outlook.com"
   label = "ArtStation"
   icon = "fab fa-artstation"
   class = "artstation-header-notch"
-
-  [social.fab]
-  url = "https://www.fab.com/sellers/NYETEI%20Productions"
-  label = "Fab Store"
-  iconSvg = "content/Fabstore.svg"
-  class = "fab-notch"
 
   [social.cv]
   url = "cv_template.html"
@@ -66,4 +54,4 @@ email = "Hussein.Ubeid@outlook.com"
 
 # Order in which social links appear in the ribbon
 [ribbon]
-order = ["kofi", "discord", "artstation", "fab", "cv", "email", "linkedin", "github", "twitter"]
+order = ["discord", "artstation", "cv", "email", "linkedin", "github", "twitter"]

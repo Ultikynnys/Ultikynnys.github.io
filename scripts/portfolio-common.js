@@ -427,16 +427,6 @@ function resolveBadge(project, badgeOptions) {
     return '';
 }
 
-// Shared store notch rendering
-function resolveStoreNotch(project) {
-    if (!project.store) return '';
-    return `
-        <a href="${project.store}" target="_blank" class="store-notch">
-            <i class="${project.workshop ? 'fab fa-steam' : (project.steam ? 'fab fa-steam' : 'fas fa-shopping-cart')}"></i> ${project.workshop ? 'Workshop' : (project.steam ? 'Steam' : 'Store')}
-        </a>
-    `;
-}
-
 // Shared game engine tag rendering
 function resolveGameTag(project) {
     const engineClass = project.engine && project.engine.toLowerCase().includes('unity') ? 'engine-unity' :
@@ -455,7 +445,7 @@ function resolveGameTag(project) {
         `<img src="images/UnrealEngine.svg" alt="Unreal Engine" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 5px;">` : '';
 
     return `
-        <div class="game-tag${project.store ? ' with-store' : ''} ${engineClass}">
+        <div class="game-tag ${engineClass}">
             ${engineIcon ? `<i class="${engineIcon}"></i>` : ''}
             ${unrealImg}
             ${project.engine || 'Game'}
@@ -473,7 +463,6 @@ function createUnifiedProjectCard(project, index, options) {
         badgeOrder: options.badgeOrder || ['private', 'demo', 'github'],
         fallbackBadge: options.fallbackBadge || ''
     });
-    const storeNotchHtml = resolveStoreNotch(project);
     const gameTagHtml = (options.alwaysShowEngineTag || index >= 1000) ? resolveGameTag(project) : '';
 
     let languageNotchesHtml = '';
@@ -507,7 +496,6 @@ function createUnifiedProjectCard(project, index, options) {
     return `
         <div class="project-card" data-project-id="${index}">
             ${badgeHtml}
-            ${storeNotchHtml}
             ${gameTagHtml}
             <div class="project-media">
                 ${mediaContent}

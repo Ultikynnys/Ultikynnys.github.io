@@ -422,29 +422,6 @@ h2 {
     font-weight: 500;
 }
 
-.store-notch {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 10;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0.7rem;
-    background: rgba(76, 175, 80, 0.8);
-    color: white;
-    font-size: 0.8rem;
-    border-radius: 0 0 0 10px;
-    /* Updated to match project-card border-radius */
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.store-notch:hover {
-    background: rgba(76, 175, 80, 1);
-    padding-right: 1rem;
-}
-
 .github-link {
     position: absolute;
     left: 0;
@@ -593,14 +570,7 @@ h2 {
     margin-bottom: 1rem;
 }
 
-.github-link svg,
-.store-link svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-}
-
-.store-link svg {
+.github-link svg {
     width: 20px;
     height: 20px;
     fill: currentColor;
@@ -769,16 +739,6 @@ footer {
     color: white;
 }
 
-/* Update store notch for better visibility in light mode */
-.store-notch {
-    background: rgba(76, 175, 80, 0.8);
-    color: white;
-}
-
-.store-notch:hover {
-    background: rgba(76, 175, 80, 1);
-}
-
 /* Update github-link for better visibility in light mode */
 .github-link {
     background: rgba(33, 33, 33, 0.9);
@@ -941,13 +901,11 @@ body.dark-theme {
     /* padding: 0 15px; Padding handled by parent */
 }
 
-.kofi-notch,
 .discord-notch,
 .email-notch,
 .linkedin-notch,
 .github-notch,
 .artstation-header-notch,
-.fab-notch,
 .cv-notch,
 .twitter-notch,
 .home-notch {
@@ -965,15 +923,6 @@ body.dark-theme {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.kofi-notch {
-    background: #FF5E5B;
-    /* Ko-fi red color */
-}
-
-.kofi-notch:hover {
-    background: #FF4740;
-    transform: translateY(-2px);
-}
 
 .discord-notch {
     background: #5865F2;
@@ -1025,15 +974,6 @@ body.dark-theme {
     transform: translateY(-2px);
 }
 
-.fab-notch {
-    background: #6f42c1;
-    /* Fab purple-ish color */
-}
-
-.fab-notch:hover {
-    background: #5a32a3;
-    transform: translateY(-2px);
-}
 
 .cv-notch {
     background: #2e7d32;
@@ -1080,13 +1020,11 @@ body.dark-theme {
         padding: 5px;
     }
 
-    .kofi-notch,
     .discord-notch,
     .email-notch,
     .linkedin-notch,
     .github-notch,
     .artstation-header-notch,
-    .fab-notch,
     .cv-notch,
     .home-notch {
         padding: 0.4rem 0.6rem;
@@ -1462,12 +1400,6 @@ body.light-theme .lang-javascript {
 /* Default remains green (rgba(76, 175, 80, 0.9)) */
 .game-tag.engine-default {
     background: rgba(76, 175, 80, 0.9);
-}
-
-/* If an engine tag exists, place the store notch below it */
-.project-card:has(.game-tag) .store-notch {
-    top: 2.2rem;
-    /* Store below engine */
 }
 
 /* Yasuo Mode Easter Egg */
