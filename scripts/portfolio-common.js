@@ -380,6 +380,7 @@ function resolveMediaContent(project, index) {
 function resolveBadge(project, badgeOptions) {
     const order = badgeOptions.badgeOrder || ['private', 'demo', 'github'];
     const fallback = badgeOptions.fallbackBadge || '';
+    const multi = !!badgeOptions.multi;
 
     const badgeMap = {
         private: project.private ? {
@@ -411,15 +412,19 @@ function resolveBadge(project, badgeOptions) {
         } : null
     };
 
+    const renderBadge = (b) => b.tag === 'a'
+        ? `<a href="${b.href}" target="_blank" class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</a>`
+        : `<span class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</span>`;
+
+    let html = '';
     for (const key of order) {
         const b = badgeMap[key];
         if (b) {
-            if (b.tag === 'a') {
-                return `<a href="${b.href}" target="_blank" class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</a>`;
-            }
-            return `<span class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</span>`;
+            if (!multi) return renderBadge(b); // single-badge mode (default)
+            html += renderBadge(b);
         }
     }
+    if (html) return `<div class="project-badges">${html}</div>`;
 
     if (fallback === 'private') {
         return `<span class="private-tag"><i class="fas fa-lock"></i> Private</span>`;
@@ -461,7 +466,8 @@ function createUnifiedProjectCard(project, index, options) {
     const mediaContent = resolveMediaContent(project, index);
     const badgeHtml = resolveBadge(project, {
         badgeOrder: options.badgeOrder || ['private', 'demo', 'github'],
-        fallbackBadge: options.fallbackBadge || ''
+        fallbackBadge: options.fallbackBadge || '',
+        multi: !!options.multiBadge
     });
     const gameTagHtml = (options.alwaysShowEngineTag || index >= 1000) ? resolveGameTag(project) : '';
 

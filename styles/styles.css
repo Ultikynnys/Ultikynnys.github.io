@@ -471,6 +471,34 @@ h2 {
     padding-left: 1rem;
 }
 
+/* Stacked badges (multi-badge mode) */
+.project-badges {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.project-badges .private-tag,
+.project-badges .github-link,
+.project-badges .demo-notch,
+.project-badges .artstation-link {
+    position: relative;
+    top: auto;
+    left: auto;
+}
+
+.project-badges > :first-child {
+    border-radius: 0 0 10px 0;
+}
+
+.project-badges > :not(:first-child) {
+    border-radius: 0 10px 10px 0;
+}
+
 /* Language notches (bottom-right) */
 /* Note: override the generic .project-media > * sizing */
 .project-media>.language-notches {
