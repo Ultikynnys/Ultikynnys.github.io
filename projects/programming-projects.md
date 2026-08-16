@@ -1,5 +1,13 @@
 # Programming Projects
 
+## UltiPixelizer
+- Title: UltiPixelizer
+- Description: A browser-based dithering and pixelation tool for textures. Feed it a 3D model to bake lighting and ambient occlusion, achieving a retro PS1-esque aesthetic. Everything is processed locally in your browser; nothing is uploaded.
+- Media: https://raw.githubusercontent.com/Ultikynnys/UltiPixelizer/main/Assets/Example.png
+- Demo: https://ultikynnys.github.io/UltiPixelizer/
+- GitHub: https://github.com/Ultikynnys/UltiPixelizer
+- Languages: TypeScript, JavaScript
+
 ## OpenAlarm
 - Title: OpenAlarm
 - Description: A feature-rich, ESP32-based open-source alarm clock, media player, and IoT device with a web-based management interface, custom PCB design and 3D-printable case. Bachelor's thesis project.
