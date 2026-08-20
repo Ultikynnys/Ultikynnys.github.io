@@ -49,7 +49,7 @@ Kielet
 Suomi (äidinkieli)
 
 ### sidebar.languages.english_label
-Englanti (erinomainen)
+Englanti (sujuva)
 
 ### sections.workExperience.title
 Työkokemus
@@ -64,7 +64,10 @@ Tampereen ammattikorkeakoulu (TAMK)
 Tietotekniikka
 
 ### education.tamk.period
-Tammikuu 2022 - Toukokuu 2026 | Insinööri (AMK), tietotekniikka
+2021 - 2026 | Insinööri (AMK), tietotekniikka
+
+### education.tamk.path
+Viiden vuoden opintopolku: kolme vuotta sähkö- ja automaatiotekniikan insinööriopintoja, minkä jälkeen vaihdoin tietotekniikkaan ja suuntauduin kahdeksi vuodeksi sulautettuihin järjestelmiin.
 
 ### education.teklu.institution
 Tampereen seudun ammattiopisto Tredu (TEKLU)
@@ -138,16 +141,19 @@ Education
 Tampere University of Applied Sciences (TAMK)
 
 ### education.tamk.field
-Computer Science
+Information Technology
 
 ### education.tamk.period
-January 2022 - May 2026 | Bachelor of Engineering (B.Eng) in Information Technology
+2021 - 2026 | Bachelor of Engineering (B.Eng) in Information Technology
+
+### education.tamk.path
+Five-year study path: three years of electrical and automation engineering studies, followed by a transfer to Information Technology and two years specializing in embedded systems.
 
 ### education.teklu.institution
 Tampere Vocational College Tredu (TEKLU)
 
 ### education.teklu.field
-Electrician and Automation Technician
+Automation and Electrical Engineering
 
 ### education.teklu.period
-January 2015 - May 2018 | Automation and Electrical Engineering Technician
+January 2015 - May 2018 | Technician in Automation and Electrical Engineering

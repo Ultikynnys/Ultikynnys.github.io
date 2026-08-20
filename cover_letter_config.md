@@ -27,7 +27,7 @@ When generating a cover letter based on this template:
 ABOUT THE CANDIDATE:
 - Name: Ubeid Hussein (Upi)
 - Dual expertise: Software Development AND 3D Generalist
-- Currently pursuing Bachelor of Engineering (B.Eng) in Information Technology at TAMK
+- Pursuing a Bachelor of Engineering (B.Eng) in Information Technology at TAMK, 2021-2026: three years of electrical and automation engineering studies followed by two years specializing in embedded systems after transferring to Information Technology
 
 KEY STRENGTH - DUAL EXPERTISE ADVANTAGE:
 - Unique ability to bridge the gap between technical programming and creative 3D art
@@ -43,18 +43,18 @@ ADDITIONAL STRENGTHS:
 
 PROFESSIONAL EXPERIENCE:
 
-CURRENT POSITIONS:
-- R&D Intern at Solita (May 2025 - Present)
+EXPERIENCE:
+- R&D Intern at Solita (May 2025 - October 2025)
   * Developing small full stack projects as part of a two-person team
   * Utilizing various tech stacks and cutting-edge AI integration
 
-- Programmer & Arts and Assets Specialist at No Bright Shadows (Remote) (January 2022 - Present)
+- Programmer & Arts and Assets Specialist at No Bright Shadows (Remote) (January 2022 - October 2025)
   * Programming game mechanics, REST API development, and database integrations
   * Character modeling, rigging, animation, particle effects, and shader development
 
-- Freelance Blender Tools Programmer (2019 - Present)
-  * Develop Blender add-ons in Python including MOF-Blender (UV-unwrapping), UltiTools, and UltiBake
-  * Tools used by professionals in the industry
+- Blender Tools & Linux Servers | Independent Commercial Project (2019 - Present)
+  * Develop commercial Python-based Blender add-ons, including MOF-Blender (UV-unwrapping), UltiTools, and UltiBake, used by professionals in the industry
+  * Operate internet-exposed Linux backends for add-on distribution and APIs, developing and applying server security best practices
 
 - Freelance 3D Artist (2018 - Present)
   * 3D modeling, texturing, and animation for game projects and visualization
@@ -67,13 +67,16 @@ PREVIOUS POSITION:
   * Organized and maintained both electronic and physical records related to company expenses
 
 PROGRAMMING EXPERTISE:
+- Hands-on academic experience using, commissioning, parameter tuning, and calibrating industrial-grade pressure, temperature, and flow sensors used in factory automation
+- Embedded hardware design using KiCad and Altium Designer, LTspice simulation, and PCB fabrication through vendors such as JLCPCB
+- Embedded Linux using Yocto Project and Buildroot build systems, plus OpenWrt and Alpine Linux distributions
 - Backend Development
 - Frontend Development
 - Database Management
 - REST API Development
-- AI & Machine Learning
-- Version Control (Git)
-- DevOps & Deployment
+- Productive, cost-conscious AI-assisted development using Claude, ChatGPT, Gemini, DeepSeek, Reasonix, and OpenCode
+- Version Control (Git, GitHub, and Perforce)
+- CI/CD and automated build, validation, testing, and release workflows using GitHub Actions
 - Containerization (Docker)
 - Project Management
 - Game Development
@@ -143,14 +146,14 @@ Hei Solitan tiimi,
 Hi Solita Team,
 
 ### Introduction
-Haen ohjelmistoarkkitehdin rooliin Solitan Dev-yhteisöön. Teen parhaillani R&D-harjoittelua Solitalla kahden hengen tiimissä: pieniä full stack -ratkaisuja ja käytännön AI‑integraatioita. Azure‑palvelut ja Azure DevOps ovat minulle tuttuja vuosien ajalta. Tästä syystä hyppäys arkkitehdiksi tuntuu luontevalta. Merkitykselliset projektit ja yhdessä tekeminen motivoivat
+Haen ohjelmistoarkkitehdin rooliin Solitan Dev-yhteisöön. Työskentelin toukokuusta lokakuuhun 2025 Solitan R&D-harjoittelijana kahden hengen tiimissä kehittäen pieniä full stack -ratkaisuja ja käytännön AI-integraatioita. Minulla on käytännön kokemusta Azure- ja AWS-pilvialustoista. Merkitykselliset projektit ja yhdessä tekeminen motivoivat.
 
 ### Body1
 Arkkitehtuurissa pidän suunnan selkeänä. Määrittelen perustan, teen päätökset näkyviksi ja pilkon toteutuksen pieniin testattaviin osiin. Koodaan itse: Java ja Node kuuluvat osaamiseeni, myös Kotlinista kokemusta. Lisäksi C++ ja Python. Vahva frontend/backend‑kokemus. API:t ja tietomallit, suorituskyky, näkyvä diagnostiikka. Docker ja CI/CD käytännössä. Pilvi erityisesti Azure, myös AWS. Opin uusia työkaluja nopeasti
 
 
 ### Closing
-Katsotaan yhdessä, voisiko seuraava askeleeni olla Solitalla. Työskentelen Solitalla R&D‑harjoittelijana, ja Manu Setälä voi tarvittaessa suositella. Olen Tampereella, matkustan Helsinkiin ja muille toimistoille tarpeen mukaan. Aloitus sopimuksen mukaan. CV ja portfolio liitteenä. Jutellaan
+Katsotaan yhdessä, voisiko seuraava askeleeni olla Solitalla. Työskentelin aiemmin Solitan R&D-harjoittelijana, ja Manu Setälä voi tarvittaessa suositella. Olen Tampereella ja matkustan Helsinkiin sekä muille toimistoille tarpeen mukaan. Aloitus sopimuksen mukaan. CV ja portfolio ovat liitteenä.
 
 ### Salary_FI
 Neuvoteltavissa

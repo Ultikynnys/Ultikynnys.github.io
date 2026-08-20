@@ -31,7 +31,7 @@ Yli 6 vuoden kokemuksella mallinnuksesta, riggauksesta ja animaatiosta luon opti
 3D-taiteilija ja tekninen taiteilija
 
 ### work.3d.nbs.period
-Tammikuu 2022 - Nykyhetki | No Bright Shadows (Etätyö)
+Tammikuu 2022 - Lokakuu 2025 | No Bright Shadows (Etätyö)
 
 ### work.3d.nbs.b1
 Hahmomallinnus, riggaus, animaatio, partikkelitehosteet ja shader-kehitys.
@@ -87,7 +87,7 @@ With 6+ years in modeling, rigging and animation, I create optimized assets and 
 3D Artist & Technical Artist
 
 ### work.3d.nbs.period
-January 2022 - Present | No Bright Shadows (Remote)
+January 2022 - October 2025 | No Bright Shadows (Remote)
 
 ### work.3d.nbs.b1
 Character modeling, rigging, animation, particle effects, and shader development.

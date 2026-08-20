@@ -43,19 +43,19 @@ Pelikehittäjä
 Tutkimus- ja kehitysharjoittelija
 
 ### work.gamedev.rnd.period
-Toukokuu 2025 - Syyskuu 2025 | Solita
+Toukokuu 2025 - Lokakuu 2025 | Solita
 
 ### work.gamedev.rnd.b1
-Kehitän kahden hengen tiimissä full stack -projekteja hyödyntäen eri teknologiapinoja ja AI-integraatiota. Pelikehitystaustasta on hyötyä interaktiivisten prototyyppien rakentamisessa.
+Kehitin kahden hengen tiimissä full stack -projekteja hyödyntäen eri teknologiapinoja ja AI-integraatiota. Pelikehitystaustasta oli hyötyä interaktiivisten prototyyppien rakentamisessa.
 
 ### work.gamedev.nbs.title
 Peliohjelmoija | Tekninen taiteilija
 
 ### work.gamedev.nbs.period
-Tammikuu 2022 - Kesäkuu 2025 | No Bright Shadows (Etätyö)
+Tammikuu 2022 - Lokakuu 2025 | No Bright Shadows (Etätyö)
 
 ### work.gamedev.nbs.b1
-Pelimekaniikoiden ohjelmointi Unreal Enginellä C++:lla. Hahmomallinnus, riggaus ja animaatio Blenderillä. Partikkelitehosteiden ja shaderien kehitys. Teknisenä taiteilijana toimin siltana ohjelmoinnin ja taiteen välillä.
+Ohjelmoin pelimekaniikkoja Unreal Enginellä C++:lla sekä tein hahmomallinnusta, riggausta ja animaatiota Blenderillä. Kehitin partikkelitehosteita ja shadereita. Teknisenä taiteilijana toimin siltana ohjelmoinnin ja taiteen välillä.
 
 ### work.gamedev.data.title
 Kirjanpito
@@ -123,7 +123,7 @@ R&D Intern
 May 2025 - October 2025 | Solita
 
 ### work.gamedev.rnd.b1
-Develop small full stack projects as part of a two-person team, utilizing various tech stacks and cutting-edge AI integration. Game dev background helps in building interactive prototypes.
+Developed small full stack projects as part of a two-person team, using varied technology stacks and AI integration. My game development background supported the creation of interactive prototypes.
 
 ### work.gamedev.nbs.title
 Game Programmer | Technical Artist
@@ -132,7 +132,7 @@ Game Programmer | Technical Artist
 January 2022 - October 2025 | No Bright Shadows (Remote)
 
 ### work.gamedev.nbs.b1
-Programming game mechanics in Unreal Engine with C++. Character modeling, rigging, and animation in Blender. Particle effects and shader development. As a technical artist, bridge the gap between programming and art.
+Programmed game mechanics in Unreal Engine with C++. Created character models, rigs, and animations in Blender, and developed particle effects and shaders. As a technical artist, bridged programming and art.
 
 ### work.gamedev.data.title
 Data Entry

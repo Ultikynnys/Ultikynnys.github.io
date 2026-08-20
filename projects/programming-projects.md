@@ -10,7 +10,7 @@
 
 ## OpenAlarm
 - Title: OpenAlarm
-- Description: A feature-rich, ESP32-based open-source alarm clock, media player, and IoT device with a web-based management interface, custom PCB design and 3D-printable case. Bachelor's thesis project.
+- Description: A feature-rich, ESP32-C3-based open-source alarm clock, media player, and IoT device with a web-based management interface, custom PCB design and 3D-printable case. Hardware work includes KiCad and Altium Designer for PCB design, LTspice for electrical simulation, and preparing designs for fabrication through vendors such as JLCPCB. Engineering thesis project.
 - Media: https://raw.githubusercontent.com/Ultikynnys/OpenAlarm/main/Assets/pcb_v1_1.png
 - GitHub: https://github.com/Ultikynnys/OpenAlarm
 - Languages: C, C++
