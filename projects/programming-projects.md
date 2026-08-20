@@ -6,7 +6,7 @@
 - Media: https://raw.githubusercontent.com/Ultikynnys/UltiPixelizer/main/Assets/Example.png
 - Demo: https://ultikynnys.github.io/UltiPixelizer/
 - GitHub: https://github.com/Ultikynnys/UltiPixelizer
-- Languages: TypeScript, JavaScript
+- Languages: TypeScript, WebAssembly (WASM)
 
 ## OpenAlarm
 - Title: OpenAlarm
