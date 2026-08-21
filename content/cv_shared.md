@@ -22,7 +22,7 @@ Ubeid Hussein - CV
 Ubeid Hussein
 
 ### profile.name
-Ubeid (Upi) Hussein
+Ubeid Hussein
 
 ### sidebar.summary
 Ammatillinen Yhteenveto
@@ -102,7 +102,7 @@ Ubeid Hussein - CV
 Ubeid Hussein
 
 ### profile.name
-Ubeid (Upi) Hussein
+Ubeid Hussein
 
 ### sidebar.summary
 Professional Summary
