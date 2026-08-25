@@ -499,6 +499,29 @@ h2 {
     border-radius: 0 10px 10px 0;
 }
 
+/* Opposite-corner badges: GitHub top-left, Demo top-right */
+.project-badges.project-badges-cornered {
+    width: 100%;
+    flex-direction: row;
+}
+
+.project-badges.project-badges-cornered > .badge-corner-left,
+.project-badges.project-badges-cornered > .badge-corner-right {
+    position: absolute;
+    top: 0;
+}
+
+.project-badges.project-badges-cornered > .badge-corner-left {
+    left: 0;
+    border-radius: 0 0 10px 0;
+}
+
+.project-badges.project-badges-cornered > .badge-corner-right {
+    left: auto;
+    right: 0;
+    border-radius: 0 0 0 10px;
+}
+
 /* Language notches (bottom-right) */
 /* Note: override the generic .project-media > * sizing */
 .project-media>.language-notches {

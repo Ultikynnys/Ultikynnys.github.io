@@ -412,9 +412,18 @@ function resolveBadge(project, badgeOptions) {
         } : null
     };
 
-    const renderBadge = (b) => b.tag === 'a'
-        ? `<a href="${b.href}" target="_blank" class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</a>`
-        : `<span class="${b.cls}"><i class="${b.icon}"></i> ${b.text}</span>`;
+    const renderBadge = (b, extraClass) => b.tag === 'a'
+        ? `<a href="${b.href}" target="_blank" class="${b.cls}${extraClass ? ' ' + extraClass : ''}"><i class="${b.icon}"></i> ${b.text}</a>`
+        : `<span class="${b.cls}${extraClass ? ' ' + extraClass : ''}"><i class="${b.icon}"></i> ${b.text}</span>`;
+
+    // When both GitHub and Demo are present in multi-badge mode, place them on
+    // opposite corners (GitHub top-left, Demo top-right) instead of stacking.
+    if (multi && badgeMap.github && badgeMap.demo) {
+        return `<div class="project-badges project-badges-cornered">` +
+            renderBadge(badgeMap.github, 'badge-corner-left') +
+            renderBadge(badgeMap.demo, 'badge-corner-right') +
+            `</div>`;
+    }
 
     let html = '';
     for (const key of order) {

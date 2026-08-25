@@ -38,6 +38,12 @@
 - Private: true
 - Languages: JavaScript
 
+## Reasonix (Cache Optimized LLM Harness)
+- Title: Reasonix (Cache Optimized LLM Harness)
+- Description: A DeepSeek-native AI coding harness, engineered around prefix-cache stability to keep token costs low across long sessions. Standalone Tauri 2 Windows app backed by a headless JSON-RPC daemon, with a cache-first loop, tool-call repair, multi-tab sessions, edit modes, MCP, skills, memory, hooks, and live cost metering.
+- GitHub: https://github.com/Ultikynnys/DeepSeek-Reasonix
+- Languages: TypeScript, Rust
+
 ## UltiBridge | Universal Scene Exporter
 - Title: UltiBridge | Universal Scene Exporter
 - Description: A Blender addon that allows you to export your scene to unity godot and unreal with 1:1 parity
@@ -138,4 +144,3 @@
 - Media: images/cubemap.png
 - GitHub: https://github.com/Ultikynnys/BlenderCubemapConverter
 - Languages: Python
-
