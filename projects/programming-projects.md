@@ -8,6 +8,13 @@
 - GitHub: https://github.com/Ultikynnys/UltiPixelizer
 - Languages: TypeScript, WebAssembly (WASM)
 
+## Krita VTF Plugin
+- Title: Krita VTF Plugin
+- Description: Native Valve Texture Format (.vtf) import and export support for Krita on Windows. Integrates with Krita's standard File > Open and File > Save As workflows, with a dedicated export dialog for choosing VTF version, image encoding, mipmaps, thumbnail, bump-map scale, and texture flags. Supports compressed and uncompressed formats including DXT1/3/5, RGBA8888 and more, and ships a Windows installer that patches Krita's QImageIO bridge.
+- Media: https://raw.githubusercontent.com/Ultikynnys/krita-vtf-plugin/main/docs/images/vtf-export-options.png
+- GitHub: https://github.com/Ultikynnys/krita-vtf-plugin
+- Languages: C++, CMake
+
 ## OpenAlarm
 - Title: OpenAlarm
 - Description: A feature-rich, ESP32-C3-based open-source alarm clock, media player, and IoT device with a web-based management interface, custom PCB design and 3D-printable case. Hardware work includes KiCad and Altium Designer for PCB design, LTspice for electrical simulation, and preparing designs for fabrication through vendors such as JLCPCB. Engineering thesis project.
