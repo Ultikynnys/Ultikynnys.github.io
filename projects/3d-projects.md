@@ -1,5 +1,11 @@
 # 3D Projects
 
+## Deltarune Chapter 1 | Characters and Assets
+- Title: Deltarune Chapter 1 | Characters and Assets
+- Description: As part of a commission, I was tasked to create various Deltarune characters and assets, in the same style as VibaPop's deltarune models.
+- Media: images/deltaruneshowcase.mp4
+- ArtStation: https://www.artstation.com/artwork/319Env
+
 ## Space Station Interior - Modular Asset Pack
 - Title: Space Station Interior - Modular Asset Pack
 - Description: An all-in-one modular asset collection that allows you to construct multi-level space station interiors, complete with a functional elevator system.

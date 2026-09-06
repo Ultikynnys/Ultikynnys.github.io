@@ -485,7 +485,7 @@ h2 {
 .project-badges .private-tag,
 .project-badges .github-link,
 .project-badges .demo-notch,
-.project-badges .artstation-link {
+.project-badges .artstation-notch {
     position: relative;
     top: auto;
     left: auto;
@@ -588,6 +588,12 @@ h2 {
 
 .artstation-link:hover {
     background: rgba(255, 255, 255, 1);
+}
+
+/* Local showcase video inside project media */
+.project-media video {
+    object-fit: contain;
+    background: #000;
 }
 
 /* Media Container Styles */

@@ -325,8 +325,18 @@ function injectLanguageColors(colors) {
 function resolveMediaContent(project, index) {
     const isVideo = typeof project.media === 'string' &&
         (project.media.includes('youtube.com') || project.media.includes('youtu.be'));
+    const isLocalVideo = typeof project.media === 'string' &&
+        /\.(mp4|webm|mov|ogv)(\?.*)?$/i.test(project.media.trim());
     const isMultiImage = Array.isArray(project.media);
     const isSketchfab = typeof project.media === 'string' && project.media.includes('sketchfab.com/models');
+
+    if (isLocalVideo) {
+        // Local video file: render as a muted, looping showcase clip (gif-style)
+        return `
+            <video src="${project.media}" autoplay muted loop playsinline
+                   alt="${project.title}" style="width: 100%; height: 100%;"></video>
+        `;
+    }
 
     if (isVideo) {
         let videoId;
@@ -405,7 +415,7 @@ function resolveBadge(project, badgeOptions) {
         } : null,
         artstation: project.artstation ? {
             tag: 'a',
-            cls: 'artstation-link',
+            cls: 'artstation-notch',
             icon: 'fab fa-artstation',
             text: 'ArtStation',
             href: project.artstation
