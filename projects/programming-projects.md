@@ -40,7 +40,7 @@
 
 ## Reasonix (Cache Optimized LLM Harness)
 - Title: Reasonix (Cache Optimized LLM Harness)
-- Description: A DeepSeek-native AI coding harness, engineered around prefix-cache stability to keep token costs low across long sessions. Standalone Tauri 2 Windows app backed by a headless JSON-RPC daemon, with a cache-first loop, tool-call repair, multi-tab sessions, edit modes, MCP, skills, memory, hooks, and live cost metering.
+- Description: My fork of Reasonix, which I developed further to meet my personal AI-assisted development requirements, with a focus on cost efficiency and support for multiple model-provider APIs. It is a standalone Tauri 2 Windows app backed by a headless JSON-RPC daemon, with a cache-first loop, tool-call repair, multi-tab sessions, edit modes, MCP, skills, memory, hooks, and live cost metering.
 - GitHub: https://github.com/Ultikynnys/DeepSeek-Reasonix
 - Languages: TypeScript, Rust
 

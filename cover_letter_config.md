@@ -27,7 +27,7 @@ When generating a cover letter based on this template:
 ABOUT THE CANDIDATE:
 - Name: Ubeid Hussein (Upi)
 - Dual expertise: Software Development AND 3D Generalist
-- Pursuing a Bachelor of Engineering (B.Eng) in Information Technology at TAMK, 2021-2026: three years of electrical and automation engineering studies followed by two years specializing in embedded systems after transferring to Information Technology
+- Graduated in May 2026 with a Bachelor of Engineering (B.Eng) in Information Technology from TAMK: three years of electrical and automation engineering studies followed by two years specializing in embedded systems after transferring to Information Technology
 
 KEY STRENGTH - DUAL EXPERTISE ADVANTAGE:
 - Unique ability to bridge the gap between technical programming and creative 3D art
@@ -74,7 +74,7 @@ PROGRAMMING EXPERTISE:
 - Frontend Development
 - Database Management
 - REST API Development
-- Productive, cost-conscious AI-assisted development using Claude, ChatGPT, Gemini, DeepSeek, Reasonix, and OpenCode
+- Productive, cost-conscious AI-assisted development using Claude, ChatGPT, Gemini, DeepSeek, and OpenCode; developed a personal Reasonix fork further for maximum AI productivity, cost efficiency, and support for multiple model-provider APIs
 - Version Control (Git, GitHub, and Perforce)
 - CI/CD and automated build, validation, testing, and release workflows using GitHub Actions
 - Containerization (Docker)

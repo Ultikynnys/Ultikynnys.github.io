@@ -178,7 +178,7 @@ Käytännön kokemusta AWS- ja Azure-pilvialustojen käyttämisestä ohjelmisto-
 Työskentelen tavallisimmin ketterissä tiimeissä. Kokemusta iteratiivisesta suunnittelusta, tiimin koordinoinnista ja toimituksesta sekä Scrum Masterina toimimisesta.
 
 ### skills.programming.ai_development.detail
-Tuottava ja kustannustietoinen AI-avusteinen kehitys: mallin ja työkalun valinta tehtävän, laadun, nopeuden ja kustannusten perusteella. Kokemusta Claudesta, ChatGPT:stä, Geministä ja DeepSeekistä sekä mukautetuista ja fork-pohjaisista AI-kehitysympäristöistä, kuten Reasonix ja OpenCode.
+Tuottava ja kustannustietoinen AI-avusteinen kehitys: mallin ja työkalun valinta tehtävän, laadun, nopeuden ja kustannusten perusteella. Kehitin omaa Reasonix-forkiani edelleen henkilökohtaisiin AI-kehitystarpeisiini painottaen kustannustehokkuutta ja useiden mallipalveluiden API-tukea. Kokemusta Claudesta, ChatGPT:stä, Geministä, DeepSeekistä ja OpenCodesta.
 
 ### skills.programming.blender_api.detail
 Ammattimaisessa tuotantokäytössä olevat Python-lisäosat ja taiteilijoiden työnkulkuautomaatio.
@@ -435,7 +435,7 @@ Practical experience using AWS and Azure cloud platforms in software and backend
 I most commonly work in Agile teams, with experience in iterative planning, team coordination, and delivery, including serving as Scrum Master.
 
 ### skills.programming.ai_development.detail
-Productive, cost-conscious AI-assisted development: selecting models and tools based on task, quality, speed, and cost. Experience with Claude, ChatGPT, Gemini, and DeepSeek, plus customized and fork-based AI development environments such as Reasonix and OpenCode.
+Productive, cost-conscious AI-assisted development: selecting models and tools based on task, quality, speed, and cost. I developed my own Reasonix fork further to meet my personal AI development requirements, focusing on cost efficiency and support for multiple model-provider APIs. Experience with Claude, ChatGPT, Gemini, DeepSeek, and OpenCode.
 
 ### skills.programming.blender_api.detail
 Python add-ons used in professional production and artist workflow automation.

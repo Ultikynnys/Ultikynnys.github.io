@@ -64,7 +64,7 @@ Tampereen ammattikorkeakoulu (TAMK)
 Tietotekniikka
 
 ### education.tamk.period
-2021 - 2026 | Insinööri (AMK), tietotekniikka
+Valmistunut toukokuussa 2026 | Insinööri (AMK), tietotekniikka
 
 ### education.tamk.path
 Viiden vuoden opintopolku: kolme vuotta sähkö- ja automaatiotekniikan insinööriopintoja, minkä jälkeen vaihdoin tietotekniikkaan ja suuntauduin kahdeksi vuodeksi sulautettuihin järjestelmiin.
@@ -144,7 +144,7 @@ Tampere University of Applied Sciences (TAMK)
 Information Technology
 
 ### education.tamk.period
-2021 - 2026 | Bachelor of Engineering (B.Eng) in Information Technology
+Graduated May 2026 | Bachelor of Engineering (B.Eng) in Information Technology
 
 ### education.tamk.path
 Five-year study path: three years of electrical and automation engineering studies, followed by a transfer to Information Technology and two years specializing in embedded systems.
