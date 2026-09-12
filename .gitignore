@@ -10,3 +10,7 @@ pnpm-debug.log*
 .kilo/
 .codegraph/
 .reasonix/
+.playwright-mcp/
+/*.png
+/*.pdf
+Työhaku.md

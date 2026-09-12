@@ -49,10 +49,10 @@ Toukokuu 2025 - Lokakuu 2025 | Solita
 Kehitin kahden hengen tiimissä full stack -projekteja hyödyntäen eri teknologiapinoja ja AI-integraatiota. Pelikehitystaustasta oli hyötyä interaktiivisten prototyyppien rakentamisessa.
 
 ### work.gamedev.nbs.title
-Peliohjelmoija | Tekninen taiteilija
+Tekninen taiteilija ja peliohjelmoija (Technical Artist & Game Programmer)
 
 ### work.gamedev.nbs.period
-Tammikuu 2022 - Lokakuu 2025 | No Bright Shadows (Etätyö)
+Lokakuu 2021 - Lokakuu 2025 (4 vuotta) | No Bright Shadows (Etätyö)
 
 ### work.gamedev.nbs.b1
 Ohjelmoin pelimekaniikkoja Unreal Enginellä C++:lla sekä tein hahmomallinnusta, riggausta ja animaatiota Blenderillä. Kehitin partikkelitehosteita ja shadereita. Teknisenä taiteilijana toimin siltana ohjelmoinnin ja taiteen välillä.
@@ -126,10 +126,10 @@ May 2025 - October 2025 | Solita
 Developed small full stack projects as part of a two-person team, using varied technology stacks and AI integration. My game development background supported the creation of interactive prototypes.
 
 ### work.gamedev.nbs.title
-Game Programmer | Technical Artist
+Technical Artist & Game Programmer
 
 ### work.gamedev.nbs.period
-January 2022 - October 2025 | No Bright Shadows (Remote)
+October 2021 - October 2025 (4 years) | No Bright Shadows (Remote)
 
 ### work.gamedev.nbs.b1
 Programmed game mechanics in Unreal Engine with C++. Created character models, rigs, and animations in Blender, and developed particle effects and shaders. As a technical artist, bridged programming and art.
