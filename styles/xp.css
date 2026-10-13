@@ -12,11 +12,11 @@ body.xp-desktop, body.xp-desktop :not(i):not(.fab):not(.fas):not(.far):not(.fal)
 [hidden] { display:none !important; }
 /* Text and media are non-selectable by default so they never interfere with the
    desktop's click/drag interactions. Opt an element (and its descendants) back in with
-   class="selectable" or the data-selectable attribute; form fields opt in too.
+   class="selectable" or the data-selectable attribute; form fields and the bio text opt in too.
    The descendant selectors are required because * sets none on every element and
    user-select is not inherited. */
 * { -webkit-user-select:none; user-select:none; }
-.selectable, .selectable *, [data-selectable], [data-selectable] *,
+.selectable, .selectable *, [data-selectable], [data-selectable] *, .bio, .bio *,
 input, textarea, select, [contenteditable="true"], [contenteditable="true"] * { -webkit-user-select:text; user-select:text; }
 /* Media can also be picked up by a native drag, so keep images, icons and cats put. */
 img, svg, canvas, video, audio, iframe { -webkit-user-drag:none; user-select:none; }
@@ -83,7 +83,7 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content .portfolio-choice .portfolio-info, .xp-content .project-info { padding:14px; text-align:left; }
 .xp-content .portfolio-info h3, .xp-content .project-info h3 { margin:0 0 8px; color:#17458c; font-size:17px; }
 .xp-content .portfolio-info p, .xp-content .project-info p { color:#495972; font-size:12px; line-height:1.6; }
-.xp-content .portfolio-choice::before { content:var(--portfolio-section-title,''); display:block; padding:6px 10px; color:#fff; font-size:11px; background:var(--accent-color,#2865c3); background:linear-gradient(color-mix(in srgb,var(--accent-color,#2865c3) 72%,#fff),var(--accent-color,#2865c3)); }
+.xp-content .portfolio-choice::before { content:var(--portfolio-section-title,''); display:block; padding:6px 10px; color:#fff; font-size:11px; background:var(--accent-color,#2865c3); }
 .xp-content .portfolio-programming-card { --portfolio-section-title:'Programming'; }
 .xp-content .portfolio-3d-card { --portfolio-section-title:'3D Design'; }
 .xp-content .portfolio-gamedev-card { --portfolio-section-title:'Game Development'; }
@@ -200,7 +200,7 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 :is(html, body).xp-desktop { cursor:url('../images/xp-cursors/arrow.png') 5 6, default; }
 :is(html, body).xp-desktop .xp-titlebar, :is(html, body).xp-desktop .xp-tb:disabled { cursor:url('../images/xp-cursors/arrow.png') 5 6, default !important; }
 :is(html, body).xp-desktop :is(a, button, summary, label, select, [role="button"], [data-action], .project-card, .portfolio-choice, .xp-task, .xp-start, .xp-tb, .xp-volume, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="button"], input[type="submit"]) { cursor:url('../images/xp-cursors/pointer.png') 11 5, pointer !important; }
-:is(html, body).xp-desktop .selectable, :is(html, body).xp-desktop .selectable *, :is(html, body).xp-desktop [data-selectable], :is(html, body).xp-desktop [data-selectable] *, :is(html, body).xp-desktop textarea, :is(html, body).xp-desktop input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), :is(html, body).xp-desktop [contenteditable="true"], :is(html, body).xp-desktop [contenteditable="true"] * { cursor:url('../images/xp-cursors/text.png') 9 15, text !important; }
+:is(html, body).xp-desktop .selectable, :is(html, body).xp-desktop .selectable *, :is(html, body).xp-desktop [data-selectable], :is(html, body).xp-desktop [data-selectable] *, :is(html, body).xp-desktop .bio, :is(html, body).xp-desktop .bio *, :is(html, body).xp-desktop textarea, :is(html, body).xp-desktop input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), :is(html, body).xp-desktop [contenteditable="true"], :is(html, body).xp-desktop [contenteditable="true"] * { cursor:url('../images/xp-cursors/text.png') 9 15, text !important; }
 :is(html, body).xp-desktop :is(.xp-edge-w, .xp-edge-e) { cursor:url('../images/xp-cursors/resize-h.png') 18 18, ew-resize !important; }
 :is(html, body).xp-desktop .xp-edge-s { cursor:url('../images/xp-cursors/resize-v.png') 18 21, ns-resize !important; }
 :is(html, body).xp-desktop .xp-resize { cursor:url('../images/xp-cursors/resize-se.png') 15 15, nwse-resize !important; }
