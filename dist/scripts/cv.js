@@ -1,0 +1,270 @@
+"use strict";
+(() => {
+  // scripts/dom.ts
+  function setActiveToggle(groupSelector, activeSelector) {
+    document.querySelectorAll(`${groupSelector} span`).forEach((node) => node.classList.toggle("active", node.matches(activeSelector)));
+  }
+  function bindActions(actions) {
+    document.querySelectorAll("[data-action]").forEach((node) => {
+      node.setAttribute("role", "button");
+      node.tabIndex = 0;
+      const activate = () => actions[node.dataset.action ?? ""]?.(node.dataset.value ?? "");
+      node.addEventListener("click", activate);
+      node.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activate();
+        }
+      });
+    });
+  }
+
+  // scripts/cv.ts
+  var CV_DATA = {};
+  function markdownToHtml(text) {
+    let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    html = html.replace(/\n/g, "<br>");
+    return html;
+  }
+  function parseCVMarkdown(text) {
+    const data = { fi: {}, en: {} };
+    const lines = text.split(/\r?\n/);
+    let currentLang = null;
+    let currentKey = null;
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) continue;
+      if (line.startsWith("## ")) {
+        const lang = line.substring(3).trim().toLowerCase();
+        currentLang = lang === "fi" ? "fi" : "en";
+        currentKey = null;
+        continue;
+      }
+      if (line.startsWith("### ") && currentLang) {
+        currentKey = line.substring(4).trim();
+        if (!data[currentLang][currentKey]) {
+          data[currentLang][currentKey] = "";
+        }
+        continue;
+      }
+      if (currentLang && currentKey) {
+        if (data[currentLang][currentKey]) {
+          data[currentLang][currentKey] += "\n" + line;
+        } else {
+          data[currentLang][currentKey] = line;
+        }
+      }
+    }
+    for (const lang of ["fi", "en"]) {
+      for (const key of Object.keys(data[lang])) {
+        data[lang][key] = data[lang][key].trim();
+      }
+    }
+    return data;
+  }
+  function getValue(key, cvType, lang) {
+    let val = CV_DATA[cvType]?.[lang]?.[key];
+    if (val != null) return val;
+    const fallbacks = cvType === "programming" ? ["3d", "gamedev"] : cvType === "3d" ? ["programming", "gamedev"] : ["programming", "3d"];
+    for (const fb of fallbacks) {
+      val = CV_DATA[fb]?.[lang]?.[key];
+      if (val != null) return val;
+    }
+    return CV_DATA.shared?.[lang]?.[key] || null;
+  }
+  function renderCV() {
+    const lang = document.body.classList.contains("english") ? "en" : "fi";
+    let cvType = "programming";
+    if (document.body.classList.contains("cv-3d-mode")) {
+      cvType = "3d";
+    } else if (document.body.classList.contains("cv-gamedev-mode")) {
+      cvType = "gamedev";
+    }
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n") ?? "";
+      const val = getValue(key, cvType, lang);
+      if (val) {
+        el.innerHTML = markdownToHtml(val);
+      }
+      const altKey = el.getAttribute("data-i18n-alt");
+      if (altKey) {
+        const altVal = getValue(altKey, cvType, lang);
+        if (altVal) {
+          el.setAttribute("alt", altVal);
+        }
+      }
+    });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria-label") ?? "";
+      const val = getValue(key, cvType, lang);
+      if (val) {
+        el.setAttribute("aria-label", val);
+      }
+    });
+    const titleVal = getValue("ui.pageTitle", cvType, lang);
+    if (titleVal) {
+      document.title = titleVal;
+    }
+    buildSkills(cvType, lang);
+  }
+  function buildSkills(cvType, lang) {
+    const list = document.getElementById("skills-list");
+    if (list) {
+      list.innerHTML = "";
+    }
+    const data = CV_DATA[cvType]?.[lang];
+    if (!data) return;
+    const getSkillIcon = (key) => {
+      const svgs = {
+        ue5: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M12 23c6.075 0 11-4.925 11-11S18.075 1 12 1 1 5.925 1 12s4.925 11 11 11Zm-8.442-9.416c.718-2.333 2.53-6.86 7.27-8.584v10.23c.179.18.645.54 1.076.54.67 0 1.615-.54 1.615-.54V8.77c.555-1.16 3.123-3.232 4.847-3.232-1.044 1.204-1.532 1.91-2.154 3.231v6.462c.718.18 2.154 0 3.23-1.077-.87 1.98-3.23 4.308-4.307 4.308l-1.616-1.077L11.904 19c-1.615 0-4.308-1.077-5.385-2.692h1.616v-6.17c-1.96-.268-2.857.973-4.577 3.446Z" clip-rule="evenodd"/></svg>`,
+        unreal: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M12 23c6.075 0 11-4.925 11-11S18.075 1 12 1 1 5.925 1 12s4.925 11 11 11Zm-8.442-9.416c.718-2.333 2.53-6.86 7.27-8.584v10.23c.179.18.645.54 1.076.54.67 0 1.615-.54 1.615-.54V8.77c.555-1.16 3.123-3.232 4.847-3.232-1.044 1.204-1.532 1.91-2.154 3.231v6.462c.718.18 2.154 0 3.23-1.077-.87 1.98-3.23 4.308-4.307 4.308l-1.616-1.077L11.904 19c-1.615 0-4.308-1.077-5.385-2.692h1.616v-6.17c-1.96-.268-2.857.973-4.577 3.446Z" clip-rule="evenodd"/></svg>`,
+        unity: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="m12.9288 4.2939 3.7997 2.1929c.1366.077.1415.2905 0 .3675l-4.515 2.6076a.4192.4192 0 0 1-.4246 0L7.274 6.8543c-.139-.0745-.1415-.293 0-.3675l3.7972-2.193V0L1.3758 5.5977V16.793l3.7177-2.1456v-4.3858c-.0025-.1565.1813-.2682.318-.1838l4.5148 2.6076a.4252.4252 0 0 1 .2136.3676v5.2127c.0025.1565-.1813.2682-.3179.1838l-3.7996-2.1929-3.7178 2.1457L12 24l9.6954-5.5977-3.7178-2.1457-3.7996 2.1929c-.1341.082-.3229-.0248-.3179-.1838V13.053c0-.1565.087-.2956.2136-.3676l4.5149-2.6076c.134-.082.3228.0224.3179.1838v4.3858l3.7177 2.1456V5.5977L12.9288 0Z"/></svg>`,
+        godot: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M9.5598.683c-1.096.244-2.1812.5831-3.1983 1.0951.023.8981.081 1.7582.199 2.6323-.395.253-.81.47-1.178.766-.375.288-.7581.564-1.0971.9011-.6781-.448-1.3962-.869-2.1352-1.2411C1.3532 5.6934.608 6.6186 0 7.6546c.458.7411.936 1.4352 1.4521 2.0942h.014v6.3565c.012 0 .023 0 .035.003l3.8963.376c.204.02.364.184.378.3891l.12 1.7201 3.3994.242.234-1.587c.03-.206.207-.358.415-.358h4.1114c.208 0 .385.152.415.358l.234 1.587 3.3993-.242.12-1.72a.4196.4196 0 01.378-.3891l3.8954-.376c.012 0 .023-.003.035-.003v-.5071h.002V9.7498h.014c.516-.659.994-1.3531 1.4521-2.0942-.608-1.036-1.3541-1.9611-2.1512-2.8192-.739.372-1.4571.793-2.1352 1.2411-.339-.337-.721-.613-1.096-.901-.369-.296-.7841-.5131-1.1781-.7661.117-.8741.175-1.7342.199-2.6323-1.0171-.512-2.1012-.851-3.1983-1.095-.438.736-.838 1.533-1.1871 2.3121-.414-.069-.829-.094-1.2461-.099h-.016c-.417.005-.832.03-1.2461.099-.349-.779-.749-1.576-1.1881-2.3121l.001-.001zM6.4765 9.9889c1.2971 0 2.3492 1.0511 2.3492 2.3482s-1.052 2.3482-2.3492 2.3482c-1.296 0-2.3482-1.051-2.3482-2.3482 0-1.297 1.0511-2.3482 2.3482-2.3482zm11.049 0c1.296 0 2.3482 1.0511 2.3482 2.3482s-1.0511 2.3482-2.3482 2.3482-2.3492-1.051-2.3492-2.3482c0-1.297 1.051-2.3482 2.3492-2.3482zm-10.824.9301c-.861 0-1.559.698-1.559 1.5591s.698 1.5582 1.559 1.5582c.8611 0 1.5592-.698 1.5592-1.5582 0-.86-.697-1.559-1.5591-1.559zm10.598 0c-.8611 0-1.5582.698-1.5582 1.5591s.697 1.5582 1.5581 1.5582c.8611 0 1.5592-.698 1.5592-1.5582 0-.86-.697-1.559-1.5592-1.559zm-5.2985.453c.417 0 .757.308.757.6871v2.1622c0 .379-.339.687-.757.687s-.756-.308-.756-.687V12.059c0-.379.339-.687.756-.687zM1.4601 16.9464c.002.377.006.789.006.871 0 3.7014 4.6944 5.4795 10.5269 5.5005h.014c5.8325-.02 10.5259-1.7991 10.5259-5.5004 0-.084.005-.495.007-.871l-3.5023.338-.121 1.729a.421.421 0 01-.389.3901l-4.1814.296a.4203.4203 0 01-.415-.358l-.238-1.6141h-3.3863l-.238 1.6141a.4192.4192 0 01-.4451.357l-4.1513-.296c-.208-.015-.375-.181-.389-.389l-.12-1.7292-3.5044-.337z"/></svg>`,
+        blender: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.51 13.214c.046-.8.438-1.506 1.03-2.006a3.424 3.424 0 0 1 2.212-.79c.85 0 1.631.3 2.211.79.592.5.983 1.206 1.028 2.005.045.823-.285 1.586-.865 2.153a3.389 3.389 0 0 1-2.374.938 3.393 3.393 0 0 1-2.376-.938c-.58-.567-.91-1.33-.865-2.152M7.35 14.831c.006.314.106.922.256 1.398a7.372 7.372 0 0 0 1.593 2.757 8.227 8.227 0 0 0 2.787 2.001 8.947 8.947 0 0 0 3.66.76 8.964 8.964 0 0 0 3.657-.772 8.285 8.285 0 0 0 2.785-2.01 7.428 7.428 0 0 0 1.592-2.762 6.964 6.964 0 0 0 .25-3.074 7.123 7.123 0 0 0-1.016-2.779 7.764 7.764 0 0 0-1.852-2.043h.002L13.566 2.55l-.02-.015c-.492-.378-1.319-.376-1.86.002-.547.382-.609 1.015-.123 1.415l-.001.001 3.126 2.543-9.53.01h-.013c-.788.001-1.545.518-1.695 1.172-.154.665.38 1.217 1.2 1.22V8.9l4.83-.01-8.62 6.617-.034.025c-.813.622-1.075 1.658-.563 2.313.52.667 1.625.668 2.447.004L7.414 14s-.069.52-.063.831zm12.09 1.741c-.97.988-2.326 1.548-3.795 1.55-1.47.004-2.827-.552-3.797-1.538a4.51 4.51 0 0 1-1.036-1.622 4.282 4.282 0 0 1 .282-3.519 4.702 4.702 0 0 1 1.153-1.371c.942-.768 2.141-1.183 3.396-1.185 1.256-.002 2.455.41 3.398 1.175.48.391.87.854 1.152 1.367a4.28 4.28 0 0 1 .522 1.706 4.236 4.236 0 0 1-.239 1.811 4.54 4.54 0 0 1-1.035 1.626"/></svg>`,
+        blender_api: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12.51 13.214c.046-.8.438-1.506 1.03-2.006a3.424 3.424 0 0 1 2.212-.79c.85 0 1.631.3 2.211.79.592.5.983 1.206 1.028 2.005.045.823-.285 1.586-.865 2.153a3.389 3.389 0 0 1-2.374.938 3.393 3.393 0 0 1-2.376-.938c-.58-.567-.91-1.33-.865-2.152M7.35 14.831c.006.314.106.922.256 1.398a7.372 7.372 0 0 0 1.593 2.757 8.227 8.227 0 0 0 2.787 2.001 8.947 8.947 0 0 0 3.66.76 8.964 8.964 0 0 0 3.657-.772 8.285 8.285 0 0 0 2.785-2.01 7.428 7.428 0 0 0 1.592-2.762 6.964 6.964 0 0 0 .25-3.074 7.123 7.123 0 0 0-1.016-2.779 7.764 7.764 0 0 0-1.852-2.043h.002L13.566 2.55l-.02-.015c-.492-.378-1.319-.376-1.86.002-.547.382-.609 1.015-.123 1.415l-.001.001 3.126 2.543-9.53.01h-.013c-.788.001-1.545.518-1.695 1.172-.154.665.38 1.217 1.2 1.22V8.9l4.83-.01-8.62 6.617-.034.025c-.813.622-1.075 1.658-.563 2.313.52.667 1.625.668 2.447.004L7.414 14s-.069.52-.063.831zm12.09 1.741c-.97.988-2.326 1.548-3.795 1.55-1.47.004-2.827-.552-3.797-1.538a4.51 4.51 0 0 1-1.036-1.622 4.282 4.282 0 0 1 .282-3.519 4.702 4.702 0 0 1 1.153-1.371c.942-.768 2.141-1.183 3.396-1.185 1.256-.002 2.455.41 3.398 1.175.48.391.87.854 1.152 1.367a4.28 4.28 0 0 1 .522 1.706 4.236 4.236 0 0 1-.239 1.811 4.54 4.54 0 0 1-1.035 1.626"/></svg>`,
+        zbrush: `<img src="images/zbrush.png" alt="ZBrush" style="width: 16px; height: 16px; object-fit: contain; filter: brightness(0) invert(1); display: block;">`,
+        substance_painter: `<svg viewBox="0 0 24 24" width="16" height="16"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="#1b1429" stroke="#E6E6FA" stroke-width="2"/><text x="12" y="16" font-size="11" font-family="Tahoma" font-weight="900" text-anchor="middle" fill="#E6E6FA">Pt</text></svg>`,
+        substance_designer: `<svg viewBox="0 0 24 24" width="16" height="16"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="#1b1429" stroke="#E6E6FA" stroke-width="2"/><text x="12" y="16" font-size="11" font-family="Tahoma" font-weight="900" text-anchor="middle" fill="#E6E6FA">Ds</text></svg>`,
+        python: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg>`,
+        python_api: `<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14.25.18l.9.2.73.26.59.3.45.32.34.34.25.34.16.33.1.3.04.26.02.2-.01.13V8.5l-.05.63-.13.55-.21.46-.26.38-.3.31-.33.25-.35.19-.35.14-.33.1-.3.07-.26.04-.21.02H8.77l-.69.05-.59.14-.5.22-.41.27-.33.32-.27.35-.2.36-.15.37-.1.35-.07.32-.04.27-.02.21v3.06H3.17l-.21-.03-.28-.07-.32-.12-.35-.18-.36-.26-.36-.36-.35-.46-.32-.59-.28-.73-.21-.88-.14-1.05-.05-1.23.06-1.22.16-1.04.24-.87.32-.71.36-.57.4-.44.42-.33.42-.24.4-.16.36-.1.32-.05.24-.01h.16l.06.01h8.16v-.83H6.18l-.01-2.75-.02-.37.05-.34.11-.31.17-.28.25-.26.31-.23.38-.2.44-.18.51-.15.58-.12.64-.1.71-.06.77-.04.84-.02 1.27.05zm-6.3 1.98l-.23.33-.08.41.08.41.23.34.33.22.41.09.41-.09.33-.22.23-.34.08-.41-.08-.41-.23-.33-.33-.22-.41-.09-.41.09zm13.09 3.95l.28.06.32.12.35.18.36.27.36.35.35.47.32.59.28.73.21.88.14 1.04.05 1.23-.06 1.23-.16 1.04-.24.86-.32.71-.36.57-.4.45-.42.33-.42.24-.4.16-.36.09-.32.05-.24.02-.16-.01h-8.22v.82h5.84l.01 2.76.02.36-.05.34-.11.31-.17.29-.25.25-.31.24-.38.2-.44.17-.51.15-.58.13-.64.09-.71.07-.77.04-.84.01-1.27-.04-1.07-.14-.9-.2-.73-.25-.59-.3-.45-.33-.34-.34-.25-.34-.16-.33-.1-.3-.04-.25-.02-.2.01-.13v-5.34l.05-.64.13-.54.21-.46.26-.38.3-.32.33-.24.35-.2.35-.14.33-.1.3-.06.26-.04.21-.02.13-.01h5.84l.69-.05.59-.14.5-.21.41-.28.33-.32.27-.35.2-.36.15-.36.1-.35.07-.32.04-.28.02-.21V6.07h2.09l.14.01zm-6.47 14.25l-.23.33-.08.41.08.41.23.33.33.23.41.08.41-.08.33-.23.23-.33.08-.41-.08-.41-.23-.33-.33-.23-.41-.08-.41.08z"/></svg>`
+      };
+      if (svgs[key]) {
+        const span = document.createElement("span");
+        span.className = "skill-icon-svg";
+        span.innerHTML = svgs[key];
+        return span;
+      }
+      const faClass = {
+        cpp: "fab fa-cuttlefish",
+        csharp: "fas fa-hashtag",
+        html_css: "fab fa-html5",
+        js_ts: "fab fa-js-square",
+        java: "fab fa-java",
+        kotlin: "fas fa-code",
+        embedded: "fas fa-microchip",
+        protocols: "fas fa-project-diagram",
+        hdl: "fas fa-microchip",
+        ci_cd: "fas fa-cogs",
+        modeling: "fas fa-shapes",
+        modeling_sculpting: "fas fa-shapes",
+        rigging: "fas fa-bone",
+        rigging_animation: "fas fa-walking",
+        texturing: "fas fa-palette",
+        pbr_stylized: "fas fa-palette",
+        shaders: "fas fa-eye",
+        shaders_materials: "fas fa-magic",
+        teamwork: "fas fa-users"
+      }[key] || "fas fa-cube";
+      const i = document.createElement("i");
+      i.className = faClass;
+      i.style.width = "18px";
+      i.style.marginRight = "8px";
+      i.style.textAlign = "center";
+      return i;
+    };
+    const prefix = "sidebar.skills.";
+    if (cvType !== "programming" && list) {
+      Object.keys(data).forEach((key) => {
+        if (key.startsWith(prefix)) {
+          const skillKey = key.substring(prefix.length);
+          const li = document.createElement("li");
+          const iconNode = getSkillIcon(skillKey);
+          li.appendChild(iconNode);
+          const span = document.createElement("span");
+          span.textContent = data[key];
+          li.appendChild(span);
+          list.appendChild(li);
+        }
+      });
+    }
+    const showcase = document.getElementById("programming-skills-showcase");
+    if (!showcase) return;
+    showcase.innerHTML = "";
+    if (cvType !== "programming") return;
+    const categories = [
+      { key: "embedded", skills: ["hardware_design", "industrial_sensors", "plc", "embedded_software", "embedded", "protocols", "linux", "hdl"] },
+      { key: "integration", skills: ["linux_server", "cloud", "databases", "html_css", "js_ts", "architecture"] },
+      { key: "engineering", skills: ["agile", "ai_development", "ci_cd", "testing", "git"] },
+      { key: "languages", skills: ["cpp", "python", "csharp", "blender_api"] }
+    ];
+    categories.forEach((category) => {
+      const article = document.createElement("article");
+      article.className = "skill-category";
+      const heading = document.createElement("h3");
+      heading.textContent = getValue(`skills.programming.category.${category.key}`, cvType, lang) || "";
+      article.appendChild(heading);
+      const ul = document.createElement("ul");
+      category.skills.forEach((skillKey) => {
+        const name = data[`${prefix}${skillKey}`];
+        const detail = data[`skills.programming.${skillKey}.detail`];
+        if (!name || !detail) return;
+        const li = document.createElement("li");
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "skill-name";
+        nameSpan.textContent = name;
+        const detailSpan = document.createElement("span");
+        detailSpan.className = "skill-detail";
+        detailSpan.textContent = detail;
+        li.append(nameSpan, detailSpan);
+        ul.appendChild(li);
+      });
+      article.appendChild(ul);
+      showcase.appendChild(article);
+    });
+  }
+  async function loadCVMarkdown() {
+    try {
+      const [sharedRes, progRes, d3Res, gameDevRes] = await Promise.all([
+        fetch("content/cv_shared.md"),
+        fetch("content/cv_programming.md"),
+        fetch("content/cv_3d.md"),
+        fetch("content/cv_gamedev.md")
+      ]);
+      CV_DATA.shared = parseCVMarkdown(await sharedRes.text());
+      CV_DATA.programming = parseCVMarkdown(await progRes.text());
+      CV_DATA["3d"] = parseCVMarkdown(await d3Res.text());
+      CV_DATA["gamedev"] = parseCVMarkdown(await gameDevRes.text());
+      renderCV();
+    } catch (e) {
+      console.error("Failed to load CV markdown:", e);
+    }
+  }
+  function toggleLanguage(lang) {
+    const english = lang !== "finnish";
+    document.body.classList.toggle("english", english);
+    setActiveToggle(".language-toggle", english ? ".toggle-en" : ".toggle-fi");
+    renderCV();
+  }
+  function toggleCV(cvType) {
+    document.body.classList.remove("cv-3d-mode", "cv-gamedev-mode");
+    if (cvType === "3d" || cvType === "gamedev") document.body.classList.add(`cv-${cvType}-mode`);
+    setActiveToggle(".cv-toggle", `.toggle-${cvType}`);
+    renderCV();
+  }
+  function validateProgrammingPrintFit() {
+    if (document.body.classList.contains("cv-3d-mode") || document.body.classList.contains("cv-gamedev-mode")) {
+      return;
+    }
+    const overflows = [];
+    document.querySelectorAll(".page").forEach((page, pageIndex) => {
+      Array.from(page.children).forEach((column) => {
+        if (column.scrollHeight > column.clientHeight + 1) {
+          overflows.push(`page ${pageIndex + 1} ${column.className}`);
+        }
+      });
+    });
+    if (overflows.length > 0) {
+      console.error(`CV print layout overflow detected: ${overflows.join(", ")}. Reduce content or print spacing before saving the PDF.`);
+    }
+  }
+  window.addEventListener("beforeprint", validateProgrammingPrintFit);
+  document.addEventListener("DOMContentLoaded", () => {
+    bindActions({ language: toggleLanguage, cv: toggleCV });
+    document.querySelector(".print-button")?.addEventListener("click", () => window.print());
+    void loadCVMarkdown();
+  });
+})();
+//# sourceMappingURL=cv.js.map

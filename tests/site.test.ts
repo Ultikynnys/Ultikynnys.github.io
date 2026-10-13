@@ -1,0 +1,53 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync, readdirSync } from 'node:fs';
+import { parseMarkdown, createUnifiedProjectCard, parseSimpleToml } from '../scripts/portfolio-common';
+import { parsePageHeaders } from '../scripts/load-headers';
+import { parseContactsToml } from '../scripts/social-ribbon';
+
+test('all page entries use compiled scripts without inline executable code', () => {
+    for (const file of readdirSync('.').filter(file => file.endsWith('.html'))) {
+        const html = readFileSync(file, 'utf8');
+        assert.doesNotMatch(html, /\bon\w+\s*=/i, file);
+        assert.doesNotMatch(html, /<script\s*>/i, file);
+        if (file === 'footer.html') continue;
+        assert.match(html, /styles\/xp\.css/, file);
+        assert.match(html, /dist\/scripts\/desktop\.js/, file);
+        for (const match of html.matchAll(/<script[^>]+src="(dist\/[^" ]+)"/g)) assert.ok(readFileSync(match[1]).length > 0);
+    }
+    assert.ok(!readdirSync('scripts').some(file => /\.(?:js|mjs|cjs)$/.test(file)));
+});
+test('project markdown preserves all fields and media types', () => {
+    const data = parseMarkdown('# Portfolio\nIntroduction\n## Example\n- Title: Sample\n- Description: Works\n- Media: [images/a.png, images/b.png]\n- Private: true\n- Priority: 2\n- Languages: TypeScript, C++\n- Store: https://example.com');
+    assert.equal(data.intro, 'Introduction');
+    assert.deepEqual(data.projects[0].media, ['images/a.png', 'images/b.png']);
+    assert.equal(data.projects[0].priority, 2);
+    assert.equal(data.projects[0].private, true);
+    assert.deepEqual(data.projects[0].languages, ['TypeScript', 'C++']);
+    const html = createUnifiedProjectCard(data.projects[0], 0, { showLanguageNotches: true });
+    assert.match(html, /data-carousel-step/);
+    assert.match(html, /class="store-link"/);
+    assert.doesNotMatch(html, /onclick=/);
+});
+test('real project files and configuration parse', () => {
+    for (const file of ['programming-projects.md', '3d-projects.md', 'games.md']) {
+        const data = parseMarkdown(readFileSync(`projects/${file}`, 'utf8'));
+        assert.ok(data.projects.length > 0, file);
+        assert.ok(data.projects.every(project => project.title), file);
+    }
+    const contacts = parseContactsToml(readFileSync('config/contacts.toml', 'utf8'));
+    assert.ok(contacts.ribbon.order.length > 0);
+    assert.ok(contacts.ribbon.order.every(key => contacts.social[key]));
+    assert.ok(parsePageHeaders(readFileSync('content/page-headers.md', 'utf8')).index);
+    assert.ok(parseSimpleToml(readFileSync('content/language_colors.toml', 'utf8')).typescript);
+});
+test('projects without media render a labelled placeholder instead of a broken image', () => {
+    const html = createUnifiedProjectCard({ title: 'Reasonix', description: 'No media field', media: '' }, 2);
+    assert.match(html, /media-placeholder/);
+    assert.doesNotMatch(html, /src=""/);
+});
+test('rendered project text is escaped and unsafe URLs are excluded', () => {
+    const html = createUnifiedProjectCard({ title: '<script>alert(1)</script>', description: '<b>Text</b>', media: 'javascript:alert(1)', github: 'javascript:alert(1)' }, 1);
+    assert.doesNotMatch(html, /<script>|javascript:/);
+    assert.match(html, /&lt;b&gt;/);
+});

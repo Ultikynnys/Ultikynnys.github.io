@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="ui.pageTitle">Ubeid Hussein - CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .language-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .cv-toggle {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 100;
+            cursor: pointer;
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .language-toggle span {
+            padding: 5px 8px;
+            background-color: #f8f9fa;
+        }
+
+        .language-toggle span.active {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .cv-toggle span {
+            padding: 5px 8px;
+            background-color: #f8f9fa;
+        }
+
+        .cv-toggle span.active {
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .cv-programming { display: block; }
+        .cv-3d { display: none; }
+        .cv-gamedev { display: none; }
+        body.cv-3d-mode .cv-programming { display: none; }
+        body.cv-3d-mode .cv-3d { display: block; }
+        body.cv-3d-mode .cv-gamedev { display: none; }
+        body.cv-gamedev-mode .cv-programming { display: none; }
+        body.cv-gamedev-mode .cv-3d { display: none; }
+        body.cv-gamedev-mode .cv-gamedev { display: block; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Tahoma;
+            background-color: #ccc;
+        }
+
+        .page {
+            display: flex;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 20mm auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 35%;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px 15px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .sidebar::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='60'%20height='52'%20viewBox='0%200%2060%2052'><path%20d='M30%201%20L59%2017%20L59%2035%20L30%2051%20L1%2035%20L1%2017%20Z'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.05'/></svg>");
+            background-size: 30px 26px;
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body.cv-3d-mode .sidebar {
+            background-color: #6A0DAD;
+        }
+
+        body.cv-3d-mode .sidebar::before {
+            background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'><circle%20cx='20'%20cy='20'%20r='8'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.08'/></svg>");
+            background-size: 40px 40px;
+        }
+
+        body.cv-3d-mode .sidebar h2,
+        body.cv-3d-mode .sidebar h3 {
+            color: #F5F5F5;
+            border-bottom: 1px solid #9370DB;
+        }
+
+        body.cv-3d-mode .main-content h1,
+        body.cv-3d-mode .main-content h2,
+        body.cv-3d-mode .main-content h3 {
+            color: #6A0DAD;
+        }
+
+        body.cv-3d-mode .main-content h2 {
+            border-bottom: 1px solid #9370DB;
+        }
+
+        body.cv-3d-mode .sidebar a {
+            color: #FFFFFF;
+        }
+
+        body.cv-3d-mode .sidebar a:hover {
+            color: #DDDDDD;
+        }
+
+        body.cv-3d-mode .sidebar {
+            padding: 12px 14px;
+        }
+        body.cv-3d-mode .sidebar .section {
+            margin-bottom: 12px;
+        }
+        body.cv-3d-mode .sidebar h2 {
+            font-size: 11pt;
+            margin-bottom: 8px;
+            padding-bottom: 3px;
+        }
+        body.cv-3d-mode .sidebar p {
+            font-size: 8.5pt;
+            line-height: 1.35;
+        }
+        body.cv-3d-mode .sidebar ul li {
+            font-size: 8.5pt;
+            margin-bottom: 4px;
+        }
+        body.cv-3d-mode .main-content {
+            padding: 14px 18px;
+        }
+        body.cv-3d-mode .main-content .section {
+            margin-bottom: 10px;
+        }
+        body.cv-3d-mode .main-content h1 {
+            font-size: 20pt;
+            margin-bottom: 2px;
+        }
+        body.cv-3d-mode .main-content h2 {
+            font-size: 11pt;
+            margin-top: 10px;
+            margin-bottom: 6px;
+            padding-bottom: 2px;
+        }
+        body.cv-3d-mode .main-content h3 {
+            font-size: 9pt;
+            margin-bottom: 2px;
+            margin-top: 4px;
+        }
+        body.cv-3d-mode .main-content p {
+            font-size: 8pt;
+            margin-top: 1px;
+            margin-bottom: 2px;
+        }
+        body.cv-3d-mode .main-content ul {
+            margin-top: 2px;
+            margin-bottom: 4px;
+        }
+        body.cv-3d-mode .main-content ul li {
+            font-size: 8pt;
+            line-height: 1.25;
+            margin-bottom: 2px;
+        }
+
+        body.cv-gamedev-mode .sidebar {
+            background-color: #1a6b3c;
+        }
+
+        body.cv-gamedev-mode .sidebar::before {
+            background-image: url("data:image/svg+xml;utf8,<svg%20xmlns='http://www.w3.org/2000/svg'%20width='40'%20height='40'%20viewBox='0%200%2040%2040'><polygon%20points='20,5%2035,20%2020,35%205,20'%20fill='none'%20stroke='%23ffffff'%20stroke-width='1'%20opacity='0.08'/></svg>");
+            background-size: 40px 40px;
+        }
+
+        body.cv-gamedev-mode .sidebar h2,
+        body.cv-gamedev-mode .sidebar h3 {
+            color: #F5F5F5;
+            border-bottom: 1px solid #4CAF50;
+        }
+
+        body.cv-gamedev-mode .main-content h1,
+        body.cv-gamedev-mode .main-content h2,
+        body.cv-gamedev-mode .main-content h3 {
+            color: #1a6b3c;
+        }
+
+        body.cv-gamedev-mode .main-content h2 {
+            border-bottom: 1px solid #4CAF50;
+        }
+
+        body.cv-gamedev-mode .sidebar a {
+            color: #FFFFFF;
+        }
+
+        body.cv-gamedev-mode .sidebar a:hover {
+            color: #DDDDDD;
+        }
+
+        .sidebar > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            width: 65%;
+            background-color: #f8f9fa;
+            padding: 15px 20px 15px 30px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .profile-image {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .sidebar h2, .sidebar h3 {
+             color: #ecf0f1;
+             border-bottom: 1px solid #34495e;
+             padding-bottom: 5px;
+             margin-bottom: 15px;
+        }
+        .main-content h1 {
+            margin-bottom: 5px;
+            padding-right: 140px;
+        }
+         .main-content h2 {
+             border-bottom: 1px solid #bdc3c7;
+             padding-bottom: 5px;
+             margin-top: 25px;
+             margin-bottom: 15px;
+         }
+
+        .section {
+            margin-bottom: 25px;
+        }
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .section ul li {
+            margin-bottom: 8px;
+        }
+        .sidebar ul li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .skill-icon-svg {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        .skill-icon-svg svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .sidebar a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+        .sidebar a:hover {
+            color: #DDDDDD;
+            text-decoration: underline;
+        }
+
+        .sidebar .section ul li i.fab, .sidebar .section ul li i.fas {
+            margin-right: 10px;
+            width: 1.2em;
+            text-align: center;
+        }
+
+        .main-content .section ul li i.fab, .main-content .section ul li i.fas {
+             margin-right: 8px;
+             width: 1.2em;
+             text-align: center;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 10px;
+        }
+
+        .skills-grid h3 {
+            grid-column: 1 / -1;
+            margin-bottom: 5px;
+        }
+
+        .skills-grid ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .cv-3d {
+            display: none !important;
+        }
+        .cv-gamedev {
+            display: none !important;
+        }
+        .cv-skills-sidebar {
+            display: none !important;
+        }
+        body.cv-3d-mode .cv-3d {
+            display: block !important;
+        }
+        body.cv-3d-mode .cv-gamedev {
+            display: none !important;
+        }
+        body.cv-3d-mode .cv-skills-sidebar {
+            display: block !important;
+        }
+        body.cv-gamedev-mode .cv-3d {
+            display: none !important;
+        }
+        body.cv-gamedev-mode .cv-gamedev {
+            display: block !important;
+        }
+        body.cv-gamedev-mode .cv-skills-sidebar {
+            display: block !important;
+        }
+
+        .skills-grid li {
+            margin-bottom: 5px;
+        }
+
+        .programming-second-page {
+            display: flex;
+        }
+
+        .programming-second-page .main-content {
+            width: 100%;
+            padding: 24px 30px;
+        }
+
+        .programming-second-page .programming-skills-showcase {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        body.cv-3d-mode .programming-second-page,
+        body.cv-gamedev-mode .programming-second-page {
+            display: none;
+        }
+
+        .experience-total {
+            margin-top: 36px;
+        }
+
+        .experience-label {
+            margin: 0 0 18px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        .experience-bar {
+            display: flex;
+            box-sizing: border-box;
+            height: 24px;
+            overflow: hidden;
+            border: 1px solid #fff;
+        }
+
+        .experience-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 800;
+            line-height: 1;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+        }
+
+        .experience-segment-work {
+            width: 33.333%;
+            background-color: #1976a3;
+            background-image: repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.28) 0,
+                rgba(255, 255, 255, 0.28) 3px,
+                transparent 3px,
+                transparent 8px
+            );
+        }
+
+        .experience-segment-projects {
+            width: 66.667%;
+            background-color: #24507a;
+            background-image: repeating-linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.3) 0,
+                rgba(255, 255, 255, 0.3) 2px,
+                transparent 2px,
+                transparent 7px
+            );
+        }
+
+        .experience-legend {
+            display: grid;
+            gap: 7px;
+            margin: 12px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .experience-legend li {
+            display: grid;
+            grid-template-columns: 14px 1fr auto;
+            align-items: center;
+            gap: 7px;
+            margin: 0;
+        }
+
+        .experience-swatch {
+            width: 14px;
+            height: 14px;
+            box-sizing: border-box;
+            border: 1px solid #fff;
+        }
+
+        .experience-swatch-work {
+            background-color: #1976a3;
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.35) 0, rgba(255, 255, 255, 0.35) 2px, transparent 2px, transparent 5px);
+        }
+
+        .experience-swatch-projects {
+            background-color: #24507a;
+            background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.38) 0, rgba(255, 255, 255, 0.38) 2px, transparent 2px, transparent 5px);
+        }
+
+        .experience-legend-value {
+            font-weight: 800;
+        }
+
+        .experience-caption {
+            margin-top: 12px;
+            line-height: 1.45;
+        }
+
+        .skills-page-heading {
+            margin-bottom: 6px !important;
+            padding-right: 0 !important;
+        }
+
+        .skills-page-intro {
+            margin: 0 0 20px;
+            color: #46515c;
+            line-height: 1.45;
+        }
+
+        .programming-skills-showcase {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .skill-category {
+            padding: 14px;
+            background: #fff;
+            border-top: 4px solid #2c3e50;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            break-inside: avoid;
+        }
+
+        .skill-category h3 {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+        }
+
+        .skill-category ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .skill-category li {
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+
+        .skill-category li:last-child {
+            margin-bottom: 0;
+        }
+
+        .skill-name {
+            display: block;
+            margin-bottom: 2px;
+            font-weight: 750;
+            color: #2c3e50;
+        }
+
+        .skill-detail {
+            display: block;
+            color: #52606d;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .key-project {
+            padding: 12px 14px;
+            background: #fff;
+            border-left: 4px solid #2c3e50;
+            box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+        }
+
+        .key-project h3,
+        .key-project p {
+            margin-bottom: 7px;
+        }
+
+        .key-project ul {
+            margin: 6px 0 0;
+            padding-left: 18px;
+            list-style: disc;
+        }
+
+        .key-project ul li {
+            margin-bottom: 5px;
+        }
+
+        @media print {
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                background-color: #fff;
+                font-size: 9pt;
+            }
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                margin: 0;
+                padding: 0;
+                overflow: visible;
+                box-shadow: none;
+                border: none;
+                box-sizing: border-box;
+                display: flex;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .page {
+                height: 297mm;
+                min-height: 297mm;
+                max-height: 297mm;
+                overflow: hidden;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page {
+                break-after: page;
+                page-break-after: always;
+            }
+            body.cv-3d-mode .programming-second-page,
+            body.cv-gamedev-mode .programming-second-page {
+                display: none;
+            }
+            .main-content h1 {
+                margin-top: 0;
+            }
+            .section {
+                margin-bottom: 8px;
+            }
+            .sidebar {
+                padding: 12px 12px;
+                font-size: 10.5pt;
+            }
+            .main-content {
+                padding: 12px 18px 12px 25px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page {
+                font-size: 8.2pt;
+                line-height: 1.22;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .sidebar {
+                padding: 9px 10px;
+                font-size: 8.7pt;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .main-content {
+                padding: 8px 13px 8px 18px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .profile-image {
+                top: 16px;
+                right: 18px;
+                width: 76px;
+                height: 76px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .main-content h1 {
+                margin-bottom: 2px;
+                padding-right: 100px;
+                font-size: 20pt;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .main-content h2 {
+                margin-top: 8px;
+                margin-bottom: 6px;
+                padding-bottom: 3px;
+                font-size: 13pt;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page h3 {
+                margin-bottom: 2px;
+                font-size: 10pt;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page p,
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page ul {
+                margin-top: 2px;
+                margin-bottom: 4px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .section {
+                margin-bottom: 6px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .section ul li {
+                margin-bottom: 3px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .sidebar h2,
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .sidebar h3 {
+                margin-bottom: 7px;
+                padding-bottom: 3px;
+                font-size: 12pt;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .experience-total {
+                margin-top: 10px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .experience-label {
+                margin-bottom: 8px;
+                font-size: 0.95rem;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .experience-bar {
+                height: 20px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .experience-legend {
+                gap: 4px;
+                margin-top: 7px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .experience-caption {
+                margin-top: 7px;
+                line-height: 1.25;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .key-project {
+                padding: 7px 9px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .key-project h3,
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .key-project p {
+                margin-bottom: 3px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .primary-page .key-project ul {
+                margin-top: 3px;
+                margin-bottom: 0;
+                padding-left: 15px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page {
+                font-size: 8.4pt;
+                line-height: 1.22;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page .main-content {
+                width: 100%;
+                padding: 12px 18px 10px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page .skills-page-intro {
+                margin-bottom: 9px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page .programming-skills-showcase {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 8px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page .skill-category {
+                padding: 8px 9px;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page .skill-category h3 {
+                margin-bottom: 5px;
+                font-size: 10pt;
+            }
+            body:not(.cv-3d-mode):not(.cv-gamedev-mode) .programming-second-page .skill-category li {
+                margin-bottom: 5px;
+                line-height: 1.2;
+            }
+            html, body, .page, .sidebar, .main-content, .profile-image {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            body.cv-3d-mode .page {
+                height: 297mm;
+                min-height: 297mm;
+                max-height: 297mm;
+                overflow: hidden;
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+            body.cv-3d-mode .sidebar {
+                padding: 10px 12px;
+                font-size: 8.5pt;
+            }
+            body.cv-3d-mode .sidebar .section {
+                margin-bottom: 8px;
+            }
+            body.cv-3d-mode .sidebar h2 {
+                font-size: 10pt;
+                margin-bottom: 5px;
+                padding-bottom: 2px;
+            }
+            body.cv-3d-mode .sidebar p {
+                font-size: 8pt;
+                line-height: 1.3;
+                margin-bottom: 3px;
+            }
+            body.cv-3d-mode .sidebar ul li {
+                font-size: 8pt;
+                margin-bottom: 3px;
+                display: flex;
+                align-items: center;
+            }
+            body.cv-3d-mode .main-content {
+                padding: 10px 16px;
+                font-size: 8.5pt;
+            }
+            body.cv-3d-mode .main-content .profile-image {
+                top: 12px;
+                right: 16px;
+                width: 72px;
+                height: 72px;
+            }
+            body.cv-3d-mode .main-content h1 {
+                font-size: 18pt;
+                margin-bottom: 2px;
+                padding-right: 90px;
+            }
+            body.cv-3d-mode .main-content h2 {
+                font-size: 10.5pt;
+                margin-top: 6px;
+                margin-bottom: 4px;
+                padding-bottom: 2px;
+            }
+            body.cv-3d-mode .main-content h3 {
+                font-size: 8.8pt;
+                margin-bottom: 1px;
+                margin-top: 3px;
+            }
+            body.cv-3d-mode .main-content p {
+                font-size: 7.8pt;
+                margin-top: 1px;
+                margin-bottom: 2px;
+            }
+            body.cv-3d-mode .main-content ul {
+                margin-top: 1px;
+                margin-bottom: 3px;
+                padding-left: 14px;
+            }
+            body.cv-3d-mode .main-content ul li {
+                font-size: 7.8pt;
+                line-height: 1.25;
+                margin-bottom: 2px;
+            }
+            body.cv-3d-mode .main-content .section {
+                margin-bottom: 6px;
+            }
+            .skills-grid {
+                grid-gap: 4px;
+            }
+
+            .skills-grid li {
+                margin-bottom: 2px;
+            }
+
+            .language-toggle {
+                display: none;
+            }
+
+            .cv-toggle {
+                display: none;
+            }
+        }
+        @page {
+            size: 210mm 297mm;
+            margin: 0mm;
+        }
+
+        p, li {
+            font-weight: 500;
+        }
+    </style>
+    <link rel="stylesheet" href="styles/xp.css">
+    <script defer src="dist/scripts/desktop.js"></script>
+</head>
+<body>
+    <div class="xp-doc-toolbar">
+        <div class="cv-toggle">
+            <span class="toggle-programming active" data-action="cv" data-value="programming" data-i18n="ui.cvToggle.programming"></span>
+            <span class="toggle-3d" data-action="cv" data-value="3d" data-i18n="ui.cvToggle.3d"></span>
+            <span class="toggle-gamedev" data-action="cv" data-value="gamedev" data-i18n="ui.cvToggle.gamedev"></span>
+        </div>
+
+        <div class="language-toggle">
+            <span class="toggle-fi active" data-action="language" data-value="finnish" data-i18n="ui.lang.fi"></span>
+            <span class="toggle-en" data-action="language" data-value="english" data-i18n="ui.lang.en"></span>
+        </div>
+
+        <button class="print-button" type="button">
+            <i class="fas fa-print" aria-hidden="true"></i><span data-i18n="ui.print"></span>
+        </button>
+    </div>
+
+    <div class="page primary-page selectable">
+        <div class="sidebar">
+            <div class="section">
+                <h2 class="cv-programming cv-gamedev" data-i18n="sidebar.summary"></h2>
+                <h2 class="cv-3d" data-i18n="sidebar.summary"></h2>
+
+                <div class="cv-programming">
+                    <p data-i18n="summary.programming.p1"></p>
+                    <p data-i18n="summary.programming.p2"></p>
+                </div>
+
+                <div class="cv-3d">
+                    <p data-i18n="summary.3d.p1"></p>
+                </div>
+
+                <div class="cv-gamedev">
+                    <p data-i18n="summary.gamedev.p1"></p>
+                    <p data-i18n="summary.gamedev.p2"></p>
+                </div>
+
+            </div>
+            <div class="section">
+                <h2 data-i18n="sidebar.links.title"></h2>
+
+                <ul>
+                     <li><a href="mailto:hussein.ubeid@outlook.com"><i class="fas fa-envelope"></i> <span data-i18n="sidebar.links.email"></span></a></li>
+                     <li><a href="https://ultikynnys.github.io/" target="_blank" rel="noopener noreferrer"><i class="fas fa-globe"></i> <span data-i18n="sidebar.links.website"></span></a></li>
+                     <li><a href="https://github.com/Ultikynnys" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> <span data-i18n="sidebar.links.github"></span></a></li>
+                </ul>
+
+            </div>
+            <div class="section cv-skills-sidebar">
+                <h2 data-i18n="sidebar.skills.title"></h2>
+                <ul id="skills-list"></ul>
+            </div>
+            <div class="section">
+                <h2 data-i18n="sidebar.languages.title"></h2>
+                <ul>
+                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.finnish_label"></span></li>
+                    <li><i class="fas fa-flag"></i> <span data-i18n="sidebar.languages.english_label"></span></li>
+                </ul>
+            </div>
+            <div class="section experience-total cv-programming">
+                <h2 data-i18n="experience.total.title"></h2>
+                <p class="experience-label" data-i18n="experience.total.label"></p>
+                <div class="experience-bar" role="img" data-i18n-aria-label="experience.total.ariaLabel">
+                    <div class="experience-segment experience-segment-work" data-i18n="experience.work.shortLabel"></div>
+                    <div class="experience-segment experience-segment-projects" data-i18n="experience.projects.shortLabel"></div>
+                </div>
+                <ul class="experience-legend">
+                    <li>
+                        <span class="experience-swatch experience-swatch-work" aria-hidden="true"></span>
+                        <span data-i18n="experience.work.label"></span>
+                        <span class="experience-legend-value" data-i18n="experience.work.value"></span>
+                    </li>
+                    <li>
+                        <span class="experience-swatch experience-swatch-projects" aria-hidden="true"></span>
+                        <span data-i18n="experience.projects.label"></span>
+                        <span class="experience-legend-value" data-i18n="experience.projects.value"></span>
+                    </li>
+                </ul>
+                <p class="experience-caption" data-i18n="experience.total.caption"></p>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="profile-image">
+                <img src="images/HeadshotGraduation.jpg" alt="" data-i18n-alt="ui.profileAlt" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            </div>
+            <br>
+            <h1 data-i18n="profile.name"></h1>
+            <div class="cv-programming">
+                <p data-i18n="profile.title.programming"></p>
+            </div>
+            <div class="cv-3d">
+                <p data-i18n="profile.title.3d"></p>
+            </div>
+            <div class="cv-gamedev">
+                <p data-i18n="profile.title.gamedev"></p>
+            </div>
+
+            <div class="section">
+                <h2 data-i18n="sections.workExperience.title"></h2>
+
+                <div class="cv-programming">
+                    <div>
+                        <h3 data-i18n="work.programming.teleste.title"></h3>
+                        <p><em data-i18n="work.programming.teleste.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.programming.teleste.b1"></li>
+                            <li data-i18n="work.programming.teleste.b2"></li>
+                            <li data-i18n="work.programming.teleste.b3"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.programming.rnd.title"></h3>
+                        <p><em data-i18n="work.programming.rnd.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.programming.rnd.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.programming.nbs.title"></h3>
+                        <p><em data-i18n="work.programming.nbs.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.programming.nbs.b1"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cv-3d">
+                    <div>
+                        <h3 data-i18n="work.3d.nbs.title"></h3>
+                        <p><em data-i18n="work.3d.nbs.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.3d.nbs.b1"></li>
+                            <li data-i18n="work.3d.nbs.b2"></li>
+                            <li data-i18n="work.3d.nbs.b3"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.3d.freelance.title"></h3>
+                        <p><em data-i18n="work.3d.freelance.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.3d.freelance.b1"></li>
+                            <li data-i18n="work.3d.freelance.b2"></li>
+                            <li data-i18n="work.3d.freelance.b3"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.3d.asset.title"></h3>
+                        <p><em data-i18n="work.3d.asset.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.3d.asset.b1"></li>
+                            <li data-i18n="work.3d.asset.b2"></li>
+                            <li data-i18n="work.3d.asset.b3"></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cv-gamedev">
+                    <div>
+                        <h3 data-i18n="work.gamedev.rnd.title"></h3>
+                        <p><em data-i18n="work.gamedev.rnd.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.rnd.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.gamedev.nbs.title"></h3>
+                        <p><em data-i18n="work.gamedev.nbs.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.nbs.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.gamedev.data.title"></h3>
+                        <p><em data-i18n="work.gamedev.data.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.data.b1"></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 data-i18n="work.gamedev.blender.title"></h3>
+                        <p><em data-i18n="work.gamedev.blender.period"></em></p>
+                        <ul>
+                            <li data-i18n="work.gamedev.blender.b1"></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="section cv-programming">
+                <h2 data-i18n="sections.projectExperience.title"></h2>
+                <div>
+                    <h3 data-i18n="work.programming.blender.title"></h3>
+                    <p><em data-i18n="work.programming.blender.period"></em></p>
+                    <ul>
+                        <li data-i18n="work.programming.blender.b1"></li>
+                        <li data-i18n="work.programming.blender.b2"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section cv-programming">
+                <h2 data-i18n="sections.keyProject.title"></h2>
+                <article class="key-project">
+                    <h3 data-i18n="project.openalarm.title"></h3>
+                    <p><em data-i18n="project.openalarm.period"></em></p>
+                    <ul>
+                        <li data-i18n="project.openalarm.b1"></li>
+                        <li data-i18n="project.openalarm.b2"></li>
+                        <li data-i18n="project.openalarm.b3"></li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="section cv-3d">
+                <h2 data-i18n="sections.3dProjects.title"></h2>
+                <div>
+                    <h3 data-i18n="projects.3d.tools.title"></h3>
+                    <p><em data-i18n="projects.3d.tools.period"></em></p>
+                    <ul>
+                        <li data-i18n="projects.3d.tools.b1"></li>
+                        <li data-i18n="projects.3d.tools.b2"></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 data-i18n="projects.3d.packs.title"></h3>
+                    <p><em data-i18n="projects.3d.packs.period"></em></p>
+                    <ul>
+                        <li data-i18n="projects.3d.packs.b1"></li>
+                        <li data-i18n="projects.3d.packs.b2"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 data-i18n="sections.education.title"></h2>
+                 <div>
+                    <h3 data-i18n="education.tamk.institution"></h3>
+                    <p data-i18n="education.tamk.field"></p>
+                    <p><em data-i18n="education.tamk.period"></em></p>
+                    <p class="cv-programming" data-i18n="education.tamk.path"></p>
+                </div>
+                <div>
+                    <h3 data-i18n="education.teklu.institution"></h3>
+                    <p data-i18n="education.teklu.field"></p>
+                    <p><em data-i18n="education.teklu.period"></em></p>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
+    <div class="page programming-second-page selectable">
+        <main class="main-content">
+            <div class="section">
+                <h1 class="skills-page-heading" data-i18n="skills.programming.title"></h1>
+                <p class="skills-page-intro" data-i18n="skills.programming.intro"></p>
+                <div id="programming-skills-showcase" class="programming-skills-showcase"></div>
+            </div>
+        </main>
+    </div>
+
+
+    <script defer src="dist/scripts/cv.js"></script>
+</body>
+</html>

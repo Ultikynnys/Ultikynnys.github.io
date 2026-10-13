@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/gif" href="content/200.gif">
+    <title data-header="page-title">Loading...</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/xp.css">
+    <script defer src="dist/scripts/desktop.js"></script>
+</head>
+
+<body class="portfolio-programming">
+    <!-- Add theme toggle button -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Overlay for expanded project -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Social ribbon will be inserted here by the script -->
+
+    <header>
+        <div class="header-content">
+            <div id="name-display" class="dynamic-name-container">
+                <div class="name-indicator">Full name</div>
+                <h1>Ubeid Hussein<span class="cursor"></span></h1>
+            </div>
+            <p class="subtitle" data-header="subtitle"></p>
+            <div class="bio">
+                <p class="bio-nonfull" data-header="bio-nonfull"></p>
+                <p class="bio-full" data-header="bio-full"></p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="portfolio-grid" id="projects-container">
+            <!-- Projects will be loaded here -->
+        </div>
+    </main>
+
+
+    <div id="footer-container"></div>
+    <script defer src="dist/scripts/portfolio.js"></script>
+</body>
+
+</html>

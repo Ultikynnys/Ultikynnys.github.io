@@ -1,0 +1,153 @@
+## FI
+
+### sidebar.skills.python
+Python
+
+### sidebar.skills.cpp
+C++
+
+### sidebar.skills.csharp
+C#
+
+### sidebar.skills.html_css
+HTML/CSS
+
+### sidebar.skills.js_ts
+JavaScript/TypeScript
+
+### sidebar.skills.unreal
+Unreal Engine
+
+### sidebar.skills.unity
+Unity
+
+### sidebar.skills.godot
+Godot
+
+### sidebar.skills.blender
+Blender
+
+### sidebar.skills.shaders
+Shaders & VFX
+
+### summary.gamedev.p1
+Pelikehittäjä, jolla on kokemusta Unitystä, Unreal Enginestä ja Godotista. Yhdistän teknisen taiteilijan osaamisen ohjelmointiin  -  hallitsen pelimekaniikat, shaderit, partikkelitehosteet ja grafiikkaoptimoinnin. Kehitän työkaluja, jotka nopeuttavat suunnittelijoiden ja taiteilijoiden työtä.
+
+### summary.gamedev.p2
+5+ vuoden kokemus C++:lla ja Pythonilla. Kehitän ja ylläpidän omia työkaluja ammattimaiseen tuotantokäyttöön. Kokemusta Agile- ja Waterfall-menetelmistä, testauksesta ja CI/CD:stä. Toteutan pelejä ja pelityökaluja alusta loppuun.
+
+### profile.title.gamedev
+Pelikehittäjä
+
+### work.gamedev.rnd.title
+Tutkimus- ja kehitysharjoittelija
+
+### work.gamedev.rnd.period
+Toukokuu 2025 - Lokakuu 2025 | Solita
+
+### work.gamedev.rnd.b1
+Kehitin kahden hengen tiimissä full stack -projekteja hyödyntäen eri teknologiapinoja ja AI-integraatiota. Pelikehitystaustasta oli hyötyä interaktiivisten prototyyppien rakentamisessa.
+
+### work.gamedev.nbs.title
+Tekninen taiteilija ja peliohjelmoija (Technical Artist & Game Programmer)
+
+### work.gamedev.nbs.period
+Lokakuu 2021 - Lokakuu 2025 (4 vuotta) | No Bright Shadows (Etätyö)
+
+### work.gamedev.nbs.b1
+Ohjelmoin pelimekaniikkoja Unreal Enginellä C++:lla sekä tein hahmomallinnusta, riggausta ja animaatiota Blenderillä. Kehitin partikkelitehosteita ja shadereita. Teknisenä taiteilijana toimin siltana ohjelmoinnin ja taiteen välillä.
+
+### work.gamedev.data.title
+Kirjanpito
+
+### work.gamedev.data.period
+Tammikuu 2021 - Tammikuu 2022 | Verwijnen & Verwijnen (Helsinki)
+
+### work.gamedev.data.b1
+Organisoin ja ylläpidin sekä sähköisiä että fyysisiä tietueita yrityksen menoihin liittyen varmistaen tietojen tarkkuuden ja saavutettavuuden.
+
+### work.gamedev.blender.title
+Blender-työkalujen ohjelmoija
+
+### work.gamedev.blender.period
+2019 - Nykyhetki | Freelance
+
+### work.gamedev.blender.b1
+Kehitän Blender-lisäosia Pythonilla pelien ja 3D-taiteilijoiden työnkulkujen tehostamiseksi. Työkalujani käytetään ammattimaisessa tuotantotyössä.
+
+## EN
+
+### sidebar.skills.python
+Python
+
+### sidebar.skills.cpp
+C++
+
+### sidebar.skills.csharp
+C#
+
+### sidebar.skills.html_css
+HTML/CSS
+
+### sidebar.skills.js_ts
+JavaScript/TypeScript
+
+### sidebar.skills.unreal
+Unreal Engine
+
+### sidebar.skills.unity
+Unity
+
+### sidebar.skills.godot
+Godot
+
+### sidebar.skills.blender
+Blender
+
+### sidebar.skills.shaders
+Shaders & VFX
+
+### summary.gamedev.p1
+Game developer with hands-on experience in Unity, Unreal Engine and Godot. I combine technical artistry with programming  -  game mechanics, shaders, particle effects, and graphics optimization. I build tools that help designers and artists ship faster.
+
+### summary.gamedev.p2
+5+ years with C++ and Python. I build and maintain my own tools for professional production use. Comfortable with Agile and Waterfall, tests and CI/CD. I ship games and game tooling from concept to completion.
+
+### profile.title.gamedev
+Game Developer
+
+### work.gamedev.rnd.title
+R&D Intern
+
+### work.gamedev.rnd.period
+May 2025 - October 2025 | Solita
+
+### work.gamedev.rnd.b1
+Developed small full stack projects as part of a two-person team, using varied technology stacks and AI integration. My game development background supported the creation of interactive prototypes.
+
+### work.gamedev.nbs.title
+Technical Artist & Game Programmer
+
+### work.gamedev.nbs.period
+October 2021 - October 2025 (4 years) | No Bright Shadows (Remote)
+
+### work.gamedev.nbs.b1
+Programmed game mechanics in Unreal Engine with C++. Created character models, rigs, and animations in Blender, and developed particle effects and shaders. As a technical artist, bridged programming and art.
+
+### work.gamedev.data.title
+Data Entry
+
+### work.gamedev.data.period
+January 2021 - January 2022 | Verwijnen & Verwijnen (Helsinki)
+
+### work.gamedev.data.b1
+Organized and maintained both electronic and physical records related to company expenses, ensuring data accuracy and accessibility.
+
+### work.gamedev.blender.title
+Blender Tools Programmer
+
+### work.gamedev.blender.period
+2019 - Present | Freelance
+
+### work.gamedev.blender.b1
+Develop Blender add-ons in Python to streamline game and 3D artist workflows. My tooling is used in professional production work.
