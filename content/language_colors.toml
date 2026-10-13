@@ -31,7 +31,7 @@ fg = "#ffffff"
 
 [rust]
 bg = "#dea584"
-fg = "#ffffff"
+fg = "#1a1a1a"
 
 [wasm]
 bg = "#654ff0"
