@@ -6,7 +6,7 @@ import { loadSocialRibbon } from './social-ribbon';
 declare global { interface Window { xpVolume?: () => number } }
 
 // Genuine Windows XP SP2 sounds, expanded from the ISO's I386\*.WA_ files.
-const XP_SOUNDS = { start: 'audio/xp-start.wav', minimize: 'audio/xp-minimize.wav', restore: 'audio/xp-restore.wav', startup: 'audio/xp-startup.wav' } as const;
+const XP_SOUNDS = { start: 'audio/xp-start.ogg', minimize: 'audio/xp-minimize.ogg', restore: 'audio/xp-restore.ogg', startup: 'audio/xp-startup.ogg' } as const;
 type XpSound = keyof typeof XP_SOUNDS;
 const soundCache = new Map<XpSound, HTMLAudioElement>();
 function getClip(name: XpSound): HTMLAudioElement | null {
@@ -36,10 +36,9 @@ function navigateAfterClick(href: string): void {
     clip.addEventListener('ended', go, { once: true });
     window.setTimeout(go, 700);
 }
-// Warm the click and startup clips so the first click and the startup chime are buffered
-// before any page unload or the boot screen finishing.
+// Warm only the click clip (tiny) so the first navigation click is never silent. The startup chime
+// is fetched on demand when the boot screen finishes, keeping it off the initial load path.
 getClip('start');
-getClip('startup')?.load();
 
 async function playStartup(): Promise<void> {
     const clip = getClip('startup');
@@ -58,14 +57,23 @@ async function playStartup(): Promise<void> {
     }
 }
 
-interface Destination { title: string; href: string; icon: IconName; detail: string }
+// `shortcut: false` keeps an entry out of the desktop column (the CV is reached from the Start
+// menu and the user tile instead); every other entry is a desktop icon.
+interface Destination { title: string; href: string; icon: IconName; detail: string; shortcut?: boolean }
+const CV_DESTINATION: Destination = { title: 'My CV', href: 'cv_template.html', icon: 'document', detail: 'Experience & skills', shortcut: false };
 const destinations: Destination[] = [
     { title: 'My Portfolio', href: 'index.html', icon: 'computer', detail: 'Welcome to my portfolio' },
     { title: 'Programming', href: 'programming-portfolio.html', icon: 'folder', detail: 'Software & engineering' },
     { title: '3D Art', href: '3d-portfolio.html', icon: 'pictures', detail: 'Models & environments' },
     { title: 'Game Development', href: 'gamedev-portfolio.html', icon: 'game', detail: 'Games & interactive worlds' },
-    { title: 'My CV', href: 'cv_template.html', icon: 'document', detail: 'Experience & skills' }
+    CV_DESTINATION
 ];
+
+// One desktop/Start-menu anchor, shared by the shortcut column and the Start menu; `withDetail`
+// adds the Start-menu subtitle (<strong> title + <small> description).
+function destinationLink(item: Destination, size: number, withDetail = false): string {
+    return `<a href="${item.href}">${icon(item.icon, size)}<span>${withDetail ? `<strong>${item.title}</strong><small>${item.detail}</small>` : item.title}</span></a>`;
+}
 // Up walks out of a folder to the home page, so pressing it from any page lands on the desktop.
 const HOME = destinations[0].href;
 
@@ -190,12 +198,12 @@ function initDesktop(): void {
     const edges = { w: edge('w'), e: edge('e'), s: edge('s'), sw: edge('sw') };
     shell.append(titlebar, toolbar, address, content, status, grip, edges.w, edges.e, edges.s, edges.sw);
     const shortcuts = document.createElement('nav'); shortcuts.id = 'xp-shortcuts'; shortcuts.className = 'xp-shortcuts'; shortcuts.setAttribute('aria-label', 'Desktop shortcuts');
-    shortcuts.innerHTML = destinations.slice(0, 4).map(item => `<a href="${item.href}">${icon(item.icon, 32)}<span>${item.title}</span></a>`).join('');
+    shortcuts.innerHTML = destinations.filter(item => item.shortcut !== false).map(item => destinationLink(item, 32)).join('');
     const taskbar = document.createElement('div'); taskbar.id = 'xp-taskbar'; taskbar.className = 'xp-taskbar';
     const trayVolume = '<button id="xp-volume" class="xp-volume" type="button" aria-label="Volume" aria-haspopup="true" aria-expanded="false" aria-controls="xp-volume-panel"><img id="xp-volume-icon" src="images/xp/volume.png" width="16" height="16" alt=""></button>';
     taskbar.innerHTML = `<button id="xp-start" class="xp-start" aria-expanded="false" aria-controls="xp-start-menu"><img class="xp-start-flag" src="images/xp/start-flag.png" width="23" height="19" alt="">start</button><button id="xp-task" class="xp-task" aria-expanded="true">${icon(current.icon, 16)}<span>${current.title}</span></button><div class="xp-tray">${trayVolume}<time id="xp-clock"></time></div>`;
     const menu = document.createElement('nav'); menu.id = 'xp-start-menu'; menu.className = 'xp-start-menu'; menu.hidden = true; menu.setAttribute('aria-label', 'Start navigation');
-    menu.innerHTML = `<a class="xp-user" href="cv_template.html"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></a><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map(item => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join('')}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
+    menu.innerHTML = `<a class="xp-user" href="${CV_DESTINATION.href}"><img src="images/Profile.webp" alt=""><span>Ubeid Hussein</span></a><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map(item => destinationLink(item, 24, true)).join('')}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
     document.body.append(shortcuts, shell, taskbar, menu);
 
     if (window.matchMedia('(pointer:fine)').matches) {

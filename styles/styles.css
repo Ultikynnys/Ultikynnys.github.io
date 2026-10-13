@@ -361,30 +361,6 @@ h2 {
     font-weight: 500;
 }
 
-.github-link {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.7rem;
-    background: rgba(33, 33, 33, 0.9);
-    border-radius: 0 0 10px 0;
-    /* Updated to match project-card radius */
-    color: white;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    z-index: 5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.github-link:hover {
-    background: rgba(33, 33, 33, 1);
-    padding-left: 1rem;
-}
-
 /* Stacked badges (multi-badge mode) */
 .project-badges {
     position: absolute;
@@ -396,8 +372,7 @@ h2 {
     align-items: flex-start;
 }
 
-.project-badges .private-tag,
-.project-badges .github-link {
+.project-badges .private-tag {
     position: relative;
     top: auto;
     left: auto;
@@ -439,32 +414,10 @@ h2 {
     }
 }
 
-.artstation-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 5px;
-    color: white;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-}
-
-.artstation-link:hover {
-    background: rgba(255, 255, 255, 1);
-}
-
 /* Local showcase video inside project media */
 .project-media video {
     object-fit: contain;
     background: #000;
-}
-
-.github-link svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
 }
 
 /* 3D Portfolio specific styles */
@@ -514,16 +467,6 @@ footer {
 .private-tag {
     background: rgba(255, 0, 0, 0.8);
     color: white;
-}
-
-/* Update github-link for better visibility in light mode */
-.github-link {
-    background: rgba(33, 33, 33, 0.9);
-    color: white;
-}
-
-.github-link:hover {
-    background: rgba(33, 33, 33, 1);
 }
 
 /* Always show full bio — non-full variant is deprecated */

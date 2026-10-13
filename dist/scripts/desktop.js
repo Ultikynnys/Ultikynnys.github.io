@@ -118,7 +118,7 @@
   }
 
   // scripts/desktop.ts
-  var XP_SOUNDS = { start: "audio/xp-start.wav", minimize: "audio/xp-minimize.wav", restore: "audio/xp-restore.wav", startup: "audio/xp-startup.wav" };
+  var XP_SOUNDS = { start: "audio/xp-start.ogg", minimize: "audio/xp-minimize.ogg", restore: "audio/xp-restore.ogg", startup: "audio/xp-startup.ogg" };
   var soundCache = /* @__PURE__ */ new Map();
   function getClip(name) {
     try {
@@ -161,7 +161,6 @@
     window.setTimeout(go, 700);
   }
   getClip("start");
-  getClip("startup")?.load();
   async function playStartup() {
     const clip = getClip("startup");
     if (!clip) return;
@@ -178,13 +177,17 @@
       }
     }
   }
+  var CV_DESTINATION = { title: "My CV", href: "cv_template.html", icon: "document", detail: "Experience & skills", shortcut: false };
   var destinations = [
     { title: "My Portfolio", href: "index.html", icon: "computer", detail: "Welcome to my portfolio" },
     { title: "Programming", href: "programming-portfolio.html", icon: "folder", detail: "Software & engineering" },
     { title: "3D Art", href: "3d-portfolio.html", icon: "pictures", detail: "Models & environments" },
     { title: "Game Development", href: "gamedev-portfolio.html", icon: "game", detail: "Games & interactive worlds" },
-    { title: "My CV", href: "cv_template.html", icon: "document", detail: "Experience & skills" }
+    CV_DESTINATION
   ];
+  function destinationLink(item, size, withDetail = false) {
+    return `<a href="${item.href}">${icon(item.icon, size)}<span>${withDetail ? `<strong>${item.title}</strong><small>${item.detail}</small>` : item.title}</span></a>`;
+  }
   var HOME = destinations[0].href;
   var DESKTOP = { top: 26, left: 124, right: 138, bottom: 30 };
   var MIN_SIZE = { width: 340, height: 240 };
@@ -342,7 +345,7 @@
     shortcuts.id = "xp-shortcuts";
     shortcuts.className = "xp-shortcuts";
     shortcuts.setAttribute("aria-label", "Desktop shortcuts");
-    shortcuts.innerHTML = destinations.slice(0, 4).map((item) => `<a href="${item.href}">${icon(item.icon, 32)}<span>${item.title}</span></a>`).join("");
+    shortcuts.innerHTML = destinations.filter((item) => item.shortcut !== false).map((item) => destinationLink(item, 32)).join("");
     const taskbar = document.createElement("div");
     taskbar.id = "xp-taskbar";
     taskbar.className = "xp-taskbar";
@@ -353,7 +356,7 @@
     menu.className = "xp-start-menu";
     menu.hidden = true;
     menu.setAttribute("aria-label", "Start navigation");
-    menu.innerHTML = `<a class="xp-user" href="cv_template.html"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></a><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map((item) => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join("")}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
+    menu.innerHTML = `<a class="xp-user" href="${CV_DESTINATION.href}"><img src="images/Profile.webp" alt=""><span>Ubeid Hussein</span></a><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map((item) => destinationLink(item, 24, true)).join("")}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
     document.body.append(shortcuts, shell, taskbar, menu);
     if (window.matchMedia("(pointer:fine)").matches) {
       const cursorElement = document.createElement("img");

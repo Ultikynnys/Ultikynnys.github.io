@@ -32,3 +32,11 @@ fg = "#ffffff"
 [rust]
 bg = "#dea584"
 fg = "#ffffff"
+
+[wasm]
+bg = "#654ff0"
+fg = "#ffffff"
+
+[cmake]
+bg = "#064f8c"
+fg = "#ffffff"

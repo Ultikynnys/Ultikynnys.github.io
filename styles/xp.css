@@ -1,11 +1,11 @@
-@font-face { font-family:'Tahoma'; src:url('../fonts/tahoma.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
-@font-face { font-family:'Tahoma'; src:url('../fonts/tahoma-bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
-@font-face { font-family:'Trebuchet MS'; src:url('../fonts/trebuchet-ms.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
-@font-face { font-family:'Trebuchet MS'; src:url('../fonts/trebuchet-ms-bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Tahoma'; src:url('../fonts/tahoma.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Tahoma'; src:url('../fonts/tahoma-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Trebuchet MS'; src:url('../fonts/trebuchet-ms.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Trebuchet MS'; src:url('../fonts/trebuchet-ms-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
 /* Press Start 2P - SIL Open Font License 1.1, self-hosted in fonts/. */
-@font-face { font-family:'Press Start 2P'; src:url('../fonts/pressstart2p.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Press Start 2P'; src:url('../fonts/pressstart2p.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
 
-body.xp-desktop { --primary-bg:#ece9d8; --secondary-bg:#fff; --card-bg:#fff; --text-primary:#172442; --text-secondary:#40526b; --accent-color:#1655be; --header-text-bg:transparent; --header-text-color:#173a78; --card-shadow:0 2px 4px #0002; margin:0; padding:0; height:100vh; overflow:hidden; box-sizing:border-box; --desk-top:26px; --desk-left:124px; --desk-right:138px; --desk-bottom:30px; background:#3a6ea5 url('../images/xp/bliss.jpg') center/cover fixed; color:#172442; animation:none; font-family:var(--xp-font); line-height:1.5; text-shadow:var(--xp-shadow); --xp-font:Tahoma; --xp-shadow:0 1px 1px rgba(0,0,0,.4); }
+body.xp-desktop { --primary-bg:#ece9d8; --secondary-bg:#fff; --card-bg:#fff; --text-primary:#172442; --text-secondary:#40526b; --accent-color:#1655be; --header-text-bg:transparent; --header-text-color:#173a78; --card-shadow:0 2px 4px #0002; margin:0; padding:0; height:100vh; overflow:hidden; box-sizing:border-box; --desk-top:26px; --desk-left:124px; --desk-right:138px; --desk-bottom:30px; background:#3a6ea5 url('../images/xp/bliss.webp') center/cover fixed; color:#172442; animation:none; font-family:var(--xp-font); line-height:1.5; text-shadow:var(--xp-shadow); --xp-font:Tahoma; --xp-shadow:0 1px 1px rgba(0,0,0,.4); }
 .xp-desktop *, .xp-desktop button { box-sizing:border-box; }
 body.xp-desktop, body.xp-desktop :not(i):not(.fab):not(.fas):not(.far):not(.fal):not(.fad) { font-family:var(--xp-font); }
 .xp-titlebar, .xp-taskbar, .xp-taskbar *, .xp-start, .xp-shortcuts a, .xp-favourites a, .xp-start-menu .xp-user, .xp-start-menu .xp-menu-footer { text-shadow:var(--xp-shadow); }
@@ -81,8 +81,11 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content .portfolio-choice, .xp-content .project-card { width:auto; border:1px solid #a4bbdc; border-radius:5px; background:#fff; color:#172442; box-shadow:2px 3px 0 #d7deea; overflow:hidden; transition:box-shadow .15s; }
 .xp-content .portfolio-choice:hover, .xp-content .project-card:hover { transform:none; box-shadow:0 0 0 2px var(--accent-color,#5c91df); }
 .xp-content .portfolio-choice .portfolio-info, .xp-content .project-info { padding:14px; text-align:left; }
-.xp-content .portfolio-info h3, .xp-content .project-info h3 { margin:0 0 8px; color:#17458c; font-size:17px; }
+.xp-content .portfolio-info h3, .xp-content .project-info h3 { margin:0 0 8px; color:#17458c; font-size:17px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .xp-content .portfolio-info p, .xp-content .project-info p { color:#495972; font-size:12px; line-height:1.6; }
+/* Collapsed cards cap the blurb at a fixed number of lines; the expanded window shows it in full
+   inside its own scroll area. */
+.xp-content .project-card:not(.expanded) .project-info p { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:5; overflow:hidden; }
 .xp-content .portfolio-choice::before { content:var(--portfolio-section-title,''); display:block; padding:6px 10px; color:#fff; font-size:11px; background:var(--accent-color,#2865c3); }
 .xp-content .portfolio-programming-card { --portfolio-section-title:'Programming'; }
 .xp-content .portfolio-3d-card { --portfolio-section-title:'3D Design'; }
@@ -91,19 +94,46 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content .project-media { position:relative; height:210px; background:#dce5f3; }
 .xp-content .media-placeholder { width:100%; height:100%; background:repeating-linear-gradient(45deg,#e3eaf6 0 14px,#d4dfec 14px 28px); }
 .xp-content .project-media > img, .xp-content .project-media > video, .xp-content .project-media > iframe { width:100%; height:100%; object-fit:cover; border:0; }
-.xp-content .project-badges { position:relative; display:flex; flex-direction:row; gap:1px; padding:5px 8px; background:#aebcd6; min-height:28px; }
-.xp-content .project-badges > * { position:static; border-radius:3px; color:#173a63; background:#f4f8fe; border:1px solid #9db1d3; padding:3px 9px; line-height:1; font-size:11px; }
-.xp-content .project-badges .demo-link { color:#fff; font-weight:400; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#000 0 8px,#ffd400 8px 16px); }
-.xp-content .project-badges .github-link { color:#fff; font-weight:400; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#171b20 0 8px,#4a515a 8px 16px); }
-.xp-content .project-badges .store-link { color:#fff; font-weight:400; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#0f6e33 0 8px,#2fbf5f 8px 16px); }
+.xp-content .project-badges { position:relative; display:flex; flex-direction:row; flex-wrap:wrap; align-content:flex-start; gap:1px; padding:5px 8px; background:#aebcd6; min-height:28px; }
+.xp-content .project-badges > * { position:static; display:inline-flex; align-items:center; gap:4px; height:20px; border-radius:3px; color:#173a63; background:#f4f8fe; border:1px solid #9db1d3; padding:0 9px; line-height:1; font-size:11px; }
+/* Clickable link tags wear the XP hazard stripe over the destination site's colour; the class is
+   `.tag-<key>` set by linkTag(). */
+.xp-content .project-badges .tag-link { font-weight:400; text-decoration:none; display:inline-flex; align-items:center; gap:4px; background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.18) 0 8px,rgba(0,0,0,.18) 8px 16px); }
+.xp-content .project-badges .tag-link > i, .xp-content .project-badges .private-tag > i { font-size:12px; line-height:1; flex:none; }
+.xp-content .project-badges .tag-icon { width:12px; height:12px; flex:none; display:block; object-fit:contain; }
+.xp-content .project-badges .tag-icon-mask { background-color:currentColor; -webkit-mask:var(--tag-mask) center/contain no-repeat; mask:var(--tag-mask) center/contain no-repeat; }
+/* A subtle black drop-shadow keeps the white icons legible against the lighter tag colours. */
+.xp-content .project-badges i, .xp-content .project-badges .tag-icon, .xp-content .project-badges .engine-icon { filter:drop-shadow(0 .5px .5px rgba(0,0,0,.5)); }
+.xp-content .project-badges .tag-steam { background-color:#1b2838; color:#c6d4df; border-color:#1b2838; }
+.xp-content .project-badges .tag-itch { background-color:#fa5c5c; color:#fff; border-color:#fa5c5c; }
+.xp-content .project-badges .tag-github { background-color:#24292f; color:#fff; border-color:#24292f; }
+.xp-content .project-badges .tag-githubpages { background-color:#1c3a5e; color:#c9d1d9; border-color:#1c3a5e; }
+.xp-content .project-badges .tag-artstation { background-color:#13aff0; color:#fff; border-color:#13aff0; }
+.xp-content .project-badges .tag-fab { background-color:#0d0d0d; color:#fff; border-color:#0d0d0d; }
+.xp-content .project-badges .tag-superhive { background-color:#00a37a; color:#fff; border-color:#00a37a; }
+.xp-content .project-badges .tag-gumroad { background-color:#ff90e8; color:#1a1a1a; border-color:#ff90e8; }
+.xp-content .project-badges .tag-gamebanana { background-color:#6f9e3c; color:#fff; border-color:#6f9e3c; }
+.xp-content .project-badges .tag-youtube { background-color:#ff0000; color:#fff; border-color:#ff0000; }
+.xp-content .project-badges .tag-reddit { background-color:#ff4500; color:#fff; border-color:#ff4500; }
+/* Fallback labels for a link on a site the registry does not know. */
+.xp-content .project-badges .tag-demo { background-color:#17508a; color:#fff; border-color:#17508a; }
+.xp-content .project-badges .tag-store { background-color:#0f6e33; color:#fff; border-color:#0f6e33; }
+/* Label tags: non-clickable status chips. */
 .xp-content .project-badges .private-tag { color:#8a2020; background:#f8d7da; border-color:#e3a6a6; }
-.xp-content .project-badges > a { cursor:pointer; transition:background .12s ease, border-color .12s ease, color .12s ease; }
-.xp-content .project-badges > a:hover, .xp-content .project-badges > a:focus-visible { background:#dbe8fb; border-color:#5c91df; color:#0b2f66; }
-.xp-content .project-badges > a:active { background:#c7dbf7; border-color:#3f79d0; color:#0b2f66; }
-.xp-content .project-badges .github-link:hover, .xp-content .project-badges .github-link:focus-visible { background:repeating-linear-gradient(45deg,#262c34 0 8px,#5c646e 8px 16px); color:#fff; }
-.xp-content .project-badges .store-link:hover, .xp-content .project-badges .store-link:focus-visible { background:repeating-linear-gradient(45deg,#15803d 0 8px,#45d97a 8px 16px); color:#fff; }
-.xp-content .project-badges .demo-link:hover, .xp-content .project-badges .demo-link:focus-visible { background:repeating-linear-gradient(45deg,#000 0 8px,#ffe066 8px 16px); color:#fff; }
-.xp-content .game-tag { position:static; color:#234b28; background:#dcefd9; }
+/* Blender/ZBrush chips wear the tool's colour with a white glyph; the Substance apps show their own
+   icon (a dark rounded tile with lime letters), so they keep the default light chip. */
+.xp-content .project-badges .software-blender { background-color:#e87d0d; color:#fff; border-color:#e87d0d; }
+.xp-content .project-badges .software-zbrush { background-color:#a0522d; color:#fff; border-color:#a0522d; }
+/* Link tags keep their site colour on hover; lift them with brightness instead of repainting. */
+.xp-content .project-badges > a { cursor:pointer; transition:filter .12s ease; }
+.xp-content .project-badges > a:hover, .xp-content .project-badges > a:focus-visible { filter:brightness(1.15); }
+.xp-content .project-badges > a:active { filter:brightness(.9); }
+.xp-content .project-badges .game-tag .engine-icon { width:12px; height:12px; flex:none; display:block; }
+/* Engine tags wear their engine's colour; the logo keeps its own colours where the mark has them. */
+.xp-content .project-badges .xp-engine-unity { color:#222c37; border-color:#8a97a6; background:#eef0f3; }
+.xp-content .project-badges .xp-engine-unreal { color:#0e1128; border-color:#8b8f9c; background:#ececf1; }
+.xp-content .project-badges .xp-engine-godot { color:#2f6f9e; border-color:#8fbede; background:#e9f2f9; }
+.xp-content .project-badges .xp-engine-source { color:#a85f00; border-color:#e6b667; background:#fdf3e3; }
 
 .xp-content .project-card .xp-focus-bar { display:none; }
 .xp-content .project-card.expanded { position:fixed; z-index:1002; display:flex; flex-direction:column; border:0; border-radius:8px 8px 0 0; background:linear-gradient(#0a4fd6,#6a77cf); padding:0 4px 4px; box-shadow:3px 3px 11px rgba(0,0,0,.5); overflow:hidden; transform:none; max-width:none; }

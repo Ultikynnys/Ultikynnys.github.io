@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initSecretMode();
     setupProjectExpansion();
     const pages: { className: string; file: string; options: CardOptions }[] = [
-        { className: 'portfolio-programming', file: 'projects/programming-projects.md', options: { badgeOrder: ['private', 'demo', 'github'], fallbackBadge: 'private', multiBadge: true, showLanguageNotches: true } },
-        { className: 'portfolio-3d', file: 'projects/3d-projects.md', options: { badgeOrder: ['private', 'demo', 'artstation'] } },
+        { className: 'portfolio-programming', file: 'projects/programming-projects.md', options: { badgeOrder: ['private', 'demo', 'github'], multiBadge: true, showLanguageNotches: true } },
+        { className: 'portfolio-3d', file: 'projects/3d-projects.md', options: { badgeOrder: ['private', 'demo', 'artstation'], showSoftwareNotches: true } },
         { className: 'portfolio-gamedev', file: 'projects/games.md', options: { badgeOrder: ['private', 'demo', 'github', 'artstation'], alwaysShowEngineTag: true } }
     ];
     const page = pages.find(page => document.body.classList.contains(page.className));

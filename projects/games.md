@@ -3,7 +3,7 @@
 ## TIMBERSTRING
 - Title: TIMBERSTRING
 - Description: Did some vfx programming and asset implementation and creation. Made in 4 days for the GMTK 2025 game jam
-- Media: images/Timble.png
+- Media: images/Timble.webp
 - Demo: https://aengel-studio.itch.io/timberstring
 - Private: False
 - Engine: Unity

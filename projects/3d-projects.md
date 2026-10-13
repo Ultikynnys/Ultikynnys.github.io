@@ -4,12 +4,14 @@
 - Title: Deltarune Chapter 1 | Characters and Assets
 - Description: As part of a commission, I was tasked to create various Deltarune characters and assets, in the same style as VibaPop's deltarune models.
 - Media: images/deltaruneshowcase.mp4
+- Software: Blender
 - ArtStation: https://www.artstation.com/artwork/319Env
 
 ## Space Station Interior - Modular Asset Pack
 - Title: Space Station Interior - Modular Asset Pack
 - Description: An all-in-one modular asset collection that allows you to construct multi-level space station interiors, complete with a functional elevator system.
 - Media: images/SSModular.jpg
+- Software: Blender, Substance Designer
 - Store: https://www.fab.com/listings/2a61ecc6-7d4c-473f-8550-467033c6641b
 - Engine: Unreal Engine
 
@@ -17,7 +19,8 @@
 ## TIMBERSTRING
 - Title: TIMBERSTRING
 - Description: All the 3D characters and renders were made by me.
-- Media: images/Timble.png
+- Media: images/Timble.webp
+- Software: Blender, Substance Painter, ZBrush
 - Demo: https://aengel-studio.itch.io/timberstring
 - Private: False
 - Engine: Unity
@@ -26,6 +29,7 @@
 - Title: Horror Mansion Interior - Modular Pack
 - Description: Realistic asset pack for creating mansions and hotels with optimized assets.
 - Media: images/MansionInterior.jpg
+- Software: Blender, Substance Painter, Substance Designer
 - Store: https://www.fab.com/listings/26d61456-dc6a-44a3-82d6-46b4a900e4e0
 
 
@@ -34,18 +38,21 @@
 - Title: SimplyCCTV
 - Description: Camera model and screen shader asset pack for security camera simulations and monitoring systems in games.
 - Media: images/SimplyCCTV.jpg
+- Software: Blender
 - Store: https://www.fab.com/listings/835b274f-754a-4953-9068-2190ac47ea30
 
 ## Science Glassware Essentials
 - Title: Science Glassware Essentials Pack
 - Description: Various Stylized Science glassware assets including an advanced Liquid shader.
 - Media: images/Glassware.jpg
+- Software: Blender
 - Store: https://www.fab.com/listings/fb45d55c-3f20-41ae-bf5e-33e33f7657c9
 
 ## Mirror Game Props
 - Title: Mirror Game Props
 - Description: Various props for an upcoming game project, featuring detailed models with wireframe views.
 - Media: [images/A_Manor.webp, images/B_Manor.webp]
+- Software: Blender, Substance Painter, Substance Designer
 - Comparison: true
 - Private: true
 
@@ -53,6 +60,7 @@
 - Title: Crystal Ball Critters
 - Description: Various Character Models and Animations for the game Crystal Ball Critters, showcasing character design and animation techniques.
 - Media: images/Characteranimationdemorell.png
+- Software: Blender, Substance Painter, ZBrush
 - Demo: https://www.youtube.com/watch?v=IfiVqn_uH1E
 - Store: https://store.steampowered.com/app/2220080/Crystal_Ball_Critters/
 - Steam: true
@@ -61,83 +69,97 @@
 - Title: The Gatekeeper Characters
 - Description: Character designs created for the Brackeys 2024 game jam game "The Gatekeeper", featuring detailed mythological-inspired gods.
 - Media: https://sketchfab.com/models/cce8dd39532d427cbec9d01aadfcb45c/embed
+- Software: Blender
 
 ## BeaverTown Villager
 - Title: BeaverTown Villager
 - Description: Character design and animations created for the Brackeys 2024 game jam game, featuring a distinctive stylized character.
 - Media: images/parsecd_GCKUFV6SfG.gif
+- Software: Blender
 - Private: true
 
 ## Scalbert Heignstein
 - Title: Scalbert(Factor) Heignstein
 - Description: Main character designed for the GMTK 2024 game jam, featuring a unique character design with full rigging.
 - Media: https://sketchfab.com/models/128900154f244d1db670b4f096a57dfb/embed
+- Software: Blender
 - Private: true
 
 ## Phaser Gun
 - Title: Sci-fi Weapon Pack - Phaser Gun
 - Description: First in a series of four sci-fi weapons, featuring detailed modeling and texturing for game-ready assets.
 - Media: https://sketchfab.com/models/62b41d951b7d42bca79b5b688bb4ea30/embed
+- Software: Blender, Substance Painter
 - Store: https://www.fab.com/sellers/Ultikynnys%20Productions
 
 ## Fox Character
 - Title: Fox Character - Unnamed Game
 - Description: Main character for a collaborative game project, featuring a detailed anthropomorphic fox design with full rigging.
 - Media: https://sketchfab.com/models/6ac4bac3cd414335afce9c17f1afd869/embed
+- Software: Blender
 - Private: true
 
 ## Marcoh
 - Title: Marcoh - Fear and Hunger 2: Termina
 - Description: Character study using 2D texturing techniques to achieve a hand-drawn aesthetic on a 3D model.
 - Media: https://sketchfab.com/models/e8db03653de64289a0c4540ace753be0/embed
+- Software: Blender
 - Private: true
 
 ## Human Solar Flare
 - Title: Human Solar Flare - PvZ Heroes
 - Description: Character study using Marvelous Designer, Substance Designer, and various Blender addons for advanced clothing and texturing.
 - Media: https://sketchfab.com/models/3ad1329976014a9e84e00007cdfa1371/embed
+- Software: Blender
 - Private: true
 
 ## Shoe Design
 - Title: Shoe Study
 - Description: Product visualization exercise focusing on realistic materials and lighting for footwear design.
 - Media: https://sketchfab.com/models/83cf7e542e4b4f388abbe3af00565a56/embed
+- Software: Blender, Substance Painter
 - Store: https://www.fab.com/sellers/Ultikynnys%20Productions
 
 ## Ulti Brand Mascot
 - Title: Ulti - Brand Mascot
 - Description: Original character created as a mascot to showcase future 3D props and designs, featuring unique styling and personality.
 - Media: https://sketchfab.com/models/99bc3ecdf96d430fbbf21de07d43e273/embed
+- Software: Blender, Substance Painter, ZBrush
 - Private: true
 
 ## Smith & Wesson 357 Magnum
 - Title: Model 27-2 357 Magnum
 - Description: Speed modeling exercise completed in 4 hours, later refined with improved topology and texturing for realistic weapon visualization.
 - Media: https://sketchfab.com/models/4a7da0ec37e844a1ba62dcd712c2495e/embed
+- Software: Blender, Substance Painter
 - Store: https://www.fab.com/sellers/Ultikynnys%20Productions
 
 ## Spatial Sphere
 - Title: Spatial Sphere - Album Cover
 - Description: Procedural modeling exercise in Blender creating complex geometric patterns for an album cover design.
-- Media: images/Ballgen.jpg
+- Media: images/Ballgen.webp
+- Software: Blender
 - Private: true
 
 ## Bit Character
 - Title: Bit - Pix and Bit (Patricia Taxxon)
 - Description: Character reconstruction from a single 2D reference, based on an album cover by Patricia Taxxon.
 - Media: images/Pix.gif
+- Software: Blender, Substance Painter, ZBrush
 - Private: true
 
 ## Lupilo
 - Title: Lupilo - VRChat Avatar
 - Description: Commissioned fursona created as a fully rigged VRChat avatar with detailed modeling and texturing.
 - Media: images/lupilo2.jpg
+- Software: Blender, Substance Painter
 - Private: true
 
 ## Grim Punisher
 - Title: Grim Punisher | TF2 Hat
 - Description: Team Fortress 2 hat design based loosely on the aesthetic of the Undertaker.
 - Media: images/GrimPunisher.jpeg
+- Software: Blender, Substance Painter
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -146,6 +168,7 @@
 - Title: Insidious Salamander | TF2 Hat
 - Description: Team Fortress 2 hat design modeled after the Spotted salamander.
 - Media: images/salamander2.jpg
+- Software: Blender, Substance Painter, ZBrush
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -154,6 +177,7 @@
 - Title: The Show-Show Off | TF2 Hat
 - Description: Team Fortress 2 hat based on Shake's Hat from "Aqua TV Show Show Theme Sequence" - a meta-reference to popular culture.
 - Media: images/TheShowShowOff.jpeg
+- Software: Blender, Substance Painter
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -162,6 +186,7 @@
 - Title: Engician | TF2 Hat
 - Description: Team Fortress 2 hat with a play on words for Engineer and Magician, featuring a classic magician's hat design.
 - Media: images/Engician.jpeg
+- Software: Blender, Substance Painter, ZBrush
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -170,6 +195,7 @@
 - Title: Gliders Getup | TF2 Hat
 - Description: Team Fortress 2 hat based on the Green Goblin, originally called "Goblineer" - a specialized cosmetic for the Engineer class.
 - Media: images/Gliders.jpg
+- Software: Blender, Substance Painter
 - Store: https://steamcommunity.com/id/R60D/myworkshopfiles/
 - Private: true
 - Workshop: true
@@ -178,29 +204,34 @@
 - Title: Blue Shark - Ikea Plushie
 - Description: Detailed recreation of the iconic Ikea Blåhaj shark plushie, with accurate materials and proportions.
 - Media: images/Blahaj.jpg
+- Software: Blender
 - Store: https://ultikynnys.gumroad.com/l/Blueshark
 
 ## Carl Character
 - Title: Carl - Truttle1
 - Description: Character model based on the YouTube channel Truttle1, which focuses on esoteric programming languages.
 - Media: images/Carl.jpg
+- Software: Blender, ZBrush
 - Private: true
 
 ## Kumuko
 - Title: Kumuko - Kumo desu ga, Nani ka?
 - Description: Character model based on the protagonist from the anime "So I'm a Spider, So What?", featuring detailed arachnid anatomy.
 - Media: images/kumuko.jpg
+- Software: Blender, ZBrush
 - Private: true
 
 ## Mao Mao
 - Title: Mao Mao - Heroes of Pure Heart
 - Description: Character model based on the protagonist from the animated series Mao Mao: Heroes of Pure Heart.
 - Media: images/MAOMAO.jpg
+- Software: Blender, ZBrush
 - Private: true
 
 ## Demoman's Pipe Dream
 - Title: Demoman's Pipe Dream - TF2
 - Description: Viral physics simulation created using Team Fortress 2 Demoman pipes, showcasing advanced simulation and rendering.
 - Media: images/pills.jpg
+- Software: Blender
 - Demo: https://www.reddit.com/r/tf2/comments/hx1ubp/demo_dreamsblender/
 - Private: true

@@ -1,29 +1,93 @@
 import { element, setMaximizeGlyph } from './dom';
+import { engineIcon } from './engines';
 import { icon } from './icons';
+import { langIcon } from './lang-icons';
+import { softwareIcon } from './software-icons';
+import { brandIcon } from './tag-icons';
 import { clamp, escapeHtml, fetchText, parseToml } from './util';
 
-export interface Project {
+// Link-tag fields parsed from markdown. The label here is only the fallback shown when the target
+// site is not recognised; a link is otherwise labelled by the site it points at (see LINK_SITES).
+export const PROJECT_LINKS = {
+    demo: 'Demo',
+    github: 'GitHub',
+    artstation: 'ArtStation',
+    store: 'Store'
+} as const;
+export type ProjectLinkKey = keyof typeof PROJECT_LINKS;
+function isProjectLink(field: string): field is ProjectLinkKey {
+    return field in PROJECT_LINKS;
+}
+
+// A link tag reads as the site it points at, so a Demo and a Store link to Steam both become the
+// Steam tag. Add a host suffix here (+ its `.tag-<key>` colour rule) to support a new site. `icon`
+// is an optional Font Awesome class; `favicon` a path to the site's own favicon and `brand` an
+// optional real-logo key from tools/gen-tag-icons.mjs, both shown at the left of the tag.
+const LINK_SITES: Record<string, { label: string; key: string; icon?: string; brand?: string; favicon?: string; mask?: boolean }> = {
+    'steampowered.com': { label: 'Steam', key: 'steam', icon: 'fa-brands fa-steam' },
+    'steamcommunity.com': { label: 'Steam', key: 'steam', icon: 'fa-brands fa-steam' },
+    'itch.io': { label: 'itch.io', key: 'itch', icon: 'fa-brands fa-itch-io' },
+    'github.com': { label: 'GitHub', key: 'github', icon: 'fa-brands fa-github' },
+    'github.io': { label: 'GitHub Pages', key: 'githubpages', icon: 'fa-brands fa-github' },
+    'artstation.com': { label: 'ArtStation', key: 'artstation', icon: 'fa-brands fa-artstation' },
+    'fab.com': { label: 'Fab', key: 'fab', favicon: '/images/brands/fab.svg' },
+    'blendermarket.com': { label: 'SuperHive', key: 'superhive', favicon: '/images/brands/superhive-mask.svg', mask: true },
+    'superhivemarket.com': { label: 'SuperHive', key: 'superhive', favicon: '/images/brands/superhive-mask.svg', mask: true },
+    'gumroad.com': { label: 'Gumroad', key: 'gumroad', brand: 'gumroad' },
+    'gamebanana.com': { label: 'GameBanana', key: 'gamebanana', brand: 'gamebanana' },
+    'youtube.com': { label: 'YouTube', key: 'youtube', icon: 'fa-brands fa-youtube' },
+    'youtu.be': { label: 'YouTube', key: 'youtube', icon: 'fa-brands fa-youtube' },
+    'reddit.com': { label: 'Reddit', key: 'reddit', icon: 'fa-brands fa-reddit' }
+};
+function siteFor(url: string): { label: string; key: string; icon?: string; brand?: string; favicon?: string; mask?: boolean } | null {
+    let host: string;
+    try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { return null; }
+    for (const [suffix, site] of Object.entries(LINK_SITES)) {
+        if (host === suffix || host.endsWith(`.${suffix}`)) return site;
+    }
+    return null;
+}
+
+export type Project = {
     title: string;
     description: string;
     media: string | string[];
-    github?: string;
-    artstation?: string;
-    store?: string;
-    demo?: string;
     engine?: string;
     private?: boolean;
     languages?: string[];
+    software?: string[];
     priority?: number;
-}
+} & Partial<Record<ProjectLinkKey, string>>;
 export interface CardOptions {
-    badgeOrder?: ('private' | 'demo' | 'github' | 'artstation')[];
-    fallbackBadge?: string;
+    badgeOrder?: (ProjectLinkKey | 'private')[];
     multiBadge?: boolean;
     showLanguageNotches?: boolean;
+    showSoftwareNotches?: boolean;
     alwaysShowEngineTag?: boolean;
 }
 function safeUrl(value: string): string {
     return /^(?:https?:\/\/|(?:images|audio|content)\/)/i.test(value) ? escapeHtml(value) : '';
+}
+function linkTag(field: ProjectLinkKey, url: string): string {
+    const site = siteFor(url);
+    const key = site?.key ?? field;
+    const label = site?.label ?? PROJECT_LINKS[field];
+    const icon = site?.brand ? brandIcon(site.brand)
+        : site?.favicon ? (site.mask
+            ? `<span class="tag-icon tag-icon-mask" style="--tag-mask:url('${site.favicon}')" aria-hidden="true"></span>`
+            : `<img class="tag-icon" src="${site.favicon}" alt="" aria-hidden="true">`)
+        : site?.icon ? `<i class="${site.icon}" aria-hidden="true"></i>` : '';
+    return `<a class="tag tag-link tag-${key}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${icon}${label}</a>`;
+}
+// Long language names collapse to a short label (a hover title keeps the full name) so a card
+// spends its width on the content; the code keys the per-language colour theme.
+const LANGUAGE_LABELS: Record<string, string> = { typescript: 'TS', javascript: 'JS' };
+function languageCode(language: string): string {
+    return language.toLowerCase().replace('c++', 'cpp').replace('c#', 'csharp');
+}
+// Modelling software collapses to a slug for its class + icon (Blender, Substance Painter).
+function softwareCode(software: string): string {
+    return software.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 export function parseMarkdown(markdown: string): { projects: Project[]; intro: string } {
     const sections = markdown.split(/^## /m);
@@ -33,18 +97,17 @@ export function parseMarkdown(markdown: string): { projects: Project[]; intro: s
         for (const line of section.split(/\r?\n/)) {
             const match = line.match(/^- (\w+):\s*(.*)$/);
             if (!match) continue;
-            const [, field, value] = match;
-            switch (field.toLowerCase()) {
+            const field = match[1].toLowerCase();
+            const value = match[2];
+            if (isProjectLink(field)) { project[field] = value; continue; }
+            switch (field) {
                 case 'title': project.title = value; break;
                 case 'description': project.description = value; break;
                 case 'media': project.media = value.startsWith('[') ? value.slice(1, -1).split(',').map(s => s.trim()) : value; break;
-                case 'github': project.github = value; break;
-                case 'artstation': project.artstation = value; break;
-                case 'store': project.store = value; break;
-                case 'demo': project.demo = value; break;
                 case 'engine': project.engine = value; break;
                 case 'private': project.private = value.toLowerCase() === 'true'; break;
                 case 'languages': project.languages = value.split(',').map(s => s.trim()).filter(Boolean); break;
+                case 'software': project.software = value.split(',').map(s => s.trim()).filter(Boolean); break;
                 case 'priority': { const priority = Number(value); if (Number.isFinite(priority)) project.priority = priority; break; }
             }
         }
@@ -82,23 +145,34 @@ function renderMedia(project: Project, id: number): string {
 }
 export function createUnifiedProjectCard(project: Project, id: number, options: CardOptions = {}): string {
     const hasStore = Boolean(project.store);
+    // Link tags point at a site and read as that site. The page's badgeOrder picks and orders them;
+    // a store link always shows, independent of multiBadge.
     const links = (options.badgeOrder ?? ['private', 'demo', 'github']).flatMap(key => {
         if (key === 'private') return [];
         const url = project[key];
-        return url ? [`<a class="${key}-link" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${key === 'github' ? 'GitHub' : key === 'artstation' ? 'ArtStation' : 'Demo'}</a>`] : [];
+        return url ? [linkTag(key, url)] : [];
     });
-    // A project offered through a public store is not private, so the two badges never co-occur.
-    const privateTag = project.private && !hasStore ? '<span class="private-tag">Private</span>' : '';
-    // Clickable badges lead the row; the non-clickable Private tag trails the action links.
-    const orderedBadges = [...links, privateTag].filter(Boolean);
-    const primary = options.multiBadge ? orderedBadges : orderedBadges.slice(0, 1);
-    const badgeHtml = primary.join('') || (!hasStore && options.fallbackBadge === 'private' ? '<span class="private-tag">Private</span>' : '');
-    const languages = options.showLanguageNotches ? (project.languages ?? []).slice(0, 3).map(language => `<span class="language-notch language-${escapeHtml(language.toLowerCase().replace('c++', 'cpp').replace('c#', 'csharp'))}">${escapeHtml(language)}</span>`).join('') : '';
-    const engine = options.alwaysShowEngineTag ? `<div class="game-tag">${escapeHtml(project.engine ?? 'Game')}</div>` : '';
-    const store = project.store ? `<a class="store-link" href="${safeUrl(project.store)}" target="_blank" rel="noopener noreferrer">Store</a>` : '';
+    const linkTags = [...(options.multiBadge ? links : links.slice(0, 1)), project.store ? linkTag('store', project.store) : ''].filter(Boolean).join('');
+    // Label tags are the non-clickable status chips that follow: Private, languages, software, engine.
+    // A project offered through a public store is not private, so the two never co-occur.
+    const privateTag = project.private && !hasStore ? '<span class="tag tag-label private-tag"><i class="fa-solid fa-lock" aria-hidden="true"></i>Private</span>' : '';
+    const languages = options.showLanguageNotches ? (project.languages ?? []).slice(0, 3).map(language => {
+        const label = LANGUAGE_LABELS[language.toLowerCase()] ?? language;
+        const code = languageCode(language);
+        return `<span class="tag tag-label language-notch language-${escapeHtml(code)}"${label === language ? '' : ` title="${escapeHtml(language)}"`}>${langIcon(code)}${escapeHtml(label)}</span>`;
+    }).join('') : '';
+    const software = options.showSoftwareNotches ? (project.software ?? []).map(name => {
+        const code = softwareCode(name);
+        return `<span class="tag tag-label software-notch software-${escapeHtml(code)}">${softwareIcon(code)}${escapeHtml(name)}</span>`;
+    }).join('') : '';
+    const info = project.engine ? engineIcon(project.engine) : null;
+    const engine = options.alwaysShowEngineTag
+        ? `<div class="tag tag-label game-tag${info ? ` xp-engine-${info.key}` : ''}">${info ? `<svg class="engine-icon" viewBox="${info.viewBox}" aria-hidden="true">${info.body}</svg>` : ''}${escapeHtml(project.engine ?? 'Game')}</div>`
+        : '';
+    const labelTags = [privateTag, languages, software, engine].join('');
     return `<article class="project-card" data-project-id="${id}" tabindex="0" aria-label="Open ${escapeHtml(project.title)}">
         <div class="xp-titlebar xp-focus-bar" aria-hidden="true">${icon('folder', 16)}<span class="xp-title">${escapeHtml(project.title)}</span><div class="xp-window-controls"><button class="xp-focus-min" type="button" aria-label="Minimize" tabindex="-1"><span class="xp-glyph-min"></span></button><button class="xp-focus-max" type="button" aria-label="Maximize" tabindex="-1"><span class="xp-glyph-max"></span></button><button class="xp-focus-close xp-close" type="button" aria-label="Close" tabindex="-1"><span class="xp-glyph-close"></span></button></div></div>
-        <div class="project-badges">${badgeHtml}${store}${languages}${engine}</div>
+        <div class="project-badges">${linkTags}${labelTags}</div>
         <div class="project-media">${renderMedia(project, id)}</div>
         <div class="project-info"><h3>${escapeHtml(project.title)}</h3><p>${escapeHtml(project.description)}</p></div></article>`;
 }
@@ -181,6 +255,8 @@ export function setupProjectExpansion(): void {
         container.classList.remove('has-expanded');
         document.getElementById('overlay')?.classList.remove('active');
         document.body.classList.remove('body-no-scroll');
+        limitBadgeRows();
+        fitProjectHeadings();
     };
     const open = (event: Event) => {
         const target = event.target;
@@ -198,6 +274,8 @@ export function setupProjectExpansion(): void {
         card.style.top = `${Math.max(0, Math.round((vh - h) / 2))}px`;
         document.getElementById('overlay')?.classList.add('active');
         document.body.classList.add('body-no-scroll');
+        limitBadgeRows();
+        fitProjectHeadings();
     };
     container.addEventListener('click', open);
     container.addEventListener('keydown', event => { if (event.key === 'Enter') open(event); });
@@ -262,6 +340,33 @@ export function initCarousels(): void {
         carousel.querySelectorAll('.carousel-dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
     });
 }
+// Badge chips wrap onto extra lines, but never past three: any chip that lands on line four or
+// beyond is hidden. Re-run whenever the wrap can change (render, resize, expand, fonts loading).
+export function limitBadgeRows(): void {
+    for (const bar of document.querySelectorAll<HTMLElement>('.project-badges')) {
+        const chips = [...bar.children] as HTMLElement[];
+        for (const chip of chips) chip.hidden = false;
+        const tops = chips.map(chip => chip.offsetTop);
+        const lines = [...new Set(tops)].sort((a, b) => a - b);
+        if (lines.length <= 3) continue;
+        chips.forEach((chip, i) => { chip.hidden = tops[i] >= lines[3]; });
+    }
+}
+// Headings render at a fixed 17px and do not wrap, so a long title would otherwise spill past the
+// card edge. Shrink the type to fit the column first; once it bottoms out at the minimum, the h3's
+// own text-overflow ellipsis takes over.
+const HEADING_MAX_PX = 17;
+const HEADING_MIN_PX = 11;
+export function fitProjectHeadings(): void {
+    for (const heading of document.querySelectorAll<HTMLElement>('.project-info h3, .portfolio-info h3')) {
+        let size = HEADING_MAX_PX;
+        heading.style.fontSize = `${size}px`;
+        while (size > HEADING_MIN_PX && heading.scrollWidth > heading.clientWidth) {
+            size -= 0.5;
+            heading.style.fontSize = `${size}px`;
+        }
+    }
+}
 export async function initPortfolio(file: string, options: CardOptions): Promise<void> {
     const container = element('projects-container');
     try {
@@ -274,6 +379,18 @@ export async function initPortfolio(file: string, options: CardOptions): Promise
     } catch (error) {
         container.textContent = `Failed to load projects: ${error instanceof Error ? error.message : String(error)}`;
     }
+    limitBadgeRows();
+    fitProjectHeadings();
+    // The XP window can be resized without a window 'resize' event, so re-cap whenever the grid's
+    // width changes; height-only changes are ignored (hiding rows causes those).
+    let gridWidth = container.clientWidth;
+    new ResizeObserver(() => {
+        if (container.clientWidth === gridWidth) return;
+        gridWidth = container.clientWidth;
+        limitBadgeRows();
+        fitProjectHeadings();
+    }).observe(container);
+    void document.fonts?.ready.then(() => { limitBadgeRows(); fitProjectHeadings(); });
     container.addEventListener('mouseover', event => {
         if (!(event.target instanceof Element)) return;
         const frame = event.target.closest('.project-card')?.querySelector<HTMLIFrameElement>('iframe[data-autoplay-url]');
@@ -293,7 +410,7 @@ export function initSecretMode(): void {
     let catMilestonePlayed = false;   // the over-ten-cats voiceline fires once per minigame
     const play = (file: string, scale = 1) => { const clip = new Audio(file); const level = window.xpVolume?.(); if (typeof level === 'number') clip.volume = Math.min(1, Math.max(0, level * scale)); void clip.play().catch(() => undefined); };
     const indicator = document.createElement('img');
-    indicator.id = 'yasuo-mode-indicator'; indicator.src = 'images/yasuo.png'; indicator.alt = 'Yasuo Mode Active';
+    indicator.id = 'yasuo-mode-indicator'; indicator.src = 'images/yasuo.webp'; indicator.alt = 'Yasuo Mode Active';
     document.body.append(indicator);
     const setActive = (on: boolean) => {
         document.body.classList.toggle('yasuo-mode-active', on);
@@ -473,7 +590,8 @@ export async function loadLanguageColors(): Promise<void> {
     try {
         const colors = parseSimpleToml(await fetchText('content/language_colors.toml'));
         const style = document.createElement('style');
-        style.textContent = Object.entries(colors).filter(([code, cfg]) => /^[\w-]+$/.test(code) && /^#[\da-f]{3,8}$/i.test(cfg.bg) && /^#[\da-f]{3,8}$/i.test(cfg.fg)).map(([code, cfg]) => `.language-${code}{background:${cfg.bg};color:${cfg.fg}}`).join('\n');
+        // Scoped past `.project-badges > *`, which otherwise wins the tie and repaints every notch grey.
+        style.textContent = Object.entries(colors).filter(([code, cfg]) => /^[\w-]+$/.test(code) && /^#[\da-f]{3,8}$/i.test(cfg.bg) && /^#[\da-f]{3,8}$/i.test(cfg.fg)).map(([code, cfg]) => `.xp-content .project-badges .language-${code}{background:${cfg.bg};color:${cfg.fg};border-color:${cfg.bg}}`).join('\n');
         document.head.append(style);
     } catch (error) { console.warn('Language colors unavailable', error); }
 }
