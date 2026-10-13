@@ -42,7 +42,7 @@
 - Title: Reasonix (Cache Optimized LLM Harness)
 - Description: My fork of Reasonix, which I developed further to meet my personal AI-assisted development requirements, with a focus on cost efficiency and support for multiple model-provider APIs. It is a standalone Tauri 2 Windows app backed by a headless JSON-RPC daemon, with a cache-first loop, tool-call repair, multi-tab sessions, edit modes, MCP, skills, memory, hooks, and live cost metering.
 - Media: images/reasonix.jpg
-- GitHub: https://github.com/Ultikynnys/DeepSeek-Reasonix
+- GitHub: https://github.com/Ultikynnys/ReasonixPlus
 - Languages: TypeScript, Rust
 
 ## UltiBridge | Universal Scene Exporter
