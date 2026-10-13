@@ -425,7 +425,7 @@
           paint(escapeHtml(target));
         }
       }, SCRAMBLE_FLICKER_MS);
-      if (indicator) indicator.textContent = index === 0 ? "Full name" : "Also known as";
+      if (indicator) indicator.textContent = index === 0 ? "Full name" : "Alias";
     }, 8e3);
   }
   function setupProjectExpansion() {

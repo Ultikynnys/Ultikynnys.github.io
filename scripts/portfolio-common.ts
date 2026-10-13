@@ -173,7 +173,7 @@ export function initNameAnimation(): void {
             paint(escapeHtml(target.slice(0, position)) + noise);
             if (position >= target.length) { clearInterval(timer); paint(escapeHtml(target)); }
         }, SCRAMBLE_FLICKER_MS);
-        if (indicator) indicator.textContent = index === 0 ? 'Full name' : 'Also known as';
+        if (indicator) indicator.textContent = index === 0 ? 'Full name' : 'Alias';
     }, 8000);
 }
 export function setupProjectExpansion(): void {
