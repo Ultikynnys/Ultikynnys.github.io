@@ -60,11 +60,12 @@ test('every link site and the private tag carry an icon', () => {
     assert.match(fab, /class="tag tag-link tag-fab"[^>]*><img class="tag-icon" src="\/images\/brands\/fab\.svg"/);
     const superhive = createUnifiedProjectCard({ title: 'Game', description: '', media: '', store: 'https://superhivemarket.com/products/x' }, 0);
     assert.match(superhive, /class="tag tag-link tag-superhive"[^>]*><span class="tag-icon tag-icon-mask" style="--tag-mask:url\('\/images\/brands\/superhive-mask\.svg'\)"/);
-    // Gumroad / GameBanana ship a real logo Font Awesome lacks, inlined as an SVG by tag-icons.ts.
+    // Gumroad ships a real logo Font Awesome lacks, inlined as an SVG by tag-icons.ts.
     const gumroad = createUnifiedProjectCard({ title: 'Game', description: '', media: '', store: 'https://shop.gumroad.com/l/x' }, 0);
     assert.match(gumroad, /class="tag tag-link tag-gumroad"[^>]*><svg class="tag-icon"/);
+    // GameBanana shows the site's own favicon (its banana mark).
     const gamebanana = createUnifiedProjectCard({ title: 'Game', description: '', media: '', demo: 'https://gamebanana.com/mods/1' }, 0, { badgeOrder: ['demo'] });
-    assert.match(gamebanana, /class="tag tag-link tag-gamebanana"[^>]*><svg class="tag-icon"/);
+    assert.match(gamebanana, /class="tag tag-link tag-gamebanana"[^>]*><img class="tag-icon" src="\/images\/brands\/gamebanana\.png"/);
     const priv = createUnifiedProjectCard({ title: 'Game', description: '', media: '', private: true }, 0);
     assert.match(priv, /<i class="fa-solid fa-lock" aria-hidden="true"><\/i>Private/);
 });

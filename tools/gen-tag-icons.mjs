@@ -1,5 +1,5 @@
 // Generates scripts/tag-icons.ts — real brand logos for link tags whose brand Font Awesome does not
-// ship (Gumroad, GameBanana). Sourced from simple-icons. Run:
+// ship (Gumroad). Sourced from simple-icons. Run:
 //   node tools/gen-tag-icons.mjs
 import { writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -11,7 +11,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const simple = require('@iconify-json/simple-icons/icons.json');
 
 // Brand key -> simple-icons id. Add a row here when a link site's brand is not in Font Awesome.
-const ICONS = { gumroad: 'gumroad', gamebanana: 'gamebanana' };
+const ICONS = { gumroad: 'gumroad' };
 
 const rows = Object.entries(ICONS).map(([key, id]) => {
   const icon = simple.icons[id];

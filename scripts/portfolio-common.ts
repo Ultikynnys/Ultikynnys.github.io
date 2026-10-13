@@ -34,7 +34,7 @@ const LINK_SITES: Record<string, { label: string; key: string; icon?: string; br
     'blendermarket.com': { label: 'SuperHive', key: 'superhive', favicon: '/images/brands/superhive-mask.svg', mask: true },
     'superhivemarket.com': { label: 'SuperHive', key: 'superhive', favicon: '/images/brands/superhive-mask.svg', mask: true },
     'gumroad.com': { label: 'Gumroad', key: 'gumroad', brand: 'gumroad' },
-    'gamebanana.com': { label: 'GameBanana', key: 'gamebanana', brand: 'gamebanana' },
+    'gamebanana.com': { label: 'GameBanana', key: 'gamebanana', favicon: '/images/brands/gamebanana.png' },
     'youtube.com': { label: 'YouTube', key: 'youtube', icon: 'fa-brands fa-youtube' },
     'youtu.be': { label: 'YouTube', key: 'youtube', icon: 'fa-brands fa-youtube' },
     'reddit.com': { label: 'Reddit', key: 'reddit', icon: 'fa-brands fa-reddit' }

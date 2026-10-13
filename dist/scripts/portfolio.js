@@ -260,8 +260,7 @@
 
   // scripts/tag-icons.ts
   var TAG_ICONS = {
-    "gumroad": { viewBox: "0 0 24 24", body: '<path fill="currentColor" d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0m-.007 5.12c4.48 0 5.995 3.025 6.064 4.744h-3.239c-.069-.962-.897-2.406-2.896-2.406c-2.136 0-3.514 1.857-3.514 4.126s1.378 4.125 3.514 4.125c1.93 0 2.758-1.512 3.103-3.025h-3.103v-1.238h6.509v6.327h-2.855v-3.989c-.207 1.444-1.102 4.264-4.617 4.264c-3.516 0-5.584-2.82-5.584-6.326c0-3.645 2.276-6.602 6.618-6.602"/>' },
-    "gamebanana": { viewBox: "0 0 24 24", body: '<path fill="currentColor" d="M14.249 0v3h1.5V1.5h1.505V3h-1.505v4.5h1.5v-3h3.002V3h-1.505V0Zm6.002 4.498v1.5h1.5V4.501Zm1.5 1.5v10.503h1.5V5.998Zm0 10.503h-1.5V19.5h1.5zm-1.5 2.998h-1.505v1.5h1.5zm-1.5 1.5h-3.002v1.5h3.001zm-3.002 1.5H6.75V24h9zm-8.999 0V21h-3v1.5zm-3-1.5v-1.497H2.248v1.5zm-1.501-1.497v-2.997H9.75v-1.5H.748v4.497zm7.502-4.497h2.997v-1.5H9.751Zm2.997-1.5h1.5v-1.501h-1.5zm1.5-1.501h1.501V7.506h-1.5z"/>' }
+    "gumroad": { viewBox: "0 0 24 24", body: '<path fill="currentColor" d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12a12 12 0 0 0 12-12A12 12 0 0 0 12 0m-.007 5.12c4.48 0 5.995 3.025 6.064 4.744h-3.239c-.069-.962-.897-2.406-2.896-2.406c-2.136 0-3.514 1.857-3.514 4.126s1.378 4.125 3.514 4.125c1.93 0 2.758-1.512 3.103-3.025h-3.103v-1.238h6.509v6.327h-2.855v-3.989c-.207 1.444-1.102 4.264-4.617 4.264c-3.516 0-5.584-2.82-5.584-6.326c0-3.645 2.276-6.602 6.618-6.602"/>' }
   };
   function brandIcon(key) {
     const icon2 = TAG_ICONS[key];
@@ -289,7 +288,7 @@
     "blendermarket.com": { label: "SuperHive", key: "superhive", favicon: "/images/brands/superhive-mask.svg", mask: true },
     "superhivemarket.com": { label: "SuperHive", key: "superhive", favicon: "/images/brands/superhive-mask.svg", mask: true },
     "gumroad.com": { label: "Gumroad", key: "gumroad", brand: "gumroad" },
-    "gamebanana.com": { label: "GameBanana", key: "gamebanana", brand: "gamebanana" },
+    "gamebanana.com": { label: "GameBanana", key: "gamebanana", favicon: "/images/brands/gamebanana.png" },
     "youtube.com": { label: "YouTube", key: "youtube", icon: "fa-brands fa-youtube" },
     "youtu.be": { label: "YouTube", key: "youtube", icon: "fa-brands fa-youtube" },
     "reddit.com": { label: "Reddit", key: "reddit", icon: "fa-brands fa-reddit" }
