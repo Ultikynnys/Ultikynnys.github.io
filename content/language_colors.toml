@@ -30,8 +30,9 @@ bg = "#478cbf"
 fg = "#ffffff"
 
 [rust]
-bg = "#dea584"
-fg = "#1a1a1a"
+# Orange matched to the Blender software chip
+bg = "#e87d0d"
+fg = "#ffffff"
 
 [wasm]
 bg = "#654ff0"
