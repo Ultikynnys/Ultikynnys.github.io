@@ -138,16 +138,21 @@
     window.setTimeout(go, 700);
   }
   getClip("start");
-  getClip("startup");
-  function playStartup() {
+  getClip("startup")?.load();
+  async function playStartup() {
     const clip = getClip("startup");
     if (!clip) return;
-    try {
-      clip.volume = (window.xpVolume?.() ?? 1) * 0.25;
-      clip.currentTime = 0;
-      void clip.play().catch(() => {
-      });
-    } catch {
+    clip.volume = (window.xpVolume?.() ?? 1) * 0.25;
+    clip.currentTime = 0;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        await clip.play();
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError" && attempt === 0) continue;
+        console.warn("Startup audio could not autoplay:", error);
+        return;
+      }
     }
   }
   var destinations = [
@@ -219,7 +224,10 @@
     shortcuts.inert = true;
     const previousFocus = document.activeElement;
     let timer = 0;
+    let dismissed = false;
     const dismiss = () => {
+      if (dismissed) return;
+      dismissed = true;
       clearTimeout(timer);
       document.removeEventListener("keydown", onKey);
       screen.remove();
@@ -232,7 +240,7 @@
       }
       if (previousFocus instanceof HTMLElement && previousFocus !== document.body) previousFocus.focus();
       else element("xp-start").focus({ preventScroll: true });
-      playStartup();
+      void playStartup();
     };
     const onKey = (event) => {
       if (event.key === "Escape" || event.key === "Enter") {

@@ -79,7 +79,10 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content .portfolio-choice .portfolio-info, .xp-content .project-info { padding:14px; text-align:left; }
 .xp-content .portfolio-info h3, .xp-content .project-info h3 { margin:0 0 8px; color:#17458c; font-size:17px; }
 .xp-content .portfolio-info p, .xp-content .project-info p { color:#495972; font-size:12px; line-height:1.6; }
-.xp-content .portfolio-choice::before { content:'My Documents'; display:block; padding:6px 10px; color:#fff; font-size:11px; background:var(--accent-color,#2865c3); background:linear-gradient(color-mix(in srgb,var(--accent-color,#2865c3) 72%,#fff),var(--accent-color,#2865c3)); }
+.xp-content .portfolio-choice::before { content:var(--portfolio-section-title,''); display:block; padding:6px 10px; color:#fff; font-size:11px; background:var(--accent-color,#2865c3); background:linear-gradient(color-mix(in srgb,var(--accent-color,#2865c3) 72%,#fff),var(--accent-color,#2865c3)); }
+.xp-content .portfolio-programming-card { --portfolio-section-title:'Programming'; }
+.xp-content .portfolio-3d-card { --portfolio-section-title:'3D Design'; }
+.xp-content .portfolio-gamedev-card { --portfolio-section-title:'Game Development'; }
 .xp-content .portfolio-choice { border-color:color-mix(in srgb,var(--accent-color,#a4bbdc) 45%,#fff); }
 .xp-content .project-media { position:relative; height:210px; background:#dce5f3; }
 .xp-content .media-placeholder { width:100%; height:100%; background:repeating-linear-gradient(45deg,#e3eaf6 0 14px,#d4dfec 14px 28px); }
