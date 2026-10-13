@@ -18,22 +18,19 @@
     
     .nyan-cat {
       position: fixed;
-      left: -150px;
-      opacity: 0;
-      transform: scale(0.7);
+      left: 0;
+      transform: translateX(-100%) scale(0.7);
       /* Set a higher z-index so the cats appear above other elements */
       z-index: 1000;
-      animation: nyanMove 3s ease-in forwards;
+      animation: nyanMove 3s linear forwards;
       /* Fade the left side using a mask gradient */
       mask-image: linear-gradient(to right, transparent 0%, black 30%);
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
     }
     
     @keyframes nyanMove {
-      0% { left: -150px; opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { left: 100%; opacity: 0; }
+      from { transform: translateX(-100%) scale(0.7); }
+      to { transform: translateX(100vw) scale(0.7); }
     }
     
     /* Remove any margin/padding that may cause extra space under the footer */

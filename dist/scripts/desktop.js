@@ -57,6 +57,20 @@
     github: "web",
     twitter: "web"
   };
+  function buildContactLink(key, social, size, extraClass) {
+    const link = document.createElement("a");
+    link.href = String(social.url);
+    link.className = [String(social.class ?? ""), extraClass].filter(Boolean).join(" ");
+    if (social.external !== false) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+    const brand = typeof social.icon === "string" ? social.icon : "";
+    const svgIcon = typeof social.iconSvg === "string" ? social.iconSvg : "";
+    link.innerHTML = brand ? `<i class="xp-fav-icon ${brand}" aria-hidden="true"></i>` : svgIcon ? `<img class="xp-fav-icon" src="${svgIcon}" width="${size}" height="${size}" alt="">` : icon(SOCIAL_ICONS[key] ?? "web", size);
+    link.append(document.createTextNode(` ${String(social.label ?? key)}`));
+    return link;
+  }
   async function loadSocialRibbon() {
     try {
       const response = await fetch("config/contacts.toml");
@@ -65,21 +79,12 @@
       const favourites = document.createElement("nav");
       favourites.className = "xp-favourites";
       favourites.setAttribute("aria-label", "Favourite links");
+      const side = document.querySelector("#xp-start-menu .xp-menu-side");
       for (const key of config.ribbon.order) {
         const social = config.social[key];
         if (!social || typeof social.url !== "string") continue;
-        const link = document.createElement("a");
-        link.href = social.url;
-        link.className = String(social.class ?? "");
-        if (social.external !== false) {
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-        }
-        const brand = typeof social.icon === "string" ? social.icon : "";
-        const svgIcon = typeof social.iconSvg === "string" ? social.iconSvg : "";
-        link.innerHTML = brand ? `<i class="xp-fav-icon ${brand}" aria-hidden="true"></i>` : svgIcon ? `<img class="xp-fav-icon" src="${svgIcon}" width="32" height="32" alt="">` : icon(SOCIAL_ICONS[key] ?? "web", 32);
-        link.append(document.createTextNode(` ${String(social.label ?? key)}`));
-        favourites.append(link);
+        favourites.append(buildContactLink(key, social, 32, ""));
+        if (side) side.append(buildContactLink(key, social, 16, "xp-menu-side-link"));
       }
       const shortcuts = document.getElementById("xp-shortcuts");
       if (shortcuts) shortcuts.after(favourites);
@@ -155,6 +160,28 @@
   var DESKTOP = { top: 26, left: 124, right: 138, bottom: 30 };
   var MIN_SIZE = { width: 340, height: 240 };
   var EDGE = 8;
+  var XP_CURSOR_HOTSPOTS = {
+    arrow: { x: 3, y: 4 },
+    pointer: { x: 7, y: 3 },
+    text: { x: 6, y: 10 },
+    move: { x: 12, y: 12 },
+    "resize-h": { x: 12, y: 12 },
+    "resize-v": { x: 12, y: 14 },
+    "resize-se": { x: 10, y: 10 },
+    "resize-sw": { x: 10, y: 10 }
+  };
+  function xpCursorMode(target) {
+    if (!(target instanceof Element)) return "arrow";
+    if (target.closest(".xp-edge-w, .xp-edge-e")) return "resize-h";
+    if (target.closest(".xp-edge-s")) return "resize-v";
+    if (target.closest(".xp-edge-sw")) return "resize-sw";
+    if (target.closest(".xp-resize")) return "resize-se";
+    if (document.body.classList.contains("xp-dragging")) return "move";
+    if (target.closest(".xp-tb:disabled")) return "arrow";
+    if (target.closest('a, button, summary, label, select, [role="button"], [data-action], .project-card, .portfolio-choice, .xp-task, .xp-start, .xp-tb, .xp-volume, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="button"], input[type="submit"]')) return "pointer";
+    if (target.closest('.selectable, .selectable *, [data-selectable], [data-selectable] *, textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), [contenteditable="true"], [contenteditable="true"] *')) return "text";
+    return "arrow";
+  }
   function isInSiteNavigation() {
     try {
       return document.referrer !== "" && new URL(document.referrer).origin === location.origin;
@@ -265,7 +292,14 @@
     const grip = document.createElement("div");
     grip.className = "xp-resize";
     grip.setAttribute("aria-hidden", "true");
-    shell.append(titlebar, toolbar, address, content, status, grip);
+    const edge = (dir) => {
+      const el = document.createElement("div");
+      el.className = `xp-edge xp-edge-${dir}`;
+      el.setAttribute("aria-hidden", "true");
+      return el;
+    };
+    const edges = { w: edge("w"), e: edge("e"), s: edge("s"), sw: edge("sw") };
+    shell.append(titlebar, toolbar, address, content, status, grip, edges.w, edges.e, edges.s, edges.sw);
     const shortcuts = document.createElement("nav");
     shortcuts.id = "xp-shortcuts";
     shortcuts.className = "xp-shortcuts";
@@ -281,8 +315,81 @@
     menu.className = "xp-start-menu";
     menu.hidden = true;
     menu.setAttribute("aria-label", "Start navigation");
-    menu.innerHTML = `<div class="xp-user"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></div><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map((item) => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join("")}</div><div class="xp-menu-side"><a class="xp-menu-side-link" href="mailto:hussein.ubeid@outlook.com">Contact me</a></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
+    menu.innerHTML = `<div class="xp-user"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></div><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map((item) => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join("")}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
     document.body.append(shortcuts, shell, taskbar, menu);
+    if (window.matchMedia("(pointer:fine)").matches) {
+      const cursorElement = document.createElement("img");
+      cursorElement.id = "xp-cursor";
+      cursorElement.alt = "";
+      cursorElement.setAttribute("aria-hidden", "true");
+      cursorElement.draggable = false;
+      document.body.append(cursorElement);
+      const cursorSources = {
+        arrow: "images/xp-cursors/arrow.svg",
+        pointer: "images/xp-cursors/pointer.svg",
+        text: "images/xp-cursors/text.svg",
+        move: "images/xp-cursors/move.svg",
+        "resize-h": "images/xp-cursors/resize-h.svg",
+        "resize-v": "images/xp-cursors/resize-v.svg",
+        "resize-se": "images/xp-cursors/resize-se.svg",
+        "resize-sw": "images/xp-cursors/resize-sw.svg"
+      };
+      const preloads = Object.values(cursorSources).map((src) => {
+        const image = new Image();
+        image.src = src;
+        return image;
+      });
+      let lastPointerEvent = null;
+      let cursorAssetsReady = false;
+      let activeMode = "arrow";
+      const hideCustomCursor = () => {
+        cursorElement.classList.remove("xp-cursor-visible");
+        document.documentElement.classList.remove("xp-custom-cursor");
+        document.body.classList.remove("xp-custom-cursor");
+      };
+      cursorElement.src = cursorSources[activeMode];
+      const updateCursor = (event, target = event.target) => {
+        lastPointerEvent = event;
+        if (event.pointerType !== "mouse" && event.pointerType !== "pen") {
+          hideCustomCursor();
+          return;
+        }
+        const mode = xpCursorMode(target);
+        if (mode !== activeMode) {
+          activeMode = mode;
+          cursorElement.src = cursorSources[mode];
+        }
+        const hotspot = XP_CURSOR_HOTSPOTS[mode];
+        cursorElement.style.left = `${event.clientX - hotspot.x * 1.5}px`;
+        cursorElement.style.top = `${event.clientY - hotspot.y * 1.5}px`;
+        if (!cursorAssetsReady) return;
+        document.documentElement.classList.add("xp-custom-cursor");
+        document.body.classList.add("xp-custom-cursor");
+        cursorElement.classList.add("xp-cursor-visible");
+      };
+      const refreshCursorAfterPointerChange = (event) => {
+        window.requestAnimationFrame(() => updateCursor(event, document.elementFromPoint(event.clientX, event.clientY)));
+      };
+      void Promise.all(preloads.map((image) => image.decode().catch(() => void 0))).then(() => {
+        cursorAssetsReady = preloads.every((image) => image.naturalWidth > 0);
+        if (cursorAssetsReady && lastPointerEvent) updateCursor(lastPointerEvent);
+      });
+      document.addEventListener("pointermove", updateCursor, true);
+      document.addEventListener("pointerover", updateCursor, true);
+      document.addEventListener("pointerdown", (event) => {
+        updateCursor(event);
+        refreshCursorAfterPointerChange(event);
+      }, true);
+      document.addEventListener("pointerup", refreshCursorAfterPointerChange, true);
+      document.addEventListener("pointercancel", refreshCursorAfterPointerChange, true);
+      document.addEventListener("pointerout", (event) => {
+        if ((event.pointerType === "mouse" || event.pointerType === "pen") && !event.relatedTarget) hideCustomCursor();
+      }, true);
+      window.addEventListener("blur", hideCustomCursor);
+      window.addEventListener("focus", () => {
+        if (lastPointerEvent) updateCursor(lastPointerEvent, document.elementFromPoint(lastPointerEvent.clientX, lastPointerEvent.clientY));
+      });
+    }
     const applyRect = (rect) => {
       shell.style.left = `${rect.x}px`;
       shell.style.top = `${rect.y}px`;
@@ -367,25 +474,41 @@
     titlebar.addEventListener("pointerup", endDrag);
     titlebar.addEventListener("pointercancel", endDrag);
     let sizing = null;
-    grip.addEventListener("pointerdown", (event) => {
-      if (event.button !== 0 || shell.classList.contains("xp-maximized")) return;
-      const rect = readRect();
-      sizing = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, w: rect.w, h: rect.h };
-      grip.setPointerCapture(event.pointerId);
-      document.body.classList.add("xp-resizing");
-    });
-    grip.addEventListener("pointermove", (event) => {
-      if (!sizing || event.pointerId !== sizing.pointerId) return;
-      sizeTo(sizing.w + event.clientX - sizing.startX, sizing.h + event.clientY - sizing.startY);
-    });
-    const endResize = (event) => {
-      if (!sizing || event.pointerId !== sizing.pointerId) return;
-      sizing = null;
-      floating = readRect();
-      document.body.classList.remove("xp-resizing");
+    const resizeTo = (dir, dx, dy) => {
+      if (!sizing) return;
+      const right = sizing.x + sizing.w, bottom = sizing.y + sizing.h;
+      let x = sizing.x, y = sizing.y, w = sizing.w, h = sizing.h;
+      if (dir.includes("w")) {
+        x = Math.max(EDGE, Math.min(sizing.x + dx, right - MIN_SIZE.width));
+        w = right - x;
+      } else if (dir.includes("e")) w = Math.max(MIN_SIZE.width, sizing.w + dx);
+      if (dir.includes("s")) h = Math.max(MIN_SIZE.height, sizing.h + dy);
+      w = Math.min(w, viewportW() - EDGE - x);
+      h = Math.min(h, viewportH() - DESKTOP.bottom - EDGE - y);
+      applyRect({ x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) });
     };
-    grip.addEventListener("pointerup", endResize);
-    grip.addEventListener("pointercancel", endResize);
+    const handles = [[edges.w, "w"], [edges.e, "e"], [edges.s, "s"], [edges.sw, "sw"], [grip, "se"]];
+    for (const [handle, dir] of handles) {
+      handle.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 || shell.classList.contains("xp-maximized")) return;
+        const rect = readRect();
+        sizing = { pointerId: event.pointerId, dir, startX: event.clientX, startY: event.clientY, x: rect.x, y: rect.y, w: rect.w, h: rect.h };
+        handle.setPointerCapture(event.pointerId);
+        document.body.classList.add("xp-resizing");
+      });
+      handle.addEventListener("pointermove", (event) => {
+        if (!sizing || event.pointerId !== sizing.pointerId) return;
+        resizeTo(sizing.dir, event.clientX - sizing.startX, event.clientY - sizing.startY);
+      });
+      const endResize = (event) => {
+        if (!sizing || event.pointerId !== sizing.pointerId) return;
+        sizing = null;
+        floating = readRect();
+        document.body.classList.remove("xp-resizing");
+      };
+      handle.addEventListener("pointerup", endResize);
+      handle.addEventListener("pointercancel", endResize);
+    }
     window.addEventListener("resize", () => {
       if (shell.hidden || shell.classList.contains("xp-maximized")) return;
       const rect = readRect();

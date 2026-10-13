@@ -39,6 +39,20 @@ const SOCIAL_ICONS: Record<string, IconName> = {
     twitter: 'web'
 };
 
+function buildContactLink(key: string, social: Record<string, Value>, size: number, extraClass: string): HTMLAnchorElement {
+    const link = document.createElement('a');
+    link.href = String(social.url);
+    link.className = [String(social.class ?? ''), extraClass].filter(Boolean).join(' ');
+    if (social.external !== false) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+    const brand = typeof social.icon === 'string' ? social.icon : '';
+    const svgIcon = typeof social.iconSvg === 'string' ? social.iconSvg : '';
+    link.innerHTML = brand ? `<i class="xp-fav-icon ${brand}" aria-hidden="true"></i>`
+        : svgIcon ? `<img class="xp-fav-icon" src="${svgIcon}" width="${size}" height="${size}" alt="">`
+        : icon(SOCIAL_ICONS[key] ?? 'web', size);
+    link.append(document.createTextNode(` ${String(social.label ?? key)}`));
+    return link;
+}
+
 export async function loadSocialRibbon(): Promise<void> {
     try {
         const response = await fetch('config/contacts.toml');
@@ -46,19 +60,13 @@ export async function loadSocialRibbon(): Promise<void> {
         const config = parseContactsToml(await response.text());
         const favourites = document.createElement('nav');
         favourites.className = 'xp-favourites'; favourites.setAttribute('aria-label', 'Favourite links');
+        // Mirror the same contacts into the Start menu side panel, one icon size down.
+        const side = document.querySelector<HTMLElement>('#xp-start-menu .xp-menu-side');
         for (const key of config.ribbon.order) {
             const social = config.social[key];
             if (!social || typeof social.url !== 'string') continue;
-            const link = document.createElement('a');
-            link.href = social.url; link.className = String(social.class ?? '');
-            if (social.external !== false) { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-            const brand = typeof social.icon === 'string' ? social.icon : '';
-            const svgIcon = typeof social.iconSvg === 'string' ? social.iconSvg : '';
-            link.innerHTML = brand ? `<i class="xp-fav-icon ${brand}" aria-hidden="true"></i>`
-                : svgIcon ? `<img class="xp-fav-icon" src="${svgIcon}" width="32" height="32" alt="">`
-                : icon(SOCIAL_ICONS[key] ?? 'web', 32);
-            link.append(document.createTextNode(` ${String(social.label ?? key)}`));
-            favourites.append(link);
+            favourites.append(buildContactLink(key, social, 32, ''));
+            if (side) side.append(buildContactLink(key, social, 16, 'xp-menu-side-link'));
         }
         const shortcuts = document.getElementById('xp-shortcuts');
         if (shortcuts) shortcuts.after(favourites); else document.body.append(favourites);

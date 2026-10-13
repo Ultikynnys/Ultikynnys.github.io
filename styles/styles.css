@@ -1415,6 +1415,78 @@ body.dark-theme {
     }
 }
 
+/* Slicing a nyan cat: the same split and fall, without the card chrome. */
+.cat-half {
+    position: fixed;
+    overflow: hidden;
+    z-index: 1001;
+    pointer-events: none;
+}
+
+/* Cartoon dead-eye cross, stamped over a sliced cat's eye. */
+.cat-eye-x {
+    position: absolute;
+    pointer-events: none;
+    background-image:
+        linear-gradient(45deg, transparent 42%, #14100e 42% 58%, transparent 58%),
+        linear-gradient(-45deg, transparent 42%, #14100e 42% 58%, transparent 58%);
+}
+
+/* Blood mist sprayed from a sliced cat: a soft puff plus droplets on ballistic arcs. */
+.blood-puff {
+    position: fixed;
+    width: 96px;
+    height: 64px;
+    margin: -32px 0 0 -48px;
+    border-radius: 50%;
+    z-index: 1002;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(158, 10, 24, 0.6) 0%, rgba(112, 5, 15, 0.32) 46%, rgba(90, 0, 10, 0) 74%);
+    animation: bloodPuff 0.6s ease-out forwards;
+}
+
+@keyframes bloodPuff {
+    from {
+        opacity: 0.85;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(1.6);
+    }
+}
+
+.blood-drop {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 1003;
+    pointer-events: none;
+    background: radial-gradient(circle at 35% 35%, #d8232f 0%, #8e0d17 62%, #5a0509 100%);
+    transform: translate(-50%, -50%);
+    animation: bloodDrop 0.62s ease-out forwards;
+}
+
+@keyframes bloodDrop {
+    from {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--bx, 0px)), calc(-50% + var(--by, 0px))) scale(0.35);
+    }
+}
+.cat-half-top {
+    clip-path: inset(0 0 50% 0);
+    animation: cardSplitTop 0.6s ease-out forwards;
+}
+
+.cat-half-bottom {
+    clip-path: inset(50% 0 0 0);
+    animation: cardSplitBottom 0.6s ease-out forwards;
+}
 /* Yasuo Mode Indicator */
 #yasuo-mode-indicator {
     position: fixed;
@@ -1460,15 +1532,15 @@ body.yasuo-mode-active::before {
     visibility: visible;
 }
 
-/* Flash slice effect */
+/* Flash slice effect: geometry is set inline from its centre, length and angle. */
 .flash-slice {
-    position: absolute;
+    position: fixed;
+    width: var(--flash-len, 600px);
     height: 3px;
     /* Thin line */
     background-color: white;
     z-index: 1003;
     /* Above everything */
-    transform-origin: center left;
     box-shadow:
         0 0 10px 2px rgba(255, 255, 255, 0.8),
         0 0 20px 4px rgba(255, 255, 255, 0.6),
@@ -1487,17 +1559,17 @@ body.yasuo-mode-active::before {
 
     10% {
         opacity: 1;
-        width: 100%;
+        width: var(--flash-len, 600px);
     }
 
     30% {
         opacity: 1;
-        width: 100%;
+        width: var(--flash-len, 600px);
     }
 
     100% {
         opacity: 0;
-        width: 100%;
+        width: var(--flash-len, 600px);
     }
 }
 

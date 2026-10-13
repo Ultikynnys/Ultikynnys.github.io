@@ -20,12 +20,6 @@ email = "Hussein.Ubeid@outlook.com"
   icon = "fab fa-artstation"
   class = "artstation-header-notch"
 
-  [social.cv]
-  url = "cv_template.html"
-  label = "View CV"
-  class = "cv-notch"
-  external = false
-
   [social.email]
   url = "mailto:Hussein.Ubeid@outlook.com"
   label = "Email Me"
@@ -52,4 +46,4 @@ email = "Hussein.Ubeid@outlook.com"
 
 # Order in which social links appear in the ribbon
 [ribbon]
-order = ["discord", "artstation", "cv", "email", "linkedin", "github", "twitter"]
+order = ["discord", "artstation", "email", "linkedin", "github", "twitter"]

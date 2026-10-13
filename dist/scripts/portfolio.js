@@ -71,7 +71,7 @@
       const FADE_MS = 5e3;
       const CAT_LIFE_MS = 3500;
       const SPAWN_EVERY_MS = 600;
-      const VOLUME_SCALE = 0.4;
+      const VOLUME_SCALE = 0.2;
       const TRIPLE_MS = 500;
       const nyanVolume = () => (window.xpVolume?.() ?? 1) * VOLUME_SCALE;
       let active = false;
@@ -448,6 +448,7 @@
       }
     });
   }
+  var NYAN_EYES = [{ x: 0.7726, y: 0.569 }, { x: 0.9038, y: 0.569 }];
   function initSecretMode() {
     const heading = document.querySelector("#name-display h1");
     if (!heading) return;
@@ -470,7 +471,10 @@
       document.body.classList.toggle("yasuo-mode-active", on);
       indicator.classList.toggle("active", on);
     };
+    let endTimer = 0;
     const deactivate = () => {
+      if (!document.body.classList.contains("yasuo-mode-active")) return;
+      window.clearTimeout(endTimer);
       setActive(false);
       document.querySelectorAll(".project-card, .portfolio-choice").forEach((card) => {
         card.style.visibility = "";
@@ -478,11 +482,8 @@
       });
       play(`audio/YasuoFinished${finished++ % 2 === 0 ? "A" : "B"}.ogg`);
     };
-    const attack = (card) => {
-      if (card.style.visibility === "hidden") return;
-      play(`audio/Yasuo_Original_BasicAttack_${Math.floor(Math.random() * 4)}.ogg`);
-      const rect = card.getBoundingClientRect();
-      const swordX = `${rect.left + rect.width / 2 - 150}px`, swordY = `${rect.top + rect.height / 2 - 150}px`;
+    const slashAt = (centerX, centerY) => {
+      const swordX = `${centerX - 150}px`, swordY = `${centerY - 150}px`;
       for (const trail of [{ cls: "yasuo-ghost-3", delay: ".036s" }, { cls: "yasuo-ghost-2", delay: ".024s" }, { cls: "yasuo-ghost", delay: ".012s" }, { cls: "", delay: "" }]) {
         const sword = document.createElement("img");
         sword.src = "images/YasouSword.png";
@@ -494,6 +495,103 @@
         document.body.append(sword);
         sword.addEventListener("animationend", () => sword.remove(), { once: true });
       }
+    };
+    const flashAt = (centerX, centerY, length, angleDeg) => {
+      const flash = document.createElement("div");
+      flash.className = "flash-slice";
+      flash.style.left = `${Math.round(centerX)}px`;
+      flash.style.top = `${Math.round(centerY)}px`;
+      flash.style.setProperty("--flash-len", `${Math.round(length)}px`);
+      flash.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
+      document.body.append(flash);
+      flash.addEventListener("animationend", () => flash.remove(), { once: true });
+    };
+    const flashSpan = (width, height) => Math.hypot(width, height) * 1.35;
+    const freezeFrame = (cat) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = cat.naturalWidth;
+      canvas.height = cat.naturalHeight;
+      const context = canvas.getContext("2d");
+      if (!context) return null;
+      context.drawImage(cat, 0, 0);
+      return canvas;
+    };
+    const bloodMist = (box) => {
+      const centerX = box.left + box.width / 2, centerY = box.top + box.height / 2;
+      const puff = document.createElement("div");
+      puff.className = "blood-puff";
+      puff.style.left = `${centerX}px`;
+      puff.style.top = `${centerY}px`;
+      document.body.append(puff);
+      puff.addEventListener("animationend", () => puff.remove(), { once: true });
+      for (let i = 0; i < 18; i++) {
+        const drop = document.createElement("div");
+        drop.className = "blood-drop";
+        const angle = Math.random() * Math.PI * 2, reach = box.width * (0.1 + Math.random() * 0.28);
+        drop.style.left = `${centerX}px`;
+        drop.style.top = `${centerY}px`;
+        drop.style.width = `${2 + Math.random() * 5}px`;
+        drop.style.height = drop.style.width;
+        drop.style.animationDelay = `${Math.round(Math.random() * 60)}ms`;
+        drop.style.setProperty("--bx", `${Math.cos(angle) * reach}px`);
+        drop.style.setProperty("--by", `${Math.sin(angle) * reach + box.height * 0.35}px`);
+        document.body.append(drop);
+        drop.addEventListener("animationend", () => drop.remove(), { once: true });
+      }
+    };
+    const sliceCat = (cat) => {
+      play(`audio/Yasuo_Original_BasicAttack_${Math.floor(Math.random() * 4)}.ogg`);
+      const box = cat.getBoundingClientRect();
+      slashAt(box.left + box.width / 2, box.top + box.height / 2);
+      cat.style.animationPlayState = "paused";
+      const frozen = freezeFrame(cat);
+      window.setTimeout(() => {
+        play(`audio/metal${Math.floor(Math.random() * 5) + 1}.ogg`);
+        play("audio/cat-meow.ogg");
+        flashAt(box.left + box.width / 2, box.top + box.height / 2, flashSpan(box.width, box.height), Math.atan2(box.height, box.width) * (180 / Math.PI));
+        bloodMist(box);
+        for (const isTop of [true, false]) {
+          const half = document.createElement("div");
+          half.className = `cat-half ${isTop ? "cat-half-top" : "cat-half-bottom"}`;
+          half.style.left = `${box.left}px`;
+          half.style.top = `${box.top}px`;
+          half.style.width = `${box.width}px`;
+          half.style.height = `${box.height}px`;
+          let frame;
+          if (frozen) {
+            const copy = document.createElement("canvas");
+            copy.width = frozen.width;
+            copy.height = frozen.height;
+            copy.getContext("2d")?.drawImage(frozen, 0, 0);
+            frame = copy;
+          } else {
+            frame = cat.cloneNode(true);
+          }
+          frame.className = "";
+          frame.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;transform:none;margin:0;`;
+          half.append(frame);
+          for (const eye of NYAN_EYES) {
+            if (eye.y < 0.5 !== isTop) continue;
+            const cross = document.createElement("span");
+            cross.className = "cat-eye-x";
+            const size = box.width * 0.05;
+            cross.style.width = `${size}px`;
+            cross.style.height = `${size}px`;
+            cross.style.left = `${eye.x * box.width - size / 2}px`;
+            cross.style.top = `${eye.y * box.height - size / 2}px`;
+            half.append(cross);
+          }
+          document.body.append(half);
+          half.addEventListener("animationend", () => half.remove(), { once: true });
+        }
+        cat.remove();
+      }, 150);
+    };
+    const attack = (card) => {
+      if (card.style.visibility === "hidden") return;
+      play(`audio/Yasuo_Original_BasicAttack_${Math.floor(Math.random() * 4)}.ogg`);
+      const rect = card.getBoundingClientRect();
+      slashAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
       card.style.visibility = "hidden";
       card.style.pointerEvents = "none";
       window.setTimeout(() => {
@@ -502,14 +600,7 @@
         const host = document.querySelector(".xp-content") ?? document.body;
         const base = (host.closest(".xp-window") ?? document.body).getBoundingClientRect();
         const left = box.left - base.left, top = box.top - base.top;
-        const flash = document.createElement("div");
-        flash.className = "flash-slice";
-        flash.style.width = "1000px";
-        flash.style.left = `${left - box.width / 2}px`;
-        flash.style.top = `${top - box.height / 2}px`;
-        flash.style.transform = `rotate(${Math.atan2(box.height, box.width) * (180 / Math.PI)}deg)`;
-        host.append(flash);
-        flash.addEventListener("animationend", () => flash.remove(), { once: true });
+        flashAt(box.left + box.width / 2, box.top + box.height / 2, flashSpan(box.width, box.height), Math.atan2(box.height, box.width) * (180 / Math.PI));
         for (const isTop of [true, false]) {
           const half = document.createElement("div");
           half.className = `card-half ${isTop ? "card-half-top" : "card-half-bottom"}`;
@@ -533,7 +624,7 @@
           half.addEventListener("animationend", () => half.remove(), { once: true });
         }
       }, 150);
-      if (++slices >= 7) window.setTimeout(deactivate, 700);
+      if (++slices === 7) endTimer = window.setTimeout(deactivate, 700);
     };
     heading.addEventListener("click", () => {
       window.clearTimeout(timer);
@@ -543,12 +634,20 @@
       if (++clicks === 3) {
         clicks = 0;
         slices = 0;
+        window.clearTimeout(endTimer);
         if (document.body.classList.contains("yasuo-mode-active")) deactivate();
         else setActive(true);
       }
     });
     document.addEventListener("click", (event) => {
       if (!document.body.classList.contains("yasuo-mode-active") || !(event.target instanceof Element)) return;
+      const cat = event.target.closest(".nyan-cat");
+      if (cat) {
+        event.preventDefault();
+        event.stopPropagation();
+        sliceCat(cat);
+        return;
+      }
       const card = event.target.closest(".project-card, .portfolio-choice");
       if (!card) return;
       event.preventDefault();
