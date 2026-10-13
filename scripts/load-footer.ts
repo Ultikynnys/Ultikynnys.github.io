@@ -1,10 +1,10 @@
+import { fetchText } from './util';
+
 export async function loadFooter(): Promise<void> {
     const container = document.getElementById('footer-container');
     if (!container) return;
     try {
-        const response = await fetch('footer.html');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        container.innerHTML = await response.text();
+        container.innerHTML = await fetchText('footer.html');
         const footer = container.querySelector('footer');
         const text = footer?.querySelector('.footer-text');
 
@@ -13,7 +13,7 @@ export async function loadFooter(): Promise<void> {
         const FADE_MS = 5000;       // ...down to silence at 25s
         const CAT_LIFE_MS = 3500;
         const SPAWN_EVERY_MS = 600;
-        const VOLUME_SCALE = 0.2;   // nyan sits well below the tray level, and follows it live
+        const VOLUME_SCALE = 0.1;   // nyan sits well below the tray level, and follows it live
         const TRIPLE_MS = 500;      // three clicks within this window arm the secret
         const nyanVolume = (): number => (window.xpVolume?.() ?? 1) * VOLUME_SCALE;
 

@@ -1,5 +1,40 @@
 "use strict";
 (() => {
+  // scripts/util.ts
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+  }
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), Math.max(min, max));
+  }
+  async function fetchText(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.text();
+  }
+  function parseToml(text) {
+    const result = {};
+    let current = "";
+    for (const raw of text.split(/\r?\n/)) {
+      const line = raw.trim();
+      const section = line.match(/^\[([^\]]+)\]$/);
+      if (section) {
+        current = section[1];
+        if (!result[current]) result[current] = {};
+        continue;
+      }
+      const pair = line.match(/^(\w+)\s*=\s*(.+)$/);
+      if (pair && current) result[current][pair[1]] = parseTomlValue(pair[2]);
+    }
+    return result;
+  }
+  function parseTomlValue(raw) {
+    if (raw.startsWith("[")) return raw.slice(1, -1).split(",").map((part) => part.trim().replace(/"/g, ""));
+    if (raw === "true") return true;
+    if (raw === "false") return false;
+    return raw.replace(/^"|"$/g, "");
+  }
+
   // scripts/load-headers.ts
   function parsePageHeaders(markdown) {
     const result = {};
@@ -37,10 +72,7 @@
     return result;
   }
   function loadPageHeaders() {
-    fetch("content/page-headers.md").then((r) => {
-      if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return r.text();
-    }).then((text) => {
+    fetchText("content/page-headers.md").then((text) => {
       const allHeaders = parsePageHeaders(text);
       const pageKey = document.body.classList.contains("portfolio-programming") ? "programming" : document.body.classList.contains("portfolio-3d") ? "3d" : document.body.classList.contains("portfolio-gamedev") ? "gamedev" : "index";
       const headers = allHeaders[pageKey];
@@ -61,9 +93,7 @@
     const container = document.getElementById("footer-container");
     if (!container) return;
     try {
-      const response = await fetch("footer.html");
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      container.innerHTML = await response.text();
+      container.innerHTML = await fetchText("footer.html");
       const footer = container.querySelector("footer");
       const text = footer?.querySelector(".footer-text");
       const CATS_FOR_MS = 2e4;
@@ -71,7 +101,7 @@
       const FADE_MS = 5e3;
       const CAT_LIFE_MS = 3500;
       const SPAWN_EVERY_MS = 600;
-      const VOLUME_SCALE = 0.2;
+      const VOLUME_SCALE = 0.1;
       const TRIPLE_MS = 500;
       const nyanVolume = () => (window.xpVolume?.() ?? 1) * VOLUME_SCALE;
       let active = false;
@@ -163,6 +193,11 @@
     if (!node) throw new Error(`Required element #${id} was not found`);
     return node;
   }
+  function setMaximizeGlyph(button, maximized) {
+    button.setAttribute("aria-label", maximized ? "Restore window" : "Maximize window");
+    const glyph = button.querySelector("span");
+    if (glyph) glyph.className = maximized ? "xp-glyph-restore" : "xp-glyph-max";
+  }
 
   // scripts/icons.ts
   var ICONS = {
@@ -182,9 +217,6 @@
   }
 
   // scripts/portfolio-common.ts
-  function escapeHtml(value) {
-    return value.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
-  }
   function safeUrl(value) {
     return /^(?:https?:\/\/|(?:images|audio|content)\/)/i.test(value) ? escapeHtml(value) : "";
   }
@@ -225,15 +257,6 @@
           case "private":
             project.private = value.toLowerCase() === "true";
             break;
-          case "comparison":
-            project.comparison = value.toLowerCase() === "true";
-            break;
-          case "steam":
-            project.steam = value.toLowerCase() === "true";
-            break;
-          case "workshop":
-            project.workshop = value.toLowerCase() === "true";
-            break;
           case "languages":
             project.languages = value.split(",").map((s) => s.trim()).filter(Boolean);
             break;
@@ -250,16 +273,11 @@
   }
   function parseSimpleToml(text) {
     const result = {};
-    let current = "";
-    for (const raw of text.split(/\r?\n/)) {
-      const section = raw.trim().match(/^\[([^\]]+)\]$/);
-      if (section) {
-        current = section[1];
-        result[current] = {};
-        continue;
+    for (const [section, values] of Object.entries(parseToml(text))) {
+      result[section] = {};
+      for (const [key, value] of Object.entries(values)) {
+        if (typeof value === "string") result[section][key] = value;
       }
-      const pair = raw.match(/^\s*(\w+)\s*=\s*"([^"]*)"/);
-      if (pair && current) result[current][pair[1]] = pair[2];
     }
     return result;
   }
@@ -432,7 +450,6 @@
     const container = document.getElementById("projects-container");
     if (!container) return;
     const TASKBAR = 30;
-    const clamp = (value, min, max) => Math.min(Math.max(value, min), Math.max(min, max));
     let expanded = null;
     const close = () => {
       if (expanded) {
@@ -457,8 +474,8 @@
       card.classList.add("expanded");
       container.classList.add("has-expanded");
       const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
-      const w = Math.min(1e3, Math.max(340, vw - 96));
-      const h = Math.min(680, Math.max(240, vh - 120));
+      const w = clamp(vw - 96, 340, 1e3);
+      const h = clamp(vh - 120, 240, 680);
       card.style.width = `${w}px`;
       card.style.height = `${h}px`;
       card.style.left = `${Math.max(0, Math.round((vw - w) / 2))}px`;
@@ -479,8 +496,8 @@
       }
       if (target.closest(".xp-focus-max")) {
         const maximized = expanded.classList.toggle("win-maximized");
-        expanded.querySelector(".xp-focus-max span")?.setAttribute("class", maximized ? "xp-glyph-restore" : "xp-glyph-max");
-        target.closest(".xp-focus-max")?.setAttribute("aria-label", maximized ? "Restore window" : "Maximize window");
+        const maxButton = target.closest(".xp-focus-max");
+        if (maxButton) setMaximizeGlyph(maxButton, maximized);
       }
     });
     let drag = null;
@@ -535,9 +552,7 @@
   async function initPortfolio(file, options) {
     const container = element("projects-container");
     try {
-      const response = await fetch(file);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const { projects } = parseMarkdown(await response.text());
+      const { projects } = parseMarkdown(await fetchText(file));
       projects.sort((a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity));
       container.innerHTML = projects.map((project, index) => {
         if (project.store?.includes("steamcommunity.com") && /TF2|Team Fortress/.test(project.title + project.description)) project.private = true;
@@ -774,9 +789,7 @@
   }
   async function loadLanguageColors() {
     try {
-      const response = await fetch("content/language_colors.toml");
-      if (!response.ok) return;
-      const colors = parseSimpleToml(await response.text());
+      const colors = parseSimpleToml(await fetchText("content/language_colors.toml"));
       const style = document.createElement("style");
       style.textContent = Object.entries(colors).filter(([code, cfg]) => /^[\w-]+$/.test(code) && /^#[\da-f]{3,8}$/i.test(cfg.bg) && /^#[\da-f]{3,8}$/i.test(cfg.fg)).map(([code, cfg]) => `.language-${code}{background:${cfg.bg};color:${cfg.fg}}`).join("\n");
       document.head.append(style);

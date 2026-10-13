@@ -1,3 +1,5 @@
+import { fetchText } from './util';
+
 export function parsePageHeaders(markdown: string) {
     const result: Record<string, Record<string, string>> = {};
     const sections = markdown.split(/\n(?=## )/);
@@ -41,11 +43,7 @@ export function parsePageHeaders(markdown: string) {
 }
 
 export function loadPageHeaders() {
-    fetch('content/page-headers.md')
-        .then(r => {
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            return r.text();
-        })
+    fetchText('content/page-headers.md')
         .then(text => {
             const allHeaders = parsePageHeaders(text);
             const pageKey = document.body.classList.contains('portfolio-programming') ? 'programming'

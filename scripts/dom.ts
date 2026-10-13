@@ -22,3 +22,9 @@ export function bindActions(actions: Record<string, (value: string) => void>): v
         });
     });
 }
+
+export function setMaximizeGlyph(button: HTMLElement, maximized: boolean): void {
+    button.setAttribute('aria-label', maximized ? 'Restore window' : 'Maximize window');
+    const glyph = button.querySelector('span');
+    if (glyph) glyph.className = maximized ? 'xp-glyph-restore' : 'xp-glyph-max';
+}

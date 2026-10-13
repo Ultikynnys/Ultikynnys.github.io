@@ -56,7 +56,6 @@ body.xp-dragging .xp-titlebar, body.xp-dragging .xp-title { cursor:move !importa
 .xp-up-icon { position:relative; display:inline-flex; width:16px; height:16px; }
 .xp-up-arrow { position:absolute; right:-3px; top:-4px; }
 .xp-tb:disabled .xp-icon, .xp-tb:disabled .xp-up-arrow { opacity:.5; }
-.xp-toolbar-caption { margin-left:auto; color:#676b74; font-size:11px; }
 .xp-address { flex:none; display:flex; align-items:center; gap:5px; padding:3px 6px; font-size:12px; color:#1a1a1a; background:linear-gradient(#faf9f5,#e7e5dc); border-bottom:1px solid #b6b3a5; }
 .xp-address > span:first-child { font-weight:bold; color:#333; }
 .xp-address-field { display:flex; align-items:center; gap:6px; flex:1; background:#fff; border:1px solid #7f9db9; box-shadow:inset 1px 1px 1px #e0e0dc; padding:2px 6px; }
@@ -94,9 +93,9 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content .project-media > img, .xp-content .project-media > video, .xp-content .project-media > iframe { width:100%; height:100%; object-fit:cover; border:0; }
 .xp-content .project-badges { position:relative; display:flex; flex-direction:row; gap:1px; padding:5px 8px; background:#aebcd6; min-height:28px; }
 .xp-content .project-badges > * { position:static; border-radius:3px; color:#173a63; background:#f4f8fe; border:1px solid #9db1d3; padding:3px 9px; line-height:1; font-size:11px; }
-.xp-content .project-badges .demo-link { color:#fff; font-weight:400; border-radius:2px; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#000 0 8px,#ffd400 8px 16px); }
-.xp-content .project-badges .github-link { color:#fff; font-weight:400; border-radius:2px; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#171b20 0 8px,#4a515a 8px 16px); }
-.xp-content .project-badges .store-link { color:#fff; font-weight:400; border-radius:2px; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#0f6e33 0 8px,#2fbf5f 8px 16px); }
+.xp-content .project-badges .demo-link { color:#fff; font-weight:400; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#000 0 8px,#ffd400 8px 16px); }
+.xp-content .project-badges .github-link { color:#fff; font-weight:400; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#171b20 0 8px,#4a515a 8px 16px); }
+.xp-content .project-badges .store-link { color:#fff; font-weight:400; text-shadow:0 1px 2px #000, 0 0 3px #000; background:repeating-linear-gradient(45deg,#0f6e33 0 8px,#2fbf5f 8px 16px); }
 .xp-content .project-badges .private-tag { color:#8a2020; background:#f8d7da; border-color:#e3a6a6; }
 .xp-content .project-badges > a { cursor:pointer; transition:background .12s ease, border-color .12s ease, color .12s ease; }
 .xp-content .project-badges > a:hover, .xp-content .project-badges > a:focus-visible { background:#dbe8fb; border-color:#5c91df; color:#0b2f66; }
@@ -104,7 +103,7 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content .project-badges .github-link:hover, .xp-content .project-badges .github-link:focus-visible { background:repeating-linear-gradient(45deg,#262c34 0 8px,#5c646e 8px 16px); color:#fff; }
 .xp-content .project-badges .store-link:hover, .xp-content .project-badges .store-link:focus-visible { background:repeating-linear-gradient(45deg,#15803d 0 8px,#45d97a 8px 16px); color:#fff; }
 .xp-content .project-badges .demo-link:hover, .xp-content .project-badges .demo-link:focus-visible { background:repeating-linear-gradient(45deg,#000 0 8px,#ffe066 8px 16px); color:#fff; }
-.xp-content .game-tag { position:static; padding:4px 8px; color:#234b28; background:#dcefd9; font-size:11px; }
+.xp-content .game-tag { position:static; color:#234b28; background:#dcefd9; }
 
 .xp-content .project-card .xp-focus-bar { display:none; }
 .xp-content .project-card.expanded { position:fixed; z-index:1002; display:flex; flex-direction:column; border:0; border-radius:8px 8px 0 0; background:linear-gradient(#0a4fd6,#6a77cf); padding:0 4px 4px; box-shadow:3px 3px 11px rgba(0,0,0,.5); overflow:hidden; transform:none; max-width:none; }
@@ -134,15 +133,16 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
    wallpaper and inside the shell. */
 :is(.xp-icon, .xp-fav-icon) { filter:drop-shadow(0 0 1px rgba(0,0,0,.45)) drop-shadow(0 1px 1px rgba(0,0,0,.35)); }
 .xp-taskbar { position:fixed; bottom:0; left:0; right:0; height:30px; display:flex; align-items:center; gap:5px; background:#2358d8 url('../images/xp/taskbar-background.png') repeat-x; background-size:auto 100%; z-index:1100; color:#fff; font-size:11px; }
-.xp-start { align-self:stretch; border:0; border-radius:0; padding:0 18px 0 9px; display:flex; align-items:center; gap:6px; color:#fff; font-size:15px; font-weight:bold; font-style:italic; background:url('../images/xp/start-normal.png') no-repeat center/100% 100%; cursor:pointer; }
+.xp-start { align-self:stretch; border:0; border-radius:0; padding:0 18px 0 9px; display:flex; align-items:center; gap:3px; color:#fff; font-size:15px; font-weight:bold; font-style:italic; background:url('../images/xp/start-normal.png') no-repeat center/100% 100%; cursor:pointer; }
 .xp-start-flag { display:block; height:19px; width:auto; flex-shrink:0; }
 .xp-start:hover, .xp-start:focus-visible { background-image:url('../images/xp/start-hover.png'); }
 .xp-start:active, .xp-start[aria-expanded=true] { background-image:url('../images/xp/start-pressed.png'); }
-.xp-task { display:flex; align-items:center; gap:6px; width:165px; height:24px; background:none; border:3px solid transparent; border-width:3px 2px; border-image-source:url('../images/xp/task-button-normal.png'); border-image-slice:3 2 3 2 fill; border-image-repeat:stretch; border-radius:0; box-shadow:none; color:#fff; padding:0 4px; text-align:left; cursor:pointer; font-size:11px; }
+/* An open window's taskbar entry sits pressed in; a minimized window's sits raised. */
+.xp-task { display:flex; align-items:center; gap:6px; width:165px; height:24px; background:none; border:3px solid transparent; border-width:3px 2px; border-image-source:url('../images/xp/task-button-min.png'); border-image-slice:3 2 3 2 fill; border-image-repeat:stretch; border-radius:0; box-shadow:none; color:#fff; padding:0 4px; text-align:left; cursor:pointer; font-size:11px; }
 .xp-task:hover, .xp-task:focus-visible { border-image-source:url('../images/xp/task-button-hot.png'); }
 .xp-task:active { border-image-source:url('../images/xp/task-button-pressed.png'); }
 .xp-task img { flex-shrink:0; }
-.xp-task[aria-expanded=false] { border-image-source:url('../images/xp/task-button-min.png'); }
+.xp-task[aria-expanded=false] { border-image-source:url('../images/xp/task-button-normal.png'); }
 .xp-tray { margin-left:auto; padding:0 8px 0 6px; align-self:stretch; display:flex; align-items:center; gap:7px; background:linear-gradient(#095bc9 0%,#19b9f3 5%,#149eed 11%,#1290e8 22%,#0d8dea 50%,#0d90eb 61%,#0f9eef 79%,#1393e5 90%,#095bc9 100%); border-left:1px solid #1a52ab; box-shadow:inset 1px 0 0 #63b8f5; font-size:11px; }
 #xp-clock { min-width:52px; text-align:center; }
 .xp-volume { display:grid; place-items:center; height:100%; padding:0 2px; border:0; background:transparent; cursor:pointer; }
@@ -184,18 +184,21 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-menu-power-icon { width:24px; height:24px; flex-shrink:0; }
 .xp-menu-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:4px 8px 4px 14px; background:linear-gradient(#3f92f0,#0a4bbf); color:#fff; font-size:11px; line-height:16px; }
 .xp-boot { position:fixed; inset:0; display:grid; place-items:center; background:#050505; color:#fff; z-index:10000; }
-.xp-boot-brand { width:340px; max-width:90vw; text-align:left; }
+.xp-boot-user, .xp-boot-brand h1, .xp-boot-edition, .xp-boot-status, .xp-boot-copyright { font-family:'Franklin Gothic Medium','Trebuchet MS',Tahoma,sans-serif !important; filter:url(#xp-boot-aa); }
+.xp-boot-brand { width:340px; max-width:90vw; text-align:center; }
+.xp-boot-lockup { display:inline-block; text-align:left; }
 .xp-boot-flag { display:block; width:130px; height:auto; margin:0 auto 26px; }
-.xp-boot-brand > p { margin:0 0 3px 8px; font-size:15px; }
-.xp-boot-brand h1 { background:none; padding:0; color:white; font:bold 58px 'Trebuchet MS',Tahoma; font-family:'Trebuchet MS',Tahoma!important; line-height:1; margin:0; min-height:0; display:block; letter-spacing:-3px; width:auto; }
-.xp-boot-brand h1 span { color:#ee7431; font-size:30px; position:relative; top:-22px; margin-left:5px; }
-.xp-boot-brand .xp-boot-edition { font-size:14px; margin:10px 0 55px 10px; }
+.xp-boot-user { display:block; margin:0 0 3px; font-size:15px; }
+.xp-boot-brand h1 { background:none; padding:0; color:#fff; font-weight:400; font-size:56px; line-height:1; margin:0; min-height:0; display:block; letter-spacing:0; width:auto; }
+.xp-boot-brand h1 span { color:#ee7431; font-size:28px; position:relative; top:-20px; margin-left:5px; }
+.xp-boot-edition { font-size:14px; margin:10px 0 55px; }
 .xp-boot-progress { position:relative; width:165px; margin:0 auto; }
 .xp-boot-track { display:block; width:100%; height:auto; }
 .xp-boot-clip { position:absolute; inset:2px 3px; overflow:hidden; }
 .xp-boot-blocks { display:flex; align-items:center; height:100%; gap:4px; animation:xp-boot-slide 2s steps(20) infinite; }
 .xp-boot-blocks img { display:block; width:8px; height:13px; }
 .xp-boot-brand .xp-boot-status { text-align:center; margin:15px 0; font-size:11px; color:#bcbcbc; }
+.xp-boot-copyright { position:absolute; left:34px; bottom:26px; margin:0; font-size:12px; color:#a9a9a9; }
 @keyframes xp-boot-slide { from { transform:translateX(-33px); } to { transform:translateX(160px); } }
 .xp-desktop :focus-visible { outline:1px dotted #172442; outline-offset:-3px; }
 .xp-desktop .xp-window:focus-visible { outline:0; }

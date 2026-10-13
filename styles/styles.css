@@ -166,13 +166,6 @@ h1.hidden {
     font-weight: 400;
 }
 
-.char-decoding {
-    text-decoration: underline;
-    text-decoration-color: var(--header-text-color);
-    text-underline-offset: 4px;
-    text-decoration-thickness: 2px;
-}
-
 .subtitle {
     font-size: 1.5rem;
     color: var(--header-text-color);
@@ -328,58 +321,6 @@ h2 {
     transform: scale(1.2);
 }
 
-.carousel-pause {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-}
-
-.carousel-container:hover .carousel-pause {
-    opacity: 1;
-}
-
-.carousel-pause.paused {
-    background: rgba(255, 0, 0, 0.5);
-}
-
-.comparison-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: transparent !important;
-    /* Ensure transparent background */
-}
-
-.comparison-container img {
-    display: block;
-    max-width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background-color: transparent !important;
-    /* Make sure images don't have background */
-}
-
-/* Style for the Image Compare Viewer integration - Old (To be Removed) */
-/*
-.icv {
-    background-color: transparent !important;
-}
-
-.icv__core {
-    background-color: transparent !important;
-}
-*/
-
 .project-info {
     display: block !important;
     padding: 1.5rem;
@@ -400,14 +341,6 @@ h2 {
     margin: 0;
     color: var(--text-secondary);
     line-height: 1.5;
-}
-
-.project-links {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    margin-top: auto;
-    padding: 0.5rem;
 }
 
 /* Private project tag */
@@ -452,31 +385,6 @@ h2 {
     padding-left: 1rem;
 }
 
-.demo-notch {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.7rem;
-    background: rgba(230, 126, 34, 0.9);
-    /* Orange color for demo */
-    border-radius: 0 0 10px 0;
-    /* Updated to match project-card radius */
-    color: white;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    z-index: 5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
-}
-
-.demo-notch:hover {
-    background: rgba(230, 126, 34, 1);
-    padding-left: 1rem;
-}
-
 /* Stacked badges (multi-badge mode) */
 .project-badges {
     position: absolute;
@@ -489,9 +397,7 @@ h2 {
 }
 
 .project-badges .private-tag,
-.project-badges .github-link,
-.project-badges .demo-notch,
-.project-badges .artstation-notch {
+.project-badges .github-link {
     position: relative;
     top: auto;
     left: auto;
@@ -503,48 +409,6 @@ h2 {
 
 .project-badges > :not(:first-child) {
     border-radius: 0 10px 10px 0;
-}
-
-/* Opposite-corner badges: GitHub top-left, Demo top-right */
-.project-badges.project-badges-cornered {
-    width: 100%;
-    flex-direction: row;
-}
-
-.project-badges.project-badges-cornered > .badge-corner-left,
-.project-badges.project-badges-cornered > .badge-corner-right {
-    position: absolute;
-    top: 0;
-}
-
-.project-badges.project-badges-cornered > .badge-corner-left {
-    left: 0;
-    border-radius: 0 0 10px 0;
-}
-
-.project-badges.project-badges-cornered > .badge-corner-right {
-    left: auto;
-    right: 0;
-    border-radius: 0 0 0 10px;
-}
-
-/* Language notches (bottom-right) */
-/* Note: override the generic .project-media > * sizing */
-.project-media>.language-notches {
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    top: auto;
-    left: auto;
-    width: auto;
-    height: auto;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    z-index: 12;
-    /* Above media, below carousel controls (15) */
-    pointer-events: none;
-    /* Do not block clicks for expand or controls */
 }
 
 .project-media .language-notch {
@@ -567,11 +431,6 @@ h2 {
 
 /* Per-language colors are now injected dynamically by scripts/portfolio-common.js
     via the loadLanguageColors()/injectLanguageColors() functions. */
-
-/* Ensure visibility in expanded view without blocking controls */
-.project-card.expanded .project-media .language-notches {
-    z-index: 12;
-}
 
 @media (max-width: 480px) {
     .project-media .language-notch {
@@ -600,37 +459,6 @@ h2 {
 .project-media video {
     object-fit: contain;
     background: #000;
-}
-
-/* Media Container Styles */
-.media-container {
-    width: 100%;
-    height: 200px;
-    position: relative;
-    overflow: hidden;
-}
-
-.media-container iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-.media-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.project-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.project-description {
-    font-size: 0.9rem;
-    opacity: 0.8;
-    margin-bottom: 1rem;
 }
 
 .github-link svg {
@@ -680,120 +508,6 @@ footer {
     margin-top: 4rem;
 }
 
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 500px;
-}
-
-.contact-form h3 {
-    margin-bottom: 0.5rem;
-    color: var(--accent-color);
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.form-group label {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
-.contact-form input,
-.contact-form textarea {
-    padding: 0.8rem;
-    border: 1px solid var(--form-border);
-    border-radius: 4px;
-    background-color: var(--form-bg);
-    color: var(--text-primary);
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-}
-
-.contact-form textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-.contact-form button {
-    padding: 0.8rem 1.5rem;
-    background-color: var(--accent-color);
-    color: var(--text-primary);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    align-self: flex-start;
-}
-
-.contact-form button:hover {
-    opacity: 0.8;
-    transform: translateY(-1px);
-}
-
-.social-links {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.social-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-primary);
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
-
-.social-link:hover {
-    color: var(--accent-color);
-}
-
-.social-link svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
-}
-
-.email-link {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: opacity 0.3s ease;
-}
-
-.email-link:hover {
-    opacity: 0.8;
-}
-
-@media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* Update missing elements for theme support */
 
 /* Fix any tag colors */
@@ -812,105 +526,9 @@ footer {
     background: rgba(33, 33, 33, 1);
 }
 
-/* Update demo-notch for better visibility in light mode */
-.demo-notch {
-    background: rgba(230, 126, 34, 0.9);
-    /* Orange color for demo */
-    color: white;
-}
-
-.demo-notch:hover {
-    background: rgba(230, 126, 34, 1);
-}
-
-/* Update artstation notch */
-.artstation-notch {
-    position: absolute;
-    left: 0;
-    top: 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0.7rem;
-    background: rgba(19, 29, 57, 0.9);
-    /* ArtStation blue color */
-    border-radius: 0 0 5px 0;
-    color: white;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    z-index: 5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.artstation-notch:hover {
-    background: rgba(19, 29, 57, 1);
-    padding-left: 1rem;
-}
-
-/* Theme Toggle Button - Positioned by Flexbox now */
-.theme-toggle {
-    position: relative;
-    /* Change from absolute/fixed */
-    top: auto;
-    /* Remove absolute positioning */
-    right: auto;
-    /* Remove absolute positioning */
-    width: auto;
-    height: 30px;
-    /* Match typical button height */
-    padding: 0 12px;
-    /* Adjust padding */
-    border-radius: 5px;
-    background: var(--accent-color);
-    border: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    /* z-index: 101; Not needed unless overlapping sibling */
-    box-shadow: none;
-    /* Remove shadow, looks odd in flex */
-    transition: background-color 0.3s ease;
-    margin-left: 15px;
-    /* Add space between button groups */
-}
-
-.theme-toggle i {
-    font-size: 1rem;
-}
-
-.theme-toggle:hover {
-    opacity: 0.9;
-    transform: none;
-}
-
 /* Always show full bio — non-full variant is deprecated */
 .bio-nonfull {
     display: none;
-}
-
-/* Add a class for manual theme override */
-body.light-theme {
-    --primary-bg: #f5f5f5;
-    --secondary-bg: #e0e0e0;
-    --card-bg: #ffffff;
-    /* Solid white, no transparency */
-    --text-primary: #333333;
-    --text-secondary: #555555;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
-    --form-bg: white;
-    --form-border: #4a90e2;
-    --header-text-bg: #333333;
-    --header-text-color: white;
-    --pattern-dot: rgba(0, 0, 0, 0.15);
-}
-
-body.dark-theme {
-    --primary-bg: #1a1a1a;
-    --secondary-bg: #2d2d2d;
-    --pattern-dot: rgba(255, 255, 255, 0.12);
 }
 
 /* Bio section styles */
@@ -927,51 +545,12 @@ body.dark-theme {
     color: var(--text-secondary);
 }
 
-/* Social ribbon */
-.social-ribbon {
-    background-color: var(--secondary-bg);
-    padding: 5px 15px;
-    /* Adjust padding */
-    width: 100%;
-    position: relative;
-    z-index: 100;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    /* Use Flexbox */
-    align-items: center;
-    /* Vertically align items */
-    justify-content: space-between;
-    /* Push items to ends */
-}
-
-.social-ribbon.ribbon-index {
-    justify-content: center;
-}
-
-.social-ribbon.ribbon-index .social-buttons {
-    flex: 1;
-    justify-content: center;
-}
-
-.social-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    /* Align buttons to the start */
-    gap: 10px;
-    /* max-width: 1400px; Not needed if ribbon handles width */
-    /* margin: 0 auto; No longer center */
-    /* padding: 0 15px; Padding handled by parent */
-}
-
 .discord-notch,
 .email-notch,
 .linkedin-notch,
 .github-notch,
 .artstation-header-notch,
-.cv-notch,
-.twitter-notch,
-.home-notch {
+.twitter-notch {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -1038,16 +617,6 @@ body.dark-theme {
 }
 
 
-.cv-notch {
-    background: #2e7d32;
-    /* Green color for CV */
-}
-
-.cv-notch:hover {
-    background: #1b5e20;
-    transform: translateY(-2px);
-}
-
 .twitter-notch {
     background: #000000;
     /* Twitter black */
@@ -1058,29 +627,13 @@ body.dark-theme {
     transform: translateY(-2px);
 }
 
-.home-notch {
-    background: #555;
-}
-
-.home-notch:hover {
-    background: #444;
-    transform: translateY(-2px);
-}
-
 /* Responsive styles for social ribbon */
 @media (max-width: 768px) {
-    .social-buttons {
-        justify-content: center;
-        padding: 5px;
-    }
-
     .discord-notch,
     .email-notch,
     .linkedin-notch,
     .github-notch,
-    .artstation-header-notch,
-    .cv-notch,
-    .home-notch {
+    .artstation-header-notch {
         padding: 0.4rem 0.6rem;
         font-size: 0.8rem;
     }
@@ -1090,7 +643,6 @@ body.dark-theme {
 .lang-python,
 .lang-javascript,
 .lang-cpp,
-.lang-csharp,
 .engine-unreal,
 .engine-unity,
 .engine-godot,
@@ -1100,39 +652,21 @@ body.dark-theme {
 .keyword-zbrush,
 .keyword-substance-painter,
 .keyword-substance-designer,
-.keyword-claude,
-.keyword-chatgpt,
-.keyword-gemini,
-.keyword-deepseek,
 .keyword-aws,
 .keyword-azure {
     font-weight: 700;
     color: #1a1a1a;
 }
 
-/* Simple copyright footer */
-.copyright-footer {
-    text-align: center;
-    padding: 1.5rem;
-    background-color: var(--secondary-bg);
-    color: var(--text-secondary);
-    margin-top: 4rem;
-    font-size: 0.9rem;
-}
-
 /* Remove ALL transitions when collapsing */
 .project-card,
 .project-card *,
 .overlay,
-.close-button,
 .project-media,
 .project-info,
 .carousel-container,
 .carousel-image,
-.carousel-dot,
-.comparison-container,
-.comparison-image,
-.comparison-overlay {
+.carousel-dot {
     transition: none !important;
     animation: none !important;
 }
@@ -1214,47 +748,6 @@ body.dark-theme {
     display: none;
 }
 
-/* Additional styles to ensure comparison slider works correctly in non-expanded view */
-.comparison-slider-container {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-    visibility: visible !important;
-    overflow: visible !important;
-}
-
-.comparison-slider {
-    position: absolute !important;
-    display: block !important;
-    visibility: visible !important;
-    z-index: 10 !important;
-    cursor: ew-resize !important;
-}
-
-.comparison-overlay {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-    visibility: visible !important;
-    overflow: visible !important;
-    z-index: 5 !important;
-    clip-path: inset(0 50% 0 0) !important;
-}
-
-.before-image,
-.after-image {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    object-fit: contain !important;
-}
-
 
 /* Game tag - Default */
 .game-tag {
@@ -1290,16 +783,6 @@ body.dark-theme {
 .game-tag.engine-godot {
     background: rgba(71, 140, 176, 0.9);
     /* Purple/Blue #478CB0 */
-}
-
-.game-tag.engine-source {
-    background: rgba(23, 26, 33, 0.9);
-    /* Dark Blue #171A21 */
-}
-
-/* Default remains green (rgba(76, 175, 80, 0.9)) */
-.game-tag.engine-default {
-    background: rgba(76, 175, 80, 0.9);
 }
 
 /* Yasuo Mode Easter Egg */

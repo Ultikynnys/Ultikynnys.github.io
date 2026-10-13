@@ -1,4 +1,5 @@
 import { icon, type IconName } from './icons';
+import { fetchText, parseToml } from './util';
 
 type Value = string | boolean | string[];
 interface Contacts {
@@ -8,23 +9,10 @@ interface Contacts {
 }
 export function parseContactsToml(text: string): Contacts {
     const config: Contacts = { profile: {}, social: {}, ribbon: { order: [] } };
-    let section = '';
-    let subsection = '';
-    for (const raw of text.split(/\r?\n/)) {
-        const line = raw.trim();
-        const header = line.match(/^\[(\w+)(?:\.(\w+))?\]$/);
-        if (header) {
-            section = header[1]; subsection = header[2] ?? '';
-            if (section === 'social' && subsection) config.social[subsection] = {};
-            continue;
-        }
-        const pair = line.match(/^(\w+)\s*=\s*(.+)$/);
-        if (!pair) continue;
-        const [, key, rawValue] = pair;
-        const value: Value = rawValue.startsWith('[') ? rawValue.slice(1, -1).split(',').map(s => s.trim().replace(/"/g, '')) : rawValue === 'true' ? true : rawValue === 'false' ? false : rawValue.replace(/^"|"$/g, '');
-        if (section === 'social' && subsection) config.social[subsection][key] = value;
-        else if (section === 'profile') config.profile[key] = value;
-        else if (section === 'ribbon' && key === 'order' && Array.isArray(value)) config.ribbon.order = value;
+    for (const [section, values] of Object.entries(parseToml(text))) {
+        if (section === 'profile') Object.assign(config.profile, values);
+        else if (section === 'ribbon') { const order = values.order; if (Array.isArray(order)) config.ribbon.order = order; }
+        else if (section.startsWith('social.')) config.social[section.slice('social.'.length)] = values;
     }
     return config;
 }
@@ -55,9 +43,7 @@ function buildContactLink(key: string, social: Record<string, Value>, size: numb
 
 export async function loadSocialRibbon(): Promise<void> {
     try {
-        const response = await fetch('config/contacts.toml');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const config = parseContactsToml(await response.text());
+        const config = parseContactsToml(await fetchText('config/contacts.toml'));
         const favourites = document.createElement('nav');
         favourites.className = 'xp-favourites'; favourites.setAttribute('aria-label', 'Favourite links');
         // Mirror the same contacts into the Start menu side panel, one icon size down.

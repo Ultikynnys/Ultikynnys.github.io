@@ -6,6 +6,11 @@
     if (!node) throw new Error(`Required element #${id} was not found`);
     return node;
   }
+  function setMaximizeGlyph(button, maximized) {
+    button.setAttribute("aria-label", maximized ? "Restore window" : "Maximize window");
+    const glyph = button.querySelector("span");
+    if (glyph) glyph.className = maximized ? "xp-glyph-restore" : "xp-glyph-max";
+  }
 
   // scripts/icons.ts
   var ICONS = {
@@ -24,27 +29,47 @@
     return `<img class="xp-icon" src="${ICONS[name]}" width="${size}" height="${size}" alt="">`;
   }
 
-  // scripts/social-ribbon.ts
-  function parseContactsToml(text) {
-    const config = { profile: {}, social: {}, ribbon: { order: [] } };
-    let section = "";
-    let subsection = "";
+  // scripts/util.ts
+  function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), Math.max(min, max));
+  }
+  async function fetchText(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return response.text();
+  }
+  function parseToml(text) {
+    const result = {};
+    let current = "";
     for (const raw of text.split(/\r?\n/)) {
       const line = raw.trim();
-      const header = line.match(/^\[(\w+)(?:\.(\w+))?\]$/);
-      if (header) {
-        section = header[1];
-        subsection = header[2] ?? "";
-        if (section === "social" && subsection) config.social[subsection] = {};
+      const section = line.match(/^\[([^\]]+)\]$/);
+      if (section) {
+        current = section[1];
+        if (!result[current]) result[current] = {};
         continue;
       }
       const pair = line.match(/^(\w+)\s*=\s*(.+)$/);
-      if (!pair) continue;
-      const [, key, rawValue] = pair;
-      const value = rawValue.startsWith("[") ? rawValue.slice(1, -1).split(",").map((s) => s.trim().replace(/"/g, "")) : rawValue === "true" ? true : rawValue === "false" ? false : rawValue.replace(/^"|"$/g, "");
-      if (section === "social" && subsection) config.social[subsection][key] = value;
-      else if (section === "profile") config.profile[key] = value;
-      else if (section === "ribbon" && key === "order" && Array.isArray(value)) config.ribbon.order = value;
+      if (pair && current) result[current][pair[1]] = parseTomlValue(pair[2]);
+    }
+    return result;
+  }
+  function parseTomlValue(raw) {
+    if (raw.startsWith("[")) return raw.slice(1, -1).split(",").map((part) => part.trim().replace(/"/g, ""));
+    if (raw === "true") return true;
+    if (raw === "false") return false;
+    return raw.replace(/^"|"$/g, "");
+  }
+
+  // scripts/social-ribbon.ts
+  function parseContactsToml(text) {
+    const config = { profile: {}, social: {}, ribbon: { order: [] } };
+    for (const [section, values] of Object.entries(parseToml(text))) {
+      if (section === "profile") Object.assign(config.profile, values);
+      else if (section === "ribbon") {
+        const order = values.order;
+        if (Array.isArray(order)) config.ribbon.order = order;
+      } else if (section.startsWith("social.")) config.social[section.slice("social.".length)] = values;
     }
     return config;
   }
@@ -73,9 +98,7 @@
   }
   async function loadSocialRibbon() {
     try {
-      const response = await fetch("config/contacts.toml");
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const config = parseContactsToml(await response.text());
+      const config = parseContactsToml(await fetchText("config/contacts.toml"));
       const favourites = document.createElement("nav");
       favourites.className = "xp-favourites";
       favourites.setAttribute("aria-label", "Favourite links");
@@ -142,7 +165,7 @@
   async function playStartup() {
     const clip = getClip("startup");
     if (!clip) return;
-    clip.volume = (window.xpVolume?.() ?? 1) * 0.25;
+    clip.volume = (window.xpVolume?.() ?? 1) * 0.35;
     clip.currentTime = 0;
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
@@ -225,7 +248,7 @@
     screen.setAttribute("aria-label", "Portfolio startup");
     const bootTrack = "images/xp/progress-track.png";
     const bootBlock = "images/xp/progress-block.png";
-    screen.innerHTML = `<div class="xp-boot-brand"><img class="xp-boot-flag" src="${ICONS.flag}" width="140" height="100" alt=""><p>Ubeid Hussein</p><h1>Portfolio<span>xp</span></h1><p class="xp-boot-edition">Creative Professional Edition</p><div class="xp-boot-progress" role="status" aria-label="Starting portfolio"><img class="xp-boot-track" src="${bootTrack}" alt=""><div class="xp-boot-clip"><div class="xp-boot-blocks"><img src="${bootBlock}" alt=""><img src="${bootBlock}" alt=""><img src="${bootBlock}" alt=""></div></div></div><p class="xp-boot-status">Starting your desktop...</p></div>`;
+    screen.innerHTML = `<svg width="0" height="0" aria-hidden="true" style="position:absolute"><filter id="xp-boot-aa" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 30 -15"/></filter></svg><div class="xp-boot-brand"><img class="xp-boot-flag" src="${ICONS.flag}" width="140" height="100" alt=""><div class="xp-boot-lockup"><p class="xp-boot-user">Ubeid Hussein</p><h1>Portfolio<span>xp</span></h1><p class="xp-boot-edition">Creative Professional Edition</p></div><div class="xp-boot-progress" role="status" aria-label="Starting portfolio"><img class="xp-boot-track" src="${bootTrack}" alt=""><div class="xp-boot-clip"><div class="xp-boot-blocks"><img src="${bootBlock}" alt=""><img src="${bootBlock}" alt=""><img src="${bootBlock}" alt=""></div></div></div><p class="xp-boot-status">Starting your desktop...</p></div><p class="xp-boot-copyright">Copyright \xA9 2026 Ubeid Hussein</p>`;
     document.body.append(screen);
     const shell = element("xp-shell");
     shell.inert = true;
@@ -299,10 +322,6 @@
     content.className = "xp-content";
     for (const node of [...document.body.childNodes]) {
       if (node instanceof HTMLScriptElement) continue;
-      if (node instanceof HTMLElement && node.id === "themeToggle") {
-        node.remove();
-        continue;
-      }
       content.append(node);
     }
     const status = document.createElement("div");
@@ -439,14 +458,12 @@
       return { x: DESKTOP.left + Math.round((availableW - w) / 2), y: DESKTOP.top + Math.round((availableH - h) / 2), w, h };
     };
     const moveTo = (x, y) => {
-      const maxX = Math.max(EDGE, viewportW() - shell.offsetWidth - EDGE);
-      const maxY = Math.max(EDGE, viewportH() - DESKTOP.bottom - shell.offsetHeight - EDGE);
-      shell.style.left = `${Math.min(Math.max(EDGE, x), maxX)}px`;
-      shell.style.top = `${Math.min(Math.max(EDGE, y), maxY)}px`;
+      shell.style.left = `${clamp(x, EDGE, viewportW() - shell.offsetWidth - EDGE)}px`;
+      shell.style.top = `${clamp(y, EDGE, viewportH() - DESKTOP.bottom - shell.offsetHeight - EDGE)}px`;
     };
     const sizeTo = (w, h) => {
-      shell.style.width = `${Math.min(Math.max(MIN_SIZE.width, w), viewportW() - shell.offsetLeft - EDGE)}px`;
-      shell.style.height = `${Math.min(Math.max(MIN_SIZE.height, h), viewportH() - shell.offsetTop - DESKTOP.bottom - EDGE)}px`;
+      shell.style.width = `${clamp(w, MIN_SIZE.width, viewportW() - shell.offsetLeft - EDGE)}px`;
+      shell.style.height = `${clamp(h, MIN_SIZE.height, viewportH() - shell.offsetTop - DESKTOP.bottom - EDGE)}px`;
     };
     let floating = defaultRect();
     applyRect(floating);
@@ -464,8 +481,7 @@
         shell.style.height = "";
       } else applyRect(floating);
       maximizeButton.setAttribute("aria-pressed", String(maximized));
-      maximizeButton.setAttribute("aria-label", maximized ? "Restore window" : "Maximize window");
-      maximizeButton.innerHTML = maximized ? '<span class="xp-glyph-restore"></span>' : '<span class="xp-glyph-max"></span>';
+      setMaximizeGlyph(maximizeButton, maximized);
       persistWindow();
     };
     maximizeButton.addEventListener("click", () => setMaximized(!shell.classList.contains("xp-maximized")));
@@ -693,9 +709,7 @@
       try {
         const state = {
           rect: floating,
-          maximized: shell.classList.contains("xp-maximized"),
-          minimized: shell.hidden && !task.hidden,
-          open: !task.hidden
+          maximized: shell.classList.contains("xp-maximized")
         };
         sessionStorage.setItem("xp-window", JSON.stringify(state));
       } catch {
@@ -717,15 +731,13 @@
       }
       const rect = state?.rect;
       if (!rect || ![rect.x, rect.y, rect.w, rect.h].every((value) => typeof value === "number" && Number.isFinite(value))) return;
-      const w = Math.min(Math.max(MIN_SIZE.width, rect.w), Math.max(MIN_SIZE.width, viewportW() - EDGE * 2));
-      const h = Math.min(Math.max(MIN_SIZE.height, rect.h), Math.max(MIN_SIZE.height, viewportH() - DESKTOP.bottom - EDGE * 2));
-      const x = Math.min(Math.max(EDGE, rect.x), Math.max(EDGE, viewportW() - w - EDGE));
-      const y = Math.min(Math.max(EDGE, rect.y), Math.max(EDGE, viewportH() - DESKTOP.bottom - h - EDGE));
+      const w = clamp(rect.w, MIN_SIZE.width, viewportW() - EDGE * 2);
+      const h = clamp(rect.h, MIN_SIZE.height, viewportH() - DESKTOP.bottom - EDGE * 2);
+      const x = clamp(rect.x, EDGE, viewportW() - w - EDGE);
+      const y = clamp(rect.y, EDGE, viewportH() - DESKTOP.bottom - h - EDGE);
       floating = { x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) };
       applyRect(floating);
       if (state.maximized) setMaximized(true, true);
-      if (state.open === false) setWindowOpen(false);
-      else if (state.minimized) minimize(true, true);
     };
     restoreWindow();
     window.addEventListener("pagehide", () => persistWindow());

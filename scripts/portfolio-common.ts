@@ -1,5 +1,6 @@
-import { element } from './dom';
+import { element, setMaximizeGlyph } from './dom';
 import { icon } from './icons';
+import { clamp, escapeHtml, fetchText, parseToml } from './util';
 
 export interface Project {
     title: string;
@@ -11,9 +12,6 @@ export interface Project {
     demo?: string;
     engine?: string;
     private?: boolean;
-    comparison?: boolean;
-    steam?: boolean;
-    workshop?: boolean;
     languages?: string[];
     priority?: number;
 }
@@ -23,9 +21,6 @@ export interface CardOptions {
     multiBadge?: boolean;
     showLanguageNotches?: boolean;
     alwaysShowEngineTag?: boolean;
-}
-export function escapeHtml(value: string): string {
-    return value.replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!);
 }
 function safeUrl(value: string): string {
     return /^(?:https?:\/\/|(?:images|audio|content)\/)/i.test(value) ? escapeHtml(value) : '';
@@ -49,9 +44,6 @@ export function parseMarkdown(markdown: string): { projects: Project[]; intro: s
                 case 'demo': project.demo = value; break;
                 case 'engine': project.engine = value; break;
                 case 'private': project.private = value.toLowerCase() === 'true'; break;
-                case 'comparison': project.comparison = value.toLowerCase() === 'true'; break;
-                case 'steam': project.steam = value.toLowerCase() === 'true'; break;
-                case 'workshop': project.workshop = value.toLowerCase() === 'true'; break;
                 case 'languages': project.languages = value.split(',').map(s => s.trim()).filter(Boolean); break;
                 case 'priority': { const priority = Number(value); if (Number.isFinite(priority)) project.priority = priority; break; }
             }
@@ -62,12 +54,11 @@ export function parseMarkdown(markdown: string): { projects: Project[]; intro: s
 }
 export function parseSimpleToml(text: string): Record<string, Record<string, string>> {
     const result: Record<string, Record<string, string>> = {};
-    let current = '';
-    for (const raw of text.split(/\r?\n/)) {
-        const section = raw.trim().match(/^\[([^\]]+)\]$/);
-        if (section) { current = section[1]; result[current] = {}; continue; }
-        const pair = raw.match(/^\s*(\w+)\s*=\s*"([^"]*)"/);
-        if (pair && current) result[current][pair[1]] = pair[2];
+    for (const [section, values] of Object.entries(parseToml(text))) {
+        result[section] = {};
+        for (const [key, value] of Object.entries(values)) {
+            if (typeof value === 'string') result[section][key] = value;
+        }
     }
     return result;
 }
@@ -180,7 +171,6 @@ export function setupProjectExpansion(): void {
     const container = document.getElementById('projects-container');
     if (!container) return;
     const TASKBAR = 30;
-    const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), Math.max(min, max));
     let expanded: HTMLElement | null = null;
     const close = () => {
         if (expanded) {
@@ -201,8 +191,8 @@ export function setupProjectExpansion(): void {
         card.classList.add('expanded'); container.classList.add('has-expanded');
         // Open as a floating window centred over the desktop, above the taskbar.
         const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
-        const w = Math.min(1000, Math.max(340, vw - 96));
-        const h = Math.min(680, Math.max(240, vh - 120));
+        const w = clamp(vw - 96, 340, 1000);
+        const h = clamp(vh - 120, 240, 680);
         card.style.width = `${w}px`; card.style.height = `${h}px`;
         card.style.left = `${Math.max(0, Math.round((vw - w) / 2))}px`;
         card.style.top = `${Math.max(0, Math.round((vh - h) / 2))}px`;
@@ -218,8 +208,8 @@ export function setupProjectExpansion(): void {
         if (target.closest('.xp-focus-close') || target.closest('.xp-focus-min')) { close(); return; }
         if (target.closest('.xp-focus-max')) {
             const maximized = expanded.classList.toggle('win-maximized');
-            expanded.querySelector('.xp-focus-max span')?.setAttribute('class', maximized ? 'xp-glyph-restore' : 'xp-glyph-max');
-            target.closest('.xp-focus-max')?.setAttribute('aria-label', maximized ? 'Restore window' : 'Maximize window');
+            const maxButton = target.closest<HTMLElement>('.xp-focus-max');
+            if (maxButton) setMaximizeGlyph(maxButton, maximized);
         }
     });
     // Drag the focused window by its title bar, clamped inside the desktop.
@@ -275,9 +265,7 @@ export function initCarousels(): void {
 export async function initPortfolio(file: string, options: CardOptions): Promise<void> {
     const container = element('projects-container');
     try {
-        const response = await fetch(file);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const { projects } = parseMarkdown(await response.text());
+        const { projects } = parseMarkdown(await fetchText(file));
         projects.sort((a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity));
         container.innerHTML = projects.map((project, index) => {
             if (project.store?.includes('steamcommunity.com') && /TF2|Team Fortress/.test(project.title + project.description)) project.private = true;
@@ -483,9 +471,7 @@ export function initSecretMode(): void {
 }
 export async function loadLanguageColors(): Promise<void> {
     try {
-        const response = await fetch('content/language_colors.toml');
-        if (!response.ok) return;
-        const colors = parseSimpleToml(await response.text());
+        const colors = parseSimpleToml(await fetchText('content/language_colors.toml'));
         const style = document.createElement('style');
         style.textContent = Object.entries(colors).filter(([code, cfg]) => /^[\w-]+$/.test(code) && /^#[\da-f]{3,8}$/i.test(cfg.bg) && /^#[\da-f]{3,8}$/i.test(cfg.fg)).map(([code, cfg]) => `.language-${code}{background:${cfg.bg};color:${cfg.fg}}`).join('\n');
         document.head.append(style);
