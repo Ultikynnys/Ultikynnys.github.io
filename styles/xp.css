@@ -69,6 +69,12 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-content::-webkit-scrollbar-thumb { background:url('../images/xp/scroll-gripper.png') center/8px 8px no-repeat, url('../images/xp/scroll-thumb-top.png') top center/15px 7px no-repeat, url('../images/xp/scroll-thumb-bottom.png') bottom center/15px 7px no-repeat, url('../images/xp/scroll-thumb-mid.png') center/15px 100% no-repeat; }
 .xp-content::-webkit-scrollbar-button:vertical:decrement { background:url('../images/xp/scroll-up.png') center/17px 17px no-repeat; height:17px; }
 .xp-content::-webkit-scrollbar-button:vertical:increment { background:url('../images/xp/scroll-down.png') center/17px 17px no-repeat; height:17px; }
+/* Firefox has no ::-webkit-scrollbar. A non-auto scrollbar-color makes engines that DO have it
+   ignore those pseudo-elements, so gate the standard properties on their absence: Firefox gets
+   the XP blue thumb and off-white track, Chromium keeps the image scrollbar above. */
+@supports not selector(::-webkit-scrollbar) {
+    .xp-content { scrollbar-color:#c5d5fc #f6f5f0; }
+}
 .xp-statusbar { flex:none; display:flex; gap:2px; padding:2px; color:#333; font-size:11px; background:#ece9d8; border-top:1px solid #b6b3a5; }
 .xp-statusbar span { flex:1; padding:1px 8px; border:1px solid; border-color:#9c9a8e #fff #fff #9c9a8e; }
 .xp-content header { padding:30px 10px 20px; margin:0; }
