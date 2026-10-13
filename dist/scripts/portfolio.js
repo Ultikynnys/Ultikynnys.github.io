@@ -659,28 +659,28 @@
     });
   }
   function limitBadgeRows() {
-    for (const bar of document.querySelectorAll(".project-badges")) {
-      const chips = [...bar.children];
-      for (const chip of chips) chip.hidden = false;
-      const tops = chips.map((chip) => chip.offsetTop);
-      const lines = [...new Set(tops)].sort((a, b) => a - b);
-      if (lines.length <= 3) continue;
-      chips.forEach((chip, i) => {
-        chip.hidden = tops[i] >= lines[3];
+    const rows = [...document.querySelectorAll(".project-badges")].map((bar) => [...bar.children]);
+    for (const row of rows) for (const chip of row) chip.hidden = false;
+    const tops = rows.map((row) => row.map((chip) => chip.offsetTop));
+    rows.forEach((row, b) => {
+      const lines = [...new Set(tops[b])].sort((a, c) => a - c);
+      if (lines.length <= 3) return;
+      row.forEach((chip, i) => {
+        chip.hidden = tops[b][i] >= lines[3];
       });
-    }
+    });
   }
   var HEADING_MAX_PX = 17;
   var HEADING_MIN_PX = 11;
   function fitProjectHeadings() {
-    for (const heading of document.querySelectorAll(".project-info h3, .portfolio-info h3")) {
-      let size = HEADING_MAX_PX;
-      heading.style.fontSize = `${size}px`;
-      while (size > HEADING_MIN_PX && heading.scrollWidth > heading.clientWidth) {
-        size -= 0.5;
-        heading.style.fontSize = `${size}px`;
-      }
-    }
+    const headings = [...document.querySelectorAll(".project-info h3, .portfolio-info h3")];
+    for (const heading of headings) heading.style.fontSize = `${HEADING_MAX_PX}px`;
+    const widths = headings.map((heading) => ({ available: heading.clientWidth, needed: heading.scrollWidth }));
+    headings.forEach((heading, i) => {
+      const { available, needed } = widths[i];
+      const fitted = needed > available ? Math.max(HEADING_MIN_PX, Math.floor(HEADING_MAX_PX * available / needed * 2) / 2) : HEADING_MAX_PX;
+      heading.style.fontSize = `${fitted}px`;
+    });
   }
   async function initPortfolio(file, options) {
     const container = element("projects-container");
@@ -697,11 +697,15 @@
     limitBadgeRows();
     fitProjectHeadings();
     let gridWidth = container.clientWidth;
+    let refineFrame = 0;
     new ResizeObserver(() => {
       if (container.clientWidth === gridWidth) return;
       gridWidth = container.clientWidth;
-      limitBadgeRows();
-      fitProjectHeadings();
+      cancelAnimationFrame(refineFrame);
+      refineFrame = requestAnimationFrame(() => {
+        limitBadgeRows();
+        fitProjectHeadings();
+      });
     }).observe(container);
     void document.fonts?.ready.then(() => {
       limitBadgeRows();

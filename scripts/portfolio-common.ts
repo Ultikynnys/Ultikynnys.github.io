@@ -343,14 +343,16 @@ export function initCarousels(): void {
 // Badge chips wrap onto extra lines, but never past three: any chip that lands on line four or
 // beyond is hidden. Re-run whenever the wrap can change (render, resize, expand, fonts loading).
 export function limitBadgeRows(): void {
-    for (const bar of document.querySelectorAll<HTMLElement>('.project-badges')) {
-        const chips = [...bar.children] as HTMLElement[];
-        for (const chip of chips) chip.hidden = false;
-        const tops = chips.map(chip => chip.offsetTop);
-        const lines = [...new Set(tops)].sort((a, b) => a - b);
-        if (lines.length <= 3) continue;
-        chips.forEach((chip, i) => { chip.hidden = tops[i] >= lines[3]; });
-    }
+    const rows = [...document.querySelectorAll<HTMLElement>('.project-badges')].map(bar => [...bar.children] as HTMLElement[]);
+    // Reveal every chip, read every offsetTop, then re-hide. Interleaving the reveal with the read
+    // forced a fresh layout per card, which is what made a live resize janky.
+    for (const row of rows) for (const chip of row) chip.hidden = false;
+    const tops = rows.map(row => row.map(chip => chip.offsetTop));
+    rows.forEach((row, b) => {
+        const lines = [...new Set(tops[b])].sort((a, c) => a - c);
+        if (lines.length <= 3) return;
+        row.forEach((chip, i) => { chip.hidden = tops[b][i] >= lines[3]; });
+    });
 }
 // Headings render at a fixed 17px and do not wrap, so a long title would otherwise spill past the
 // card edge. Shrink the type to fit the column first; once it bottoms out at the minimum, the h3's
@@ -358,14 +360,16 @@ export function limitBadgeRows(): void {
 const HEADING_MAX_PX = 17;
 const HEADING_MIN_PX = 11;
 export function fitProjectHeadings(): void {
-    for (const heading of document.querySelectorAll<HTMLElement>('.project-info h3, .portfolio-info h3')) {
-        let size = HEADING_MAX_PX;
-        heading.style.fontSize = `${size}px`;
-        while (size > HEADING_MIN_PX && heading.scrollWidth > heading.clientWidth) {
-            size -= 0.5;
-            heading.style.fontSize = `${size}px`;
-        }
-    }
+    const headings = [...document.querySelectorAll<HTMLElement>('.project-info h3, .portfolio-info h3')];
+    // Measure each heading once at the max size: glyph advance scales with font-size, so the size
+    // that fits is `max * available / needed` — one measurement instead of a reflow per 0.5px step.
+    for (const heading of headings) heading.style.fontSize = `${HEADING_MAX_PX}px`;
+    const widths = headings.map(heading => ({ available: heading.clientWidth, needed: heading.scrollWidth }));
+    headings.forEach((heading, i) => {
+        const { available, needed } = widths[i];
+        const fitted = needed > available ? Math.max(HEADING_MIN_PX, Math.floor(HEADING_MAX_PX * available / needed * 2) / 2) : HEADING_MAX_PX;
+        heading.style.fontSize = `${fitted}px`;
+    });
 }
 export async function initPortfolio(file: string, options: CardOptions): Promise<void> {
     const container = element('projects-container');
@@ -384,11 +388,13 @@ export async function initPortfolio(file: string, options: CardOptions): Promise
     // The XP window can be resized without a window 'resize' event, so re-cap whenever the grid's
     // width changes; height-only changes are ignored (hiding rows causes those).
     let gridWidth = container.clientWidth;
+    let refineFrame = 0;
     new ResizeObserver(() => {
         if (container.clientWidth === gridWidth) return;
         gridWidth = container.clientWidth;
-        limitBadgeRows();
-        fitProjectHeadings();
+        // A live window resize fires this many times per frame; coalesce to one recompute per frame.
+        cancelAnimationFrame(refineFrame);
+        refineFrame = requestAnimationFrame(() => { limitBadgeRows(); fitProjectHeadings(); });
     }).observe(container);
     void document.fonts?.ready.then(() => { limitBadgeRows(); fitProjectHeadings(); });
     container.addEventListener('mouseover', event => {
