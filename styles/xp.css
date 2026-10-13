@@ -184,20 +184,18 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-menu-power-icon { width:24px; height:24px; flex-shrink:0; }
 .xp-menu-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:4px 8px 4px 14px; background:linear-gradient(#3f92f0,#0a4bbf); color:#fff; font-size:11px; line-height:16px; }
 .xp-boot { position:fixed; inset:0; display:grid; place-items:center; background:#050505; color:#fff; z-index:10000; }
-.xp-boot-user, .xp-boot-brand h1, .xp-boot-edition, .xp-boot-status, .xp-boot-copyright { font-family:'Franklin Gothic Medium','Trebuchet MS',Tahoma,sans-serif !important; filter:url(#xp-boot-aa); }
+.xp-boot-user, .xp-boot-brand h1, .xp-boot-copyright { font-family:'Franklin Gothic Medium','Trebuchet MS',Tahoma,sans-serif !important; filter:url(#xp-boot-aa); }
 .xp-boot-brand { width:340px; max-width:90vw; text-align:center; }
-.xp-boot-lockup { display:inline-block; text-align:left; }
-.xp-boot-flag { display:block; width:130px; height:auto; margin:0 auto 26px; }
+.xp-boot-lockup { position:relative; display:inline-block; text-align:left; }
+.xp-boot-flag { position:absolute; left:100px; top:-89px; width:130px; height:auto; margin:0; }
 .xp-boot-user { display:block; margin:0 0 3px; font-size:15px; }
 .xp-boot-brand h1 { background:none; padding:0; color:#fff; font-weight:400; font-size:56px; line-height:1; margin:0; min-height:0; display:block; letter-spacing:0; width:auto; }
 .xp-boot-brand h1 span { color:#ee7431; font-size:28px; position:relative; top:-20px; margin-left:5px; }
-.xp-boot-edition { font-size:14px; margin:10px 0 55px; }
-.xp-boot-progress { position:relative; width:165px; margin:0 auto; }
+.xp-boot-progress { position:relative; width:165px; margin:70px auto 0; }
 .xp-boot-track { display:block; width:100%; height:auto; }
 .xp-boot-clip { position:absolute; inset:2px 3px; overflow:hidden; }
 .xp-boot-blocks { display:flex; align-items:center; height:100%; gap:4px; animation:xp-boot-slide 2s steps(20) infinite; }
 .xp-boot-blocks img { display:block; width:8px; height:13px; }
-.xp-boot-brand .xp-boot-status { text-align:center; margin:15px 0; font-size:11px; color:#bcbcbc; }
 .xp-boot-copyright { position:absolute; left:34px; bottom:26px; margin:0; font-size:12px; color:#a9a9a9; }
 @keyframes xp-boot-slide { from { transform:translateX(-33px); } to { transform:translateX(160px); } }
 .xp-desktop :focus-visible { outline:1px dotted #172442; outline-offset:-3px; }
