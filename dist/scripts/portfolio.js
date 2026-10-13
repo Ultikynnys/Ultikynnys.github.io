@@ -115,6 +115,7 @@
         image.src = "images/nyan.gif";
         image.alt = "";
         image.className = "nyan-cat";
+        image.draggable = false;
         image.style.top = `${Math.random() * (window.innerHeight - 100)}px`;
         document.body.append(image);
         cats.add(image);
