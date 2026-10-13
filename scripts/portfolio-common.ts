@@ -115,16 +115,64 @@ export function initNameAnimation(): void {
     const heading = document.querySelector<HTMLElement>('#name-display h1');
     const indicator = document.querySelector<HTMLElement>('.name-indicator');
     if (!heading || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // The blinking caret is a child of the heading. Rewriting innerHTML would drop it, which also
+    // collapsed the line box (and so the page height) every time the name changed, so keep the
+    // element and re-append it after each paint.
+    const caret = heading.querySelector('.cursor');
+    const paint = (markup: string): void => { heading.innerHTML = markup; if (caret) heading.append(caret); };
     const names = ['Ubeid Hussein', 'Ultikynnys', 'R60D'];
+    const SCRAMBLE_STEP_MS = 40;     // time each character takes to resolve; sets the total solve time
+    const SCRAMBLE_FLICKER_MS = 10;  // how often unresolved characters re-randomise; lower flickers faster
+    // Every character the pixel font actually draws (read from fonts/pressstart2p.ttf's cmap + glyf
+    // outlines), as inclusive BMP codepoint ranges. Scrambling draws from a shuffled deck of this
+    // whole set, so characters do not repeat until the entire set has been cycled through.
+    const SCRAMBLE_RANGES: ReadonlyArray<readonly [number, number]> = [
+        [0x21, 0x7e], [0xa1, 0x148], [0x14a, 0x161], [0x164, 0x17f], [0x192, 0x192],
+        [0x21a, 0x21b], [0x2bc, 0x2bc], [0x2c6, 0x2c7], [0x2c9, 0x2cb], [0x2d7, 0x2dd],
+        [0x300, 0x301], [0x326, 0x326], [0x335, 0x335], [0x37a, 0x37a], [0x37e, 0x37e],
+        [0x384, 0x38a], [0x38c, 0x38c], [0x38e, 0x3a1], [0x3a3, 0x3ce], [0x400, 0x45f],
+        [0x462, 0x463], [0x46a, 0x46b], [0x472, 0x475], [0x490, 0x49d], [0x4a0, 0x4a5],
+        [0x4aa, 0x4b1], [0x4b6, 0x4bb], [0x4c0, 0x4c2], [0x4cb, 0x4cc], [0x4cf, 0x4d9],
+        [0x4dc, 0x4df], [0x4e2, 0x4e9], [0x4ee, 0x4f9], [0x51a, 0x51d], [0x524, 0x525],
+        [0x2013, 0x2015], [0x2018, 0x201a], [0x201c, 0x201e], [0x2020, 0x2022], [0x2026, 0x2026],
+        [0x2030, 0x2030], [0x2039, 0x203a], [0x2044, 0x2044], [0x2074, 0x2074], [0x20ac, 0x20ac],
+        [0x20ae, 0x20af], [0x20b4, 0x20b4], [0x20b8, 0x20b8], [0x20bd, 0x20bd], [0x2116, 0x2116],
+        [0x2122, 0x2122], [0x2190, 0x2193], [0x2202, 0x2202], [0x2206, 0x2206], [0x220f, 0x220f],
+        [0x2211, 0x2211], [0x2215, 0x2215], [0x221a, 0x221a], [0x221e, 0x221e], [0x222b, 0x222b],
+        [0x2248, 0x2248], [0x2260, 0x2260], [0x2264, 0x2265], [0x25b2, 0x25b2], [0x25b6, 0x25b6],
+        [0x25bc, 0x25bc], [0x25c0, 0x25c0], [0x25ca, 0x25ca], [0x2605, 0x2606], [0x2660, 0x2660],
+        [0x2663, 0x2663], [0x2665, 0x2666], [0x266a, 0x266a], [0xf100, 0xf101], [0xf8ff, 0xf8ff],
+        [0xfb01, 0xfb02]
+    ];
+    const SCRAMBLE_CHARS = SCRAMBLE_RANGES.flatMap(([start, end]) => {
+        const chars: string[] = [];
+        for (let code = start; code <= end; code++) chars.push(String.fromCharCode(code));
+        return chars;
+    });
+    let deck: string[] = [];
+    let draw = 0;
+    const nextScrambleChar = (): string => {
+        if (draw >= deck.length) {
+            deck = [...SCRAMBLE_CHARS];
+            for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const swap = deck[i]; deck[i] = deck[j]; deck[j] = swap; }
+            draw = 0;
+        }
+        return deck[draw++];
+    };
     let index = 0;
     window.setInterval(() => {
         index = (index + 1) % names.length;
         const target = names[index];
-        let position = 0;
+        // Resolve position is derived from elapsed time, so the flicker rate can change without
+        // changing how long the name takes to solve.
+        const started = performance.now();
         const timer = window.setInterval(() => {
-            heading.textContent = target.slice(0, position) + Array.from({ length: target.length - position }, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]).join('');
-            if (++position > target.length) { clearInterval(timer); heading.textContent = target; }
-        }, 50);
+            const position = Math.min(target.length, Math.floor((performance.now() - started) / SCRAMBLE_STEP_MS));
+            // Unresolved characters show as white glyphs on black pixel-font squares.
+            const noise = Array.from({ length: target.length - position }, () => `<span class="name-scramble">${escapeHtml(nextScrambleChar())}</span>`).join('');
+            paint(escapeHtml(target.slice(0, position)) + noise);
+            if (position >= target.length) { clearInterval(timer); paint(escapeHtml(target)); }
+        }, SCRAMBLE_FLICKER_MS);
         if (indicator) indicator.textContent = index === 0 ? 'Full name' : 'Also known as';
     }, 8000);
 }
@@ -253,13 +301,16 @@ export function initSecretMode(): void {
     let timer = 0;
     let slices = 0;
     let finished = 0;
-    const play = (file: string) => { const clip = new Audio(file); const level = window.xpVolume?.(); if (typeof level === 'number') clip.volume = level; void clip.play().catch(() => undefined); };
+    let catKills = 0;                 // cats sliced during the current activation
+    let catMilestonePlayed = false;   // the over-ten-cats voiceline fires once per minigame
+    const play = (file: string, scale = 1) => { const clip = new Audio(file); const level = window.xpVolume?.(); if (typeof level === 'number') clip.volume = Math.min(1, Math.max(0, level * scale)); void clip.play().catch(() => undefined); };
     const indicator = document.createElement('img');
     indicator.id = 'yasuo-mode-indicator'; indicator.src = 'images/yasuo.png'; indicator.alt = 'Yasuo Mode Active';
     document.body.append(indicator);
     const setActive = (on: boolean) => {
         document.body.classList.toggle('yasuo-mode-active', on);
         indicator.classList.toggle('active', on);
+        if (on) { catKills = 0; catMilestonePlayed = false; }
     };
     let endTimer = 0;
     // Guarded: a queued end and a manual end can race, and every replay double-plays the voiceline.
@@ -334,9 +385,11 @@ export function initSecretMode(): void {
         // Hold the cat still where it was hit; the halves replace it once they appear.
         cat.style.animationPlayState = 'paused';
         const frozen = freezeFrame(cat as HTMLImageElement);
+        // Past ten cats in one minigame, Yasuo has a line about it - played once per activation.
+        if (++catKills > 10 && !catMilestonePlayed) { catMilestonePlayed = true; play('audio/Yasuo_Original_Move_13.ogg', 0.5); }
         window.setTimeout(() => {
             play(`audio/metal${Math.floor(Math.random() * 5) + 1}.ogg`);
-            play('audio/cat-meow.ogg');
+            play('audio/cat-meow.ogg', 0.25);   // the cat's death meow sits well under the blade and impact
             flashAt(box.left + box.width / 2, box.top + box.height / 2, flashSpan(box.width, box.height), Math.atan2(box.height, box.width) * (180 / Math.PI));
             bloodMist(box);
             for (const isTop of [true, false]) {

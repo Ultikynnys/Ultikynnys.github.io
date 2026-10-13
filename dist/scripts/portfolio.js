@@ -305,19 +305,126 @@
     const heading = document.querySelector("#name-display h1");
     const indicator = document.querySelector(".name-indicator");
     if (!heading || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const caret = heading.querySelector(".cursor");
+    const paint = (markup) => {
+      heading.innerHTML = markup;
+      if (caret) heading.append(caret);
+    };
     const names = ["Ubeid Hussein", "Ultikynnys", "R60D"];
+    const SCRAMBLE_STEP_MS = 40;
+    const SCRAMBLE_FLICKER_MS = 10;
+    const SCRAMBLE_RANGES = [
+      [33, 126],
+      [161, 328],
+      [330, 353],
+      [356, 383],
+      [402, 402],
+      [538, 539],
+      [700, 700],
+      [710, 711],
+      [713, 715],
+      [727, 733],
+      [768, 769],
+      [806, 806],
+      [821, 821],
+      [890, 890],
+      [894, 894],
+      [900, 906],
+      [908, 908],
+      [910, 929],
+      [931, 974],
+      [1024, 1119],
+      [1122, 1123],
+      [1130, 1131],
+      [1138, 1141],
+      [1168, 1181],
+      [1184, 1189],
+      [1194, 1201],
+      [1206, 1211],
+      [1216, 1218],
+      [1227, 1228],
+      [1231, 1241],
+      [1244, 1247],
+      [1250, 1257],
+      [1262, 1273],
+      [1306, 1309],
+      [1316, 1317],
+      [8211, 8213],
+      [8216, 8218],
+      [8220, 8222],
+      [8224, 8226],
+      [8230, 8230],
+      [8240, 8240],
+      [8249, 8250],
+      [8260, 8260],
+      [8308, 8308],
+      [8364, 8364],
+      [8366, 8367],
+      [8372, 8372],
+      [8376, 8376],
+      [8381, 8381],
+      [8470, 8470],
+      [8482, 8482],
+      [8592, 8595],
+      [8706, 8706],
+      [8710, 8710],
+      [8719, 8719],
+      [8721, 8721],
+      [8725, 8725],
+      [8730, 8730],
+      [8734, 8734],
+      [8747, 8747],
+      [8776, 8776],
+      [8800, 8800],
+      [8804, 8805],
+      [9650, 9650],
+      [9654, 9654],
+      [9660, 9660],
+      [9664, 9664],
+      [9674, 9674],
+      [9733, 9734],
+      [9824, 9824],
+      [9827, 9827],
+      [9829, 9830],
+      [9834, 9834],
+      [61696, 61697],
+      [63743, 63743],
+      [64257, 64258]
+    ];
+    const SCRAMBLE_CHARS = SCRAMBLE_RANGES.flatMap(([start, end]) => {
+      const chars = [];
+      for (let code = start; code <= end; code++) chars.push(String.fromCharCode(code));
+      return chars;
+    });
+    let deck = [];
+    let draw = 0;
+    const nextScrambleChar = () => {
+      if (draw >= deck.length) {
+        deck = [...SCRAMBLE_CHARS];
+        for (let i = deck.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const swap = deck[i];
+          deck[i] = deck[j];
+          deck[j] = swap;
+        }
+        draw = 0;
+      }
+      return deck[draw++];
+    };
     let index = 0;
     window.setInterval(() => {
       index = (index + 1) % names.length;
       const target = names[index];
-      let position = 0;
+      const started = performance.now();
       const timer = window.setInterval(() => {
-        heading.textContent = target.slice(0, position) + Array.from({ length: target.length - position }, () => "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"[Math.floor(Math.random() * 36)]).join("");
-        if (++position > target.length) {
+        const position = Math.min(target.length, Math.floor((performance.now() - started) / SCRAMBLE_STEP_MS));
+        const noise = Array.from({ length: target.length - position }, () => `<span class="name-scramble">${escapeHtml(nextScrambleChar())}</span>`).join("");
+        paint(escapeHtml(target.slice(0, position)) + noise);
+        if (position >= target.length) {
           clearInterval(timer);
-          heading.textContent = target;
+          paint(escapeHtml(target));
         }
-      }, 50);
+      }, SCRAMBLE_FLICKER_MS);
       if (indicator) indicator.textContent = index === 0 ? "Full name" : "Also known as";
     }, 8e3);
   }
@@ -456,10 +563,12 @@
     let timer = 0;
     let slices = 0;
     let finished = 0;
-    const play = (file) => {
+    let catKills = 0;
+    let catMilestonePlayed = false;
+    const play = (file, scale = 1) => {
       const clip = new Audio(file);
       const level = window.xpVolume?.();
-      if (typeof level === "number") clip.volume = level;
+      if (typeof level === "number") clip.volume = Math.min(1, Math.max(0, level * scale));
       void clip.play().catch(() => void 0);
     };
     const indicator = document.createElement("img");
@@ -470,6 +579,10 @@
     const setActive = (on) => {
       document.body.classList.toggle("yasuo-mode-active", on);
       indicator.classList.toggle("active", on);
+      if (on) {
+        catKills = 0;
+        catMilestonePlayed = false;
+      }
     };
     let endTimer = 0;
     const deactivate = () => {
@@ -545,9 +658,13 @@
       slashAt(box.left + box.width / 2, box.top + box.height / 2);
       cat.style.animationPlayState = "paused";
       const frozen = freezeFrame(cat);
+      if (++catKills > 10 && !catMilestonePlayed) {
+        catMilestonePlayed = true;
+        play("audio/Yasuo_Original_Move_13.ogg", 0.5);
+      }
       window.setTimeout(() => {
         play(`audio/metal${Math.floor(Math.random() * 5) + 1}.ogg`);
-        play("audio/cat-meow.ogg");
+        play("audio/cat-meow.ogg", 0.25);
         flashAt(box.left + box.width / 2, box.top + box.height / 2, flashSpan(box.width, box.height), Math.atan2(box.height, box.width) * (180 / Math.PI));
         bloodMist(box);
         for (const isTop of [true, false]) {

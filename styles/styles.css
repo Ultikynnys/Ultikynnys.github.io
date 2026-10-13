@@ -128,7 +128,8 @@ h1.hidden {
 .name-indicator {
     font-size: 0.8rem;
     color: var(--header-text-color);
-    margin-bottom: 0.5rem;
+    order: 2;                 /* the container is a flex column, so this drops it below the name */
+    margin-top: -4px;         /* cancels the heading's line-box descender so the chip hugs the name */
     font-weight: 500;
     background-color: var(--header-text-bg);
     display: inline-block;
@@ -147,6 +148,22 @@ h1.hidden {
 /* Selection is blocked globally (styles/xp.css); this heading just needs to read as clickable. */
 .dynamic-name-container h1 {
     cursor: pointer;
+}
+
+/* Scrambled name characters: white pixel-font glyphs on a contiguous black band. Horizontal padding
+   (≈ one font pixel) stops neighbouring glyphs running together while the black stays contiguous;
+   the vertical padding grows each block to 1em of the heading so the band is flush with the
+   unscrambled text height. Press Start 2P is wide, so the glyphs are scaled down to suit. The font
+   is !important because the XP theme force-sets font-family on nearly every element. */
+.name-scramble {
+    display: inline-block;
+    padding: 0.214em 0.14em;
+    line-height: 1;
+    background: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', 'Courier New', monospace !important;
+    font-size: 0.7em;
+    font-weight: 400;
 }
 
 .char-decoding {

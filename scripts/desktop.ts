@@ -74,9 +74,10 @@ const EDGE = 8;
 interface Rect { x: number; y: number; w: number; h: number }
 type XpCursorMode = 'arrow' | 'pointer' | 'text' | 'move' | 'resize-h' | 'resize-v' | 'resize-se' | 'resize-sw';
 
+// Hotspots are in 48px cursor pixels, so the overlay and the CSS native fallback share exact numbers.
 const XP_CURSOR_HOTSPOTS: Record<XpCursorMode, { x: number; y: number }> = {
-    arrow: { x: 3, y: 4 }, pointer: { x: 7, y: 3 }, text: { x: 6, y: 10 }, move: { x: 12, y: 12 },
-    'resize-h': { x: 12, y: 12 }, 'resize-v': { x: 12, y: 14 }, 'resize-se': { x: 10, y: 10 }, 'resize-sw': { x: 10, y: 10 }
+    arrow: { x: 5, y: 6 }, pointer: { x: 11, y: 5 }, text: { x: 9, y: 15 }, move: { x: 18, y: 18 },
+    'resize-h': { x: 18, y: 18 }, 'resize-v': { x: 18, y: 21 }, 'resize-se': { x: 15, y: 15 }, 'resize-sw': { x: 15, y: 15 }
 };
 
 function xpCursorMode(target: EventTarget | null): XpCursorMode {
@@ -90,6 +91,19 @@ function xpCursorMode(target: EventTarget | null): XpCursorMode {
     if (target.closest('a, button, summary, label, select, [role="button"], [data-action], .project-card, .portfolio-choice, .xp-task, .xp-start, .xp-tb, .xp-volume, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="button"], input[type="submit"]')) return 'pointer';
     if (target.closest('.selectable, .selectable *, [data-selectable], [data-selectable] *, textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), [contenteditable="true"], [contenteditable="true"] *')) return 'text';
     return 'arrow';
+}
+// A native scrollbar is browser chrome: once it is being dragged it fires no pointer events, so the
+// custom overlay would freeze mid-screen. Fall back to the real cursor over a scrollbar, where it
+// tracks the drag natively, and let the overlay resume as soon as the pointer returns to content.
+function isOverScrollbar(x: number, y: number): boolean {
+    let node: Element | null = document.elementFromPoint(x, y);
+    while (node) {
+        const rect = node.getBoundingClientRect();
+        if (node.scrollHeight - node.clientHeight > 1 && x >= rect.left + node.clientWidth && x <= rect.right && y >= rect.top && y <= rect.bottom) return true;
+        if (node.scrollWidth - node.clientWidth > 1 && y >= rect.top + node.clientHeight && y <= rect.bottom && x >= rect.left && x <= rect.right) return true;
+        node = node.parentElement;
+    }
+    return false;
 }
 
 function isInSiteNavigation(): boolean {
@@ -209,8 +223,9 @@ function initDesktop(): void {
             const mode = xpCursorMode(target);
             if (mode !== activeMode) { activeMode = mode; cursorElement.src = cursorSources[mode]; }
             const hotspot = XP_CURSOR_HOTSPOTS[mode];
-            cursorElement.style.left = `${event.clientX - hotspot.x * 1.5}px`;
-            cursorElement.style.top = `${event.clientY - hotspot.y * 1.5}px`;
+            // transform (compositor-only) instead of left/top keeps the cursor tracking the pointer
+            // without forcing a layout on every move, which is what made it feel laggy.
+            cursorElement.style.transform = `translate3d(${event.clientX - hotspot.x}px, ${event.clientY - hotspot.y}px, 0)`;
             if (!cursorAssetsReady) return;
             document.documentElement.classList.add('xp-custom-cursor');
             document.body.classList.add('xp-custom-cursor');
@@ -235,6 +250,22 @@ function initDesktop(): void {
         window.addEventListener('focus', () => {
             if (lastPointerEvent) updateCursor(lastPointerEvent, document.elementFromPoint(lastPointerEvent.clientX, lastPointerEvent.clientY));
         });
+        // A stationary pointer can still end up over different chrome when the layout moves under it
+        // (resize, maximize), which fires no pointer event -- re-resolve from the last known position.
+        const refreshFromLastPointer = (): void => {
+            if (lastPointerEvent) updateCursor(lastPointerEvent, document.elementFromPoint(lastPointerEvent.clientX, lastPointerEvent.clientY));
+        };
+        // A native scrollbar drag fires no pointer events, so the overlay cannot follow it. The scroll
+        // events it does fire are used instead: if a scroll happens while the pointer sits over a
+        // scrollbar band, drop the overlay so the real cursor tracks the drag. Hovering never scrolls,
+        // so simply passing over a scrollbar keeps our cursor rather than dropping to the OS one.
+        const onScroll = (): void => {
+            if (!lastPointerEvent) return;
+            if (isOverScrollbar(lastPointerEvent.clientX, lastPointerEvent.clientY)) { hideCustomCursor(); return; }
+            refreshFromLastPointer();
+        };
+        document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+        window.addEventListener('resize', refreshFromLastPointer);
     }
 
     // --- Window geometry: floating by default, clamped inside the desktop ---
@@ -265,10 +296,13 @@ function initDesktop(): void {
     };
     let floating: Rect = defaultRect();
     applyRect(floating);
+    // Swapped for the real snapshot writer further down; the drag/resize handlers below call it,
+    // but the snapshot needs the taskbar/close controls that do not exist yet at this point.
+    let persistWindow = (): void => {};
 
     const maximizeButton = element<HTMLButtonElement>('xp-maximize');
-    const setMaximized = (maximized: boolean) => {
-        playSound('restore');
+    const setMaximized = (maximized: boolean, silent = false) => {
+        if (!silent) playSound('restore');
         if (maximized) floating = readRect();
         shell.classList.toggle('xp-maximized', maximized);
         if (maximized) { shell.style.left = ''; shell.style.top = ''; shell.style.width = ''; shell.style.height = ''; }
@@ -276,16 +310,18 @@ function initDesktop(): void {
         maximizeButton.setAttribute('aria-pressed', String(maximized));
         maximizeButton.setAttribute('aria-label', maximized ? 'Restore window' : 'Maximize window');
         maximizeButton.innerHTML = maximized ? '<span class="xp-glyph-restore"></span>' : '<span class="xp-glyph-max"></span>';
+        persistWindow();
     };
     maximizeButton.addEventListener('click', () => setMaximized(!shell.classList.contains('xp-maximized')));
     titlebar.addEventListener('dblclick', event => { if (!(event.target instanceof Element && event.target.closest('.xp-window-controls'))) setMaximized(!shell.classList.contains('xp-maximized')); });
 
     // --- Window taskbar entry: minimize / restore ---
     const task = element<HTMLButtonElement>('xp-task');
-    const minimize = (hidden: boolean) => {
-        playSound(hidden ? 'minimize' : 'restore');
+    const minimize = (hidden: boolean, silent = false) => {
+        if (!silent) playSound(hidden ? 'minimize' : 'restore');
         shell.hidden = hidden; task.setAttribute('aria-expanded', String(!hidden));
         if (hidden) task.focus(); else shell.focus({ preventScroll: true });
+        persistWindow();
     };
     element('xp-minimize').addEventListener('click', () => minimize(true));
     task.addEventListener('click', () => minimize(!shell.hidden));
@@ -312,6 +348,7 @@ function initDesktop(): void {
         if (!drag || event.pointerId !== drag.pointerId) return;
         drag = null; floating = readRect();
         document.body.classList.remove('xp-dragging');
+        persistWindow();
     };
     titlebar.addEventListener('pointerup', endDrag);
     titlebar.addEventListener('pointercancel', endDrag);
@@ -347,6 +384,7 @@ function initDesktop(): void {
             if (!sizing || event.pointerId !== sizing.pointerId) return;
             sizing = null; floating = readRect();
             document.body.classList.remove('xp-resizing');
+            persistWindow();
         };
         handle.addEventListener('pointerup', endResize);
         handle.addEventListener('pointercancel', endResize);
@@ -359,6 +397,7 @@ function initDesktop(): void {
         sizeTo(rect.w, rect.h);
         moveTo(shell.offsetLeft, shell.offsetTop);
         floating = readRect();
+        persistWindow();
     });
 
     // --- Tray volume: real XP icon driving an XP-style pop-up slider ---
@@ -404,6 +443,7 @@ function initDesktop(): void {
     const setWindowOpen = (open: boolean) => {
         shell.hidden = !open; task.hidden = !open;
         if (open) { task.setAttribute('aria-expanded', 'true'); shell.focus({ preventScroll: true }); }
+        persistWindow();
     };
     element('xp-close').addEventListener('click', () => setWindowOpen(false));
     const samePage = (href: string | null): boolean => {
@@ -456,6 +496,41 @@ function initDesktop(): void {
     forwardButton.disabled = aheadDepth <= 0;
     backButton.addEventListener('click', () => { writeNav('xp-nav-mark', 'back'); history.back(); });
     forwardButton.addEventListener('click', () => { writeNav('xp-nav-mark', 'forward'); history.forward(); });
+
+    // --- Persist geometry and window state across the site's own page loads ---
+    persistWindow = () => {
+        try {
+            const state = {
+                rect: floating,
+                maximized: shell.classList.contains('xp-maximized'),
+                minimized: shell.hidden && !task.hidden,
+                open: !task.hidden
+            };
+            sessionStorage.setItem('xp-window', JSON.stringify(state));
+        } catch { /* Storage can be unavailable. */ }
+    };
+    const restoreWindow = (): void => {
+        let raw: string | null = null;
+        try { raw = sessionStorage.getItem('xp-window'); } catch { return; }
+        if (!raw) return;
+        let state: { rect?: Rect; maximized?: boolean; minimized?: boolean; open?: boolean };
+        try { state = JSON.parse(raw); } catch { return; }
+        const rect = state?.rect;
+        if (!rect || ![rect.x, rect.y, rect.w, rect.h].every(value => typeof value === 'number' && Number.isFinite(value))) return;
+        // Re-clamp with the same bounds the drag/resize use, so a saved rect can never restore
+        // off-screen after the browser window or monitor changes.
+        const w = Math.min(Math.max(MIN_SIZE.width, rect.w), Math.max(MIN_SIZE.width, viewportW() - EDGE * 2));
+        const h = Math.min(Math.max(MIN_SIZE.height, rect.h), Math.max(MIN_SIZE.height, viewportH() - DESKTOP.bottom - EDGE * 2));
+        const x = Math.min(Math.max(EDGE, rect.x), Math.max(EDGE, viewportW() - w - EDGE));
+        const y = Math.min(Math.max(EDGE, rect.y), Math.max(EDGE, viewportH() - DESKTOP.bottom - h - EDGE));
+        floating = { x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) };
+        applyRect(floating);
+        if (state.maximized) setMaximized(true, true);
+        if (state.open === false) setWindowOpen(false);
+        else if (state.minimized) minimize(true, true);
+    };
+    restoreWindow();
+    window.addEventListener('pagehide', () => persistWindow());
 
     const updateClock = () => { const now = new Date(); const clock = element<HTMLTimeElement>('xp-clock'); clock.dateTime = now.toISOString(); clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); };
     updateClock(); window.setInterval(updateClock, 30000);

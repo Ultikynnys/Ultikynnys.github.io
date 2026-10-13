@@ -1,17 +1,14 @@
-PNG native-cursor fallback artwork: “Modern Windows XP Cursor Set” by Virum64
-Source: https://www.rw-designer.com/cursor-set/modern-windows-xp
-Download: https://www.rw-designer.com/cursor-downloadset/modern-windows-xp.zip
-License: Released to Public Domain, per the included readme.txt.
-
-The original 32×32 CUR artwork was converted to PNG for native CSS cursor fallbacks. No pixel resampling was applied to the source images.
-
-SVG custom-cursor overlay artwork: modernXP-cursor-theme by na0miluv
+Cursor artwork: modernXP-cursor-theme by na0miluv
 Source: https://github.com/na0miluv/modernXP-cursor-theme
 SVG source directory: https://github.com/na0miluv/modernXP-cursor-theme/tree/main/src/svg
 License: GNU General Public License v3.0; full text in LICENSE alongside these assets.
+
 The SVG sources are distributed intact, renamed for the website's cursor roles:
 arrow.svg = default.svg; pointer.svg = pointer.svg; text.svg = text.svg;
 move.svg = fleur.svg; resize-h.svg = size_hor.svg; resize-v.svg = size_ver.svg;
 resize-se.svg = size_fdiag.svg (NW/SE); resize-sw.svg = size_bdiag.svg (NE/SW).
-The UI displays these vectors at 48×48 without resampling the PNG fallback files.
+
+Each .png is the matching .svg rasterized at the 48×48 display size for the native CSS
+cursor fallback (used where the custom overlay cannot run, such as scrollbar drags).
+Rendering from vector keeps it crisp; no 32px raster is upscaled.
 Upstream shadows are preserved. Hidden raster reference layers are not displayed.

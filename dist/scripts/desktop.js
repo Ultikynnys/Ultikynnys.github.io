@@ -166,14 +166,14 @@
   var MIN_SIZE = { width: 340, height: 240 };
   var EDGE = 8;
   var XP_CURSOR_HOTSPOTS = {
-    arrow: { x: 3, y: 4 },
-    pointer: { x: 7, y: 3 },
-    text: { x: 6, y: 10 },
-    move: { x: 12, y: 12 },
-    "resize-h": { x: 12, y: 12 },
-    "resize-v": { x: 12, y: 14 },
-    "resize-se": { x: 10, y: 10 },
-    "resize-sw": { x: 10, y: 10 }
+    arrow: { x: 5, y: 6 },
+    pointer: { x: 11, y: 5 },
+    text: { x: 9, y: 15 },
+    move: { x: 18, y: 18 },
+    "resize-h": { x: 18, y: 18 },
+    "resize-v": { x: 18, y: 21 },
+    "resize-se": { x: 15, y: 15 },
+    "resize-sw": { x: 15, y: 15 }
   };
   function xpCursorMode(target) {
     if (!(target instanceof Element)) return "arrow";
@@ -186,6 +186,16 @@
     if (target.closest('a, button, summary, label, select, [role="button"], [data-action], .project-card, .portfolio-choice, .xp-task, .xp-start, .xp-tb, .xp-volume, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="button"], input[type="submit"]')) return "pointer";
     if (target.closest('.selectable, .selectable *, [data-selectable], [data-selectable] *, textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), [contenteditable="true"], [contenteditable="true"] *')) return "text";
     return "arrow";
+  }
+  function isOverScrollbar(x, y) {
+    let node = document.elementFromPoint(x, y);
+    while (node) {
+      const rect = node.getBoundingClientRect();
+      if (node.scrollHeight - node.clientHeight > 1 && x >= rect.left + node.clientWidth && x <= rect.right && y >= rect.top && y <= rect.bottom) return true;
+      if (node.scrollWidth - node.clientWidth > 1 && y >= rect.top + node.clientHeight && y <= rect.bottom && x >= rect.left && x <= rect.right) return true;
+      node = node.parentElement;
+    }
+    return false;
   }
   function isInSiteNavigation() {
     try {
@@ -368,8 +378,7 @@
           cursorElement.src = cursorSources[mode];
         }
         const hotspot = XP_CURSOR_HOTSPOTS[mode];
-        cursorElement.style.left = `${event.clientX - hotspot.x * 1.5}px`;
-        cursorElement.style.top = `${event.clientY - hotspot.y * 1.5}px`;
+        cursorElement.style.transform = `translate3d(${event.clientX - hotspot.x}px, ${event.clientY - hotspot.y}px, 0)`;
         if (!cursorAssetsReady) return;
         document.documentElement.classList.add("xp-custom-cursor");
         document.body.classList.add("xp-custom-cursor");
@@ -397,6 +406,19 @@
       window.addEventListener("focus", () => {
         if (lastPointerEvent) updateCursor(lastPointerEvent, document.elementFromPoint(lastPointerEvent.clientX, lastPointerEvent.clientY));
       });
+      const refreshFromLastPointer = () => {
+        if (lastPointerEvent) updateCursor(lastPointerEvent, document.elementFromPoint(lastPointerEvent.clientX, lastPointerEvent.clientY));
+      };
+      const onScroll = () => {
+        if (!lastPointerEvent) return;
+        if (isOverScrollbar(lastPointerEvent.clientX, lastPointerEvent.clientY)) {
+          hideCustomCursor();
+          return;
+        }
+        refreshFromLastPointer();
+      };
+      document.addEventListener("scroll", onScroll, { capture: true, passive: true });
+      window.addEventListener("resize", refreshFromLastPointer);
     }
     const applyRect = (rect) => {
       shell.style.left = `${rect.x}px`;
@@ -427,9 +449,11 @@
     };
     let floating = defaultRect();
     applyRect(floating);
+    let persistWindow = () => {
+    };
     const maximizeButton = element("xp-maximize");
-    const setMaximized = (maximized) => {
-      playSound("restore");
+    const setMaximized = (maximized, silent = false) => {
+      if (!silent) playSound("restore");
       if (maximized) floating = readRect();
       shell.classList.toggle("xp-maximized", maximized);
       if (maximized) {
@@ -441,18 +465,20 @@
       maximizeButton.setAttribute("aria-pressed", String(maximized));
       maximizeButton.setAttribute("aria-label", maximized ? "Restore window" : "Maximize window");
       maximizeButton.innerHTML = maximized ? '<span class="xp-glyph-restore"></span>' : '<span class="xp-glyph-max"></span>';
+      persistWindow();
     };
     maximizeButton.addEventListener("click", () => setMaximized(!shell.classList.contains("xp-maximized")));
     titlebar.addEventListener("dblclick", (event) => {
       if (!(event.target instanceof Element && event.target.closest(".xp-window-controls"))) setMaximized(!shell.classList.contains("xp-maximized"));
     });
     const task = element("xp-task");
-    const minimize = (hidden) => {
-      playSound(hidden ? "minimize" : "restore");
+    const minimize = (hidden, silent = false) => {
+      if (!silent) playSound(hidden ? "minimize" : "restore");
       shell.hidden = hidden;
       task.setAttribute("aria-expanded", String(!hidden));
       if (hidden) task.focus();
       else shell.focus({ preventScroll: true });
+      persistWindow();
     };
     element("xp-minimize").addEventListener("click", () => minimize(true));
     task.addEventListener("click", () => minimize(!shell.hidden));
@@ -478,6 +504,7 @@
       drag = null;
       floating = readRect();
       document.body.classList.remove("xp-dragging");
+      persistWindow();
     };
     titlebar.addEventListener("pointerup", endDrag);
     titlebar.addEventListener("pointercancel", endDrag);
@@ -513,6 +540,7 @@
         sizing = null;
         floating = readRect();
         document.body.classList.remove("xp-resizing");
+        persistWindow();
       };
       handle.addEventListener("pointerup", endResize);
       handle.addEventListener("pointercancel", endResize);
@@ -523,6 +551,7 @@
       sizeTo(rect.w, rect.h);
       moveTo(shell.offsetLeft, shell.offsetTop);
       floating = readRect();
+      persistWindow();
     });
     const volumeButton = element("xp-volume");
     const volumePanel = document.createElement("div");
@@ -611,6 +640,7 @@
         task.setAttribute("aria-expanded", "true");
         shell.focus({ preventScroll: true });
       }
+      persistWindow();
     };
     element("xp-close").addEventListener("click", () => setWindowOpen(false));
     const samePage = (href) => {
@@ -694,6 +724,46 @@
       writeNav("xp-nav-mark", "forward");
       history.forward();
     });
+    persistWindow = () => {
+      try {
+        const state = {
+          rect: floating,
+          maximized: shell.classList.contains("xp-maximized"),
+          minimized: shell.hidden && !task.hidden,
+          open: !task.hidden
+        };
+        sessionStorage.setItem("xp-window", JSON.stringify(state));
+      } catch {
+      }
+    };
+    const restoreWindow = () => {
+      let raw = null;
+      try {
+        raw = sessionStorage.getItem("xp-window");
+      } catch {
+        return;
+      }
+      if (!raw) return;
+      let state;
+      try {
+        state = JSON.parse(raw);
+      } catch {
+        return;
+      }
+      const rect = state?.rect;
+      if (!rect || ![rect.x, rect.y, rect.w, rect.h].every((value) => typeof value === "number" && Number.isFinite(value))) return;
+      const w = Math.min(Math.max(MIN_SIZE.width, rect.w), Math.max(MIN_SIZE.width, viewportW() - EDGE * 2));
+      const h = Math.min(Math.max(MIN_SIZE.height, rect.h), Math.max(MIN_SIZE.height, viewportH() - DESKTOP.bottom - EDGE * 2));
+      const x = Math.min(Math.max(EDGE, rect.x), Math.max(EDGE, viewportW() - w - EDGE));
+      const y = Math.min(Math.max(EDGE, rect.y), Math.max(EDGE, viewportH() - DESKTOP.bottom - h - EDGE));
+      floating = { x: Math.round(x), y: Math.round(y), w: Math.round(w), h: Math.round(h) };
+      applyRect(floating);
+      if (state.maximized) setMaximized(true, true);
+      if (state.open === false) setWindowOpen(false);
+      else if (state.minimized) minimize(true, true);
+    };
+    restoreWindow();
+    window.addEventListener("pagehide", () => persistWindow());
     const updateClock = () => {
       const now = /* @__PURE__ */ new Date();
       const clock = element("xp-clock");

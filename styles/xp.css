@@ -2,6 +2,8 @@
 @font-face { font-family:'Tahoma'; src:url('../fonts/tahoma-bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
 @font-face { font-family:'Trebuchet MS'; src:url('../fonts/trebuchet-ms.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
 @font-face { font-family:'Trebuchet MS'; src:url('../fonts/trebuchet-ms-bold.ttf') format('truetype'); font-weight:700; font-style:normal; font-display:swap; }
+/* Press Start 2P - SIL Open Font License 1.1, self-hosted in fonts/. */
+@font-face { font-family:'Press Start 2P'; src:url('../fonts/pressstart2p.ttf') format('truetype'); font-weight:400; font-style:normal; font-display:swap; }
 
 body.xp-desktop { --primary-bg:#ece9d8; --secondary-bg:#fff; --card-bg:#fff; --text-primary:#172442; --text-secondary:#40526b; --accent-color:#1655be; --header-text-bg:transparent; --header-text-color:#173a78; --card-shadow:0 2px 4px #0002; margin:0; padding:0; height:100vh; overflow:hidden; box-sizing:border-box; --desk-top:26px; --desk-left:124px; --desk-right:138px; --desk-bottom:30px; background:#3a6ea5 url('../images/xp/bliss.jpg') center/cover fixed; color:#172442; animation:none; font-family:var(--xp-font); line-height:1.5; text-shadow:var(--xp-shadow); --xp-font:Tahoma; --xp-shadow:0 1px 1px rgba(0,0,0,.4); }
 .xp-desktop *, .xp-desktop button { box-sizing:border-box; }
@@ -70,7 +72,9 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 .xp-statusbar { flex:none; display:flex; gap:2px; padding:2px; color:#333; font-size:11px; background:#ece9d8; border-top:1px solid #b6b3a5; }
 .xp-statusbar span { flex:1; padding:1px 8px; border:1px solid; border-color:#9c9a8e #fff #fff #9c9a8e; }
 .xp-content header { padding:30px 10px 20px; margin:0; }
-.xp-content .header-content h1 { font-size:clamp(26px,4vw,42px); min-height:0; width:auto; background:none; color:#173a78; border-radius:0; letter-spacing:-1px; }
+/* min-height pins the heading to its text height: the scramble swaps the name text for inline-block
+   glyphs, which sizes the line box shorter, and without this the page height jumps on every change. */
+.xp-content .header-content h1 { font-size:clamp(26px,4vw,42px); min-height:1.46em; margin-bottom:0; width:auto; background:none; color:#173a78; border-radius:0; letter-spacing:-1px; }
 .xp-content .subtitle { color:#38557d; font-size:16px; }
 .xp-content .bio { max-width:650px; margin:12px auto; color:#40526b; font-size:13px; }
 .xp-content .portfolio-choice-container, .xp-content .portfolio-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin:0 auto; padding:0; }
@@ -193,17 +197,17 @@ body.portfolio-gamedev .xp-content { background-color:#dff2e2; }
 /* Windows XP cursors: arrow by default, hand on clickable controls, I-beam on text, move while dragging, resize on window edges.
    The class is read from <html> as well as <body> so the cursors apply from the first paint -- desktop.js only
    tags <body> later, and the gap between the two is what makes the pointer flick to the OS cursor on page switches. */
-:is(html, body).xp-desktop { cursor:url('../images/xp-cursors/arrow.png') 2 2, default; }
-:is(html, body).xp-desktop .xp-titlebar, :is(html, body).xp-desktop .xp-tb:disabled { cursor:url('../images/xp-cursors/arrow.png') 2 2, default !important; }
+:is(html, body).xp-desktop { cursor:url('../images/xp-cursors/arrow.png') 5 6, default; }
+:is(html, body).xp-desktop .xp-titlebar, :is(html, body).xp-desktop .xp-tb:disabled { cursor:url('../images/xp-cursors/arrow.png') 5 6, default !important; }
 :is(html, body).xp-desktop :is(a, button, summary, label, select, [role="button"], [data-action], .project-card, .portfolio-choice, .xp-task, .xp-start, .xp-tb, .xp-volume, input[type="checkbox"], input[type="radio"], input[type="range"], input[type="button"], input[type="submit"]) { cursor:url('../images/xp-cursors/pointer.png') 11 5, pointer !important; }
-:is(html, body).xp-desktop .selectable, :is(html, body).xp-desktop .selectable *, :is(html, body).xp-desktop [data-selectable], :is(html, body).xp-desktop [data-selectable] *, :is(html, body).xp-desktop textarea, :is(html, body).xp-desktop input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), :is(html, body).xp-desktop [contenteditable="true"], :is(html, body).xp-desktop [contenteditable="true"] * { cursor:url('../images/xp-cursors/text.png') 15 15, text !important; }
-:is(html, body).xp-desktop :is(.xp-edge-w, .xp-edge-e) { cursor:url('../images/xp-cursors/resize-h.png') 16 15, ew-resize !important; }
-:is(html, body).xp-desktop .xp-edge-s { cursor:url('../images/xp-cursors/resize-v.png') 15 15, ns-resize !important; }
-:is(html, body).xp-desktop .xp-resize { cursor:url('../images/xp-cursors/resize-se.png') 16 15, nwse-resize !important; }
+:is(html, body).xp-desktop .selectable, :is(html, body).xp-desktop .selectable *, :is(html, body).xp-desktop [data-selectable], :is(html, body).xp-desktop [data-selectable] *, :is(html, body).xp-desktop textarea, :is(html, body).xp-desktop input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]), :is(html, body).xp-desktop [contenteditable="true"], :is(html, body).xp-desktop [contenteditable="true"] * { cursor:url('../images/xp-cursors/text.png') 9 15, text !important; }
+:is(html, body).xp-desktop :is(.xp-edge-w, .xp-edge-e) { cursor:url('../images/xp-cursors/resize-h.png') 18 18, ew-resize !important; }
+:is(html, body).xp-desktop .xp-edge-s { cursor:url('../images/xp-cursors/resize-v.png') 18 21, ns-resize !important; }
+:is(html, body).xp-desktop .xp-resize { cursor:url('../images/xp-cursors/resize-se.png') 15 15, nwse-resize !important; }
 :is(html, body).xp-desktop .xp-edge-sw { cursor:url('../images/xp-cursors/resize-sw.png') 15 15, nesw-resize !important; }
-body.xp-dragging .xp-titlebar, body.xp-dragging .xp-title { cursor:url('../images/xp-cursors/move.png') 16 15, move !important; }
+body.xp-dragging .xp-titlebar, body.xp-dragging .xp-title { cursor:url('../images/xp-cursors/move.png') 18 18, move !important; }
 html.xp-custom-cursor body.xp-desktop.xp-custom-cursor, html.xp-custom-cursor body.xp-desktop.xp-custom-cursor * { cursor:none !important; }
-#xp-cursor { position:fixed; z-index:12000; display:none; width:48px !important; height:48px !important; max-width:none !important; margin:0; padding:0; object-fit:fill; image-rendering:auto; pointer-events:none; user-select:none; }
+#xp-cursor { position:fixed; left:0; top:0; z-index:12000; display:none; will-change:transform; width:48px !important; height:48px !important; max-width:none !important; margin:0; padding:0; object-fit:fill; image-rendering:auto; pointer-events:none; user-select:none; }
 #xp-cursor.xp-cursor-visible { display:block; }
 @media screen {
     .xp-content .page { margin:25px auto; max-width:100%; }
