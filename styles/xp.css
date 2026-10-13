@@ -242,7 +242,7 @@ html.xp-custom-cursor body.xp-desktop.xp-custom-cursor, html.xp-custom-cursor bo
 @media print {
     body.xp-desktop { padding:0 !important; margin:0 !important; height:auto !important; overflow:visible !important; background:white !important; min-height:0; }
     body.xp-desktop * { text-shadow:none !important; }
-    .xp-doc-toolbar, .xp-shortcuts, .xp-taskbar, .xp-start-menu, .xp-boot, .xp-titlebar, .xp-address, .xp-statusbar, .xp-favourites, .language-toggle, .cv-toggle, #xp-cursor { display:none !important; }
+    .xp-doc-toolbar, .xp-shortcuts, .xp-taskbar, .xp-start-menu, .xp-boot, .xp-titlebar, .xp-address, .xp-toolbar, .xp-statusbar, .xp-favourites, .language-toggle, .cv-toggle, #xp-cursor { display:none !important; }
     .xp-window, .xp-content { display:contents !important; position:static !important; inset:auto !important; width:auto !important; height:auto !important; overflow:visible !important; border:0 !important; box-shadow:none !important; padding:0 !important; margin:0 !important; }
     .xp-content .page { box-shadow:none; }
 }
