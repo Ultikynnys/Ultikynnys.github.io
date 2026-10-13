@@ -65,6 +65,8 @@ const destinations: Destination[] = [
     { title: 'Game Development', href: 'gamedev-portfolio.html', icon: 'game', detail: 'Games & interactive worlds' },
     { title: 'My CV', href: 'cv_template.html', icon: 'document', detail: 'Experience & skills' }
 ];
+// Up walks out of a folder to the home page, so pressing it from any page lands on the desktop.
+const HOME = destinations[0].href;
 
 // Space around the window reserved for the shortcut column, favourites column and taskbar.
 const DESKTOP = { top: 26, left: 124, right: 138, bottom: 30 };
@@ -175,7 +177,7 @@ function initDesktop(): void {
     titlebar.innerHTML = `${icon(current.icon, 16)}<span class="xp-title">${current.title} - Ubeid Hussein</span><div class="xp-window-controls"><button id="xp-minimize" aria-label="Minimize window"><span class="xp-glyph-min"></span></button><button id="xp-maximize" aria-label="Maximize window" aria-pressed="false"><span class="xp-glyph-max"></span></button><button id="xp-close" aria-label="Close window" class="xp-close"><span class="xp-glyph-close"></span></button></div>`;
     const address = document.createElement('div'); address.className = 'xp-address'; address.innerHTML = `<span>Address</span><span class="xp-address-field">${icon(current.icon, 16)} ${current.title}</span>`;
     const toolbar = document.createElement('div'); toolbar.className = 'xp-toolbar';
-    toolbar.innerHTML = `<button id="xp-back" class="xp-tb" type="button"><span class="xp-tb-arrow">◄</span>Back</button><button id="xp-forward" class="xp-tb" type="button"><span class="xp-tb-arrow">►</span>Forward</button>`;
+    toolbar.innerHTML = `<button id="xp-up" class="xp-tb" type="button"><span class="xp-up-icon">${icon('folder', 16)}<svg class="xp-up-arrow" viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M5 0.5 L9.5 5 L6.8 5 L6.8 9.5 L3.2 9.5 L3.2 5 L0.5 5 Z" fill="#3aa04a" stroke="#1c5f27" stroke-width="0.7"/></svg></span>Up</button>`;
     const content = document.createElement('div'); content.className = 'xp-content';
     for (const node of [...document.body.childNodes]) {
         if (node instanceof HTMLScriptElement) continue;
@@ -193,7 +195,7 @@ function initDesktop(): void {
     const trayVolume = '<button id="xp-volume" class="xp-volume" type="button" aria-label="Volume" aria-haspopup="true" aria-expanded="false" aria-controls="xp-volume-panel"><img id="xp-volume-icon" src="images/xp/volume.png" width="16" height="16" alt=""></button>';
     taskbar.innerHTML = `<button id="xp-start" class="xp-start" aria-expanded="false" aria-controls="xp-start-menu"><img class="xp-start-flag" src="images/xp/start-flag.png" width="23" height="19" alt="">start</button><button id="xp-task" class="xp-task" aria-expanded="true">${icon(current.icon, 16)}<span>${current.title}</span></button><div class="xp-tray">${trayVolume}<time id="xp-clock"></time></div>`;
     const menu = document.createElement('nav'); menu.id = 'xp-start-menu'; menu.className = 'xp-start-menu'; menu.hidden = true; menu.setAttribute('aria-label', 'Start navigation');
-    menu.innerHTML = `<div class="xp-user"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></div><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map(item => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join('')}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
+    menu.innerHTML = `<a class="xp-user" href="cv_template.html"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></a><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map(item => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join('')}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
     document.body.append(shortcuts, shell, taskbar, menu);
 
     if (window.matchMedia('(pointer:fine)').matches) {
@@ -477,25 +479,14 @@ function initDesktop(): void {
         }
         playSound('start');
     });
-    // --- Back / forward: XP-style history across the shell pages ---
-    const backButton = element<HTMLButtonElement>('xp-back');
-    const forwardButton = element<HTMLButtonElement>('xp-forward');
-    const readNav = (key: string): string | null => { try { return sessionStorage.getItem(key); } catch { return null; } };
-    const writeNav = (key: string, value: string): void => { try { sessionStorage.setItem(key, value); } catch { /* Storage can be unavailable. */ } };
-    const arrivedVia = readNav('xp-nav-mark') ?? '';
-    const tracked = readNav('xp-nav-depth') !== null;
-    let backDepth = Number(readNav('xp-nav-depth') ?? '0') || 0;
-    let aheadDepth = Number(readNav('xp-nav-ahead') ?? '0') || 0;
-    if (arrivedVia === 'back') { backDepth = Math.max(0, backDepth - 1); aheadDepth += 1; }
-    else if (arrivedVia === 'forward') { backDepth += 1; aheadDepth = Math.max(0, aheadDepth - 1); }
-    else { backDepth = tracked ? backDepth + 1 : 0; aheadDepth = 0; }
-    writeNav('xp-nav-mark', '');
-    writeNav('xp-nav-depth', String(backDepth));
-    writeNav('xp-nav-ahead', String(aheadDepth));
-    backButton.disabled = backDepth <= 0;
-    forwardButton.disabled = aheadDepth <= 0;
-    backButton.addEventListener('click', () => { writeNav('xp-nav-mark', 'back'); history.back(); });
-    forwardButton.addEventListener('click', () => { writeNav('xp-nav-mark', 'forward'); history.forward(); });
+    // --- Up: step out of the current folder, i.e. back to the desktop home page ---
+    const upButton = element<HTMLButtonElement>('xp-up');
+    upButton.disabled = file === HOME;
+    upButton.addEventListener('click', event => {
+        // Own the click so the shared handler does not play a second sound over the navigation one.
+        event.stopPropagation();
+        navigateAfterClick(HOME);
+    });
 
     // --- Persist geometry and window state across the site's own page loads ---
     persistWindow = () => {

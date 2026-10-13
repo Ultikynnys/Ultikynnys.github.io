@@ -162,6 +162,7 @@
     { title: "Game Development", href: "gamedev-portfolio.html", icon: "game", detail: "Games & interactive worlds" },
     { title: "My CV", href: "cv_template.html", icon: "document", detail: "Experience & skills" }
   ];
+  var HOME = destinations[0].href;
   var DESKTOP = { top: 26, left: 124, right: 138, bottom: 30 };
   var MIN_SIZE = { width: 340, height: 240 };
   var EDGE = 8;
@@ -293,7 +294,7 @@
     address.innerHTML = `<span>Address</span><span class="xp-address-field">${icon(current.icon, 16)} ${current.title}</span>`;
     const toolbar = document.createElement("div");
     toolbar.className = "xp-toolbar";
-    toolbar.innerHTML = `<button id="xp-back" class="xp-tb" type="button"><span class="xp-tb-arrow">\u25C4</span>Back</button><button id="xp-forward" class="xp-tb" type="button"><span class="xp-tb-arrow">\u25BA</span>Forward</button>`;
+    toolbar.innerHTML = `<button id="xp-up" class="xp-tb" type="button"><span class="xp-up-icon">${icon("folder", 16)}<svg class="xp-up-arrow" viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M5 0.5 L9.5 5 L6.8 5 L6.8 9.5 L3.2 9.5 L3.2 5 L0.5 5 Z" fill="#3aa04a" stroke="#1c5f27" stroke-width="0.7"/></svg></span>Up</button>`;
     const content = document.createElement("div");
     content.className = "xp-content";
     for (const node of [...document.body.childNodes]) {
@@ -333,7 +334,7 @@
     menu.className = "xp-start-menu";
     menu.hidden = true;
     menu.setAttribute("aria-label", "Start navigation");
-    menu.innerHTML = `<div class="xp-user"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></div><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map((item) => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join("")}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
+    menu.innerHTML = `<a class="xp-user" href="cv_template.html"><img src="images/Profile.png" alt=""><span>Ubeid Hussein</span></a><div class="xp-menu-body"><div class="xp-menu-apps">${destinations.map((item) => `<a href="${item.href}">${icon(item.icon, 24)}<span><strong>${item.title}</strong><small>${item.detail}</small></span></a>`).join("")}</div><div class="xp-menu-side"></div></div><div class="xp-menu-footer"><span>Making cool shit since 1999</span><button class="xp-menu-power" id="xp-reboot"><img class="xp-menu-power-icon" src="images/xp/restart.png" width="24" height="24" alt="">Restart</button></div>`;
     document.body.append(shortcuts, shell, taskbar, menu);
     if (window.matchMedia("(pointer:fine)").matches) {
       const cursorElement = document.createElement("img");
@@ -682,47 +683,11 @@
       }
       playSound("start");
     });
-    const backButton = element("xp-back");
-    const forwardButton = element("xp-forward");
-    const readNav = (key) => {
-      try {
-        return sessionStorage.getItem(key);
-      } catch {
-        return null;
-      }
-    };
-    const writeNav = (key, value) => {
-      try {
-        sessionStorage.setItem(key, value);
-      } catch {
-      }
-    };
-    const arrivedVia = readNav("xp-nav-mark") ?? "";
-    const tracked = readNav("xp-nav-depth") !== null;
-    let backDepth = Number(readNav("xp-nav-depth") ?? "0") || 0;
-    let aheadDepth = Number(readNav("xp-nav-ahead") ?? "0") || 0;
-    if (arrivedVia === "back") {
-      backDepth = Math.max(0, backDepth - 1);
-      aheadDepth += 1;
-    } else if (arrivedVia === "forward") {
-      backDepth += 1;
-      aheadDepth = Math.max(0, aheadDepth - 1);
-    } else {
-      backDepth = tracked ? backDepth + 1 : 0;
-      aheadDepth = 0;
-    }
-    writeNav("xp-nav-mark", "");
-    writeNav("xp-nav-depth", String(backDepth));
-    writeNav("xp-nav-ahead", String(aheadDepth));
-    backButton.disabled = backDepth <= 0;
-    forwardButton.disabled = aheadDepth <= 0;
-    backButton.addEventListener("click", () => {
-      writeNav("xp-nav-mark", "back");
-      history.back();
-    });
-    forwardButton.addEventListener("click", () => {
-      writeNav("xp-nav-mark", "forward");
-      history.forward();
+    const upButton = element("xp-up");
+    upButton.disabled = file === HOME;
+    upButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      navigateAfterClick(HOME);
     });
     persistWindow = () => {
       try {
