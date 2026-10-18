@@ -1,0 +1,23 @@
+# Every directory whose name starts with a dot (tooling / editor / cache folders).
+.*/
+
+index.html.bak
+*.bak
+.htaccess
+.vscode
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.kilo/
+.codegraph/
+.reasonix/
+.playwright-mcp/
+/*.png
+/*.pdf
+Työhaku.md
+Työhaku_roolikuvaukset.md
+# Symlink into the private Obsidian vault; never publish it or its contents.
+JobFindingTips/MyNotes
+finally_got_a_job_interview__but_I_need_your_help_to_figure.md

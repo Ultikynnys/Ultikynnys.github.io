@@ -1,0 +1,1024 @@
+:root {
+    /* Base colors (dark theme by default) */
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2d2d2d;
+    --card-bg: #2d2d2d;
+    /* Solid color, no transparency */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 1);
+    --accent-color: #4a90e2;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 1);
+    --form-bg: #1a1a1a;
+    --form-border: #4a90e2;
+    --header-text-bg: white;
+    --header-text-color: #1a1a1a;
+    --pattern-dot: rgba(255, 255, 255, 0.12);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --pattern-dot: rgba(0, 0, 0, 0.15);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Tahoma;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    background-image:
+        radial-gradient(var(--pattern-dot) 1.5px, transparent 1.5px),
+        radial-gradient(var(--pattern-dot) 1.5px, transparent 1.5px);
+    background-size: 60px 60px, 60px 60px;
+    background-position: 0 0, 30px 30px;
+    animation: scrollPattern 120s linear infinite;
+}
+
+@keyframes scrollPattern {
+    0% {
+        background-position: 0 0, 30px 30px;
+    }
+    100% {
+        background-position: 60px 60px, 90px 90px;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    margin-bottom: 3rem;
+    background-color: transparent;
+    padding: 1rem 2rem;
+    position: relative;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: var(--header-text-color);
+    font-weight: 700;
+    letter-spacing: 1px;
+    background-color: var(--header-text-bg);
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    border-radius: 5px;
+    position: relative;
+    line-height: 1.3;
+    min-height: 4.5rem;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h1::after {
+    content: '';
+    display: none;
+}
+
+.cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background-color: var(--header-text-color);
+    margin-left: 2px;
+    animation: cursor-blink 1s steps(1) infinite;
+    vertical-align: middle;
+}
+
+@keyframes cursor-blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+h1.hidden {
+    opacity: 0;
+    position: absolute;
+}
+
+.name-indicator {
+    font-size: 0.8rem;
+    color: var(--header-text-color);
+    order: 2;                 /* the container is a flex column, so this drops it below the name */
+    margin-top: -4px;         /* cancels the heading's line-box descender so the chip hugs the name */
+    font-weight: 500;
+    background-color: var(--header-text-bg);
+    display: inline-block;
+    padding: 0.1rem 0.7rem;
+    border-radius: 4px;
+    transition: opacity 0.3s ease;
+}
+
+.dynamic-name-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+/* Selection is blocked globally (styles/xp.css); this heading just needs to read as clickable. */
+.dynamic-name-container h1 {
+    cursor: pointer;
+}
+
+/* Scrambled name characters: white pixel-font glyphs on a contiguous black band. Horizontal padding
+   (≈ one font pixel) stops neighbouring glyphs running together while the black stays contiguous;
+   the vertical padding grows each block to 1em of the heading so the band is flush with the
+   unscrambled text height. Press Start 2P is wide, so the glyphs are scaled down to suit. The font
+   is !important because the XP theme force-sets font-family on nearly every element. */
+.name-scramble {
+    display: inline-block;
+    padding: 0.214em 0.14em;
+    line-height: 1;
+    background: #000;
+    color: #fff;
+    font-family: 'Press Start 2P', 'Courier New', monospace !important;
+    font-size: 0.7em;
+    font-weight: 400;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: var(--header-text-color);
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    font-weight: 500;
+    background-color: var(--header-text-bg);
+    display: inline-block;
+    padding: 0.2rem 1rem;
+    border-radius: 5px;
+    order: 3;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    margin-bottom: 2rem;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.project-card {
+    display: block;
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 10px;
+    /* Keep overall rounding */
+    box-shadow: var(--card-shadow);
+    cursor: pointer;
+    overflow: hidden;
+    /* Ensure contents don't overflow rounded corners */
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.project-media {
+    display: block;
+    position: relative !important;
+    width: 100%;
+    padding-top: 56.25%;
+    height: 0;
+    background-color: transparent;
+    overflow: hidden !important;
+    border-radius: 0;
+    /* Remove separate rounding */
+}
+
+.project-media>* {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.project-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Changed from cover to contain to prevent cropping */
+    background-color: #000;
+    /* Black background behind images */
+}
+
+.carousel-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.carousel-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    object-fit: contain;
+    /* Changed from cover to contain */
+    background-color: #000;
+    /* Black background */
+}
+
+.carousel-image.active {
+    opacity: 1;
+}
+
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-container:hover .carousel-nav {
+    opacity: 1;
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.carousel-dot.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+.project-info {
+    display: block !important;
+    padding: 1.5rem;
+    clear: both;
+    position: relative;
+    z-index: 1;
+    background: var(--card-bg);
+    /* Give info a background to prevent visual overlap */
+}
+
+.project-info h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.project-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Private project tag */
+.private-tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    font-size: 0.8rem;
+    border-radius: 0 0 5px 0;
+    /* Keep inner corner rounded */
+    font-weight: 500;
+}
+
+/* Stacked badges (multi-badge mode) */
+.project-badges {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.project-badges .private-tag {
+    position: relative;
+    top: auto;
+    left: auto;
+}
+
+.project-badges > :first-child {
+    border-radius: 0 0 10px 0;
+}
+
+.project-badges > :not(:first-child) {
+    border-radius: 0 10px 10px 0;
+}
+
+.project-media .language-notch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.78rem;
+    line-height: 1;
+    color: #fff;
+    background: #444;
+    /* Fallback; overridden by dynamic language colors */
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.project-media .language-notch i {
+    font-size: 0.9em;
+}
+
+/* Per-language colors are now injected dynamically by scripts/portfolio-common.js
+    via the loadLanguageColors()/injectLanguageColors() functions. */
+
+@media (max-width: 480px) {
+    .project-media .language-notch {
+        font-size: 0.72rem;
+        padding: 0.2rem 0.45rem;
+    }
+}
+
+/* Local showcase video inside project media */
+.project-media video {
+    object-fit: contain;
+    background: #000;
+}
+
+/* 3D Portfolio specific styles */
+body.portfolio-3d {
+    --accent-color: #ff6b6b;
+}
+
+/* Programming Portfolio specific styles */
+body.portfolio-programming {
+    --accent-color: #4a90e2;
+}
+
+/* Game Dev Portfolio specific styles */
+body.portfolio-gamedev {
+    --accent-color: #2ecc71;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--secondary-bg);
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+}
+
+/* Update missing elements for theme support */
+
+/* Fix any tag colors */
+.private-tag {
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+}
+
+/* Always show full bio — non-full variant is deprecated */
+.bio-nonfull {
+    display: none;
+}
+
+/* Bio section styles */
+.bio {
+    max-width: 800px;
+    margin: 1.5rem auto 0;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.bio p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.discord-notch,
+.email-notch,
+.linkedin-notch,
+.github-notch,
+.artstation-header-notch,
+.twitter-notch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.7rem;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.discord-notch {
+    background: #5865F2;
+    /* Discord blue color */
+}
+
+.discord-notch:hover {
+    background: #4752C4;
+    transform: translateY(-2px);
+}
+
+.email-notch {
+    background: #4CAF50;
+    /* Email green color */
+}
+
+.email-notch:hover {
+    background: #3E8E41;
+    transform: translateY(-2px);
+}
+
+.linkedin-notch {
+    background: #0077B5;
+    /* LinkedIn blue color */
+}
+
+.linkedin-notch:hover {
+    background: #006699;
+    transform: translateY(-2px);
+}
+
+.github-notch {
+    background: #333;
+    /* GitHub dark color */
+}
+
+.github-notch:hover {
+    background: #24292e;
+    transform: translateY(-2px);
+}
+
+.artstation-header-notch {
+    background: #13aff0;
+    /* ArtStation blue color */
+}
+
+.artstation-header-notch:hover {
+    background: #0e9ad4;
+    transform: translateY(-2px);
+}
+
+
+.twitter-notch {
+    background: #000000;
+    /* Twitter black */
+}
+
+.twitter-notch:hover {
+    background: #1a1a1a;
+    transform: translateY(-2px);
+}
+
+/* Responsive styles for social ribbon */
+@media (max-width: 768px) {
+    .discord-notch,
+    .email-notch,
+    .linkedin-notch,
+    .github-notch,
+    .artstation-header-notch {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* Inline tool/language/engine emphasis: single dark color, bold */
+.lang-python,
+.lang-javascript,
+.lang-cpp,
+.engine-unreal,
+.engine-unity,
+.engine-godot,
+.keyword-esp32,
+.keyword-blender,
+.keyword-electron,
+.keyword-zbrush,
+.keyword-substance-painter,
+.keyword-substance-designer,
+.keyword-aws,
+.keyword-azure {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Remove ALL transitions when collapsing */
+.project-card,
+.project-card *,
+.overlay,
+.project-media,
+.project-info,
+.carousel-container,
+.carousel-image,
+.carousel-dot {
+    transition: none !important;
+    animation: none !important;
+}
+
+/* Ensure CAROUSEL container is positioned correctly */
+.project-card.expanded .carousel-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 3;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    overflow: hidden;
+    /* Contain carousel elements */
+}
+
+/* Style CAROUSEL images specifically */
+.project-card.expanded .carousel-image {
+    object-fit: contain !important;
+    background-color: transparent !important;
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 5 !important;
+    /* Base z-index for carousel images */
+    display: block !important;
+    opacity: 0 !important;
+    /* Default hidden */
+    visibility: hidden !important;
+    /* Default hidden */
+    transition: opacity 0.5s ease, visibility 0.5s ease !important;
+}
+
+/* Active CAROUSEL image should always be visible */
+.project-card.expanded .carousel-image.active {
+    opacity: 1 !important;
+    z-index: 10 !important;
+    /* Higher z-index for active */
+    visibility: visible !important;
+}
+
+/* Ensure CAROUSEL navigation elements are visible and on top */
+.project-card.expanded .carousel-nav,
+.project-card.expanded .carousel-dots {
+    z-index: 15 !important;
+    /* Ensure controls are above active image */
+    opacity: 1 !important;
+    /* Make sure they are visible */
+    visibility: visible !important;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 999;
+    transition: none;
+}
+
+.overlay.active {
+    display: block;
+}
+
+.body-no-scroll {
+    overflow: hidden;
+}
+
+/* Hide other project cards when one is expanded */
+.portfolio-grid.has-expanded .project-card:not(.expanded) {
+    display: none;
+}
+
+
+/* Game tag - Default */
+.game-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.7rem;
+    background: rgba(76, 175, 80, 0.9);
+    /* Default Green */
+    color: white;
+    font-size: 0.8rem;
+    border-radius: 0 0 0 5px;
+    font-weight: 500;
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Game tag Engine Colors */
+.game-tag.engine-unity {
+    background: rgba(170, 170, 170, 0.9);
+    /* Grey #AAAAAA */
+}
+
+.game-tag.engine-unreal {
+    background: rgba(0, 120, 210, 0.9);
+    /* Blue #0078D2 */
+}
+
+.game-tag.engine-godot {
+    background: rgba(71, 140, 176, 0.9);
+    /* Purple/Blue #478CB0 */
+}
+
+/* Yasuo Mode Easter Egg */
+.yasuo-sword {
+    position: fixed;
+    z-index: 1001;
+    width: 300px;
+    /* Already increased size */
+    height: auto;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Left-to-right slash (original direction) */
+.yasuo-sword.slash-left-to-right {
+    transform: translateX(-150%) rotate(135deg);
+    /* Flipped rotation */
+    animation: yasuoSwipeLeftToRight 0.2s ease-out forwards;
+    /* Reduced from 0.3s to 0.2s for faster animation */
+}
+
+/* Ghost afterimages trailing the blade; each copy is delayed slightly so it lags the slash. */
+.yasuo-sword.yasuo-ghost {
+    filter: opacity(0.45);
+}
+
+.yasuo-sword.yasuo-ghost-2 {
+    filter: opacity(0.28);
+}
+
+.yasuo-sword.yasuo-ghost-3 {
+    filter: opacity(0.15);
+}
+
+/* Left-to-right animation (original) */
+@keyframes yasuoSwipeLeftToRight {
+    0% {
+        opacity: 0.8;
+        transform: translateX(-150%) translateY(-50%) rotate(90deg) scale(1.8);
+        /* Flipped rotation */
+    }
+
+    30% {
+        /* Changed from 40% to 30% to accelerate motion */
+        opacity: 1;
+        transform: translateX(50%) translateY(50%) rotate(170deg) scale(1.2);
+        /* Flipped rotation */
+    }
+
+    50% {
+        /* Changed from 60% to 50% to accelerate motion */
+        opacity: 1;
+        transform: translateX(50%) translateY(50%) rotate(190deg) scale(1.2);
+        /* Flipped rotation */
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(150%) translateY(150%) rotate(135deg) scale(1);
+        /* Flipped rotation */
+    }
+}
+
+/* Card splitting effect */
+.card-half {
+    position: absolute;
+    /* Positioned relative to the document */
+    overflow: hidden;
+    box-sizing: border-box;
+    /* Match card background/shadow if needed, or just show content */
+    background: var(--card-bg);
+    border-radius: 10px;
+    /* Match card rounding */
+    box-shadow: var(--card-shadow);
+    z-index: 998;
+    /* Below sword, above original card position */
+    pointer-events: none;
+}
+
+.card-half>* {
+    /* Style the cloned content inside */
+    display: block;
+    /* Ensure the cloned card inside behaves */
+    position: absolute;
+    /* Position relative to the half */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.card-half-top {
+    clip-path: inset(0 0 50% 0);
+    animation: cardSplitTop 0.6s ease-out forwards;
+}
+
+.card-half-bottom {
+    clip-path: inset(50% 0 0 0);
+    animation: cardSplitBottom 0.6s ease-out forwards;
+}
+
+/* Align content in bottom half */
+.card-half-bottom>* {
+    top: -100%;
+    /* Move the cloned card up so bottom half is visible */
+}
+
+
+@keyframes cardSplitTop {
+    from {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-50px) rotate(-5deg);
+        opacity: 0;
+    }
+}
+
+@keyframes cardSplitBottom {
+    from {
+        transform: translateY(0) rotate(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(50px) rotate(5deg);
+        opacity: 0;
+    }
+}
+
+/* Slicing a nyan cat: the same split and fall, without the card chrome. */
+.cat-half {
+    position: fixed;
+    overflow: hidden;
+    z-index: 1001;
+    pointer-events: none;
+}
+
+/* Cartoon dead-eye cross, stamped over a sliced cat's eye. */
+.cat-eye-x {
+    position: absolute;
+    pointer-events: none;
+    background-image:
+        linear-gradient(45deg, transparent 42%, #14100e 42% 58%, transparent 58%),
+        linear-gradient(-45deg, transparent 42%, #14100e 42% 58%, transparent 58%);
+}
+
+/* Blood mist sprayed from a sliced cat: a soft puff plus droplets on ballistic arcs. */
+.blood-puff {
+    position: fixed;
+    width: 96px;
+    height: 64px;
+    margin: -32px 0 0 -48px;
+    border-radius: 50%;
+    z-index: 1002;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(158, 10, 24, 0.6) 0%, rgba(112, 5, 15, 0.32) 46%, rgba(90, 0, 10, 0) 74%);
+    animation: bloodPuff 0.6s ease-out forwards;
+}
+
+@keyframes bloodPuff {
+    from {
+        opacity: 0.85;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(1.6);
+    }
+}
+
+.blood-drop {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 1003;
+    pointer-events: none;
+    background: radial-gradient(circle at 35% 35%, #d8232f 0%, #8e0d17 62%, #5a0509 100%);
+    transform: translate(-50%, -50%);
+    animation: bloodDrop 0.62s ease-out forwards;
+}
+
+@keyframes bloodDrop {
+    from {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--bx, 0px)), calc(-50% + var(--by, 0px))) scale(0.35);
+    }
+}
+.cat-half-top {
+    clip-path: inset(0 0 50% 0);
+    animation: cardSplitTop 0.6s ease-out forwards;
+}
+
+.cat-half-bottom {
+    clip-path: inset(50% 0 0 0);
+    animation: cardSplitBottom 0.6s ease-out forwards;
+}
+/* Yasuo Mode Indicator */
+#yasuo-mode-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 300px;
+    /* Doubled size */
+    height: auto;
+    z-index: 1002;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    pointer-events: none;
+}
+
+#yasuo-mode-indicator.active {
+    opacity: 0.8;
+    /* Slightly transparent */
+    visibility: visible;
+}
+
+/* Vignette Overlay */
+body::before {
+    /* Using body pseudo-element */
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.6) 100%);
+    z-index: 1000;
+    /* Below sword and indicator */
+    pointer-events: none;
+    /* Allow clicks through */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+body.yasuo-mode-active::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Flash slice effect: geometry is set inline from its centre, length and angle. */
+.flash-slice {
+    position: fixed;
+    width: var(--flash-len, 600px);
+    height: 3px;
+    /* Thin line */
+    background-color: white;
+    z-index: 1003;
+    /* Above everything */
+    box-shadow:
+        0 0 10px 2px rgba(255, 255, 255, 0.8),
+        0 0 20px 4px rgba(255, 255, 255, 0.6),
+        0 0 30px 6px rgba(255, 255, 255, 0.4),
+        0 0 40px 8px rgba(255, 255, 255, 0.2);
+    filter: brightness(1.5) contrast(1.2);
+    animation: flashSlice 0.4s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes flashSlice {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+
+    10% {
+        opacity: 1;
+        width: var(--flash-len, 600px);
+    }
+
+    30% {
+        opacity: 1;
+        width: var(--flash-len, 600px);
+    }
+
+    100% {
+        opacity: 0;
+        width: var(--flash-len, 600px);
+    }
+}
+
+.secret-hint {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    opacity: 0.25;
+    pointer-events: none;
+}

@@ -1,0 +1,43 @@
+# Language color configuration (TOML)
+# Add languages as tables with bg/fg hex colors
+
+[python]
+bg = "#3776AB"
+fg = "#ffffff"
+
+[javascript]
+bg = "#f7df1e"
+fg = "#1a1a1a"
+
+[typescript]
+bg = "#3178c6"
+fg = "#ffffff"
+
+[cpp]
+bg = "#00199C"
+fg = "#ffffff"
+
+[c]
+bg = "#130315"
+fg = "#ffffff"
+
+[csharp]
+bg = "#68217A"
+fg = "#ffffff"
+
+[gdscript]
+bg = "#478cbf"
+fg = "#ffffff"
+
+[rust]
+# Orange matched to the Blender software chip
+bg = "#e87d0d"
+fg = "#ffffff"
+
+[wasm]
+bg = "#654ff0"
+fg = "#ffffff"
+
+[cmake]
+bg = "#064f8c"
+fg = "#ffffff"

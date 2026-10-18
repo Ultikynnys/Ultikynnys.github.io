@@ -1,0 +1,603 @@
+import { element, setMaximizeGlyph } from './dom';
+import { engineIcon } from './engines';
+import { icon } from './icons';
+import { langIcon } from './lang-icons';
+import { softwareIcon } from './software-icons';
+import { brandIcon } from './tag-icons';
+import { clamp, escapeHtml, fetchText, parseToml } from './util';
+
+// Link-tag fields parsed from markdown. The label here is only the fallback shown when the target
+// site is not recognised; a link is otherwise labelled by the site it points at (see LINK_SITES).
+export const PROJECT_LINKS = {
+    demo: 'Demo',
+    github: 'GitHub',
+    artstation: 'ArtStation',
+    store: 'Store'
+} as const;
+export type ProjectLinkKey = keyof typeof PROJECT_LINKS;
+function isProjectLink(field: string): field is ProjectLinkKey {
+    return field in PROJECT_LINKS;
+}
+
+// A link tag reads as the site it points at, so a Demo and a Store link to Steam both become the
+// Steam tag. Add a host suffix here (+ its `.tag-<key>` colour rule) to support a new site. `icon`
+// is an optional Font Awesome class; `favicon` a path to the site's own favicon and `brand` an
+// optional real-logo key from tools/gen-tag-icons.mjs, both shown at the left of the tag.
+const LINK_SITES: Record<string, { label: string; key: string; icon?: string; brand?: string; favicon?: string; mask?: boolean }> = {
+    'steampowered.com': { label: 'Steam', key: 'steam', icon: 'fa-brands fa-steam' },
+    'steamcommunity.com': { label: 'Steam', key: 'steam', icon: 'fa-brands fa-steam' },
+    'itch.io': { label: 'itch.io', key: 'itch', icon: 'fa-brands fa-itch-io' },
+    'github.com': { label: 'GitHub', key: 'github', icon: 'fa-brands fa-github' },
+    'github.io': { label: 'GitHub Pages', key: 'githubpages', icon: 'fa-brands fa-github' },
+    'artstation.com': { label: 'ArtStation', key: 'artstation', icon: 'fa-brands fa-artstation' },
+    'fab.com': { label: 'Fab', key: 'fab', favicon: '/images/brands/fab.svg' },
+    'blendermarket.com': { label: 'SuperHive', key: 'superhive', favicon: '/images/brands/superhive-mask.svg', mask: true },
+    'superhivemarket.com': { label: 'SuperHive', key: 'superhive', favicon: '/images/brands/superhive-mask.svg', mask: true },
+    'gumroad.com': { label: 'Gumroad', key: 'gumroad', brand: 'gumroad' },
+    'gamebanana.com': { label: 'GameBanana', key: 'gamebanana', favicon: '/images/brands/gamebanana.png' },
+    'youtube.com': { label: 'YouTube', key: 'youtube', icon: 'fa-brands fa-youtube' },
+    'youtu.be': { label: 'YouTube', key: 'youtube', icon: 'fa-brands fa-youtube' },
+    'reddit.com': { label: 'Reddit', key: 'reddit', icon: 'fa-brands fa-reddit' }
+};
+function siteFor(url: string): { label: string; key: string; icon?: string; brand?: string; favicon?: string; mask?: boolean } | null {
+    let host: string;
+    try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { return null; }
+    for (const [suffix, site] of Object.entries(LINK_SITES)) {
+        if (host === suffix || host.endsWith(`.${suffix}`)) return site;
+    }
+    return null;
+}
+
+export type Project = {
+    title: string;
+    description: string;
+    media: string | string[];
+    engine?: string;
+    private?: boolean;
+    languages?: string[];
+    software?: string[];
+    priority?: number;
+} & Partial<Record<ProjectLinkKey, string>>;
+export interface CardOptions {
+    badgeOrder?: (ProjectLinkKey | 'private')[];
+    multiBadge?: boolean;
+    showLanguageNotches?: boolean;
+    showSoftwareNotches?: boolean;
+    alwaysShowEngineTag?: boolean;
+}
+function safeUrl(value: string): string {
+    return /^(?:https?:\/\/|(?:images|audio|content)\/)/i.test(value) ? escapeHtml(value) : '';
+}
+function linkTag(field: ProjectLinkKey, url: string): string {
+    const site = siteFor(url);
+    const key = site?.key ?? field;
+    const label = site?.label ?? PROJECT_LINKS[field];
+    const icon = site?.brand ? brandIcon(site.brand)
+        : site?.favicon ? (site.mask
+            ? `<span class="tag-icon tag-icon-mask" style="--tag-mask:url('${site.favicon}')" aria-hidden="true"></span>`
+            : `<img class="tag-icon" src="${site.favicon}" alt="" aria-hidden="true">`)
+        : site?.icon ? `<i class="${site.icon}" aria-hidden="true"></i>` : '';
+    return `<a class="tag tag-link tag-${key}" href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${icon}${label}</a>`;
+}
+// Long language names collapse to a short label (a hover title keeps the full name) so a card
+// spends its width on the content; the code keys the per-language colour theme.
+const LANGUAGE_LABELS: Record<string, string> = { typescript: 'TS', javascript: 'JS' };
+function languageCode(language: string): string {
+    return language.toLowerCase().replace('c++', 'cpp').replace('c#', 'csharp');
+}
+// Modelling software collapses to a slug for its class + icon (Blender, Substance Painter).
+function softwareCode(software: string): string {
+    return software.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+export function parseMarkdown(markdown: string): { projects: Project[]; intro: string } {
+    const sections = markdown.split(/^## /m);
+    const projects: Project[] = [];
+    for (const section of sections.slice(1)) {
+        const project: Project = { title: '', description: '', media: '' };
+        for (const line of section.split(/\r?\n/)) {
+            const match = line.match(/^- (\w+):\s*(.*)$/);
+            if (!match) continue;
+            const field = match[1].toLowerCase();
+            const value = match[2];
+            if (isProjectLink(field)) { project[field] = value; continue; }
+            switch (field) {
+                case 'title': project.title = value; break;
+                case 'description': project.description = value; break;
+                case 'media': project.media = value.startsWith('[') ? value.slice(1, -1).split(',').map(s => s.trim()) : value; break;
+                case 'engine': project.engine = value; break;
+                case 'private': project.private = value.toLowerCase() === 'true'; break;
+                case 'languages': project.languages = value.split(',').map(s => s.trim()).filter(Boolean); break;
+                case 'software': project.software = value.split(',').map(s => s.trim()).filter(Boolean); break;
+                case 'priority': { const priority = Number(value); if (Number.isFinite(priority)) project.priority = priority; break; }
+            }
+        }
+        if (project.title) projects.push(project);
+    }
+    return { projects, intro: sections[0].split('\n').slice(1).join('\n').trim() };
+}
+export function parseSimpleToml(text: string): Record<string, Record<string, string>> {
+    const result: Record<string, Record<string, string>> = {};
+    for (const [section, values] of Object.entries(parseToml(text))) {
+        result[section] = {};
+        for (const [key, value] of Object.entries(values)) {
+            if (typeof value === 'string') result[section][key] = value;
+        }
+    }
+    return result;
+}
+function createCarousel(images: string[], id: number): string {
+    return `<div class="carousel-container" id="carousel-${id}">${images.map((image, i) => `<img src="${safeUrl(image)}" alt="Project view ${i + 1}" class="carousel-image ${i === 0 ? 'active' : ''}">`).join('')}
+        <button class="carousel-nav carousel-prev" data-carousel-step="-1" aria-label="Previous image">&lt;</button>
+        <button class="carousel-nav carousel-next" data-carousel-step="1" aria-label="Next image">&gt;</button>
+        <div class="carousel-dots">${images.map((_, i) => `<button class="carousel-dot ${i === 0 ? 'active' : ''}" data-carousel-index="${i}" aria-label="Show image ${i + 1}"></button>`).join('')}</div></div>`;
+}
+function renderMedia(project: Project, id: number): string {
+    const media = project.media;
+    if (!media) return `<div class="media-placeholder" role="img" aria-label="${escapeHtml(project.title)}"></div>`;
+    if (Array.isArray(media)) return createCarousel(media, id);
+    const title = escapeHtml(project.title);
+    if (/\.(mp4|webm|mov|ogv)(\?.*)?$/i.test(media)) return `<video src="${safeUrl(media)}" aria-label="${title}" autoplay muted loop playsinline controls></video>`;
+    const youtube = media.match(/(?:youtu\.be\/|[?&]v=|youtube\.com\/embed\/)([\w-]+)/);
+    if (youtube) return `<iframe title="${title}" src="https://www.youtube.com/embed/${youtube[1]}" allowfullscreen></iframe>`;
+    const sketchfab = media.match(/sketchfab\.com\/models\/([\w-]+)/);
+    if (sketchfab) return `<iframe title="${title}" src="https://sketchfab.com/models/${sketchfab[1]}/embed?autostart=0" data-autoplay-url="https://sketchfab.com/models/${sketchfab[1]}/embed?autostart=1" allowfullscreen></iframe>`;
+    return `<img src="${safeUrl(media)}" alt="${title}" loading="lazy">`;
+}
+export function createUnifiedProjectCard(project: Project, id: number, options: CardOptions = {}): string {
+    const hasStore = Boolean(project.store);
+    // Link tags point at a site and read as that site. The page's badgeOrder picks and orders them;
+    // a store link always shows, independent of multiBadge.
+    const links = (options.badgeOrder ?? ['private', 'demo', 'github']).flatMap(key => {
+        if (key === 'private') return [];
+        const url = project[key];
+        return url ? [linkTag(key, url)] : [];
+    });
+    const linkTags = [...(options.multiBadge ? links : links.slice(0, 1)), project.store ? linkTag('store', project.store) : ''].filter(Boolean).join('');
+    // Label tags are the non-clickable status chips that follow: Private, languages, software, engine.
+    // A project offered through a public store is not private, so the two never co-occur.
+    const privateTag = project.private && !hasStore ? '<span class="tag tag-label private-tag"><i class="fa-solid fa-lock" aria-hidden="true"></i>Private</span>' : '';
+    const languages = options.showLanguageNotches ? (project.languages ?? []).slice(0, 3).map(language => {
+        const label = LANGUAGE_LABELS[language.toLowerCase()] ?? language;
+        const code = languageCode(language);
+        return `<span class="tag tag-label language-notch language-${escapeHtml(code)}"${label === language ? '' : ` title="${escapeHtml(language)}"`}>${langIcon(code)}${escapeHtml(label)}</span>`;
+    }).join('') : '';
+    const software = options.showSoftwareNotches ? (project.software ?? []).map(name => {
+        const code = softwareCode(name);
+        return `<span class="tag tag-label software-notch software-${escapeHtml(code)}">${softwareIcon(code)}${escapeHtml(name)}</span>`;
+    }).join('') : '';
+    const info = project.engine ? engineIcon(project.engine) : null;
+    const engine = options.alwaysShowEngineTag
+        ? `<div class="tag tag-label game-tag${info ? ` xp-engine-${info.key}` : ''}">${info ? `<svg class="engine-icon" viewBox="${info.viewBox}" aria-hidden="true">${info.body}</svg>` : ''}${escapeHtml(project.engine ?? 'Game')}</div>`
+        : '';
+    const labelTags = [privateTag, languages, software, engine].join('');
+    return `<article class="project-card" data-project-id="${id}" tabindex="0" aria-label="Open ${escapeHtml(project.title)}">
+        <div class="xp-titlebar xp-focus-bar" aria-hidden="true">${icon('folder', 16)}<span class="xp-title">${escapeHtml(project.title)}</span><div class="xp-window-controls"><button class="xp-focus-min" type="button" aria-label="Minimize" tabindex="-1"><span class="xp-glyph-min"></span></button><button class="xp-focus-max" type="button" aria-label="Maximize" tabindex="-1"><span class="xp-glyph-max"></span></button><button class="xp-focus-close xp-close" type="button" aria-label="Close" tabindex="-1"><span class="xp-glyph-close"></span></button></div></div>
+        <div class="project-badges">${linkTags}${labelTags}</div>
+        <div class="project-media">${renderMedia(project, id)}</div>
+        <div class="project-info"><h3>${escapeHtml(project.title)}</h3><p>${escapeHtml(project.description)}</p></div></article>`;
+}
+export function initNameAnimation(): void {
+    const heading = document.querySelector<HTMLElement>('#name-display h1');
+    const indicator = document.querySelector<HTMLElement>('.name-indicator');
+    if (!heading || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // The blinking caret is a child of the heading. Rewriting innerHTML would drop it, which also
+    // collapsed the line box (and so the page height) every time the name changed, so keep the
+    // element and re-append it after each paint.
+    const caret = heading.querySelector('.cursor');
+    const paint = (markup: string): void => { heading.innerHTML = markup; if (caret) heading.append(caret); };
+    const names = ['Ubeid Hussein', 'Ultikynnys', 'R60D'];
+    const SCRAMBLE_STEP_MS = 40;     // time each character takes to resolve; sets the total solve time
+    const SCRAMBLE_FLICKER_MS = 10;  // how often unresolved characters re-randomise; lower flickers faster
+    // Every character the pixel font actually draws (read from fonts/pressstart2p.ttf's cmap + glyf
+    // outlines), as inclusive BMP codepoint ranges. Scrambling draws from a shuffled deck of this
+    // whole set, so characters do not repeat until the entire set has been cycled through.
+    const SCRAMBLE_RANGES: ReadonlyArray<readonly [number, number]> = [
+        [0x21, 0x7e], [0xa1, 0x148], [0x14a, 0x161], [0x164, 0x17f], [0x192, 0x192],
+        [0x21a, 0x21b], [0x2bc, 0x2bc], [0x2c6, 0x2c7], [0x2c9, 0x2cb], [0x2d7, 0x2dd],
+        [0x300, 0x301], [0x326, 0x326], [0x335, 0x335], [0x37a, 0x37a], [0x37e, 0x37e],
+        [0x384, 0x38a], [0x38c, 0x38c], [0x38e, 0x3a1], [0x3a3, 0x3ce], [0x400, 0x45f],
+        [0x462, 0x463], [0x46a, 0x46b], [0x472, 0x475], [0x490, 0x49d], [0x4a0, 0x4a5],
+        [0x4aa, 0x4b1], [0x4b6, 0x4bb], [0x4c0, 0x4c2], [0x4cb, 0x4cc], [0x4cf, 0x4d9],
+        [0x4dc, 0x4df], [0x4e2, 0x4e9], [0x4ee, 0x4f9], [0x51a, 0x51d], [0x524, 0x525],
+        [0x2013, 0x2015], [0x2018, 0x201a], [0x201c, 0x201e], [0x2020, 0x2022], [0x2026, 0x2026],
+        [0x2030, 0x2030], [0x2039, 0x203a], [0x2044, 0x2044], [0x2074, 0x2074], [0x20ac, 0x20ac],
+        [0x20ae, 0x20af], [0x20b4, 0x20b4], [0x20b8, 0x20b8], [0x20bd, 0x20bd], [0x2116, 0x2116],
+        [0x2122, 0x2122], [0x2190, 0x2193], [0x2202, 0x2202], [0x2206, 0x2206], [0x220f, 0x220f],
+        [0x2211, 0x2211], [0x2215, 0x2215], [0x221a, 0x221a], [0x221e, 0x221e], [0x222b, 0x222b],
+        [0x2248, 0x2248], [0x2260, 0x2260], [0x2264, 0x2265], [0x25b2, 0x25b2], [0x25b6, 0x25b6],
+        [0x25bc, 0x25bc], [0x25c0, 0x25c0], [0x25ca, 0x25ca], [0x2605, 0x2606], [0x2660, 0x2660],
+        [0x2663, 0x2663], [0x2665, 0x2666], [0x266a, 0x266a], [0xf100, 0xf101], [0xf8ff, 0xf8ff],
+        [0xfb01, 0xfb02]
+    ];
+    const SCRAMBLE_CHARS = SCRAMBLE_RANGES.flatMap(([start, end]) => {
+        const chars: string[] = [];
+        for (let code = start; code <= end; code++) chars.push(String.fromCharCode(code));
+        return chars;
+    });
+    let deck: string[] = [];
+    let draw = 0;
+    const nextScrambleChar = (): string => {
+        if (draw >= deck.length) {
+            deck = [...SCRAMBLE_CHARS];
+            for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const swap = deck[i]; deck[i] = deck[j]; deck[j] = swap; }
+            draw = 0;
+        }
+        return deck[draw++];
+    };
+    let index = 0;
+    window.setInterval(() => {
+        index = (index + 1) % names.length;
+        const target = names[index];
+        // Resolve position is derived from elapsed time, so the flicker rate can change without
+        // changing how long the name takes to solve.
+        const started = performance.now();
+        const timer = window.setInterval(() => {
+            const position = Math.min(target.length, Math.floor((performance.now() - started) / SCRAMBLE_STEP_MS));
+            // Unresolved characters show as white glyphs on black pixel-font squares.
+            const noise = Array.from({ length: target.length - position }, () => `<span class="name-scramble">${escapeHtml(nextScrambleChar())}</span>`).join('');
+            paint(escapeHtml(target.slice(0, position)) + noise);
+            if (position >= target.length) { clearInterval(timer); paint(escapeHtml(target)); }
+        }, SCRAMBLE_FLICKER_MS);
+        if (indicator) indicator.textContent = index === 0 ? 'Full name' : 'Alias';
+    }, 8000);
+}
+export function setupProjectExpansion(): void {
+    const container = document.getElementById('projects-container');
+    if (!container) return;
+    const TASKBAR = 30;
+    let expanded: HTMLElement | null = null;
+    const close = () => {
+        if (expanded) {
+            expanded.classList.remove('expanded', 'win-maximized');
+            expanded.style.left = ''; expanded.style.top = ''; expanded.style.width = ''; expanded.style.height = '';
+        }
+        expanded = null;
+        container.classList.remove('has-expanded');
+        document.getElementById('overlay')?.classList.remove('active');
+        document.body.classList.remove('body-no-scroll');
+        limitBadgeRows();
+        fitProjectHeadings();
+    };
+    const open = (event: Event) => {
+        const target = event.target;
+        if (!(target instanceof Element) || target.closest('a, button, video, iframe') || document.body.classList.contains('yasuo-mode-active')) return;
+        const card = target.closest<HTMLElement>('.project-card');
+        if (!card || card === expanded) return;
+        close(); expanded = card;
+        card.classList.add('expanded'); container.classList.add('has-expanded');
+        // Open as a floating window centred over the desktop, above the taskbar.
+        const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+        const w = clamp(vw - 96, 340, 1000);
+        const h = clamp(vh - 120, 240, 680);
+        card.style.width = `${w}px`; card.style.height = `${h}px`;
+        card.style.left = `${Math.max(0, Math.round((vw - w) / 2))}px`;
+        card.style.top = `${Math.max(0, Math.round((vh - h) / 2))}px`;
+        document.getElementById('overlay')?.classList.add('active');
+        document.body.classList.add('body-no-scroll');
+        limitBadgeRows();
+        fitProjectHeadings();
+    };
+    container.addEventListener('click', open);
+    container.addEventListener('keydown', event => { if (event.key === 'Enter') open(event); });
+    // Title-bar window controls on the focused card (delegated: cards mount after this runs).
+    container.addEventListener('click', event => {
+        const target = event.target;
+        if (!(target instanceof Element) || !expanded) return;
+        if (target.closest('.xp-focus-close') || target.closest('.xp-focus-min')) { close(); return; }
+        if (target.closest('.xp-focus-max')) {
+            const maximized = expanded.classList.toggle('win-maximized');
+            const maxButton = target.closest<HTMLElement>('.xp-focus-max');
+            if (maxButton) setMaximizeGlyph(maxButton, maximized);
+        }
+    });
+    // Drag the focused window by its title bar, clamped inside the desktop.
+    let drag: { id: number; dx: number; dy: number } | null = null;
+    container.addEventListener('pointerdown', event => {
+        if (event.button !== 0 || !expanded) return;
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        const bar = target.closest('.xp-focus-bar');
+        if (!bar || !expanded.contains(bar) || target.closest('.xp-window-controls') || expanded.classList.contains('win-maximized')) return;
+        const rect = expanded.getBoundingClientRect();
+        drag = { id: event.pointerId, dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+        (bar as HTMLElement).setPointerCapture(event.pointerId);
+        document.body.classList.add('xp-dragging');
+    });
+    container.addEventListener('pointermove', event => {
+        if (!drag || !expanded || event.pointerId !== drag.id) return;
+        const vw = document.documentElement.clientWidth, vh = document.documentElement.clientHeight;
+        expanded.style.left = `${clamp(event.clientX - drag.dx, 0, vw - expanded.offsetWidth)}px`;
+        expanded.style.top = `${clamp(event.clientY - drag.dy, 0, vh - TASKBAR - expanded.offsetHeight)}px`;
+    });
+    const endDrag = (event: PointerEvent) => {
+        if (!drag || event.pointerId !== drag.id) return;
+        drag = null;
+        document.body.classList.remove('xp-dragging');
+    };
+    container.addEventListener('pointerup', endDrag);
+    container.addEventListener('pointercancel', endDrag);
+    // Native media controls can capture the press and retarget the click away from
+    // the overlay, so collapse on any click outside the expanded card instead.
+    document.addEventListener('click', event => {
+        if (expanded && event.target instanceof Element && !event.target.closest('.project-card.expanded')) close();
+    });
+    document.getElementById('overlay')?.addEventListener('click', close);
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') close(); });
+}
+export function initCarousels(): void {
+    document.addEventListener('click', event => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        const button = target.closest<HTMLButtonElement>('[data-carousel-step], [data-carousel-index]');
+        const carousel = button?.closest('.carousel-container');
+        if (!button || !carousel) return;
+        event.stopPropagation();
+        const images = [...carousel.querySelectorAll('.carousel-image')];
+        if (!images.length) return;
+        const current = images.findIndex(image => image.classList.contains('active'));
+        const index = button.dataset.carouselIndex !== undefined ? Number(button.dataset.carouselIndex) : (current + Number(button.dataset.carouselStep) + images.length) % images.length;
+        images.forEach((image, i) => image.classList.toggle('active', i === index));
+        carousel.querySelectorAll('.carousel-dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
+    });
+}
+// Badge chips wrap onto extra lines, but never past three: any chip that lands on line four or
+// beyond is hidden. Re-run whenever the wrap can change (render, resize, expand, fonts loading).
+export function limitBadgeRows(): void {
+    const rows = [...document.querySelectorAll<HTMLElement>('.project-badges')].map(bar => [...bar.children] as HTMLElement[]);
+    // Reveal every chip, read every offsetTop, then re-hide. Interleaving the reveal with the read
+    // forced a fresh layout per card, which is what made a live resize janky.
+    for (const row of rows) for (const chip of row) chip.hidden = false;
+    const tops = rows.map(row => row.map(chip => chip.offsetTop));
+    rows.forEach((row, b) => {
+        const lines = [...new Set(tops[b])].sort((a, c) => a - c);
+        if (lines.length <= 3) return;
+        row.forEach((chip, i) => { chip.hidden = tops[b][i] >= lines[3]; });
+    });
+}
+// Headings render at a fixed 17px and do not wrap, so a long title would otherwise spill past the
+// card edge. Shrink the type to fit the column first; once it bottoms out at the minimum, the h3's
+// own text-overflow ellipsis takes over.
+const HEADING_MAX_PX = 17;
+const HEADING_MIN_PX = 11;
+export function fitProjectHeadings(): void {
+    const headings = [...document.querySelectorAll<HTMLElement>('.project-info h3, .portfolio-info h3')];
+    // Measure each heading once at the max size: glyph advance scales with font-size, so the size
+    // that fits is `max * available / needed` — one measurement instead of a reflow per 0.5px step.
+    for (const heading of headings) heading.style.fontSize = `${HEADING_MAX_PX}px`;
+    const widths = headings.map(heading => ({ available: heading.clientWidth, needed: heading.scrollWidth }));
+    headings.forEach((heading, i) => {
+        const { available, needed } = widths[i];
+        const fitted = needed > available ? Math.max(HEADING_MIN_PX, Math.floor(HEADING_MAX_PX * available / needed * 2) / 2) : HEADING_MAX_PX;
+        heading.style.fontSize = `${fitted}px`;
+    });
+}
+export async function initPortfolio(file: string, options: CardOptions): Promise<void> {
+    const container = element('projects-container');
+    try {
+        const { projects } = parseMarkdown(await fetchText(file));
+        projects.sort((a, b) => (a.priority ?? Infinity) - (b.priority ?? Infinity));
+        container.innerHTML = projects.map((project, index) => {
+            if (project.store?.includes('steamcommunity.com') && /TF2|Team Fortress/.test(project.title + project.description)) project.private = true;
+            return createUnifiedProjectCard(project, index, options);
+        }).join('');
+    } catch (error) {
+        container.textContent = `Failed to load projects: ${error instanceof Error ? error.message : String(error)}`;
+    }
+    limitBadgeRows();
+    fitProjectHeadings();
+    // The XP window can be resized without a window 'resize' event, so re-cap whenever the grid's
+    // width changes; height-only changes are ignored (hiding rows causes those).
+    let gridWidth = container.clientWidth;
+    let refineFrame = 0;
+    new ResizeObserver(() => {
+        if (container.clientWidth === gridWidth) return;
+        gridWidth = container.clientWidth;
+        // A live window resize fires this many times per frame; coalesce to one recompute per frame.
+        cancelAnimationFrame(refineFrame);
+        refineFrame = requestAnimationFrame(() => { limitBadgeRows(); fitProjectHeadings(); });
+    }).observe(container);
+    void document.fonts?.ready.then(() => { limitBadgeRows(); fitProjectHeadings(); });
+    container.addEventListener('mouseover', event => {
+        if (!(event.target instanceof Element)) return;
+        const frame = event.target.closest('.project-card')?.querySelector<HTMLIFrameElement>('iframe[data-autoplay-url]');
+        if (frame?.dataset.autoplayUrl) { frame.src = frame.dataset.autoplayUrl; delete frame.dataset.autoplayUrl; }
+    });
+}
+// Eye centres as fractions of the sprite, measured from images/nyan.gif (530x210).
+const NYAN_EYES = [{ x: 0.7726, y: 0.569 }, { x: 0.9038, y: 0.569 }];
+export function initSecretMode(): void {
+    const heading = document.querySelector('#name-display h1');
+    if (!heading) return;
+    let clicks = 0;
+    let timer = 0;
+    let slices = 0;
+    let finished = 0;
+    let catKills = 0;                 // cats sliced during the current activation
+    let catMilestonePlayed = false;   // the over-ten-cats voiceline fires once per minigame
+    const play = (file: string, scale = 1) => { const clip = new Audio(file); const level = window.xpVolume?.(); if (typeof level === 'number') clip.volume = Math.min(1, Math.max(0, level * scale)); void clip.play().catch(() => undefined); };
+    const indicator = document.createElement('img');
+    indicator.id = 'yasuo-mode-indicator'; indicator.src = 'images/yasuo.webp'; indicator.alt = 'Yasuo Mode Active';
+    document.body.append(indicator);
+    const setActive = (on: boolean) => {
+        document.body.classList.toggle('yasuo-mode-active', on);
+        indicator.classList.toggle('active', on);
+        if (on) { catKills = 0; catMilestonePlayed = false; }
+    };
+    let endTimer = 0;
+    // Guarded: a queued end and a manual end can race, and every replay double-plays the voiceline.
+    const deactivate = () => {
+        if (!document.body.classList.contains('yasuo-mode-active')) return;
+        window.clearTimeout(endTimer);
+        setActive(false);
+        document.querySelectorAll<HTMLElement>('.project-card, .portfolio-choice').forEach(card => { card.style.visibility = ''; card.style.pointerEvents = ''; });
+        play(`audio/YasuoFinished${finished++ % 2 === 0 ? 'A' : 'B'}.ogg`);
+    };
+    // Fainter, delayed copies render first so the solid blade lands on top; a short delay keeps
+    // them hugging the blade for a fast smear rather than a stretched-out trail.
+    const slashAt = (centerX: number, centerY: number): void => {
+        const swordX = `${centerX - 150}px`, swordY = `${centerY - 150}px`;
+        for (const trail of [{ cls: 'yasuo-ghost-3', delay: '.036s' }, { cls: 'yasuo-ghost-2', delay: '.024s' }, { cls: 'yasuo-ghost', delay: '.012s' }, { cls: '', delay: '' }]) {
+            const sword = document.createElement('img');
+            sword.src = 'images/YasouSword.png'; sword.alt = ''; sword.className = `yasuo-sword slash-left-to-right${trail.cls ? ` ${trail.cls}` : ''}`;
+            sword.style.left = swordX; sword.style.top = swordY;
+            if (trail.delay) sword.style.animationDelay = trail.delay;
+            document.body.append(sword);
+            sword.addEventListener('animationend', () => sword.remove(), { once: true });
+        }
+    };
+    // The cut line is just a centre point, a length and an angle -- nothing depends on its container.
+    const flashAt = (centerX: number, centerY: number, length: number, angleDeg: number): void => {
+        const flash = document.createElement('div');
+        flash.className = 'flash-slice';
+        flash.style.left = `${Math.round(centerX)}px`;
+        flash.style.top = `${Math.round(centerY)}px`;
+        flash.style.setProperty('--flash-len', `${Math.round(length)}px`);
+        flash.style.transform = `translate(-50%, -50%) rotate(${angleDeg}deg)`;
+        document.body.append(flash);
+        flash.addEventListener('animationend', () => flash.remove(), { once: true });
+    };
+    // Spans a little past the target's corners, so the line reads as a cut rather than a full-screen streak.
+    const flashSpan = (width: number, height: number): number => Math.hypot(width, height) * 1.35;
+    // A clone would replay the gif and keep walking, so the current frame is drawn once instead.
+    const freezeFrame = (cat: HTMLImageElement): HTMLCanvasElement | null => {
+        const canvas = document.createElement('canvas');
+        canvas.width = cat.naturalWidth; canvas.height = cat.naturalHeight;
+        const context = canvas.getContext('2d');
+        if (!context) return null;
+        context.drawImage(cat, 0, 0);
+        return canvas;
+    };
+    // Blood mist: a soft puff plus droplets flung along the cut.
+    const bloodMist = (box: DOMRect): void => {
+        const centerX = box.left + box.width / 2, centerY = box.top + box.height / 2;
+        const puff = document.createElement('div');
+        puff.className = 'blood-puff';
+        puff.style.left = `${centerX}px`; puff.style.top = `${centerY}px`;
+        document.body.append(puff);
+        puff.addEventListener('animationend', () => puff.remove(), { once: true });
+        for (let i = 0; i < 18; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'blood-drop';
+            const angle = Math.random() * Math.PI * 2, reach = box.width * (0.1 + Math.random() * 0.28);
+            drop.style.left = `${centerX}px`; drop.style.top = `${centerY}px`;
+            drop.style.width = `${2 + Math.random() * 5}px`; drop.style.height = drop.style.width;
+            drop.style.animationDelay = `${Math.round(Math.random() * 60)}ms`;
+            drop.style.setProperty('--bx', `${Math.cos(angle) * reach}px`);
+            drop.style.setProperty('--by', `${Math.sin(angle) * reach + box.height * 0.35}px`);
+            document.body.append(drop);
+            drop.addEventListener('animationend', () => drop.remove(), { once: true });
+        }
+    };
+    // A nyan cat is a free target: same blade, but it is airborne, so it just splits and falls.
+    const sliceCat = (cat: HTMLElement): void => {
+        play(`audio/Yasuo_Original_BasicAttack_${Math.floor(Math.random() * 4)}.ogg`);
+        const box = cat.getBoundingClientRect();
+        slashAt(box.left + box.width / 2, box.top + box.height / 2);
+        // Hold the cat still where it was hit; the halves replace it once they appear.
+        cat.style.animationPlayState = 'paused';
+        const frozen = freezeFrame(cat as HTMLImageElement);
+        // Past ten cats in one minigame, Yasuo has a line about it - played once per activation.
+        if (++catKills > 10 && !catMilestonePlayed) { catMilestonePlayed = true; play('audio/Yasuo_Original_Move_13.ogg', 0.5); }
+        window.setTimeout(() => {
+            play(`audio/metal${Math.floor(Math.random() * 5) + 1}.ogg`);
+            play('audio/cat-meow.ogg', 0.25);   // the cat's death meow sits well under the blade and impact
+            flashAt(box.left + box.width / 2, box.top + box.height / 2, flashSpan(box.width, box.height), Math.atan2(box.height, box.width) * (180 / Math.PI));
+            bloodMist(box);
+            for (const isTop of [true, false]) {
+                const half = document.createElement('div');
+                half.className = `cat-half ${isTop ? 'cat-half-top' : 'cat-half-bottom'}`;
+                half.style.left = `${box.left}px`; half.style.top = `${box.top}px`;
+                half.style.width = `${box.width}px`; half.style.height = `${box.height}px`;
+                // A canvas node can only live in one half, so each half gets its own copy of the frozen frame.
+                let frame: HTMLElement;
+                if (frozen) {
+                    const copy = document.createElement('canvas');
+                    copy.width = frozen.width; copy.height = frozen.height;
+                    copy.getContext('2d')?.drawImage(frozen, 0, 0);
+                    frame = copy;
+                } else {
+                    frame = cat.cloneNode(true) as HTMLElement;
+                }
+                frame.className = '';
+                // Top-aligned in both halves: each clip region then shows its half of the gif, cut at the box midpoint.
+                frame.style.cssText = `position:absolute;left:0;top:0;width:100%;height:100%;transform:none;margin:0;`;
+                half.append(frame);
+                // A dead-eye cross goes on whichever half actually contains the eye.
+                for (const eye of NYAN_EYES) {
+                    if ((eye.y < 0.5) !== isTop) continue;
+                    const cross = document.createElement('span');
+                    cross.className = 'cat-eye-x';
+                    const size = box.width * 0.05;
+                    cross.style.width = `${size}px`; cross.style.height = `${size}px`;
+                    cross.style.left = `${eye.x * box.width - size / 2}px`;
+                    cross.style.top = `${eye.y * box.height - size / 2}px`;
+                    half.append(cross);
+                }
+                document.body.append(half);
+                half.addEventListener('animationend', () => half.remove(), { once: true });
+            }
+            cat.remove();
+        }, 150);
+    };
+    // One slash: the blade sweeps the card, then the card is cut in two and the halves fall away.
+    const attack = (card: HTMLElement) => {
+        if (card.style.visibility === 'hidden') return;
+        play(`audio/Yasuo_Original_BasicAttack_${Math.floor(Math.random() * 4)}.ogg`);
+        const rect = card.getBoundingClientRect();
+        slashAt(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        card.style.visibility = 'hidden'; card.style.pointerEvents = 'none';
+        window.setTimeout(() => {
+            play(`audio/metal${Math.floor(Math.random() * 5) + 1}.ogg`);
+            const box = card.getBoundingClientRect();
+            // Append inside .xp-content so the clone inherits the XP card styling (.xp-content .project-card),
+            // but position against the window: the content box is static, so that is the containing block.
+            const host = document.querySelector('.xp-content') ?? document.body;
+            const base = (host.closest('.xp-window') ?? document.body).getBoundingClientRect();
+            const left = box.left - base.left, top = box.top - base.top;
+            flashAt(box.left + box.width / 2, box.top + box.height / 2, flashSpan(box.width, box.height), Math.atan2(box.height, box.width) * (180 / Math.PI));
+            for (const isTop of [true, false]) {
+                const half = document.createElement('div');
+                half.className = `card-half ${isTop ? 'card-half-top' : 'card-half-bottom'}`;
+                half.style.width = `${box.width}px`; half.style.height = `${box.height}px`;
+                half.style.left = `${left}px`; half.style.top = `${top}px`;
+                const clone = card.cloneNode(true) as HTMLElement;
+                clone.style.visibility = 'visible'; clone.style.margin = '0'; clone.style.pointerEvents = '';
+                clone.classList.remove('expanded', 'win-maximized'); clone.removeAttribute('data-project-id');
+                clone.style.position = 'absolute'; clone.style.left = '0'; clone.style.width = '100%'; clone.style.height = '100%';
+                clone.style.top = isTop ? '0' : `-${box.height / 2}px`;
+                half.append(clone);
+                host.append(half);
+                half.addEventListener('animationend', () => half.remove(), { once: true });
+            }
+        }, 150);
+        if (++slices === 7) endTimer = window.setTimeout(deactivate, 700);
+    };
+    heading.addEventListener('click', () => {
+        window.clearTimeout(timer); timer = window.setTimeout(() => { clicks = 0; }, 500);
+        if (++clicks === 3) {
+            clicks = 0; slices = 0;
+            window.clearTimeout(endTimer);
+            if (document.body.classList.contains('yasuo-mode-active')) deactivate();
+            else setActive(true);
+        }
+    });
+    document.addEventListener('click', event => {
+        if (!document.body.classList.contains('yasuo-mode-active') || !(event.target instanceof Element)) return;
+        // Cats do not count towards the seven-slice finish, so they can be sliced freely.
+        const cat = event.target.closest<HTMLElement>('.nyan-cat');
+        if (cat) { event.preventDefault(); event.stopPropagation(); sliceCat(cat); return; }
+        const card = event.target.closest<HTMLElement>('.project-card, .portfolio-choice');
+        if (!card) return;
+        event.preventDefault(); event.stopPropagation();
+        attack(card);
+    }, true);
+}
+export async function loadLanguageColors(): Promise<void> {
+    try {
+        const colors = parseSimpleToml(await fetchText('content/language_colors.toml'));
+        const style = document.createElement('style');
+        // Scoped past `.project-badges > *`, which otherwise wins the tie and repaints every notch grey.
+        style.textContent = Object.entries(colors).filter(([code, cfg]) => /^[\w-]+$/.test(code) && /^#[\da-f]{3,8}$/i.test(cfg.bg) && /^#[\da-f]{3,8}$/i.test(cfg.fg)).map(([code, cfg]) => `.xp-content .project-badges .language-${code}{background:${cfg.bg};color:${cfg.fg};border-color:${cfg.bg}}`).join('\n');
+        document.head.append(style);
+    } catch (error) { console.warn('Language colors unavailable', error); }
+}

@@ -1,0 +1,49 @@
+# Contact and Social Links Configuration
+# Edit this file to update your social links across the entire site
+
+[profile]
+name = "Ubeid Hussein"
+aliases = ["Ultikynnys", "R60D"]
+title = "Developer & 3D Artist"
+email = "Hussein.Ubeid@outlook.com"
+
+[social]
+  [social.discord]
+  url = "https://discord.gg/J7kWSfM4jw"
+  label = "Join Discord"
+  icon = "fab fa-discord"
+  class = "discord-notch"
+
+  [social.artstation]
+  url = "https://www.artstation.com/ultikynnys2"
+  label = "ArtStation"
+  icon = "fab fa-artstation"
+  class = "artstation-header-notch"
+
+  [social.email]
+  url = "mailto:Hussein.Ubeid@outlook.com"
+  label = "Email Me"
+  class = "email-notch"
+  external = false
+
+  [social.linkedin]
+  url = "https://www.linkedin.com/in/ubeid-hussein-31ba59204/"
+  label = "LinkedIn"
+  icon = "fab fa-linkedin"
+  class = "linkedin-notch"
+
+  [social.github]
+  url = "https://github.com/Ultikynnys"
+  label = "GitHub"
+  icon = "fab fa-github"
+  class = "github-notch"
+
+  [social.twitter]
+  url = "https://x.com/ultikynnys"
+  label = "Twitter"
+  icon = "fab fa-twitter"
+  class = "twitter-notch"
+
+# Order in which social links appear in the ribbon
+[ribbon]
+order = ["discord", "artstation", "email", "linkedin", "github", "twitter"]

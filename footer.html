@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .rainbow-text {
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet, red);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: rainbowScroll 5s linear infinite;
+      text-shadow: 0 0 10px white;
+    }
+
+    @keyframes rainbowScroll {
+      from { background-position: 0% center; }
+      to { background-position: 100% center; }
+    }
+    
+    .nyan-cat {
+      position: fixed;
+      left: 0;
+      user-select: none;
+      -webkit-user-drag: none;
+      transform: translateX(-100%) scale(0.7);
+      /* Set a higher z-index so the cats appear above other elements */
+      z-index: 1000;
+      animation: nyanMove 3s linear forwards;
+      /* Fade the left side using a mask gradient */
+      mask-image: linear-gradient(to right, transparent 0%, black 30%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%);
+    }
+    
+    @keyframes nyanMove {
+      from { transform: translateX(-100%) scale(0.7); }
+      to { transform: translateX(100vw) scale(0.7); }
+    }
+    
+    /* Remove any margin/padding that may cause extra space under the footer */
+    body, html {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- ...existing content... -->
+  <footer role="button" tabindex="0" aria-label="Play footer effect" style="cursor:pointer;">
+    <p class="footer-text">&copy; 2026 Ubeid Hussein. All rights reserved.</p>
+    <p class="secret-hint">PS: click my name 3 times...</p>
+  </footer>
+  
+  <!-- Removed static nyan-cat image from markup -->
+
+
+</body>
+</html>

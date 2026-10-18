@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" class="xp-desktop">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/gif" href="content/200.gif">
+    <title data-header="page-title">Loading...</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/font-awesome-subset.css">
+    <style>
+        .portfolio-choice-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-choice {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 350px;
+            box-shadow: var(--card-shadow);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .portfolio-choice:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .portfolio-image {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%;
+            /* 16:9 aspect ratio */
+            background-color: #000;
+            overflow: hidden;
+        }
+
+        .portfolio-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-choice:hover .portfolio-image img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .portfolio-info p {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .portfolio-3d-card {
+            --accent-color: #ff6b6b;
+        }
+
+        .portfolio-3d-card .portfolio-info h3 {
+            color: #ff6b6b;
+        }
+
+        .portfolio-programming-card {
+            --accent-color: #4a90e2;
+        }
+
+        .portfolio-programming-card .portfolio-info h3 {
+            color: #4a90e2;
+        }
+
+        .portfolio-gamedev-card {
+            --accent-color: #2ecc71;
+        }
+
+        .portfolio-gamedev-card .portfolio-info h3 {
+            color: #2ecc71;
+        }
+    </style>
+    <link rel="stylesheet" href="styles/xp.css">
+    <script defer src="dist/scripts/desktop.js"></script>
+</head>
+
+<body>
+    <!-- Social ribbon will be inserted here by the script -->
+
+    <header>
+        <div class="header-content">
+            <div id="name-display" class="dynamic-name-container">
+                <div class="name-indicator">Full name</div>
+                <h1>Ubeid Hussein<span class="cursor"></span></h1>
+            </div>
+            <p class="subtitle" data-header="subtitle"></p>
+            <div class="bio">
+                <p class="bio-nonfull" data-header="bio-nonfull"></p>
+                <p class="bio-full" data-header="bio-full"></p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="portfolio-choice-container">
+            <a href="programming-portfolio.html" class="portfolio-choice portfolio-programming-card">
+                <div class="portfolio-image">
+                    <img src="images/MMP.webp" alt="Programming Portfolio">
+                </div>
+                <div class="portfolio-info">
+                    <h3 data-header="programming-title"></h3>
+                    <p data-header="programming-desc"></p>
+                </div>
+            </a>
+
+            <a href="3d-portfolio.html" class="portfolio-choice portfolio-3d-card">
+                <div class="portfolio-image">
+                    <img src="images/Ballgen.webp" alt="3D Portfolio">
+                </div>
+                <div class="portfolio-info">
+                    <h3 data-header="3d-title"></h3>
+                    <p data-header="3d-desc"></p>
+                </div>
+            </a>
+
+            <a href="gamedev-portfolio.html" class="portfolio-choice portfolio-gamedev-card">
+                <div class="portfolio-image">
+                    <img src="images/Timble.webp" alt="Game Development Portfolio">
+                </div>
+                <div class="portfolio-info">
+                    <h3 data-header="gamedev-title"></h3>
+                    <p data-header="gamedev-desc"></p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+    <script defer src="dist/scripts/portfolio.js"></script>
+</body>
+
+</html>
